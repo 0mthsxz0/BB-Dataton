@@ -180,17 +180,14 @@ def main():
         b.metric('Estabelecimentos', f'{len(resumo):,}'.replace(',', '.'))
         c.metric('Baixa confiança (< 50%)', f'{resumo.confianca.lt(.5).mean():.0%}')
         d.metric('Sensíveis à incerteza', f'{(~resumo.estavel).mean():.0%}')
-        a,b = st.columns(2)
-        with a:
-            st.subheader('Planos sugeridos')
-            contagem = resumo.plano.value_counts().rename_axis('Plano').reset_index(name='Estabelecimentos')
-            st.plotly_chart(px.bar(contagem,x='Plano',y='Estabelecimentos',color='Plano',
-                color_discrete_sequence=['#1456e8','#f4d84c','#112b56']),use_container_width=True)
-        with b:
-            st.subheader('Prioridade média por cobertura')
-            medias = pd.DataFrame([{'Cobertura': r['nome'], 'Prioridade':resumo[c].mean()} for c,r in config['coberturas'].items()])
-            st.plotly_chart(px.bar(medias,y='Cobertura',x='Prioridade',orientation='h',range_x=[0,100],
-                color_discrete_sequence=['#1456e8']),use_container_width=True)
+        st.subheader('Planos sugeridos')
+        contagem = resumo.plano.value_counts().rename_axis('Plano').reset_index(name='Estabelecimentos')
+        st.plotly_chart(px.bar(contagem,x='Plano',y='Estabelecimentos',color='Plano',
+            color_discrete_sequence=['#1456e8','#f4d84c','#112b56']),use_container_width=True)
+        st.subheader('Prioridade média por cobertura')
+        medias = pd.DataFrame([{'Cobertura': r['nome'], 'Prioridade':resumo[c].mean()} for c,r in config['coberturas'].items()])
+        st.plotly_chart(px.bar(medias,y='Cobertura',x='Prioridade',orientation='h',range_x=[0,100],
+            color_discrete_sequence=['#1456e8']),use_container_width=True)
         for aviso in base.avisos:
             st.warning(aviso)
         st.caption('Todos os planos são sugestões condicionais à elegibilidade. Preços e condições contratuais pendentes.')
