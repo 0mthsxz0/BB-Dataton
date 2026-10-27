@@ -1,0 +1,251 @@
+{
+  "versao": "0.1.0",
+  "nota": "Hipóteses da equipe para o Datathon. Não são parâmetros oficiais ou probabilidades de sinistro.",
+  "modelo": {
+    "piso_evento": 0.65,
+    "piso_vulnerabilidade": 0.7,
+    "interacao_maxima": 0.15,
+    "escala_monetaria": 10000,
+    "risco_ausente": 0.5,
+    "vulnerabilidade_ausente": 0.5
+  },
+  "classes": [
+    {
+      "limite": 25,
+      "nome": "Muito baixa"
+    },
+    {
+      "limite": 50,
+      "nome": "Baixa"
+    },
+    {
+      "limite": 70,
+      "nome": "Moderada"
+    },
+    {
+      "limite": 85,
+      "nome": "Alta"
+    },
+    {
+      "limite": 101,
+      "nome": "Muito alta"
+    }
+  ],
+  "normalizacao": {
+    "bens": 3000000,
+    "energia": 50000,
+    "area": 2000,
+    "funcionarios": 100,
+    "folha": 500000,
+    "aluguel": 100000,
+    "despesas": 500000
+  },
+  "cenarios": {
+    "meses_paralisacao_min": 1,
+    "meses_paralisacao_max": 3
+  },
+  "planos": {
+    "limiar_cobertura": 60,
+    "limiar_critico": 85,
+    "ganho_incremental_minimo": 0.15
+  },
+  "elegibilidade": {
+    "atividade_aceita_confirmada": false,
+    "condicoes_contratuais_confirmadas": false,
+    "estados_validar": [
+      "EM_OBRA",
+      "IRREGULAR",
+      "CONDENADO"
+    ],
+    "materiais_validar": [
+      "MADEIRA",
+      "MATERIAL_COMBUSTIVEL"
+    ]
+  },
+  "atividades": {
+    "incendio": {
+      "RESTAURANTE": 0.8,
+      "OFICINA": 0.75,
+      "MERCADO": 0.65,
+      "FARMACIA": 0.45,
+      "ESCOLA_CURSO": 0.4,
+      "VAREJO_MODA": 0.5,
+      "CLINICA": 0.45,
+      "ELETRONICOS": 0.5,
+      "BELEZA": 0.5,
+      "ESCRITORIO": 0.3
+    },
+    "terceiros": {
+      "RESTAURANTE": 0.8,
+      "OFICINA": 0.75,
+      "MERCADO": 0.7,
+      "FARMACIA": 0.6,
+      "ESCOLA_CURSO": 0.8,
+      "VAREJO_MODA": 0.6,
+      "CLINICA": 0.85,
+      "ELETRONICOS": 0.5,
+      "BELEZA": 0.7,
+      "ESCRITORIO": 0.35
+    },
+    "ocupacional": {
+      "RESTAURANTE": 0.7,
+      "OFICINA": 0.85,
+      "MERCADO": 0.6,
+      "FARMACIA": 0.4,
+      "ESCOLA_CURSO": 0.4,
+      "VAREJO_MODA": 0.35,
+      "CLINICA": 0.65,
+      "ELETRONICOS": 0.35,
+      "BELEZA": 0.5,
+      "ESCRITORIO": 0.25
+    }
+  },
+  "materiais": {
+    "ALVENARIA": 0.3,
+    "CONCRETO": 0.25,
+    "MADEIRA": 0.85,
+    "MATERIAL_COMBUSTIVEL": 0.9
+  },
+  "padroes": {
+    "ECONOMICO": 0.65,
+    "NORMAL": 0.45,
+    "SUPERIOR": 0.3
+  },
+  "confiancas": {
+    "ALTA": 0.9,
+    "MEDIA": 0.65,
+    "BAIXA": 0.3
+  },
+  "coberturas": {
+    "INCENDIO_RAIO_EXPLOSAO_FUMACA": {
+      "nome": "Incêndio, raio, explosão e fumaça",
+      "referencia_financeira": 3000000,
+      "pesos_evento": {
+        "atividade_incendio": 0.5,
+        "material": 0.3,
+        "padrao": 0.2
+      },
+      "exposicao": "patrimonio",
+      "interacao": "cozinha",
+      "coeficiente_interacao": 0.12,
+      "peso_plano": 1,
+      "adicional": false
+    },
+    "DANOS_ELETRICOS": {
+      "nome": "Danos elétricos",
+      "referencia_financeira": 1000000,
+      "pesos_evento": {
+        "energia": 0.6,
+        "atividade_incendio": 0.4
+      },
+      "exposicao": "equipamentos",
+      "interacao": "digital",
+      "coeficiente_interacao": 0.15,
+      "peso_plano": 1,
+      "adicional": false
+    },
+    "PERDA_PAGAMENTO_ALUGUEL": {
+      "nome": "Perda ou pagamento de aluguel",
+      "referencia_financeira": 300000,
+      "pesos_evento": {
+        "atividade_incendio": 0.6,
+        "material": 0.4
+      },
+      "exposicao": "aluguel",
+      "interacao": "custos",
+      "coeficiente_interacao": 0.1,
+      "peso_plano": 1,
+      "adicional": false
+    },
+    "RESPONSABILIDADE_CIVIL_ESTABELECIMENTO": {
+      "nome": "RC estabelecimento",
+      "referencia_financeira": 1000000,
+      "pesos_evento": {
+        "atividade_terceiros": 0.7,
+        "presenca_loja": 0.3
+      },
+      "exposicao": "terceiros",
+      "interacao": "presencial",
+      "coeficiente_interacao": 0.1,
+      "peso_plano": 1,
+      "adicional": false
+    },
+    "DESPESAS_FIXAS": {
+      "nome": "Despesas fixas",
+      "referencia_financeira": 1500000,
+      "pesos_evento": {
+        "atividade_incendio": 0.4,
+        "dependencia_digital": 0.3,
+        "material": 0.3
+      },
+      "exposicao": "despesas",
+      "interacao": "custos",
+      "coeficiente_interacao": 0.12,
+      "peso_plano": 1,
+      "adicional": false
+    },
+    "ROUBO_FURTO_ARROMBAMENTO": {
+      "nome": "Roubo, furto e arrombamento",
+      "referencia_financeira": 3000000,
+      "pesos_evento": {
+        "exposicao_territorial": 1
+      },
+      "exposicao": "roubavel",
+      "interacao": null,
+      "coeficiente_interacao": 0,
+      "peso_plano": 1,
+      "adicional": false
+    },
+    "VENDAVAL_EVENTOS_CORRELATOS": {
+      "nome": "Vendaval e eventos correlatos",
+      "referencia_financeira": 3000000,
+      "pesos_evento": {
+        "exposicao_climatica": 0.7,
+        "padrao": 0.3
+      },
+      "exposicao": "patrimonio",
+      "interacao": null,
+      "coeficiente_interacao": 0,
+      "peso_plano": 1,
+      "adicional": false
+    },
+    "RESPONSABILIDADE_CIVIL_EMPREGADOR": {
+      "nome": "RC empregador",
+      "referencia_financeira": 1000000,
+      "pesos_evento": {
+        "atividade_ocupacional": 0.7,
+        "funcionarios": 0.3
+      },
+      "exposicao": "empregador",
+      "interacao": "ocupacional",
+      "coeficiente_interacao": 0.12,
+      "peso_plano": 1,
+      "adicional": false
+    },
+    "QUEBRA_DE_VIDROS": {
+      "nome": "Quebra de vidros",
+      "referencia_financeira": 100000,
+      "pesos_evento": {
+        "presenca_loja": 0.65,
+        "atividade_terceiros": 0.35
+      },
+      "exposicao": "vidros",
+      "interacao": "presencial",
+      "coeficiente_interacao": 0.1,
+      "peso_plano": 1,
+      "adicional": false
+    },
+    "PROTECAO_CIBERNETICA_AVALIAR": {
+      "nome": "Avaliação de proteção cibernética",
+      "referencia_financeira": 1000000,
+      "pesos_evento": {
+        "exposicao_ciber": 1
+      },
+      "exposicao": "digital",
+      "interacao": "digital",
+      "coeficiente_interacao": 0.15,
+      "peso_plano": 1,
+      "adicional": true
+    }
+  }
+}

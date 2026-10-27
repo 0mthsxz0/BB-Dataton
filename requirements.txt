@@ -1,0 +1,5 @@
+pandas>=2.2,<3.1
+numpy>=2.0,<3
+streamlit>=1.45,<2
+plotly>=6,<7
+pytest>=8,<10

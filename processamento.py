@@ -1,0 +1,222 @@
+"""Leitura validada dos CSVs e montagem de uma linha por estabelecimento."""
+from __future__ import annotations
+
+from dataclasses import dataclass
+from pathlib import Path
+import hashlib
+import math
+import pandas as pd
+
+ARQUIVOS = (
+    'empresas', 'enderecos_estabelecimentos', 'sinais_financeiros_operacionais',
+    'bens_cadastrados', 'territorio', 'catalogo_coberturas_fixas_planos',
+    'dicionario_dados', 'template_resultado_times', 'template_coberturas_times',
+)
+CHAVES = ['empresa_id', 'imovel_id']
+TIPOS_ELETRICOS = {
+    'EQUIPAMENTO_REFRIGERACAO', 'EQUIPAMENTO_ELETRONICO',
+    'EQUIPAMENTO_INFORMATICA', 'EQUIPAMENTO_OFICINA', 'EQUIPAMENTO_MEDICO',
+    'MAQUINA', 'EQUIPAMENTO_BELEZA', 'EQUIPAMENTO_COZINHA',
+}
+NULOS = {'', 'NAO_DISPONIVEL', 'NÃO_DISPONIVEL', 'NA', 'N/A', 'NULL', 'NAN'}
+
+
+def numero(valor):
+    """Aceita zero; rejeita ausências, valores negativos e não finitos."""
+    try:
+        n = float(valor)
+        return n if math.isfinite(n) and n >= 0 else None
+    except (TypeError, ValueError):
+        return None
+
+
+def localizar_dados(pasta=None):
+    if pasta:
+        caminho = Path(pasta).expanduser().resolve()
+        if not (caminho / 'empresas.csv').is_file():
+            raise ValueError(f'Pasta sem empresas.csv: {caminho}')
+        return caminho
+    raiz = Path(__file__).resolve().parent
+    for caminho in (raiz / 'data' / 'desenvolvimento',
+                    raiz.parent / 'Seguro_Empresarial_Desenvolvimento'):
+        if (caminho / 'empresas.csv').is_file():
+            return caminho
+    raise ValueError('Informe a pasta dos nove CSVs ou execute scripts/importar_dados.py.')
+
+
+def ler_csv(caminho):
+    # O dicionário é lido antes dos demais arquivos.
+    return pd.read_csv(caminho, dtype=str, encoding='utf-8-sig', keep_default_na=False)
+
+
+def validar_chave(df, colunas, tabela):
+    for coluna in colunas:
+        if coluna not in df.columns:
+            raise ValueError(f'{tabela}: coluna obrigatória ausente: {coluna}')
+        if df[coluna].str.strip().eq('').any():
+            raise ValueError(f'{tabela}: chave vazia em {coluna}')
+    if df.duplicated(colunas).any():
+        raise ValueError(f'{tabela}: chave duplicada em {colunas}')
+
+
+@dataclass
+class BaseDados:
+    pasta: Path
+    estabelecimentos: pd.DataFrame
+    catalogo: pd.DataFrame
+    templates: dict
+    dicionario: pd.DataFrame
+    avisos: list[str]
+    hashes: dict[str, str]
+
+    def registro(self, empresa_id, imovel_id):
+        df = self.estabelecimentos
+        linhas = df.loc[df.empresa_id.eq(empresa_id) & df.imovel_id.eq(imovel_id)]
+        if len(linhas) != 1:
+            raise ValueError('Empresa-estabelecimento não encontrado.')
+        return linhas.iloc[0].to_dict()
+
+
+def agregar_bens(bens, enderecos):
+    """Recalcula valores ponderados; nunca aplica a probabilidade duas vezes."""
+    obrigatorias = ['bem_id', 'empresa_id', 'imovel_id_referencia', 'tipo_bem',
+                    'valor_cadastrado', 'probabilidade_bem_no_imovel_referencia']
+    for coluna in obrigatorias:
+        if coluna not in bens:
+            raise ValueError(f'bens_cadastrados: coluna ausente: {coluna}')
+    bens = bens.drop_duplicates().copy()
+    validar_chave(bens, ['bem_id'], 'bens_cadastrados')
+    pares = set(map(tuple, enderecos[CHAVES].to_numpy()))
+    acumulados = {}
+    for bem in bens.to_dict('records'):
+        chave = (bem['empresa_id'], bem['imovel_id_referencia'])
+        if chave not in pares:
+            raise ValueError(f'Bem com vínculo órfão ou empresa divergente: {bem["bem_id"]}')
+        a = acumulados.setdefault(chave, {
+            'bens_total_referencia': 0., 'bens_ponderados': 0.,
+            'equipamentos_ponderados': 0., 'equipamentos_total_referencia': 0.,
+            'informatica_ponderada': 0., 'cozinha_ponderada': 0.,
+            'bens_quantidade': 0, 'bens_validos': 0, 'bens_ponderacao_validos': 0,
+            'bens_baixa_confianca': 0,
+        })
+        a['bens_quantidade'] += 1
+        valor = numero(bem['valor_cadastrado'])
+        prob = numero(bem['probabilidade_bem_no_imovel_referencia'])
+        if bem.get('nivel_confianca_vinculo') == 'BAIXA':
+            a['bens_baixa_confianca'] += 1
+        if valor is None:
+            continue
+        a['bens_total_referencia'] += valor
+        a['bens_validos'] += 1
+        eletrico = bem['tipo_bem'] in TIPOS_ELETRICOS
+        if eletrico:
+            a['equipamentos_total_referencia'] += valor
+        if prob is None or prob > 1:
+            continue
+        a['bens_ponderacao_validos'] += 1
+        atribuido = valor * prob
+        a['bens_ponderados'] += atribuido
+        if eletrico:
+            a['equipamentos_ponderados'] += atribuido
+        if bem['tipo_bem'] == 'EQUIPAMENTO_INFORMATICA':
+            a['informatica_ponderada'] += atribuido
+        if bem['tipo_bem'] == 'EQUIPAMENTO_COZINHA':
+            a['cozinha_ponderada'] += atribuido
+    saida = []
+    for (empresa, imovel), a in acumulados.items():
+        n = a['bens_quantidade']
+        a['confianca_bens'] = (a['bens_ponderacao_validos'] / n
+                              * (1 - .5 * a['bens_baixa_confianca'] / n))
+        if not a['bens_ponderacao_validos']:
+            for campo in ['bens_ponderados', 'equipamentos_ponderados',
+                          'informatica_ponderada', 'cozinha_ponderada']:
+                a[campo] = None
+        saida.append({'empresa_id': empresa, 'imovel_id': imovel, **a})
+    return pd.DataFrame(saida, columns=CHAVES + list(next(iter(acumulados.values()), {})))
+
+
+def carregar_base(pasta=None, enriquecimento=None):
+    pasta = localizar_dados(pasta)
+    faltantes = [f'{n}.csv' for n in ARQUIVOS if not (pasta / f'{n}.csv').is_file()]
+    if faltantes:
+        raise ValueError('Arquivos ausentes: ' + ', '.join(faltantes))
+    dic = ler_csv(pasta / 'dicionario_dados.csv')
+    tabelas = {n: ler_csv(pasta / f'{n}.csv') for n in ARQUIVOS if n != 'dicionario_dados'}
+    empresas = tabelas['empresas']
+    enderecos = tabelas['enderecos_estabelecimentos']
+    sinais = tabelas['sinais_financeiros_operacionais']
+    territorio = tabelas['territorio']
+    obrigatorias = {
+        'empresas': ['empresa_id', 'grupo_atividade', 'cnae_principal', 'descricao_cnae', 'porte'],
+        'enderecos_estabelecimentos': CHAVES + ['territorio_id', 'tipo_unidade',
+            'municipio_real', 'uf_real', 'codigo_ibge_municipio'],
+    }
+    for tabela, colunas in obrigatorias.items():
+        ausentes = set(colunas) - set(tabelas[tabela].columns)
+        if ausentes:
+            raise ValueError(f'{tabela}: colunas obrigatórias ausentes: {sorted(ausentes)}')
+    validar_chave(empresas, ['empresa_id'], 'empresas')
+    validar_chave(enderecos, CHAVES, 'enderecos_estabelecimentos')
+    validar_chave(enderecos, ['imovel_id'], 'enderecos_estabelecimentos')
+    validar_chave(sinais, CHAVES, 'sinais_financeiros_operacionais')
+    validar_chave(territorio, ['territorio_id'], 'territorio')
+    if not set(enderecos.empresa_id).issubset(set(empresas.empresa_id)):
+        raise ValueError('Estabelecimentos com empresa inexistente.')
+    if not set(map(tuple, sinais[CHAVES].to_numpy())).issubset(set(map(tuple, enderecos[CHAVES].to_numpy()))):
+        raise ValueError('Sinais com empresa-estabelecimento inexistente.')
+    avisos = []
+    dados = enderecos.merge(empresas, on='empresa_id', validate='many_to_one')
+    dados['quantidade_unidades'] = dados.groupby('empresa_id').imovel_id.transform('count')
+    dados = dados.merge(sinais, on=CHAVES, how='left', validate='one_to_one', indicator=True)
+    if dados['_merge'].ne('both').any():
+        avisos.append('Há unidades sem sinais financeiros; a confiança será reduzida.')
+    dados = dados.drop(columns='_merge')
+    # Preserva o município cadastral; não infere bairro pelas coordenadas alteradas.
+    extras = [c for c in territorio if c not in dados or c == 'territorio_id']
+    dados = dados.merge(territorio[extras], on='territorio_id', how='left', validate='many_to_one')
+    agregados = agregar_bens(tabelas['bens_cadastrados'], enderecos)
+    if len(agregados):
+        dados = dados.merge(agregados, on=CHAVES, how='left', validate='one_to_one')
+    else:
+        for campo in ['bens_ponderados', 'bens_total_referencia', 'equipamentos_ponderados',
+                      'equipamentos_total_referencia', 'informatica_ponderada',
+                      'cozinha_ponderada', 'confianca_bens']:
+            dados[campo] = None
+    if enriquecimento:
+        dados = incorporar_territorio(dados, enriquecimento)
+    else:
+        avisos.append('Sem enriquecimento territorial: exposição a roubo e clima não observada.')
+    templates = {n: tabelas[n].columns.tolist() for n in ('template_resultado_times', 'template_coberturas_times')}
+    catalogo = tabelas['catalogo_coberturas_fixas_planos']
+    validar_chave(catalogo, ['plano', 'cobertura_fixa'], 'catalogo')
+    if set(catalogo.plano) != {'ESSENCIAL', 'PRATICO', 'TOTAL'}:
+        raise ValueError('Catálogo deve conter ESSENCIAL, PRATICO e TOTAL.')
+    hashes = {f'{n}.csv': hashlib.sha256((pasta / f'{n}.csv').read_bytes()).hexdigest() for n in ARQUIVOS}
+    if enriquecimento:
+        hashes['enriquecimento_territorial.csv'] = hashlib.sha256(Path(enriquecimento).read_bytes()).hexdigest()
+    return BaseDados(pasta, dados.astype(object).where(pd.notna(dados), None),
+                     catalogo, templates, dic, avisos, hashes)
+
+
+def incorporar_territorio(dados, caminho):
+    """Aceita indicadores externos documentados, com uma linha por município."""
+    externo = ler_csv(caminho)
+    obrigatorias = ['codigo_ibge_municipio', 'fonte', 'ano_referencia',
+                    'granularidade', 'metodologia', 'confianca_territorial_0_1']
+    for c in obrigatorias:
+        if c not in externo or externo[c].str.strip().eq('').any():
+            raise ValueError(f'Enriquecimento sem metadado obrigatório: {c}')
+    validar_chave(externo, ['codigo_ibge_municipio'], 'enriquecimento')
+    indicadores = [c for c in ['seguranca_da_cidade_0_1', 'exposicao_climatica_0_1'] if c in externo]
+    if not indicadores:
+        raise ValueError('Enriquecimento sem indicador territorial aceito.')
+    for c in indicadores + ['confianca_territorial_0_1']:
+        valores = externo[c].map(numero)
+        if valores.isna().any() or valores.gt(1).any():
+            raise ValueError(f'{c} deve estar entre 0 e 1.')
+    if externo.granularidade.ne('MUNICIPIO').any():
+        raise ValueError('Esta versão aceita enriquecimento municipal; não replica precisão de rua.')
+    if not set(externo.ano_referencia.str.fullmatch(r'\d{4}')).issubset({True}):
+        raise ValueError('ano_referencia deve conter o ano da observação com quatro dígitos.')
+    manter = obrigatorias + indicadores
+    return dados.merge(externo[manter], on='codigo_ibge_municipio', how='left', validate='many_to_one')
