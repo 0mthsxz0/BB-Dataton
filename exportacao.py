@@ -49,7 +49,8 @@ def analisar_base(base, config=None):
                 'observacao': ' | '.join(s['limitacoes']) + ' Faixas de cenário para análise; não representam preço do seguro ou limite contratual aprovado.',
             })
         auditoria.append({'empresa_id': registro['empresa_id'], 'imovel_id': registro['imovel_id'],
-                         'pontuacoes': pontos, 'dimensionamento': dimensoes, 'recomendacao': recomendacao})
+                         'pontuacoes': pontos, 'necessidades_plano': recomendacao['necessidades'],
+                         'dimensionamento': dimensoes, 'recomendacao': recomendacao})
     r = pd.DataFrame(resultados, columns=base.templates['template_resultado_times'])
     c = pd.DataFrame(coberturas, columns=base.templates['template_coberturas_times'])
     return r, c, auditoria

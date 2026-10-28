@@ -1,5 +1,5 @@
 {
-  "versao": "0.2.0",
+  "versao": "0.3.0",
   "nota": "Hipóteses da equipe para o Datathon. Não são parâmetros oficiais ou probabilidades de sinistro.",
   "modelo": {
     "piso_evento": 0.2,
@@ -47,8 +47,8 @@
   },
   "planos": {
     "limiar_cobertura": 60,
-    "limiar_critico": 85,
-    "ganho_incremental_minimo": 0.15
+    "meta_aderencia": 80,
+    "indispensaveis": []
   },
   "elegibilidade": {
     "atividade_aceita_confirmada": false,
@@ -249,5 +249,18 @@
       "4": 1
     },
     "confianca_classificacao": 0.6
+  },
+  "heuristicas_comuns": {
+    "incendio_com_bens": 70,
+    "incendio_sem_inventario": 50,
+    "base_eletrico": 30,
+    "amplitude_eletrico": 60,
+    "aluguel_sim": 75,
+    "aluguel_nao": 25,
+    "terceiros_presencial": 70,
+    "terceiros_sem_sinal": 50,
+    "base_despesas": 30,
+    "amplitude_despesas": 60,
+    "ancora_despesa_mensal": 30000
   }
 }

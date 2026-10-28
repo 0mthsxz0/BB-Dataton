@@ -5,7 +5,7 @@ import re
 import pandas as pd
 import requests
 
-from processamento import incorporar_indicador, ler_csv, localizar_referencias
+from processamento import incorporar_indicador, incorporar_ssp, incorporar_territorio, ler_csv, localizar_referencias, caminho_referencia
 
 
 def normalizar_cep(valor):
@@ -43,7 +43,7 @@ def consultar_cep(cep):
     }
 
 
-def aplicar_localizacao(registro, localizacao, referencias=None):
+def aplicar_localizacao(registro, localizacao, referencias=None, enriquecimento=None):
     """Cópia para consulta: substitui indicadores e remove referências da cidade anterior."""
     novo = dict(registro)
     # Limpa também os metadados de referências legadas, evitando herdar fontes/confiança.
@@ -56,18 +56,29 @@ def aplicar_localizacao(registro, localizacao, referencias=None):
                              'completude', 'latitude_publica', 'longitude_publica',
                              'latitude_celula', 'longitude_celula', 'sha256_serie'}):
             novo.pop(campo)
+    for campo in ['indicador_disponivel','roubo_comercio_total','estabelecimentos_referencia',
+                  'taxa_por_mil_estabelecimentos','referencia_taxa_por_mil','regioes_fonte',
+                  'sha256_arquivos','atualizado_em_utc']:
+        novo.pop(campo, None)
     novo.update(localizacao)
     dados = pd.DataFrame([novo])
-    avisos = []
     for tipo, indicador in [('seguranca', 'seguranca_da_cidade_0_1'),
                             ('clima', 'exposicao_climatica_0_1')]:
-        caminho = localizar_referencias(referencias) / f'{tipo}_municipal.csv'
+        caminho = caminho_referencia(f'{tipo}_municipal.csv',referencias)
         if caminho.exists():
             # Retira todos os campos da edição da referência antes de fazer o novo vínculo.
             colunas = set(ler_csv(caminho).columns) - {'codigo_ibge_municipio', 'municipio'}
             dados = dados.drop(columns=list(colunas), errors='ignore')
             dados = incorporar_indicador(dados, caminho, tipo)
-        if indicador not in dados or pd.isna(dados.iloc[0][indicador]):
+    ssp = localizar_referencias(referencias)/'seguranca_ssp.csv'
+    if ssp.exists():
+        dados = incorporar_ssp(dados,ssp)
+    if enriquecimento:
+        dados = incorporar_territorio(dados,enriquecimento)
+    avisos = []
+    for tipo, indicador in [('seguranca','seguranca_da_cidade_0_1'),('clima','exposicao_climatica_0_1')]:
+        if (indicador not in dados or pd.isna(dados.iloc[0][indicador])
+                or tipo == 'seguranca' and dados.iloc[0].get('indicador_disponivel') == 'NAO'):
             avisos.append(f'Sem referência de {tipo} para este município; o risco permanece desconhecido.')
     resultado = dados.astype(object).where(pd.notna(dados), None).iloc[0].to_dict()
     return resultado, avisos

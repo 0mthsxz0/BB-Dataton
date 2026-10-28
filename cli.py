@@ -3,6 +3,7 @@ import argparse
 import json
 from exportacao import exportar
 from processamento import carregar_base
+from motor_pontuacao import carregar_config
 
 
 def main():
@@ -12,11 +13,17 @@ def main():
     parser.add_argument('--territorio', help='CSV externo municipal com indicadores documentados')
     parser.add_argument('--referencias', help='Pasta das referências públicas preparadas')
     parser.add_argument('--confirmacoes', help='CSV de confirmações por estabelecimento')
+    parser.add_argument('--meta',type=float,help='Meta de aderência de 0 a 100; padrão 80')
+    parser.add_argument('--indispensavel',action='append',default=[],help='Código de cobertura da qual não abrir mão; pode repetir')
     parser.add_argument('--saida', default='output', help='Pasta de resultados')
     args = parser.parse_args()
     try:
         base = carregar_base(args.dados, args.territorio, args.referencias, args.confirmacoes)
-        r, c = exportar(base, args.config, args.saida)
+        config = carregar_config(args.config)
+        if args.meta is not None:
+            config['planos']['meta_aderencia'] = args.meta
+        config['planos']['indispensaveis'] = sorted(set(config['planos']['indispensaveis']+args.indispensavel))
+        r, c = exportar(base, config, args.saida)
     except (ValueError, KeyError, OSError) as erro:
         parser.exit(1, f'Erro de processamento: {erro}\n')
     print(json.dumps({'estabelecimentos': len(r), 'coberturas': len(c),

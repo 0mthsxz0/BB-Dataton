@@ -1,8 +1,8 @@
-# Metodologia v0.2: quatro índices e nove dimensionamentos
+# Metodologia v0.3: quatro índices, nove necessidades e SSP
 
 ## Contrato
 
-Apenas ROUBO_FURTO_ARROMBAMENTO, VENDAVAL_EVENTOS_CORRELATOS, RESPONSABILIDADE_CIVIL_EMPREGADOR e QUEBRA_DE_VIDROS recebem prioridade. As cinco coberturas comuns permanecem no catálogo e na exportação com dimensionamento, sem pontuação. Cibernética não interfere na escolha de Essencial, Prático ou Total.
+ROUBO_FURTO_ARROMBAMENTO, VENDAVAL_EVENTOS_CORRELATOS, RESPONSABILIDADE_CIVIL_EMPREGADOR e QUEBRA_DE_VIDROS preservam seus índices multifatoriais contínuos. As cinco coberturas comuns recebem pontuações heurísticas de preferência, explicitamente separadas dos modelos físicos. As nove necessidades entram na aderência; as nove coberturas continuam com dimensionamento. Cibernética não interfere na escolha de Essencial, Prático ou Total.
 
 Todos os parâmetros são hipóteses da equipe. As notas representam prioridade de proteção, não probabilidades de sinistro, acidentes, responsabilidades jurídicas ou parâmetros oficiais da seguradora.
 
@@ -84,9 +84,35 @@ A sensibilidade de um fator x com confiança c vai de x×c a x+(1-c)×(1-x). Os 
 
 ## Escolha do plano
 
-Essencial é o ponto de partida. Somente os quatro índices entram nos pesos, no denominador de adequação e no benefício incremental. Coberturas comuns podem ter valores grandes ou lacunas de informação, sem mudar essa comparação.
+Aderência(plano) = soma(peso × pontos das necessidades presentes) / soma(peso × pontos das nove necessidades). Meta inicial de 80%, configurável. Os pesos iniciais são 1. O menor nível que alcança a meta e contém todas as coberturas indispensáveis é escolhido. Uma indispensável vale mesmo com zero pontos e meta zero. Não há preços ou teste de orçamento; não se afirma menor custo. Os cortes antigos de upgrade foram retirados.
 
-Upgrade quando as novas coberturas incluem prioridade >=60 e representam ganho >=15% da necessidade dos quatro índices, ou resolvem lacuna crítica >=85. Parâmetros configuráveis. Prático acrescenta roubo e vendaval; Total acrescenta RC empregador e vidros. O algoritmo compara os conjuntos e mantém o menor plano que atende ao critério, com razões e lacunas registradas. Não usa preços inexistentes nem afirma acessibilidade econômica por faturamento.
+Os quatro índices entram com sua precisão contínua, sem conversão em 25/55/85 nem nova multiplicação pelo patrimônio. As cinco heurísticas iniciais, inspiradas no MVP enviado, são:
+
+| Necessidade comum | Preferência inicial |
+|---|---|
+| Incêndio | 70 com inventário; 50 sem inventário |
+| Danos elétricos | 30 + 60 × dependência tecnológica entre 0 e 1 |
+| Aluguel | 75 com sinal de pagamento; 25 sem sinal; desconhecido 50 |
+| RC estabelecimento | 70 com sinal de loja/galeria; 50 sem sinal |
+| Despesas fixas | 30 + 60 × despesa/(despesa + 30.000) |
+
+Todos os coeficientes estão em heuristicas_comuns. Ausências usam ponto central 50 com confiança zero. Essas regras de preferência não medem probabilidade nem perda esperada. O dimensionamento financeiro continua separado. Confiança contextual das heurísticas: 0,35 para incêndio/elétrico/aluguel, 0,30 para RC estabelecimento e 0,40 para despesas, quando há sinal observado; são hipóteses conservadoras. A confiança geral é a média ponderada das nove necessidades, não acurácia.
+
+Aderência mede presença binária no catálogo: Total apresenta 100% das necessidades, sem garantir que limites, franquias ou exclusões atendam a qualquer perda. A contribuição de cada necessidade, a conta e as indispensáveis são auditadas. Preferências globais da sessão também se aplicam aos lotes exportados. As cinco comuns agora influenciam o denominador e podem alterar a escolha, conforme a nova instrução do projeto.
+
+As faixas de cada pontuação preservam a regra x×c a x+(1-c)×(100-x) em pontos. Para cada plano, o mínimo de aderência usa coberturas presentes no limite inferior e ausentes no superior; o máximo usa o inverso. Não basta reduzir ou aumentar todas as notas juntas, porque a aderência é uma razão. O intervalo não é estatístico. A comparação sinaliza o menor plano possível e o menor que atende em toda essa faixa conservadora, respeitando as indispensáveis.
+
+## Segurança SSP
+
+O importador recebe planilhas anuais com doze meses, natureza exata Roubo em Comércio, código IBGE e origem explícita. Não infere região administrativa pelo CEP. Regiões são consolidadas municipalmente apenas com declaração de cobertura completa sem sobreposição; duplicação de região ou mistura explícita de total municipal com regiões é recusada. Essa declaração precisa de revisão humana da fonte; o código não comprova sozinho a completude geográfica.
+
+A taxa é soma(ocorrências) / soma(estabelecimentos) × 1.000 no mesmo ano e território. Não usa média simples das taxas regionais. Exposição R = taxa/(taxa + referência fixa); segurança = 1-R. Referência experimental inicial: 100 ocorrências por mil estabelecimentos. É configurável no preparador, não recalibrada pelo subconjunto consultado e não é um parâmetro atuarial validado. Um único município pode ter indicador porque a escala é fixa. Ocorrências repetidas não identificam empresas distintas; a taxa não é probabilidade.
+
+Sem denominador ou com ano incompleto, o indicador permanece indisponível: ponto central 0,50 e confiança zero, sem transformar somas de ausências em zero. Contagem anual observada é conservada quando possível. Com dados completos, confiança contextual inicial 0,55; definições e subnotificação continuam limitações. Não se misturam anos nem denominadores regionais ausentes com taxas válidas. Fontes de estados diferentes exigem revisão de equivalência antes de comparação.
+
+A saída seguranca_ssp.csv sobrepõe apenas a segurança dos municípios nela presentes, conservando clima e NR-4. Fora da cobertura SSP usa a referência municipal existente; uma linha SSP explicitamente indisponível não vira ausência silenciosa. Campos antigos de vitimização domiciliar são limpos quando substituídos. Referências SSP são usadas no cadastro, no CEP e nos lotes. Metodologia, período, contagens, denominador, hashes e horário de preparo do indicador aparecem na auditoria. Esse horário não comprova a data de atualização do portal original.
+
+Downloads usam URLs HTTPS explícitas do manifesto, com cache local; --atualizar reconstrói a partir de novos downloads. O importador não descobre portais, não agenda execuções e não promete compatibilidade com qualquer formato estadual. A análise lê o snapshot preparado. A escala de exposição SSP não é intercambiável com a PNAD: a origem aparece no resultado e qualquer troca deve ser revisada pela equipe.
 
 ## Dimensionamento, elegibilidade e exportação
 
@@ -100,6 +126,6 @@ Na consulta por CEP, o ViaCEP fornece a localização e o código municipal IBGE
 
 ## Verificação
 
-Testes exercitam patrimônio versus ocorrência, influência territorial, valores elevados em cidade segura, fontes independentes, funcionários não duplicados, NR-4, ausência e reposição de vidros, séries climáticas incompletas, parâmetros divergentes, independência das coberturas comuns, esquema dos templates, reprodutibilidade e fluxo da interface.
+Testes exercitam patrimônio versus ocorrência, influência territorial, valores elevados em cidade segura, fontes independentes, funcionários não duplicados, NR-4, ausência e reposição de vidros, séries climáticas incompletas, parâmetros divergentes, participação das nove necessidades, indispensáveis e meta de aderência, esquema dos templates, reprodutibilidade e fluxo da interface.
 
 Coerência dos cenários e processamento integral não demonstram precisão preditiva. Calibração posterior exige sinistros, períodos de exposição e revisão de especialistas. Nenhum corte foi ajustado para selecionar uma proporção desejada da base.

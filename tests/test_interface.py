@@ -44,3 +44,23 @@ def test_consulta_cep_interface(pasta_csv, monkeypatch):
     next(x for x in app.button if x.label == 'Consultar CEP').click().run()
     assert any('oito dígitos' in x.value for x in app.error)
     assert not any('São Paulo/SP' in x.value for x in app.success)
+
+
+def test_indispensavel_interface_e_exportacao(pasta_csv,monkeypatch):
+    from motor_pontuacao import VIDROS
+    monkeypatch.setenv('BB_DATATHON_DADOS',str(pasta_csv))
+    app=AppTest.from_file(str(Path(__file__).resolve().parents[1]/'app.py'),default_timeout=60).run()
+    app.sidebar.multiselect[0].set_value([VIDROS]).run()
+    app.sidebar.radio[0].set_value('Analisar estabelecimento').run()
+    assert not app.exception
+    assert next(x for x in app.metric if x.label=='Plano sugerido').value=='TOTAL'
+    app.sidebar.radio[0].set_value('Exportar').run()
+    next(x for x in app.button if x.label=='Preparar exportação').click().run()
+    import io,zipfile,json
+    pacote=app.session_state['exportacao']
+    with zipfile.ZipFile(io.BytesIO(pacote[3])) as z:
+        config=json.loads(z.read('config_regras.json'))
+        auditoria=json.loads(z.read('auditoria.json'))
+    assert config['planos']['indispensaveis']==[VIDROS]
+    assert all(x['recomendacao']['plano_recomendado']=='TOTAL' for x in auditoria)
+    assert all(len(x['necessidades_plano'])==9 for x in auditoria)

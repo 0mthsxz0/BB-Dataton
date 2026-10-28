@@ -13,7 +13,7 @@ import streamlit as st
 
 from exportacao import analisar_base, csv_bytes
 from motor_pontuacao import DECISORIAS, ROUBO, MotorPontuacao, carregar_config
-from processamento import ARQUIVOS, carregar_base, localizar_dados, localizar_referencias
+from processamento import ARQUIVOS, carregar_base, localizar_dados, localizar_referencias, caminho_referencia
 from recomendador import recomendar_plano
 from localizacao import consultar_cep, aplicar_localizacao
 
@@ -24,6 +24,8 @@ st.markdown('''<style>
  [data-testid="stSidebar"] p,[data-testid="stSidebar"] label,
  [data-testid="stSidebar"] h1,[data-testid="stSidebar"] h2,
  [data-testid="stSidebar"] h3 {color:#fff}
+ [data-testid="stSidebar"] details summary,
+ [data-testid="stSidebar"] details summary:hover {background:#1b3e70!important;color:#fff!important}
  [data-testid="stMetric"] {background:white;border:1px solid #dce4f1;border-radius:14px;padding:18px}
  h1 {letter-spacing:-1.1px;color:#112b56}
  .eyebrow {font-size:12px;font-weight:750;letter-spacing:2px;color:#1456e8}
@@ -46,6 +48,9 @@ def assinatura(pasta, externo, referencias='', confirmacoes=''):
         caminhos.append(Path(externo))
     if referencias:
         caminhos.extend(sorted(Path(referencias).glob('*.csv')))
+        caminhos.extend(caminho_referencia(n,referencias) for n in
+            ['seguranca_municipal.csv','clima_municipal.csv','nr4_cnae.csv']
+            if caminho_referencia(n,referencias).exists())
     if confirmacoes:
         caminhos.append(Path(confirmacoes))
     return tuple((str(p), p.stat().st_mtime_ns, p.stat().st_size) for p in caminhos)
@@ -83,7 +88,7 @@ def obter_localizacao(cep):
     return consultar_cep(cep)
 
 
-def consulta_por_cep(base, config, referencias):
+def consulta_por_cep(base, config, referencias, externo=''):
     st.write('Informe o CEP para localizar o município e consultar as referências disponíveis.')
     st.caption('A consulta envia apenas o CEP ao ViaCEP. Bairro e rua ajudam a localizar; os indicadores desta versão são municipais.')
     with st.form('consulta_cep'):
@@ -102,11 +107,11 @@ def consulta_por_cep(base, config, referencias):
     st.write('Bairro:', local['bairro'] or 'Não informado pelo serviço')
     st.write('Logradouro:', local['logradouro'] or 'Não informado pelo serviço')
     st.info('Abrangência: município inteiro. Este resultado não mede o risco específico do bairro, da rua ou do imóvel.')
-    territorial, avisos = aplicar_localizacao({}, local, referencias)
+    territorial, avisos = aplicar_localizacao({}, local, referencias, externo or None)
     for aviso in avisos:
         st.warning(aviso)
     st.dataframe(pd.DataFrame([
-        {'Indicador': nome, 'Índice relativo': territorial.get(indicador),
+        {'Indicador': nome, 'Índice relativo': territorial.get(indicador) if territorial.get(f'confianca_{tipo}_0_1') not in (0, '0', '0.0') else None,
          'Período': territorial.get(f'periodo_{tipo}'), 'Fonte': territorial.get(f'fonte_{tipo}')}
         for nome, tipo, indicador in [('Segurança', 'seguranca', 'seguranca_da_cidade_0_1'),
                                       ('Exposição climática', 'clima', 'exposicao_climatica_0_1')]
@@ -118,7 +123,7 @@ def consulta_por_cep(base, config, referencias):
         st.warning('Esta consulta combina o CEP informado com os valores e características da unidade selecionada. Os CSVs e as exportações em lote mantêm o cadastro original.')
         registro = seletor(base, 'cep')
         if registro:
-            novo, _ = aplicar_localizacao(registro, local, referencias)
+            novo, _ = aplicar_localizacao(registro, local, referencias, externo or None)
             detalhar(novo, base, config)
 
 
@@ -174,7 +179,7 @@ def detalhar(registro, base, config):
     if not plano['recomendacao_estavel']:
         st.warning(f'Sensível à incerteza dos dados: cenários variam entre {plano["plano_cenario_inferior"]} e {plano["plano_cenario_superior"]}.')
     st.plotly_chart(grafico(pontos), use_container_width=True)
-    st.caption('Somente quatro índices decidem o plano. Nota maior indica maior prioridade; não é probabilidade de sinistro.')
+    st.caption('Quatro índices multifatoriais preservam evento, impacto e vulnerabilidade. A escolha do plano considera nove necessidades; nota não é probabilidade de sinistro.')
     with st.expander('Valores das nove coberturas do catálogo'):
         dimensoes=motor.dimensionar_coberturas(registro)
         st.dataframe(pd.DataFrame([{'Cobertura':x['nome'],'Papel':x['papel'],
@@ -202,6 +207,13 @@ def detalhar(registro, base, config):
         st.caption('• ' + limitacao)
     st.subheader('Comparação dos planos')
     st.dataframe(pd.DataFrame(plano['comparacao']).astype(str), hide_index=True, use_container_width=True)
+    st.caption('Aderência mede presença de coberturas no catálogo; não considera limites, franquias ou exclusões. Total com 100% não significa proteção integral.')
+    st.subheader('As nove necessidades usadas na escolha')
+    st.dataframe(pd.DataFrame([{'Cobertura':s['nome'], 'Pontos':s['prioridade'],
+        'Origem':s['origem'], 'Participação (%)':s['participacao_percentual'],
+        'Não abrir mão':s['indispensavel'], 'Confiança':s['confianca'],
+        'Regra':s['formula'], 'Motivo':s['justificativa']} for s in plano['necessidades'].values()]),
+        hide_index=True,use_container_width=True)
     with st.expander('Informações prioritárias a confirmar'):
         for pergunta in plano['perguntas_confirmacao']:
             st.write('• ' + pergunta)
@@ -212,7 +224,7 @@ def main():
     padrao_config=carregar_config()
     if 'config_regras' not in st.session_state or st.session_state.config_regras.get('versao')!=padrao_config['versao']:
         st.session_state.config_regras = padrao_config
-    config = st.session_state.config_regras
+    config = copy.deepcopy(st.session_state.config_regras)
     st.sidebar.markdown('## Protege Empresa')
     st.sidebar.caption('Datathon · recomendação explicável')
     pagina = st.sidebar.radio('Navegação', ['Visão geral', 'Analisar estabelecimento', 'Comparar',
@@ -227,6 +239,15 @@ def main():
         ref_padrao=localizar_referencias()
         referencias=st.text_input('Pasta de referências públicas',str(ref_padrao))
         confirmacoes=st.text_input('CSV de confirmações por unidade (opcional)','')
+    with st.sidebar.expander('Preferências de proteção'):
+        preferencias = json.dumps(config['planos'],sort_keys=True)
+        config['planos']['meta_aderencia'] = st.number_input('Meta de aderência (%)',
+            min_value=0.,max_value=100.,value=float(config['planos']['meta_aderencia']),
+            step=5.,key='meta_'+preferencias)
+        config['planos']['indispensaveis'] = st.multiselect('Não abrir mão',list(config['coberturas']),
+            default=config['planos']['indispensaveis'],format_func=lambda c:config['coberturas'][c]['nome'],
+            key='indispensaveis_'+preferencias)
+        st.caption('Estas preferências valem para a análise, comparação e todas as unidades da exportação desta sessão. Preços não disponíveis nos arquivos do Datathon.')
     st.sidebar.caption('Protótipo acadêmico. Dados fictícios. Sem vínculo oficial com a seguradora.')
     st.markdown('<div class="eyebrow">PROTEÇÃO QUE FAZ SENTIDO</div>', unsafe_allow_html=True)
     st.title(pagina)
@@ -252,7 +273,7 @@ def main():
         contagem = resumo.plano.value_counts().rename_axis('Plano').reset_index(name='Estabelecimentos')
         st.plotly_chart(px.bar(contagem,x='Plano',y='Estabelecimentos',color='Plano',
             color_discrete_sequence=['#1456e8','#f4d84c','#112b56']),use_container_width=True)
-        st.subheader('Os quatro índices que diferenciam os planos')
+        st.subheader('Os quatro índices multifatoriais')
         medias = pd.DataFrame([{'Cobertura': config['coberturas'][c]['nome'], 'Prioridade':resumo[c].mean()} for c in DECISORIAS])
         st.plotly_chart(px.bar(medias,y='Cobertura',x='Prioridade',orientation='h',range_x=[0,100],
             color_discrete_sequence=['#1456e8']),use_container_width=True)
@@ -263,7 +284,7 @@ def main():
                      hide_index=True,use_container_width=True)
 
     elif pagina == 'Consultar por CEP':
-        consulta_por_cep(base, config, referencias)
+        consulta_por_cep(base, config, referencias, externo)
 
     elif pagina == 'Analisar estabelecimento':
         registro = seletor(base)
@@ -331,7 +352,8 @@ def main():
         st.write('Modelo transparente com interação entre evento, impacto e vulnerabilidade. Todos os parâmetros são hipóteses da equipe.')
         st.code('P = 100 × clip[(p+(1−p)I) × (a+(1−a)R) × (b+(1−b)V) + kIRD, 0, 1]',language='text')
         st.caption('R: evento relativo; I: impacto normalizado; V: vulnerabilidade limitada pelos dados; D: interação específica.')
-        st.info('As cinco coberturas comuns são dimensionadas e exportadas. Somente roubo, vendaval, RC empregador e vidros influenciam a escolha. Mudanças nos limiares climáticos exigem regenerar as referências com o script de preparo.')
+        st.info('Aderência = pontos ponderados das coberturas presentes / pontos ponderados das nove necessidades. Meta padrão: 80%. O menor plano que alcança a meta e contém todas as indispensáveis é sugerido. Quatro índices contínuos e cinco heurísticas explícitas entram na decisão. Não há comparação de preços.')
+        st.caption('Parâmetros climáticos diferentes exigem regenerar referências. SSP usa dados municipais de roubo em comércio e uma escala fixa; não é probabilidade de sinistro.')
         novo = st.text_area('Configuração JSON',json.dumps(config,ensure_ascii=False,indent=2),height=420)
         a,b = st.columns(2)
         if a.button('Validar e aplicar regras',type='primary'):

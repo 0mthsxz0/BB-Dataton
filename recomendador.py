@@ -1,7 +1,7 @@
 """Seleção de planos por adequação incremental e elegibilidade preliminar."""
 from __future__ import annotations
 
-from motor_pontuacao import DECISORIAS, COMUNS, carregar_config
+from motor_pontuacao import DECISORIAS, COMUNS, MotorPontuacao, carregar_config
 from processamento import NULOS
 
 ORDEM_PLANOS = ['ESSENCIAL', 'PRATICO', 'TOTAL']
@@ -29,59 +29,61 @@ def verificar_elegibilidade(registro, config):
 
 def recomendar_plano(pontuacoes, catalogo, config=None, registro=None):
     cfg = carregar_config(config)
-    fixas = {c: pontuacoes[c] for c in DECISORIAS}
+    necessidades = MotorPontuacao(config=cfg).necessidades_plano(registro or {}, pontuacoes)
     conjuntos = {p: set(catalogo.loc[catalogo.plano.eq(p), 'cobertura_fixa']) for p in ORDEM_PLANOS}
-    if any(conjuntos[p] - (set(DECISORIAS)|set(COMUNS)) for p in ORDEM_PLANOS):
-        raise ValueError('Catálogo contém cobertura sem modelo de análise.')
     if not conjuntos['ESSENCIAL'] <= conjuntos['PRATICO'] <= conjuntos['TOTAL']:
         raise ValueError('Catálogo deve preservar a inclusão das coberturas dos planos anteriores.')
     if conjuntos['TOTAL'] != set(DECISORIAS)|set(COMUNS):
         raise ValueError('Catálogo e nove coberturas do motor divergem.')
-    limites = cfg['planos']
-    pesos = {c: cfg['coberturas'][c]['peso_plano'] for c in fixas}
-
-    def escolher(campo):
-        necessidades = {c: fixas[c][campo] / 100 for c in fixas}
-        total = sum(pesos[c] * n for c, n in necessidades.items()) or 1
-        escolhido = 'ESSENCIAL'
-        for candidato in ORDEM_PLANOS[1:]:
-            novas = (conjuntos[candidato] - conjuntos[escolhido]) & set(fixas)
-            ganho = sum(pesos[c] * necessidades[c] for c in novas) / total
-            relevantes = [c for c in novas if necessidades[c] * 100 >= limites['limiar_cobertura']]
-            criticas = [c for c in novas if necessidades[c] * 100 >= limites['limiar_critico']]
-            if criticas or (relevantes and ganho >= limites['ganho_incremental_minimo']):
-                escolhido = candidato
-        return escolhido
-
-    escolhido = escolher('prioridade')
+    meta = cfg['planos']['meta_aderencia']
+    indispensaveis = set(cfg['planos']['indispensaveis'])
+    pesos = {c: cfg['coberturas'][c]['peso_plano'] for c in necessidades}
+    total = sum(pesos[c]*s['prioridade'] for c,s in necessidades.items())
+    if total <= 0:
+        raise ValueError('Ao menos uma necessidade deve ter pontuação positiva.')
     comparacao = []
-    total = sum(pesos[c] * s['prioridade'] for c, s in fixas.items()) or 1
-    anterior = set()
+    anterior = 0.
     for plano in ORDEM_PLANOS:
         cobertas = conjuntos[plano]
-        descobertas = [c for c, s in fixas.items() if c not in cobertas and s['prioridade'] >= limites['limiar_cobertura']]
-        novas = (cobertas - anterior) & set(fixas)
-        comparacao.append({'plano': plano,
-            'adequacao_relativa': sum(pesos[c] * fixas[c]['prioridade'] for c in cobertas & set(fixas)) / total,
-            'ganho_incremental': sum(pesos[c] * fixas[c]['prioridade'] for c in novas) / total,
-            'coberturas_importantes_descobertas': descobertas,
-            'coberturas_acrescentadas': sorted(novas), 'analise_preco': 'PENDENTE'})
-        anterior = cobertas
-    criticas = [c for c in conjuntos[escolhido] - conjuntos['ESSENCIAL']
-                if fixas[c]['prioridade'] >= limites['limiar_cobertura']]
-    motivo = ('Essencial atende ao critério configurado de adequação; coberturas comuns não geram upgrade.'
-              if escolhido == 'ESSENCIAL' else
-              f'{escolhido} acrescenta proteção relevante: ' + ', '.join(fixas[c]['nome'] for c in sorted(criticas)) + '.')
-    inferior, superior = escolher('prioridade_min'), escolher('prioridade_max')
+        soma = lambda campo, codigos: sum(pesos[c]*necessidades[c][campo] for c in codigos)
+        fora = set(necessidades)-cobertas
+        atendidos = soma('prioridade', cobertas)
+        aderencia = atendidos/total
+        # Extremos da razão: cobertas baixas/descobertas altas e vice-versa.
+        baixo, alto = soma('prioridade_min', cobertas), soma('prioridade_max', cobertas)
+        baixo_fora, alto_fora = soma('prioridade_min', fora), soma('prioridade_max', fora)
+        minimo = baixo/(baixo+alto_fora) if baixo+alto_fora else 1.
+        maximo = alto/(alto+baixo_fora) if alto+baixo_fora else 1.
+        faltantes = sorted(indispensaveis-cobertas)
+        comparacao.append({'plano': plano, 'adequacao_relativa': aderencia,
+            'aderencia_percentual': 100*aderencia,
+            'aderencia_min_percentual': 100*minimo, 'aderencia_max_percentual': 100*maximo,
+            'ganho_incremental': aderencia-anterior,
+            'pontos_atendidos': atendidos, 'pontos_totais': total,
+            'meta_percentual': meta, 'atinge_meta': 100*aderencia+1e-9 >= meta,
+            'indispensaveis_ausentes': faltantes,
+            'apto_simulacao': 100*aderencia+1e-9 >= meta and not faltantes,
+            'coberturas_importantes_descobertas': sorted(c for c in fora if necessidades[c]['prioridade'] >= cfg['planos']['limiar_cobertura']),
+            'coberturas_acrescentadas': sorted(cobertas-(conjuntos[ORDEM_PLANOS[ORDEM_PLANOS.index(plano)-1]] if plano != 'ESSENCIAL' else set())),
+            'analise_preco': 'PENDENTE'})
+        anterior = aderencia
+    escolhido = next(p['plano'] for p in comparacao if p['apto_simulacao'])
+    melhor = next(p['plano'] for p in comparacao if not p['indispensaveis_ausentes'] and p['aderencia_max_percentual']+1e-9 >= meta)
+    robusto = next(p['plano'] for p in comparacao if not p['indispensaveis_ausentes'] and p['aderencia_min_percentual']+1e-9 >= meta)
     elegibilidade = verificar_elegibilidade(registro or {}, cfg)
-    perguntas = list(elegibilidade['motivos'])
-    perguntas += ['Confirmar caixa/reservas, valores de reposição e períodos de paralisação.',
-                  'Obter cotação, franquias, exclusões e limites contratuais.']
+    perguntas = list(elegibilidade['motivos']) + [
+        'Confirmar caixa/reservas, valores de reposição e períodos de paralisação.',
+        'Obter cotação, franquias, exclusões e limites contratuais.']
+    for c,s in necessidades.items():
+        s['peso'] = pesos[c]
+        s['participacao_percentual'] = 100*pesos[c]*s['prioridade']/total
+        s['indispensavel'] = c in indispensaveis
+    aderencia = next(p['aderencia_percentual'] for p in comparacao if p['plano']==escolhido)
     return {'plano_recomendado': escolhido, 'coberturas': sorted(conjuntos[escolhido]),
-        'confianca_geral': sum(s['confianca'] for s in fixas.values()) / len(fixas),
+        'confianca_geral': sum(s['confianca']*pesos[c] for c,s in necessidades.items())/sum(pesos.values()),
         'elegibilidade': elegibilidade, 'comparacao': comparacao,
-        'plano_cenario_inferior': inferior, 'plano_cenario_superior': superior,
-        'recomendacao_estavel': inferior == superior,
-        'justificativa': motivo + ' Adequação relativa; preço e aceitação contratual pendentes.',
-        'perguntas_confirmacao': perguntas,
-        'adicionais_para_avaliar': []}
+        'plano_cenario_inferior': melhor, 'plano_cenario_superior': robusto,
+        'recomendacao_estavel': melhor == robusto, 'necessidades': necessidades,
+        'meta_aderencia': meta, 'indispensaveis': sorted(indispensaveis),
+        'justificativa': f'{escolhido} é o menor nível que alcança a meta de {meta:g}% e contém as coberturas indispensáveis. Aderência: {aderencia:.1f}% das nove necessidades ponderadas. Preço e aceitação contratual pendentes; aderência não é probabilidade ou garantia de indenização.',
+        'perguntas_confirmacao': perguntas, 'adicionais_para_avaliar': []}

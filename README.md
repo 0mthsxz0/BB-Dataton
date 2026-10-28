@@ -8,7 +8,9 @@ Para abrir: `cd frontend` e `npm run dev` (no PowerShell, `npm.cmd run dev`). Ac
 
 O front-end não altera as regras do motor Python descrito a seguir.
 
-Versão 0.2: escolha de plano baseada em **quatro índices**: roubo/furto, vendaval, responsabilidade civil empregador e quebra de vidros. As cinco coberturas comuns são dimensionadas e exportadas, sem pontuação na decisão. Prioridade maior significa maior atenção recomendada, nunca probabilidade de sinistro.
+Versão 0.3: combina os quatro índices multifatoriais contínuos (roubo/furto, vendaval, RC empregador e vidros) com cinco heurísticas de preferência das coberturas comuns. O plano considera **nove necessidades**, meta padrão de **80% de aderência** e coberturas das quais o usuário **não abre mão**. Não converte os quatro índices em categorias de 25/55/85 pontos nem os multiplica novamente pelo patrimônio. As nove coberturas continuam dimensionadas e exportadas; não há preços nos arquivos do Datathon.
+
+Aderência = pontos ponderados presentes no plano / pontos ponderados das nove necessidades. Escolhe-se o menor nível que atinge a meta e contém todas as indispensáveis. As preferências da barra lateral valem para todas as unidades da sessão e da exportação; ficam registradas na configuração e auditoria. Aderência mede presença no catálogo, não qualidade contratual, probabilidade ou garantia de indenização. Os cinco valores heurísticos são explicitamente identificados; não são novos modelos físicos de sinistro.
 
 ## Executar
 
@@ -63,11 +65,11 @@ O arquivo [examples/confirmacoes_modelo.csv](examples/confirmacoes_modelo.csv) p
 
 Opcionais: --referencias PASTA, --territorio CSV (compatibilidade do enriquecimento anterior), --confirmacoes CSV e --config JSON.
 
-Saídas: os dois templates nas colunas originais, auditoria.json (quatro índices, nove dimensionamentos e comparação dos planos) e manifesto.json (regras e hashes). Uma linha por empresa-estabelecimento no resultado; uma linha por cobertura fixa do plano escolhido no template de coberturas. A interface também fornece download em ZIP. Os CSVs são reproduzíveis com as mesmas entradas e parâmetros; a data do manifesto varia.
+Saídas: os dois templates nas colunas originais, auditoria.json (quatro índices, nove necessidades de decisão, nove dimensionamentos e comparação dos planos) e manifesto.json (preferências, regras e hashes). Uma linha por empresa-estabelecimento no resultado; uma linha por cobertura fixa do plano escolhido no template de coberturas. A interface também fornece download em ZIP. Os CSVs são reproduzíveis com as mesmas entradas e parâmetros; a data do manifesto varia.
 
 ## Limitações
 
-Leia [METODOLOGIA.md](METODOLOGIA.md). Não há histórico de sinistros, preços reais, caixa/reservas ou condições de aceitação confirmadas. Os pesos e cortes são hipóteses da equipe. A folha é indicador econômico, não valor de indenização; NR-4 é classificação ocupacional, não probabilidade de acidente. O índice territorial é uma proxy domiciliar de 2021. Vendaval representa vento e vento com chuva, sem medir granizo, tornado ou resistência do telhado.
+Leia [METODOLOGIA.md](METODOLOGIA.md). Não há histórico de sinistros, preços reais, caixa/reservas ou condições de aceitação confirmadas. Os pesos e cortes são hipóteses da equipe. A folha é indicador econômico, não valor de indenização; NR-4 é classificação ocupacional, não probabilidade de acidente. A referência territorial distribuída é uma proxy domiciliar de 2021; uma referência SSP preparada substitui sua definição nos municípios cobertos, com origem explícita. Vendaval representa vento e vento com chuva, sem medir granizo, tornado ou resistência do telhado.
 
 Faixas são cenários de exposição para discutir proteção, não preços ou limites aprovados. O prédio não recebe valor de reconstrução inventado. Sem base defensável para RC ou vidros, a faixa fica explicitamente pendente. A aceitação contratual permanece condicional.
 
@@ -79,6 +81,24 @@ A suíte usa fixtures artificiais e referências públicas congeladas, sem rede 
 
 Arquivos principais: processamento.py organiza os dados; referencias.py calcula indicadores públicos; motor_pontuacao.py calcula os quatro índices e dimensiona nove coberturas; recomendador.py escolhe o plano; exportacao.py gera arquivos; app.py apresenta a interface. Pesos e limites ficam em config_regras.json.
 
-Configurações 0.1 não são compatíveis com o contrato 0.2: partir do novo JSON e revisar os parâmetros. A interface restaura o novo padrão ao detectar mudança de versão.
+Configurações 0.1/0.2 não são compatíveis com o contrato 0.3: partir do novo JSON e revisar os parâmetros. A interface restaura o novo padrão ao detectar mudança de versão. Os antigos cortes de upgrade de 60/85 e ganho de 15% foram substituídos pela meta; o limiar de 60 permanece somente como sinalização informativa.
+
+## Integração SSP
+
+O importador inspirado na DevC aceita planilhas locais XLS/XLSX ou URLs HTTPS explícitas no manifesto. A planilha precisa ter uma linha exata de `Roubo em Comércio` e os doze meses. O sistema não presume que todos os estados publiquem o mesmo formato: outras categorias, abas ou layouts exigem um adaptador validado. Não faz descoberta automática de fontes nem possui agendamento de atualizações.
+
+Copie [examples/manifesto_ssp.csv](examples/manifesto_ssp.csv) para uma pasta local em `data/`, indique arquivo ou URL, ano, código IBGE, região, número de estabelecimentos do mesmo período e fonte. Marque `cobertura_municipal_completa=SIM` apenas depois de verificar que as regiões cobrem o município, sem sobreposição. O exemplo contém um caminho ilustrativo e não representa dados baixados ou um denominador conhecido.
+
+    .\.venv\Scripts\python.exe scripts/importar_ssp.py --manifesto data/manifesto_ssp.csv --ano 2025
+
+A saída padrão é `data/referencias/seguranca_ssp.csv`. Nessa pasta local padrão, arquivos de clima, segurança IBGE e NR-4 que faltarem são lidos de `references/`, preservando os snapshots distribuídos. Pastas personalizadas continuam usando apenas seus próprios arquivos. URLs ficam em cache ao lado do manifesto; `--atualizar` baixa novamente. Fontes, SHA-256 dos arquivos e horário de preparo são conservados. Não há download durante a análise, exceto a consulta opcional ao ViaCEP. Para outra pasta, use `--saida PASTA_REFERENCIAS/seguranca_ssp.csv` e selecione essa pasta na interface.
+
+A SSP substitui a segurança municipal apenas nos municípios presentes na sua saída; não altera clima ou NR-4. A consulta por CEP, a análise cadastrada e os lotes usam o mesmo cruzamento. Uma linha SSP indisponível fica com confiança zero e aviso, sem aproveitar silenciosamente outra definição de criminalidade. Nos municípios sem linha SSP, a referência IBGE existente continua disponível.
+
+Taxa = soma de ocorrências / soma dos estabelecimentos × 1.000. Exposição relativa = taxa/(taxa + referência fixa), com referência inicial experimental de 100 por mil, alterável por `--referencia-taxa`. Não se recalibra a escala conforme os municípios consultados. Dados sem denominador ou ano incompleto permanecem indisponíveis; contagens são conservadas quando observadas. Taxa de ocorrências não é probabilidade, pois pode haver repetição no mesmo estabelecimento. A equivalência das definições entre fontes e a calibração continuam pendentes.
+
+Exemplo de preferências no lote:
+
+    .\.venv\Scripts\python.exe cli.py --dados "CAMINHO_DOS_CSVS" --meta 80 --indispensavel QUEBRA_DE_VIDROS --saida output/integracao
 
 Implementação assistida por Codex. A equipe deve compreender e defender as hipóteses. Identidade visual própria, sem logotipos oficiais ou alegação de vínculo institucional.

@@ -31,6 +31,18 @@ def localizar_referencias(pasta=None):
     return local if local.exists() else raiz/'references'
 
 
+def caminho_referencia(nome, pasta=None):
+    """Um SSP local isolado não oculta os snapshots distribuídos de clima/NR-4."""
+    selecionada = localizar_referencias(pasta)
+    caminho = selecionada/nome
+    raiz = Path(__file__).parent
+    if not caminho.exists() and selecionada.resolve() == (raiz/'data'/'referencias').resolve():
+        distribuida = raiz/'references'/nome
+        if distribuida.exists():
+            return distribuida
+    return caminho
+
+
 def numero(valor):
     """Aceita zero; rejeita ausências, valores negativos e não finitos."""
     try:
@@ -196,11 +208,15 @@ def carregar_base(pasta=None, enriquecimento=None, referencias=None, confirmacoe
     # Referências públicas são locais e opcionais. Nenhuma rede durante a análise.
     pasta_ref = localizar_referencias(referencias)
     for nome, tipo in [('seguranca_municipal.csv','seguranca'),('clima_municipal.csv','clima')]:
-        caminho = pasta_ref/nome
+        caminho = caminho_referencia(nome,pasta_ref)
         if caminho.exists():
             dados = incorporar_indicador(dados,caminho,tipo)
             fontes_lidas[str(caminho.resolve())] = hashlib.sha256(caminho.read_bytes()).hexdigest()
-    caminho = pasta_ref/'nr4_cnae.csv'
+    caminho_ssp = pasta_ref/'seguranca_ssp.csv'
+    if caminho_ssp.exists():
+        dados = incorporar_ssp(dados,caminho_ssp)
+        fontes_lidas[str(caminho_ssp.resolve())] = hashlib.sha256(caminho_ssp.read_bytes()).hexdigest()
+    caminho = caminho_referencia('nr4_cnae.csv',pasta_ref)
     if caminho.exists():
         nr4 = ler_csv(caminho)
         validar_chave(nr4,['classe_cnae'],'nr4')
@@ -238,7 +254,10 @@ def carregar_base(pasta=None, enriquecimento=None, referencias=None, confirmacoe
     for coluna, descricao in [('seguranca_da_cidade_0_1','segurança territorial'),
                               ('exposicao_climatica_0_1','exposição climática'),
                               ('grau_risco_nr4','classificação NR-4')]:
-        n = dados[coluna].map(numero).notna().sum() if coluna in dados else 0
+        presentes = dados[coluna].map(numero).notna() if coluna in dados else pd.Series(False,index=dados.index)
+        if coluna == 'seguranca_da_cidade_0_1' and 'confianca_seguranca_0_1' in dados:
+            presentes &= dados.confianca_seguranca_0_1.map(numero).fillna(0).gt(0)
+        n = presentes.sum()
         if n < len(dados):
             avisos.append(f'{descricao}: {n}/{len(dados)} unidades com referência; ausências ampliam a incerteza.')
     templates = {n: tabelas[n].columns.tolist() for n in ('template_resultado_times', 'template_coberturas_times')}
@@ -277,6 +296,11 @@ def incorporar_territorio(dados, caminho):
     # Compatibilidade do CSV anterior: expande metadados por indicador.
     for indicador in indicadores:
         tipo = 'seguranca' if indicador=='seguranca_da_cidade_0_1' else 'clima'
+        if tipo == 'seguranca':
+            dados = dados.drop(columns=['indicador_disponivel','roubo_comercio_total',
+                'taxa_por_mil_estabelecimentos','estabelecimentos_referencia','referencia_taxa_por_mil',
+                'regioes_fonte','sha256_arquivos','atualizado_em_utc',
+                'taxa_roubo_domicilios','taxa_furto_domicilios','exposicao_bruta'],errors='ignore')
         metadados = {'fonte':f'fonte_{tipo}','ano_referencia':f'periodo_{tipo}',
             'granularidade':f'granularidade_{tipo}','metodologia':f'metodologia_{tipo}',
             'confianca_territorial_0_1':f'confianca_{tipo}_0_1'}
@@ -306,3 +330,33 @@ def incorporar_indicador(dados,caminho,tipo):
     if externo[f'granularidade_{tipo}'].ne('MUNICIPIO').any():
         raise ValueError('Referência territorial exige granularidade municipal.')
     return juntar_indicador(dados,externo.drop(columns=['municipio'],errors='ignore'))
+
+
+def incorporar_ssp(dados, caminho):
+    """SSP substitui segurança apenas em municípios explicitamente presentes no arquivo."""
+    externo = ler_csv(caminho)
+    # Reutiliza validação de valores, chaves e metadados do formato público.
+    incorporar_indicador(dados[['codigo_ibge_municipio']],caminho,'seguranca')
+    for coluna in ['indicador_disponivel','roubo_comercio_total','taxa_por_mil_estabelecimentos',
+                   'estabelecimentos_referencia','sha256_arquivos','atualizado_em_utc']:
+        if coluna not in externo:
+            raise ValueError(f'Referência SSP sem {coluna}.')
+    if not externo.indicador_disponivel.isin(['SIM','NAO']).all():
+        raise ValueError('Disponibilidade SSP deve ser SIM ou NAO.')
+    indisponivel = externo.indicador_disponivel.eq('NAO')
+    if externo.loc[indisponivel,'confianca_seguranca_0_1'].map(numero).ne(0).any():
+        raise ValueError('SSP indisponível deve ter confiança zero.')
+    resultado = dados.copy()
+    mascara = resultado.codigo_ibge_municipio.isin(externo.codigo_ibge_municipio)
+    for coluna in ['taxa_furto_domicilios','taxa_roubo_domicilios','exposicao_bruta']:
+        if coluna in resultado:
+            resultado.loc[mascara,coluna] = None
+    referencia = externo.set_index('codigo_ibge_municipio')
+    for coluna in externo:
+        if coluna in ['codigo_ibge_municipio','municipio','uf']:
+            continue
+        if coluna not in resultado:
+            resultado[coluna] = None
+        resultado[coluna] = resultado[coluna].astype(object)
+        resultado.loc[mascara,coluna] = resultado.loc[mascara,'codigo_ibge_municipio'].map(referencia[coluna])
+    return resultado

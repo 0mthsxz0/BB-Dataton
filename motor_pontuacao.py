@@ -41,8 +41,8 @@ def validar_config(cfg):
     """Rejeita parâmetros inválidos antes de qualquer processamento."""
     def finito(x):
         return isinstance(x, (int, float)) and not isinstance(x, bool) and math.isfinite(x)
-    if cfg.get('versao')!='0.2.0':
-        raise ValueError('Configuração incompatível. Use o modelo v0.2.0 com quatro índices.')
+    if cfg.get('versao')!='0.3.0':
+        raise ValueError('Configuração incompatível. Use o modelo v0.3.0: quatro índices e nove necessidades.')
     m = cfg['modelo']
     for chave in ['piso_evento', 'piso_impacto', 'piso_vulnerabilidade', 'interacao_maxima',
                   'risco_ausente', 'vulnerabilidade_ausente']:
@@ -57,16 +57,27 @@ def validar_config(cfg):
     if not 0 < c['meses_paralisacao_min'] <= c['meses_paralisacao_max']:
         raise ValueError('Cenários de paralisação inconsistentes.')
     p = cfg['planos']
-    if not 0 <= p['limiar_cobertura'] <= p['limiar_critico'] <= 100:
+    if not finito(p['limiar_cobertura']) or not 0 <= p['limiar_cobertura'] <= 100:
         raise ValueError('Limiares dos planos inconsistentes.')
-    if not 0 <= p['ganho_incremental_minimo'] <= 1:
-        raise ValueError('Ganho incremental fora de 0 a 1.')
+    if not finito(p['meta_aderencia']) or not 0 <= p['meta_aderencia'] <= 100:
+        raise ValueError('Meta de aderência deve estar entre 0 e 100.')
+    if (not isinstance(p['indispensaveis'], list) or
+            any(not isinstance(c, str) or c not in cfg['coberturas'] for c in p['indispensaveis'])):
+        raise ValueError('Cobertura indispensável inválida.')
+    h = cfg['heuristicas_comuns']
+    if not finito(h['ancora_despesa_mensal']) or h['ancora_despesa_mensal'] <= 0:
+        raise ValueError('Âncora de despesas deve ser positiva.')
+    for chave, valor in h.items():
+        if chave != 'ancora_despesa_mensal' and (not finito(valor) or not 0 <= valor <= 100):
+            raise ValueError(f'Heurística inválida: {chave}')
+    if h['base_eletrico'] + h['amplitude_eletrico'] > 100 or h['base_despesas'] + h['amplitude_despesas'] > 100:
+        raise ValueError('Heurísticas devem produzir no máximo 100 pontos.')
     limites = [x['limite'] for x in cfg['classes']]
     if limites != sorted(set(limites)) or limites[-1] <= 100:
         raise ValueError('Classes devem ser crescentes e cobrir a nota 100.')
     if set(cfg['coberturas']) != {INCENDIO, ELETRICO, ALUGUEL, TERCEIROS, DESPESAS,
                                  ROUBO, VENDAVAL, EMPREGADOR, VIDROS}:
-        raise ValueError('Configuração v0.2 deve conter nove coberturas: quatro índices e cinco dimensionamentos.')
+        raise ValueError('Configuração deve conter nove coberturas: quatro índices e cinco heurísticas.')
     for codigo, regra in cfg['coberturas'].items():
         pesos = list(regra['pesos_evento'].values())
         if codigo in DECISORIAS and (not pesos or any(not finito(x) or x < 0 for x in pesos) or not math.isclose(sum(pesos), 1)):
@@ -388,7 +399,9 @@ class MotorPontuacao:
                 justificativa+=' Ausência de vidros informada na confirmação da unidade; sem exposição identificada.'
             if codigo==ROUBO:
                 campos=['fonte_seguranca','periodo_seguranca','granularidade_seguranca','metodologia_seguranca',
-                        'taxa_furto_domicilios','taxa_roubo_domicilios']
+                        'taxa_furto_domicilios','taxa_roubo_domicilios','roubo_comercio_total',
+                        'taxa_por_mil_estabelecimentos','estabelecimentos_referencia',
+                        'referencia_taxa_por_mil','regioes_fonte','sha256_arquivos','atualizado_em_utc','indicador_disponivel']
             elif codigo==VENDAVAL:
                 campos=['fonte_clima','periodo_clima','granularidade_clima','metodologia_clima','modelo_clima',
                         'latitude_publica','longitude_publica','latitude_celula','longitude_celula',
@@ -434,6 +447,56 @@ class MotorPontuacao:
                 'justificativa':f'{regra["nome"]}: dimensionamento por cenário. '+impacto.observacao,
                 'limitacoes':[impacto.observacao], 'confirmar':[impacto.observacao]}
         return dimensoes
+
+    def necessidades_plano(self, r, pontuacoes=None):
+        """Nove preferências; quatro índices físicos e cinco heurísticas explícitas."""
+        pontos = self.analisar_registro(r) if pontuacoes is None else pontuacoes
+        saida = {c: {'nome': s['nome'], 'prioridade': s['prioridade'],
+            'prioridade_min': s['prioridade_min'], 'prioridade_max': s['prioridade_max'],
+            'confianca': s['confianca'], 'origem': 'INDICE_MULTIFATORIAL',
+            'formula': s['formula'], 'dados': {'referencia_evento': s['referencia_evento']},
+            'justificativa': s['justificativa']} for c, s in pontos.items() if c in DECISORIAS}
+        h = self.config['heuristicas_comuns']
+
+        def incluir(codigo, valor, confianca, formula, dados, nota):
+            v = 50. if valor is None else limitar(valor / 100) * 100
+            ce = 0. if valor is None else confianca
+            saida[codigo] = {'nome': self.config['coberturas'][codigo]['nome'],
+                'prioridade': v, 'prioridade_min': v * ce,
+                'prioridade_max': v + (1-ce)*(100-v), 'confianca': ce,
+                'origem': 'HEURISTICA_PREFERENCIA', 'formula': formula, 'dados': dados,
+                'justificativa': nota + ' Pontos de preferência; não estimam probabilidade de sinistro.'}
+
+        bens = numero(r.get('bens_total_referencia'))
+        incluir(INCENDIO, h['incendio_com_bens'] if bens is not None else h['incendio_sem_inventario'],
+                .35 if bens is not None else 0., 'Pontos configurados conforme existência de inventário',
+                {'bens_total_referencia': bens}, 'Inventário não comprova risco de incêndio.')
+        tecnologia = numero(r.get('indice_dependencia_tecnologica'))
+        campo = 'indice_dependencia_tecnologica'
+        if tecnologia is None:
+            tecnologia = numero(r.get('dependencia_digital_pct'))
+            tecnologia = tecnologia / 100 if tecnologia is not None else None
+            campo = 'dependencia_digital_pct'
+        if tecnologia is not None and tecnologia > 1:
+            tecnologia = None
+        incluir(ELETRICO, h['base_eletrico'] + h['amplitude_eletrico']*tecnologia if tecnologia is not None else None,
+                .35, 'base_eletrico + amplitude_eletrico × dependência tecnológica',
+                {campo: r.get(campo)}, 'Dependência operacional não comprova falha elétrica.')
+        aluguel = r.get('pagamento_aluguel_recorrente')
+        incluir(ALUGUEL, h['aluguel_sim'] if aluguel == 'SIM' else h['aluguel_nao'] if aluguel == 'NAO' else None,
+                .35, 'Pontos configurados conforme sinal de pagamento recorrente',
+                {'pagamento_aluguel_recorrente': aluguel}, 'Sem pagamento não comprova imóvel próprio ou ausência de renda de aluguel.')
+        sinais = [r.get('possui_termo_loja'), r.get('possui_termo_galeria')]
+        presencial = True if 'SIM' in sinais else False if sinais == ['NAO','NAO'] else None
+        incluir(TERCEIROS, h['terceiros_presencial'] if presencial else h['terceiros_sem_sinal'] if presencial is False else None,
+                .3, 'Pontos configurados conforme sinais de loja/galeria',
+                {'possui_termo_loja': sinais[0], 'possui_termo_galeria': sinais[1]}, 'Texto do cadastro é um sinal fraco de circulação de terceiros.')
+        despesa = numero(r.get('despesa_fixa_mensal_estimada'))
+        incluir(DESPESAS, h['base_despesas'] + h['amplitude_despesas']*despesa/(despesa+h['ancora_despesa_mensal']) if despesa is not None else None,
+                .4, 'base_despesas + amplitude_despesas × despesa/(despesa + ancora_despesa_mensal)',
+                {'despesa_fixa_mensal_estimada': despesa, 'ancora': h['ancora_despesa_mensal']},
+                'Importância experimental da continuidade operacional; não é soma de perdas.')
+        return {c: saida[c] for c in self.config['coberturas']}
 
     def calcular_pontuacoes(self, empresa_id, imovel_id):
         if self.base is None:
