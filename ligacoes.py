@@ -13,6 +13,8 @@ from urllib.parse import urlencode
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 from xml.etree.ElementTree import Element, SubElement, tostring
 
+TEMPLATE_TRIAL = "https://webhooks.twilio.com/v1/Voice/Template/voice_text_to_speech"
+
 
 class ErroLigacao(Exception):
     """Erro seguro para exibição, sem credenciais ou resposta bruta da API."""
@@ -48,23 +50,30 @@ def criar_twiml(mensagem: str) -> str:
 class Configuracao:
     conta: str
     token: str = field(repr=False)
-    origem: str
+    origem: str = ""
+    modo: str = "trial"
 
     def __post_init__(self):
         if not re.fullmatch(r"AC[0-9a-fA-F]{32}", self.conta):
             raise ValueError("TWILIO_ACCOUNT_SID deve ser o Account SID iniciado por AC.")
         if not re.fullmatch(r"[0-9a-fA-F]{32}", self.token):
             raise ValueError("TWILIO_AUTH_TOKEN deve conter o Auth Token da conta.")
-        validar_telefone(self.origem)
+        if self.modo not in {"trial", "completo"}:
+            raise ValueError("TWILIO_MODE deve ser trial ou completo.")
+        if self.modo == "completo":
+            if not self.origem:
+                raise ValueError("Configure TWILIO_FROM_NUMBER para o modo completo.")
+            validar_telefone(self.origem)
 
     @classmethod
     def do_ambiente(cls):
-        nomes = ("TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN", "TWILIO_FROM_NUMBER")
+        nomes = ("TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN")
         valores = [os.environ.get(nome, "").strip() for nome in nomes]
         faltantes = [nome for nome, valor in zip(nomes, valores) if not valor]
         if faltantes:
             raise ValueError("Configure no servidor: " + ", ".join(faltantes))
-        return cls(*valores)
+        return cls(*valores, origem=os.environ.get("TWILIO_FROM_NUMBER", "").strip(),
+                   modo=os.environ.get("TWILIO_MODE", "trial").strip().lower())
 
 
 class SemRedirecionamento(HTTPRedirectHandler):
@@ -139,8 +148,16 @@ class ClienteLigacoes:
             raise ResultadoIncerto(
                 "Não foi possível confirmar a resposta. Consulte os logs de Voice no console antes de repetir o envio.") from None
 
-    def ligar(self, destino: str, mensagem: str, limite: int = 120):
+    def ligar(self, destino: str, mensagem: str = "", limite: int | None = None):
         destino = validar_telefone(destino)
+        if self.config.modo == "trial":
+            if mensagem.strip() or limite is not None:
+                raise ValueError("No modo trial, use a demonstração da Twilio sem mensagem ou duração personalizada.")
+            # O trial escolhe a origem. From, Twiml, TimeLimit e Timeout são
+            # parâmetros da API completa e não devem seguir nesta requisição.
+            return self._requisicao(dados={"To": destino, "Url": TEMPLATE_TRIAL})
+        if limite is None:
+            limite = 120
         if type(limite) is not int or not 10 <= limite <= 600:
             raise ValueError("O limite da chamada deve ser de 10 a 600 segundos.")
         twiml = criar_twiml(mensagem)

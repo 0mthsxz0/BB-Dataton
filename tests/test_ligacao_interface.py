@@ -10,6 +10,7 @@ SID = "CA" + "a" * 32
 
 
 def configurar(monkeypatch):
+    monkeypatch.setenv("TWILIO_MODE", "completo")
     monkeypatch.setenv("TWILIO_ACCOUNT_SID", "AC" + "b" * 32)
     monkeypatch.setenv("TWILIO_AUTH_TOKEN", "c" * 32)
     monkeypatch.setenv("TWILIO_FROM_NUMBER", "+5511999999999")
@@ -27,6 +28,25 @@ def test_sem_configuracao_nao_chama_api(monkeypatch):
         assert not app.exception
         assert "Configure no servidor" in app.info[0].value
         api.assert_not_called()
+
+
+def test_interface_trial_sem_origem_e_sem_mensagem_personalizada(monkeypatch):
+    configurar(monkeypatch)
+    monkeypatch.delenv("TWILIO_MODE", raising=False)
+    monkeypatch.delenv("TWILIO_FROM_NUMBER", raising=False)
+    with patch("ligacoes.ClienteLigacoes._requisicao") as api:
+        api.return_value = {"sid": SID, "status": "queued", "duration": None}
+        app = AppTest.from_file(str(ROOT / "ligacao_interface.py")).run()
+        assert not app.exception
+        assert not app.text_area
+        assert not app.number_input
+        api.assert_not_called()
+        app.text_input[0].set_value("+5511888888888")
+        app.checkbox[0].check()
+        botao(app, "Ligar agora").click().run()
+        assert not app.exception
+        assert api.call_count == 1
+        assert set(api.call_args.kwargs["dados"]) == {"To", "Url"}
 
 
 def test_fluxo_envio_atualizacao_e_encerramento(monkeypatch):

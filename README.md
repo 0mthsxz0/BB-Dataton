@@ -53,8 +53,9 @@ As notas são calculadas sem arredondamento intermediário. Com as mesmas entrad
 
 ## Interface
 
-- **Ligações:** chamadas individuais pela Twilio, com mensagem em português, consulta
-  de status e encerramento. Configure as credenciais conforme [LIGACOES.md](LIGACOES.md).
+- **Ligações:** chamadas individuais pela Twilio, com demonstração no teste grátis
+  ou mensagem em português no modo completo. Inclui consulta de status e encerramento.
+  Configure as credenciais conforme [LIGACOES.md](LIGACOES.md).
   A seção funciona sem os CSVs; também pode ser aberta com `streamlit run ligacao_interface.py`.
 
 - **Visão geral:** empresas, estabelecimentos, distribuição de planos, prioridades e confiança.

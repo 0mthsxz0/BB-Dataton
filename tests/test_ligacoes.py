@@ -9,7 +9,7 @@ from xml.etree.ElementTree import fromstring
 import pytest
 
 from ligacoes import (ClienteLigacoes, Configuracao, ErroLigacao, ResultadoIncerto,
-                      SemRedirecionamento, criar_twiml, validar_telefone)
+                      SemRedirecionamento, TEMPLATE_TRIAL, criar_twiml, validar_telefone)
 
 SID = "CA" + "a" * 32
 CONTA = "AC" + "b" * 32
@@ -18,7 +18,7 @@ TOKEN = "c" * 32
 
 @pytest.fixture
 def cliente():
-    cliente = ClienteLigacoes(Configuracao(CONTA, TOKEN, "+5511999999999"))
+    cliente = ClienteLigacoes(Configuracao(CONTA, TOKEN, "+5511999999999", modo="completo"))
     cliente._opener = MagicMock()
     return cliente
 
@@ -48,6 +48,38 @@ def test_contrato_http_e_texto_escapado(cliente):
     assert xml.find("Hangup") is not None
     assert "to" not in resultado
     assert cliente._opener.open.call_args.kwargs["timeout"] == 20
+
+
+def test_trial_envia_apenas_destino_e_template(cliente):
+    cliente.config = Configuracao(CONTA, TOKEN)
+    resposta(cliente)
+    assert cliente.ligar("+5511888888888")["sid"] == SID
+    req = cliente._opener.open.call_args.args[0]
+    assert parse_qs(req.data.decode()) == {
+        "To": ["+5511888888888"], "Url": [TEMPLATE_TRIAL]}
+    assert cliente._opener.open.call_count == 1
+
+
+def test_trial_nao_ignora_texto_ou_limite_personalizado(cliente):
+    cliente.config = Configuracao(CONTA, TOKEN)
+    with pytest.raises(ValueError, match="No modo trial"):
+        cliente.ligar("+5511888888888", "Minha mensagem")
+    with pytest.raises(ValueError, match="No modo trial"):
+        cliente.ligar("+5511888888888", limite=60)
+    cliente._opener.open.assert_not_called()
+
+
+def test_ambiente_padrao_trial_sem_numero_origem(monkeypatch):
+    monkeypatch.setenv("TWILIO_ACCOUNT_SID", CONTA)
+    monkeypatch.setenv("TWILIO_AUTH_TOKEN", TOKEN)
+    monkeypatch.delenv("TWILIO_FROM_NUMBER", raising=False)
+    monkeypatch.delenv("TWILIO_MODE", raising=False)
+    config = Configuracao.do_ambiente()
+    assert config.modo == "trial"
+    assert config.origem == ""
+    monkeypatch.setenv("TWILIO_MODE", "completo")
+    with pytest.raises(ValueError, match="TWILIO_FROM_NUMBER"):
+        Configuracao.do_ambiente()
 
 
 @pytest.mark.parametrize("numero", ["11999999999", "+05511999999999", "+55 11999999999", "+1234567890123456", "", "+５５１１９９９９９９９９９"])
