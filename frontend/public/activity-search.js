@@ -59,6 +59,17 @@ function operation(text){
 }
 function candidateOperation(label){if(label.startsWith('fabricacao')||label.startsWith('confeccao'))return 'manufacture';if(label.includes('atacadista'))return 'wholesale';if(label.includes('varejista'))return 'retail';if(/reparacao|manutencao/.test(label))return 'repair';return null;}
 
+// A place of work ("prédio comercial") does not identify a consulting specialty.
+function consultancyIntent(text) {
+  if(!/\b(consultoria\w*|consultor|consultores|consultora\w*|assessoria\w*)\b/.test(text))return null;
+  if(/\b(software|programa\w*|sistemas?|aplicativo\w*)\b/.test(text))return {ids:['1008'],reason:'consultoria em programas de computador'};
+  if(/\b(informatica|hardware|computador\w*|equipamentos? de informatica)\b/.test(text))return {ids:['1005'],reason:'consultoria em equipamentos de informática'};
+  if(/\b(engenhari\w*|arquitet\w*|tecnica especializada)\b/.test(text))return {ids:['669'],reason:'assessoria técnica de engenharia ou arquitetura'};
+  if(/\b(decoracao|interiores)\b/.test(text))return {ids:['672'],reason:'consultoria e projetos de decoração'};
+  if(/\b(financeir\w*|contab\w*|tributari\w*|juridic\w*)\b/.test(text))return {ids:['674'],reason:'assessoria financeira, contábil ou jurídica'};
+  return {ids:['721','674'],reason:'consultoria ou assessoria para empresas',question:'Sua consultoria é de gestão/administrativa, financeira/contábil, tecnologia ou engenharia? Conte o serviço principal para refinar estas possibilidades do catálogo.'};
+}
+
 /** Returns only identifiers belonging to the supplied parent/subactivity catalog. */
 export function searchActivities(index, query, {mode='name',limit=12}={}) {
   const q=normalize(query);
@@ -67,13 +78,15 @@ export function searchActivities(index, query, {mode='name',limit=12}={}) {
   const rawTokens=tokens(mode==='description'?negatedText(q):query);
   if(mode==='description'&&rawTokens.length<2)return {results:[],confidence:'none',question:'Conte o que você vende, produz ou faz e quem são seus clientes.'};
   const clean=negatedText(q);
+  const consultancy=mode==='description'?consultancyIntent(clean):null;
   const concepts=mode==='description'?CONCEPTS.filter(c=>c.pattern.test(clean)):[];
   const additions=concepts.flatMap(c=>tokens(c.terms));
   const qtokens=[...new Set([...rawTokens,...additions])];
   const op=operation(query);
   const ranked=[];
   for(const row of index.entries){
-    let score=0;const matches=[];
+    if(consultancy&&!consultancy.ids.includes(row.activity.id))continue;
+    let score=consultancy?24:0;const matches=[];
     for(const token of qtokens){
       const exact=row.bag.has(token);
       const prefix=!exact&&token.length>=4&&[...row.bag].some(w=>w.startsWith(token)||token.startsWith(w)&&w.length>=4);
@@ -108,21 +121,25 @@ export function searchActivities(index, query, {mode='name',limit=12}={}) {
       if(normalize(s.id)===q)subScore+=40;
       return {subactivity:s,score:subScore};
     }).sort((a,b)=>b.score-a.score||a.subactivity.label.localeCompare(b.subactivity.label,'pt-BR'));
-    const sub= subCandidates.length===1 ? subCandidates[0].subactivity : subCandidates[0]?.score>0&&(subCandidates[0].score-(subCandidates[1]?.score||0))>=2 ? subCandidates[0].subactivity : null;
-    const reason=concepts.filter(c=>c.ids?.includes(row.activity.id)).map(c=>c.reason).join('; ')|| (matches.length?`Termos relacionados: ${[...new Set(matches)].slice(0,4).join(', ')}`:'Nome aproximado');
-    ranked.push({activity:row.activity,subactivity:sub,score,reason,subactivityReason:subCandidates.length===1?'Única subatividade vinculada a esta atividade no catálogo':sub?'Descrição compatível com a subatividade':'Escolha a subatividade para confirmar'});
+    let sub= subCandidates.length===1 ? subCandidates[0].subactivity : subCandidates[0]?.score>0&&(subCandidates[0].score-(subCandidates[1]?.score||0))>=2 ? subCandidates[0].subactivity : null;
+    const requiresSubactivityConfirmation=Boolean(consultancy&&sub&&/terreo|sobrado/.test(normalize(sub.label))&&!/\b(terreo|sobrado)\b/.test(clean));
+    if(requiresSubactivityConfirmation)sub=null;
+    const reason=consultancy?.reason||concepts.filter(c=>c.ids?.includes(row.activity.id)).map(c=>c.reason).join('; ')|| (matches.length?`Termos relacionados: ${[...new Set(matches)].slice(0,4).join(', ')}`:'Nome aproximado');
+    ranked.push({activity:row.activity,subactivity:sub,score,reason,requiresSubactivityConfirmation,subactivityReason:subCandidates.length===1?'Única subatividade vinculada a esta atividade no catálogo':sub?'Descrição compatível com a subatividade':'Escolha a subatividade para confirmar'});
   }
   ranked.sort((a,b)=>b.score-a.score||a.activity.label.localeCompare(b.activity.label,'pt-BR'));
   const top=ranked[0],margin=top?(top.score-(ranked[1]?.score||0)):0;
-  const sufficient=mode==='name'||(top&&top.score>=12&&(concepts.length>0||rawTokens.filter(t=>tokens(top.activity.label+' '+(top.subactivity?.label||'')).includes(t)).length>=2));
+  const sufficient=mode==='name'||(top&&top.score>=12&&(consultancy||concepts.length>0||rawTokens.filter(t=>tokens(top.activity.label+' '+(top.subactivity?.label||'')).includes(t)).length>=2));
   const results=sufficient?(mode==='description'?ranked.filter(r=>r.score>=Math.max(8,(top?.score||0)*.4)):ranked).slice(0,limit):[];
-  const confidence=!results.length?'none':mode==='name'?'match':top.score>=22&&margin>=7?'strong':margin<4?'ambiguous':'suggestion';
+  let confidence=!results.length?'none':mode==='name'?'match':top.score>=22&&margin>=7?'strong':margin<4?'ambiguous':'suggestion';
   let question=null;
   if(mode==='description'){
     if(!results.length)question='Explique qual produto ou serviço oferece e como atende seus clientes. Você também pode procurar pelo nome na lista.';
     else if(!op&&results.length>1&&confidence==='ambiguous')question='Você fabrica os produtos, vende para o consumidor, vende no atacado ou presta um serviço?';
     else if(confidence==='ambiguous')question='Encontrei mais de uma possibilidade. Confira as diferenças e escolha a que descreve sua atividade principal.';
   }
+  if(consultancy?.question&&results.length){confidence='ambiguous';question=consultancy.question;}
+  if(results.some(r=>r.requiresSubactivityConfirmation))question=[question,'Confirme também o tipo de imóvel: estar em prédio comercial não informa se o escritório fica no térreo ou em sobrado.'].filter(Boolean).join(' ');
   return {results,confidence,question};
 }
 

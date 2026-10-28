@@ -82,7 +82,7 @@ class ActivityPicker {
     finally {button.disabled=false;button.textContent='Encontrar minha atividade';}
     if(!this.root.isConnected)return;
     $('#intelligent-results',this.root).innerHTML=`${found.question?`<p class="suggestion-question">${esc(found.question)}</p>`:''}${found.results.map((r,i)=>`<article class="suggestion"><h3>${esc(r.activity.label)}</h3><p>${esc(r.reason)}.</p>${r.subactivity?`<p><strong>Subatividade sugerida:</strong> ${esc(r.subactivity.label)}</p><p>${esc(r.subactivityReason)}.</p>`:'<p>Escolha a subatividade após confirmar a atividade.</p>'}<button class="btn btn-outline" type="button" data-suggestion="${i}">${r.subactivity?'Usar atividade e subatividade':'Usar esta atividade'}</button></article>`).join('')}`;
-    $$('[data-suggestion]',this.root).forEach(b=>b.addEventListener('click',()=>{const result=found.results[Number(b.dataset.suggestion)];this.onChoose(result.activity,result.subactivity);}));
+    $$('[data-suggestion]',this.root).forEach(b=>b.addEventListener('click',()=>{const result=found.results[Number(b.dataset.suggestion)];this.onChoose(result.activity,result.subactivity,result.requiresSubactivityConfirmation);}));
   }
 }
 
@@ -108,12 +108,13 @@ function render(){
   }
   if(step===0)$$('[name=personType]').forEach(r=>r.addEventListener('change',e=>{state.personType=e.target.value;state.cnpj='';state.birthDate='';state.maritalStatus='';render();}));
   if(step===1){
-    picker=new ActivityPicker($('#activity-picker'),(activity,sub)=>{
+    picker=new ActivityPicker($('#activity-picker'),(activity,sub,requireSubactivityConfirmation=false)=>{
       invalidate();
       const changed=state.activityId!==activity.id;
       state.activityId=activity.id;
       if(changed){state.subactivityId='';state.otherSubactivity='';}
-      if(sub)state.subactivityId=sub.id;
+      if(requireSubactivityConfirmation)state.subactivityId='';
+      else if(sub)state.subactivityId=sub.id;
       else if(activity.subactivities.length===1)state.subactivityId=activity.subactivities[0].id;
       render();$('#subactivity-field')?.scrollIntoView({block:'nearest'});$('#subactivity-field input:checked')?.focus({preventScroll:true});
     });

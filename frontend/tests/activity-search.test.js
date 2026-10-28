@@ -63,3 +63,19 @@ test('unsupported parents have no invented automatic subactivity',()=>{
   const empty=catalog.activities.filter(a=>!a.subactivities.length);assert.equal(empty.length,10);
   for(const a of empty){const r=searchActivities(index,a.id,{limit:1}).results[0];assert.equal(r.activity.id,a.id);assert.equal(r.subactivity,null);}
 });
+
+test('business consulting description returns catalog alternatives and asks the specialty',()=>{
+ const r=searchActivities(index,'minha empresa faz consultoria de pequenos negocios em um predio comercial',{mode:'description',limit:3});
+ assert.deepEqual(new Set(r.results.map(x=>x.activity.id)),new Set(['721','674']));
+ assert.equal(r.confidence,'ambiguous');assert.match(r.question,/gestão/);
+ assert.ok(r.results.every(x=>x.subactivity===null&&x.requiresSubactivityConfirmation));
+});
+test('consulting specialties do not collapse into generic office or IT equipment',()=>{
+ for(const [q,id] of [['Faço consultoria financeira para empresas','674'],['Presto consultoria em equipamentos de informática','1005'],['Faço consultoria de software para empresas','1008'],['Presto consultoria de engenharia em um escritório','669']]){
+  const r=searchActivities(index,q,{mode:'description'});assert.equal(r.results[0]?.activity.id,id,q);assert.ok(r.results.every(x=>x.activity.id===id));
+ }
+});
+test('consulting does not presume ground floor from a commercial building',()=>{
+ const r=searchActivities(index,'Faço consultoria financeira no térreo de um prédio comercial',{mode:'description'});
+ assert.equal(r.results[0].subactivity?.id,'E6.40');assert.ok(!r.results[0].requiresSubactivityConfirmation);
+});
