@@ -53,6 +53,10 @@ As notas são calculadas sem arredondamento intermediário. Com as mesmas entrad
 
 ## Interface
 
+- **Ligações:** chamadas individuais pela Twilio, com mensagem em português, consulta
+  de status e encerramento. Configure as credenciais conforme [LIGACOES.md](LIGACOES.md).
+  A seção funciona sem os CSVs; também pode ser aberta com `streamlit run ligacao_interface.py`.
+
 - **Visão geral:** empresas, estabelecimentos, distribuição de planos, prioridades e confiança.
 - **Análise:** busca por ID/CNAE, atividade e porte; gráficos, fatores e fórmulas por cobertura.
 - **Comparação:** duas unidades lado a lado e diferenças de pontuação.

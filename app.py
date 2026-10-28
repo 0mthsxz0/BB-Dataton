@@ -158,7 +158,11 @@ def main():
     st.sidebar.markdown('## Protege Empresa')
     st.sidebar.caption('Datathon · recomendação explicável')
     pagina = st.sidebar.radio('Navegação', ['Visão geral', 'Analisar estabelecimento', 'Comparar',
-                                           'Simular cenários', 'Regras e metodologia', 'Exportar'])
+                                            'Simular cenários', 'Regras e metodologia', 'Exportar', 'Ligações'])
+    if pagina == 'Ligações':
+        from ligacao_interface import renderizar
+        renderizar()
+        return
     try:
         padrao = str(localizar_dados(os.environ.get('BB_DATATHON_DADOS')))
     except ValueError:
