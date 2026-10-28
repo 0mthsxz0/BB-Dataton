@@ -77,10 +77,18 @@ def notas_controladas(registro):
 
 
 def test_cobertura_comum_alta_nao_provoca_upgrade(registro,catalogo):
-    p=notas_controladas(registro);p[INCENDIO].update(prioridade=100,prioridade_min=100,prioridade_max=100)
+    p=notas_controladas(registro);p[INCENDIO]={'prioridade':100,'prioridade_min':100,'prioridade_max':100}
     r=recomendar_plano(p,catalogo,registro=registro)
     assert r['plano_recomendado']=='ESSENCIAL'
     assert all(x['analise_preco']=='PENDENTE' for x in r['comparacao'])
+
+
+def test_comuns_nao_mudam_denominador_do_ganho(registro,catalogo):
+    p=notas_controladas(registro);p[ROUBO].update(prioridade=65,prioridade_min=65,prioridade_max=65)
+    antes=recomendar_plano(p,catalogo)
+    p[INCENDIO]={'prioridade':1000000,'prioridade_min':1000000,'prioridade_max':1000000}
+    depois=recomendar_plano(p,catalogo)
+    assert antes==depois
 
 
 def test_prioridade_roubo_justifica_pratico(registro,catalogo):

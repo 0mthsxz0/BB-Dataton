@@ -16,6 +16,7 @@ def analisar_base(base, config=None):
     resultados, coberturas, auditoria = [], [], []
     for registro in base.estabelecimentos.to_dict('records'):
         pontos = motor.analisar_registro(registro)
+        dimensoes = motor.dimensionar_coberturas(registro)
         recomendacao = recomendar_plano(pontos, base.catalogo, motor.config, registro)
         aluguel = registro.get('pagamento_aluguel_recorrente') == 'SIM'
         linha = {
@@ -29,24 +30,26 @@ def analisar_base(base, config=None):
             'confianca_geral': round(recomendacao['confianca_geral'], 6),
             'justificativa_recomendacao': recomendacao['justificativa'],
             'perguntas_confirmacao': ' | '.join(recomendacao['perguntas_confirmacao']),
-            'fontes_publicas_adicionais': registro.get('fonte') or '',
+            'fontes_publicas_adicionais': ' | '.join(dict.fromkeys(str(registro.get(c)) for c in
+                ['fonte_seguranca','fonte_clima','fonte_nr4'] if registro.get(c))),
         }
         resultados.append(linha)
         for codigo in recomendacao['coberturas']:
-            s = pontos[codigo]
+            s = pontos.get(codigo, dimensoes[codigo])
             coberturas.append({
                 'empresa_id': registro['empresa_id'], 'imovel_id': registro['imovel_id'],
                 'cobertura': codigo, 'faixa_valor_min': s['faixa_valor_min'],
                 'faixa_valor_max': s['faixa_valor_max'], 'confianca_estimativa': s['confianca'],
-                'dados_utilizados': json.dumps({'evento': s['fatores_evento'], 'impacto': s['fator_impacto'],
-                    'vulnerabilidade': s['fator_vulnerabilidade']}, ensure_ascii=False, allow_nan=False),
+                'dados_utilizados': json.dumps({'evento': s.get('fatores_evento',[]), 'impacto': s['fator_impacto'],
+                    'vulnerabilidade': s.get('fator_vulnerabilidade'), 'referencia_evento':s.get('referencia_evento'),
+                    'papel':dimensoes[codigo]['papel']}, ensure_ascii=False, allow_nan=False),
                 'regra_calculo_utilizada': s['formula'] + ' | ' + s['fator_impacto']['transformacao'],
                 'justificativa': s['justificativa'],
                 'informacao_a_confirmar': ' | '.join(s['confirmar']),
                 'observacao': ' | '.join(s['limitacoes']) + ' Faixas de cenário para análise; não representam preço do seguro ou limite contratual aprovado.',
             })
         auditoria.append({'empresa_id': registro['empresa_id'], 'imovel_id': registro['imovel_id'],
-                         'pontuacoes': pontos, 'recomendacao': recomendacao})
+                         'pontuacoes': pontos, 'dimensionamento': dimensoes, 'recomendacao': recomendacao})
     r = pd.DataFrame(resultados, columns=base.templates['template_resultado_times'])
     c = pd.DataFrame(coberturas, columns=base.templates['template_coberturas_times'])
     return r, c, auditoria

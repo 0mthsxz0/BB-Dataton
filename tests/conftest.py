@@ -6,6 +6,11 @@ import pytest
 from motor_pontuacao import carregar_config
 
 
+@pytest.fixture(autouse=True)
+def referencias_isoladas(tmp_path,monkeypatch):
+    monkeypatch.setenv('BB_DATATHON_REFERENCIAS',str(tmp_path/'sem_referencias'))
+
+
 @pytest.fixture
 def config():
     return carregar_config()

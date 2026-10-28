@@ -10,10 +10,12 @@ def main():
     parser.add_argument('--dados', help='Pasta contendo os nove CSVs originais')
     parser.add_argument('--config', help='Configuração JSON; padrão config_regras.json')
     parser.add_argument('--territorio', help='CSV externo municipal com indicadores documentados')
+    parser.add_argument('--referencias', help='Pasta das referências públicas preparadas')
+    parser.add_argument('--confirmacoes', help='CSV de confirmações por estabelecimento')
     parser.add_argument('--saida', default='output', help='Pasta de resultados')
     args = parser.parse_args()
     try:
-        base = carregar_base(args.dados, args.territorio)
+        base = carregar_base(args.dados, args.territorio, args.referencias, args.confirmacoes)
         r, c = exportar(base, args.config, args.saida)
     except (ValueError, KeyError, OSError) as erro:
         parser.exit(1, f'Erro de processamento: {erro}\n')

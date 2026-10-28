@@ -1,111 +1,72 @@
 # Protege Empresa | BB Datathon
 
-Aplicação acadêmica para analisar necessidades de proteção de empresas e estabelecimentos. Combina risco relativo do evento, impacto financeiro, vulnerabilidade operacional e interações específicas de cada cobertura. Nenhuma nota representa probabilidade de sinistro ou parâmetro oficial da seguradora.
+Versão 0.2: escolha de plano baseada em **quatro índices**: roubo/furto, vendaval, responsabilidade civil empregador e quebra de vidros. As cinco coberturas comuns são dimensionadas e exportadas, sem pontuação na decisão. Prioridade maior significa maior atenção recomendada, nunca probabilidade de sinistro.
 
 ## Executar
 
-Python 3.12 ou 3.13. No Windows/PowerShell:
+Python 3.12 ou 3.13. No PowerShell:
 
-```powershell
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe scripts/importar_dados.py "CAMINHO\Seguro_Empresarial_Desenvolvimento"
-.\.venv\Scripts\python.exe -m streamlit run app.py
-```
+    python -m venv .venv
+    .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+    .\.venv\Scripts\python.exe scripts/importar_dados.py "CAMINHO_DOS_CSVS"
+    .\.venv\Scripts\python.exe -m streamlit run app.py
 
-No Linux/macOS, use `.venv/bin/python` no lugar de `.\.venv\Scripts\python.exe`.
+No Linux/macOS, use .venv/bin/python. Para reproduzir as versões da validação, instale requirements-lock.txt. A interface abre normalmente em http://localhost:8501.
 
-Abra o endereço apresentado pelo Streamlit, normalmente `http://localhost:8501`. A aplicação também reconhece a pasta `Seguro_Empresarial_Desenvolvimento` ao lado do repositório. A fonte pode ser alterada na barra lateral ou pela variável `BB_DATATHON_DADOS`.
+Os nove CSVs fornecidos pela organização não são publicados no Git. A aplicação reconhece data/desenvolvimento ou a pasta Seguro_Empresarial_Desenvolvimento ao lado do repositório. A pasta pode ser alterada na barra lateral ou com BB_DATATHON_DADOS. O dicionário é lido antes do processamento; o importador preserva os originais e recusa sobrescrever um destino existente.
 
-Para reproduzir exatamente as versões instaladas na validação local com Python 3.12, substitua `requirements.txt` por `requirements-lock.txt` no comando de instalação. A integração contínua também verifica compatibilidade com Python 3.13.
+## Dados públicos já preparados
 
-Os arquivos originais não são publicados no Git. Obtenha os nove CSVs fornecidos pela organização:
+[references/](references/) contém snapshots públicos com fonte, período e metodologia: IBGE/PNAD 2021 (27 capitais), clima ERA5/Open-Meteo de 1996 a 2025 (dez municípios do pacote) e 673 classes CNAE extraídas da edição indicada da NR-4. Nenhum registro de cliente foi incluído nesses arquivos. O manifesto registra hashes das saídas e das entradas públicas em cache.
 
-```text
-empresas.csv
-enderecos_estabelecimentos.csv
-sinais_financeiros_operacionais.csv
-bens_cadastrados.csv
-territorio.csv
-catalogo_coberturas_fixas_planos.csv
-dicionario_dados.csv
-template_resultado_times.csv
-template_coberturas_times.csv
-```
+As referências funcionam offline durante a análise. Uma pasta local data/referencias tem precedência sobre references. A barra lateral, BB_DATATHON_REFERENCIAS ou --referencias permitem selecionar outra pasta. Municípios/CNAEs sem correspondência permanecem desconhecidos, com aviso e confiança reduzida.
 
-O script de importação copia os arquivos, preserva a origem e recusa sobrescrever uma pasta já existente. O dicionário é lido antes do processamento.
+Para baixar novamente e reconstruir os indicadores, sem APIs pagas:
 
-## Processar e exportar sem interface
+    .\.venv\Scripts\python.exe scripts/preparar_referencias.py --dados "CAMINHO_DOS_CSVS"
 
-```powershell
-.\.venv\Scripts\python.exe cli.py --dados "CAMINHO\Seguro_Empresarial_Desenvolvimento" --saida output/desenvolvimento
-.\.venv\Scripts\python.exe cli.py --dados "CAMINHO\Seguro_Empresarial_Teste_Comum" --saida output/teste
-```
+Use --somente seguranca, clima ou nr4 para reconstruir uma referência. Downloads ficam em data/referencias/cache; consultas climáticas de 30 anos respeitam intervalo entre cidades. Em caso de limitação da fonte, execute novamente depois: os downloads já concluídos serão reutilizados. A análise da aplicação não faz consultas de rede.
 
-Saídas:
-
-- `template_resultado_times.csv`: uma linha por empresa-estabelecimento, nas colunas originais.
-- `template_coberturas_times.csv`: todas as coberturas fixas do plano sugerido, uma linha por cobertura/unidade.
-- `auditoria.json`: fatores, transformações, decomposição, incertezas e comparação dos planos.
-- `manifesto.json`: configuração completa e hashes SHA-256 das entradas, regras e CSVs de saída.
-
-As notas são calculadas sem arredondamento intermediário. Com as mesmas entradas e regras, os CSVs são reproduzíveis. A data do manifesto muda a cada execução.
+A geocodificação automática desta versão valida os dez municípios/UFs do pacote. Outras localidades exigem coordenada pública validada e atualização do preparador. Não são usadas as coordenadas perturbadas dos estabelecimentos. Dados municipais não distinguem bairros ou ruas.
 
 ## Interface
 
-- **Visão geral:** empresas, estabelecimentos, distribuição de planos, prioridades e confiança.
-- **Análise:** busca por ID/CNAE, atividade e porte; gráficos, fatores e fórmulas por cobertura.
-- **Comparação:** duas unidades lado a lado e diferenças de pontuação.
-- **Simulação:** alteração dos valores dos bens, dependência digital e indicador territorial hipotético, sem alterar os originais.
-- **Regras:** edição e validação do JSON, restauração dos padrões e sensibilidade do corte de roubo.
-- **Exportação:** download dos templates e pacote ZIP com auditoria.
+- Visão geral: quatro prioridades, planos, confiança e sensibilidade.
+- Análise: busca por atividade, porte ou CNAE; decomposição, fontes e valores das nove coberturas.
+- Comparação: dois estabelecimentos, com diferenças dos quatro índices.
+- Simulação: patrimônio, segurança territorial hipotética, vidros e cenários climáticos alternativos.
+- Regras: parâmetros JSON validados, restauração dos padrões e sensibilidade do corte de roubo.
+- Exportação: templates completos e pacote de auditoria.
 
-Identidade visual própria em azul e amarelo. Sem logotipos oficiais ou alegação de vínculo institucional.
+Os dados digitais originais continuam disponíveis na base; proteção cibernética não compõe um quinto índice de decisão nem é exportada como cobertura contratada.
 
-## Modelo e suas limitações
+## Confirmar dados de vidros e funcionários
 
-Leia [METODOLOGIA.md](METODOLOGIA.md) para as fórmulas, justificativas dos pesos, interações e critérios de aceitação.
+O arquivo [examples/confirmacoes_modelo.csv](examples/confirmacoes_modelo.csv) permite informar, por empresa e unidade, presença de vidros, valor de reposição e funcionários locais. Campos são opcionais; confirmação contraditória ou valor inválido é rejeitado. Se a ausência de vidros for explicitamente informada, sua prioridade será zero. Sinais textuais de loja/galeria não comprovam vidraças.
 
-O motor cobre as nove proteções do catálogo oficial fornecido e calcula, separadamente, uma necessidade adicional de avaliação cibernética. Assistência digital não é tratada como seguro cibernético. Nenhuma cobertura adicional é exportada como disponível/contratada sem confirmação documental.
+## Execução em lote
 
-Não há histórico de sinistros, preços reais, caixa/reservas, valor do prédio ou inventário de vidros. A versão inicial usa cenários financeiros e proxies explicitamente identificadas. Em RC e vidros, a faixa monetária fica excepcionalmente sem valor, com justificativa, quando não existe base defensável. Não gera indenizações fictícias a partir de faturamento ou área.
+    .\.venv\Scripts\python.exe cli.py --dados "CAMINHO_DESENVOLVIMENTO" --saida output/desenvolvimento
+    .\.venv\Scripts\python.exe cli.py --dados "CAMINHO_TESTE" --saida output/teste
 
-Elegibilidade é uma triagem preliminar. Aceitação de atividade e condições contratuais estão pendentes por padrão; recomendações continuam disponíveis como sugestões condicionais. Imóveis em obra, irregulares ou com materiais de construção a validar geram pendências. A ausência de aluguel não comprova imóvel próprio.
+Opcionais: --referencias PASTA, --territorio CSV (compatibilidade do enriquecimento anterior), --confirmacoes CSV e --config JSON.
 
-As médias e distribuições das recomendações avaliam o comportamento do protótipo. Não medem precisão preditiva ou adequação atuarial.
+Saídas: os dois templates nas colunas originais, auditoria.json (quatro índices, nove dimensionamentos e comparação dos planos) e manifesto.json (regras e hashes). Uma linha por empresa-estabelecimento no resultado; uma linha por cobertura fixa do plano escolhido no template de coberturas. A interface também fornece download em ZIP. Os CSVs são reproduzíveis com as mesmas entradas e parâmetros; a data do manifesto varia.
 
-## Enriquecimento territorial opcional
+## Limitações
 
-O CSV original não traz índices de segurança ou clima. O sistema funciona sem dados externos, mostra a ausência e reduz a confiança. Não inventa índices pela latitude/longitude.
+Leia [METODOLOGIA.md](METODOLOGIA.md). Não há histórico de sinistros, preços reais, caixa/reservas ou condições de aceitação confirmadas. Os pesos e cortes são hipóteses da equipe. A folha é indicador econômico, não valor de indenização; NR-4 é classificação ocupacional, não probabilidade de acidente. O índice territorial é uma proxy domiciliar de 2021. Vendaval representa vento e vento com chuva, sem medir granizo, tornado ou resistência do telhado.
 
-Use [examples/territorio_modelo.csv](examples/territorio_modelo.csv) como cabeçalho. Para segurança, preencha `codigo_ibge_municipio`, `seguranca_da_cidade_0_1`, `fonte`, `ano_referencia`, `granularidade` (MUNICIPIO), `metodologia` e `confianca_territorial_0_1`. Para clima, use `exposicao_climatica_0_1`. Remova a coluna de indicador que não tiver dados. Uma linha por município; índices entre 0 e 1.
+Faixas são cenários de exposição para discutir proteção, não preços ou limites aprovados. O prédio não recebe valor de reconstrução inventado. Sem base defensável para RC ou vidros, a faixa fica explicitamente pendente. A aceitação contratual permanece condicional.
 
-```powershell
-.\.venv\Scripts\python.exe cli.py --dados "CAMINHO_DOS_CSVS" --territorio "territorio_documentado.csv"
-```
+## Testes e organização
 
-Pode-se integrar um índice experimental derivado de dados públicos, como a pesquisa de vitimização do [IBGE](https://www.ibge.gov.br/comunicados/35373-ibge-divulgara-em-7-de-dezembro-a-pesquisa-nacional-por-amostra-de-domicilios-continua-vitimizacao-furto-e-roubo-2021.html). Verifique universo, unidades, denominadores, amostragem e disponibilidade geográfica. Uma medida domiciliar de 2021 não é taxa atual de roubos empresariais. A normalização, fonte e referência devem ser documentadas. Esta versão fornece o importador validado; não inclui índices calculados por terceiros nem um downloader SIDRA.
+    .\.venv\Scripts\python.exe -m pytest -q
 
-## Testes
+A suíte usa fixtures artificiais e referências públicas congeladas, sem rede nem dados privados. A CI testa Python 3.12 e 3.13. Testes cobrem quatro índices, dimensionamento, contraste território/patrimônio, NR-4, ausência de duplicação de funcionários, clima, fontes independentes, vidros, templates e interface.
 
-```powershell
-.\.venv\Scripts\python.exe -m pytest -q
-```
+Arquivos principais: processamento.py organiza os dados; referencias.py calcula indicadores públicos; motor_pontuacao.py calcula os quatro índices e dimensiona nove coberturas; recomendador.py escolhe o plano; exportacao.py gera arquivos; app.py apresenta a interface. Pesos e limites ficam em config_regras.json.
 
-Testes de coerência financeira, patrimônio versus evento, digital, vidros, incerteza, duplicações, vínculos, múltiplas unidades, decisão de planos, esquema dos templates, reprodutibilidade e navegação/exportação no Streamlit. Fixtures artificiais são usadas exclusivamente nos testes. A integração contínua executa a suíte sem depender dos CSVs privados.
+Configurações 0.1 não são compatíveis com o contrato 0.2: partir do novo JSON e revisar os parâmetros. A interface restaura o novo padrão ao detectar mudança de versão.
 
-## Organização
-
-```text
-app.py                   Interface Streamlit
-processamento.py         CSVs, validações, vínculos e bens por unidade
-motor_pontuacao.py        Evento × impacto × vulnerabilidade + interações
-recomendador.py          Comparação de planos e elegibilidade preliminar
-exportacao.py            Templates, auditoria e manifesto
-cli.py                   Execução em lote
-config_regras.json       Hipóteses, mapas, pesos e limites
-scripts/importar_dados.py Importação local dos originais
-tests/                   Testes independentes dos dados privados
-```
-
-Uso de IA: implementação assistida por Codex. A equipe deve revisar, compreender e defender as hipóteses. Antes de utilização comercial, validar regras, aceitação, coberturas, valores, preços e resultados com especialistas e documentação contratual vigente.
+Implementação assistida por Codex. A equipe deve compreender e defender as hipóteses. Identidade visual própria, sem logotipos oficiais ou alegação de vínculo institucional.

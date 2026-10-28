@@ -12,8 +12,8 @@ import plotly.express as px
 import streamlit as st
 
 from exportacao import analisar_base, csv_bytes
-from motor_pontuacao import CIBER, ROUBO, MotorPontuacao, carregar_config
-from processamento import ARQUIVOS, carregar_base, localizar_dados
+from motor_pontuacao import DECISORIAS, ROUBO, MotorPontuacao, carregar_config
+from processamento import ARQUIVOS, carregar_base, localizar_dados, localizar_referencias
 from recomendador import recomendar_plano
 
 st.set_page_config(page_title='Protege Empresa | Datathon', page_icon='🛡️', layout='wide')
@@ -39,21 +39,25 @@ st.markdown('''<style>
  </style>''', unsafe_allow_html=True)
 
 
-def assinatura(pasta, externo):
+def assinatura(pasta, externo, referencias='', confirmacoes=''):
     caminhos = [Path(pasta) / f'{n}.csv' for n in ARQUIVOS]
     if externo:
         caminhos.append(Path(externo))
+    if referencias:
+        caminhos.extend(sorted(Path(referencias).glob('*.csv')))
+    if confirmacoes:
+        caminhos.append(Path(confirmacoes))
     return tuple((str(p), p.stat().st_mtime_ns, p.stat().st_size) for p in caminhos)
 
 
 @st.cache_data(show_spinner='Organizando os dados…')
-def obter_base(pasta, externo, versao_arquivos):
-    return carregar_base(pasta, externo or None)
+def obter_base(pasta, externo, versao_arquivos, referencias='',confirmacoes=''):
+    return carregar_base(pasta, externo or None, referencias or None, confirmacoes or None)
 
 
 @st.cache_data(show_spinner='Analisando os estabelecimentos…')
-def obter_resumo(pasta, externo, versao_arquivos, config_json):
-    base = carregar_base(pasta, externo or None)
+def obter_resumo(pasta, externo, versao_arquivos, config_json,referencias='',confirmacoes=''):
+    base = carregar_base(pasta, externo or None,referencias or None,confirmacoes or None)
     motor = MotorPontuacao(base, json.loads(config_json))
     linhas = []
     for r in base.estabelecimentos.to_dict('records'):
@@ -75,10 +79,10 @@ def dinheiro(valor):
 
 def grafico(pontos):
     df = pd.DataFrame([{'Cobertura': s['nome'], 'Prioridade': s['prioridade'],
-                        'Confiança': s['confianca'], 'Tipo': 'Avaliação adicional' if s['adicional'] else 'Catálogo fixo'}
+                        'Confiança': s['confianca'], 'Tipo': 'Índice de decisão'}
                        for s in pontos.values()])
     fig = px.bar(df.sort_values('Prioridade'), x='Prioridade', y='Cobertura', orientation='h',
-                 color='Tipo', color_discrete_map={'Catálogo fixo': '#1456e8', 'Avaliação adicional': '#ccaa10'},
+                 color='Tipo', color_discrete_map={'Índice de decisão': '#1456e8'},
                  hover_data=['Confiança'], range_x=[0, 100])
     fig.update_layout(height=450, margin=dict(l=0,r=10,t=10,b=0), paper_bgcolor='rgba(0,0,0,0)',
                       plot_bgcolor='rgba(0,0,0,0)', legend=dict(orientation='h', y=1.1))
@@ -125,7 +129,12 @@ def detalhar(registro, base, config):
     if not plano['recomendacao_estavel']:
         st.warning(f'Sensível à incerteza dos dados: cenários variam entre {plano["plano_cenario_inferior"]} e {plano["plano_cenario_superior"]}.')
     st.plotly_chart(grafico(pontos), use_container_width=True)
-    st.caption('Notas indicam prioridade de proteção. Não são probabilidades de sinistro. Proteção cibernética é uma avaliação adicional.')
+    st.caption('Somente quatro índices decidem o plano. Nota maior indica maior prioridade; não é probabilidade de sinistro.')
+    with st.expander('Valores das nove coberturas do catálogo'):
+        dimensoes=motor.dimensionar_coberturas(registro)
+        st.dataframe(pd.DataFrame([{'Cobertura':x['nome'],'Papel':x['papel'],
+            'Cenário mínimo':dinheiro(x['faixa_valor_min']),'Cenário máximo':dinheiro(x['faixa_valor_max']),
+            'Observação':x['justificativa']} for x in dimensoes.values()]),hide_index=True,use_container_width=True)
     st.subheader('Entenda o cálculo')
     codigo = st.selectbox('Cobertura', list(pontos), format_func=lambda c: pontos[c]['nome'])
     s = pontos[codigo]
@@ -137,6 +146,9 @@ def detalhar(registro, base, config):
     st.write('Valor exposto no cenário:', dinheiro(s['valor_exposto_brl']))
     st.write(f'Sensibilidade à evidência incompleta: {s["prioridade_min"]:.1f} a {s["prioridade_max"]:.1f}. Não é intervalo estatístico.')
     st.dataframe(pd.DataFrame(s['fatores_evento']).astype(str), hide_index=True, use_container_width=True)
+    with st.expander('Fonte, período e abrangência do indicador'):
+        st.json(s['referencia_evento'])
+        st.caption('Referências municipais não distinguem bairros ou ruas. Dados de vitimização domiciliar são uma proxy contextual para empresas.')
     with st.expander('Fórmula, impacto e interações'):
         st.code(s['formula'], language='text')
         st.json({'impacto':s['fator_impacto'], 'vulnerabilidade':s['fator_vulnerabilidade'],
@@ -152,8 +164,9 @@ def detalhar(registro, base, config):
 
 
 def main():
-    if 'config_regras' not in st.session_state:
-        st.session_state.config_regras = carregar_config()
+    padrao_config=carregar_config()
+    if 'config_regras' not in st.session_state or st.session_state.config_regras.get('versao')!=padrao_config['versao']:
+        st.session_state.config_regras = padrao_config
     config = st.session_state.config_regras
     st.sidebar.markdown('## Protege Empresa')
     st.sidebar.caption('Datathon · recomendação explicável')
@@ -166,13 +179,16 @@ def main():
     with st.sidebar.expander('Fonte de dados'):
         pasta = st.text_input('Pasta dos nove CSVs', padrao)
         externo = st.text_input('CSV territorial opcional', '')
+        ref_padrao=localizar_referencias()
+        referencias=st.text_input('Pasta de referências públicas',str(ref_padrao))
+        confirmacoes=st.text_input('CSV de confirmações por unidade (opcional)','')
     st.sidebar.caption('Protótipo acadêmico. Dados fictícios. Sem vínculo oficial com a seguradora.')
     st.markdown('<div class="eyebrow">PROTEÇÃO QUE FAZ SENTIDO</div>', unsafe_allow_html=True)
     st.title(pagina)
     st.markdown('<div class="hero"><p>Dados da empresa, consequências financeiras e decisões que você consegue explicar.</p></div>', unsafe_allow_html=True)
     try:
-        versao = assinatura(pasta, externo)
-        base = obter_base(pasta, externo, versao)
+        versao = assinatura(pasta, externo,referencias,confirmacoes)
+        base = obter_base(pasta, externo, versao,referencias,confirmacoes)
         config_json = json.dumps(config, sort_keys=True)
         motor = MotorPontuacao(base, config)
     except (OSError, ValueError, KeyError) as erro:
@@ -181,7 +197,7 @@ def main():
         st.stop()
 
     if pagina == 'Visão geral':
-        resumo = obter_resumo(pasta, externo, versao, config_json)
+        resumo = obter_resumo(pasta, externo, versao, config_json,referencias,confirmacoes)
         a,b,c,d = st.columns(4)
         a.metric('Empresas', f'{resumo.empresa_id.nunique():,}'.replace(',', '.'))
         b.metric('Estabelecimentos', f'{len(resumo):,}'.replace(',', '.'))
@@ -191,8 +207,8 @@ def main():
         contagem = resumo.plano.value_counts().rename_axis('Plano').reset_index(name='Estabelecimentos')
         st.plotly_chart(px.bar(contagem,x='Plano',y='Estabelecimentos',color='Plano',
             color_discrete_sequence=['#1456e8','#f4d84c','#112b56']),use_container_width=True)
-        st.subheader('Prioridade média por cobertura')
-        medias = pd.DataFrame([{'Cobertura': r['nome'], 'Prioridade':resumo[c].mean()} for c,r in config['coberturas'].items()])
+        st.subheader('Os quatro índices que diferenciam os planos')
+        medias = pd.DataFrame([{'Cobertura': config['coberturas'][c]['nome'], 'Prioridade':resumo[c].mean()} for c in DECISORIAS])
         st.plotly_chart(px.bar(medias,y='Cobertura',x='Prioridade',orientation='h',range_x=[0,100],
             color_discrete_sequence=['#1456e8']),use_container_width=True)
         for aviso in base.avisos:
@@ -239,12 +255,22 @@ def main():
                           'equipamentos_total_referencia','informatica_ponderada','cozinha_ponderada']:
                 if simulado.get(campo) is not None:
                     simulado[campo] = float(simulado[campo])*multiplicador
-            simulado['dependencia_digital_pct'] = st.slider('Dependência digital (%)',0,100,int(float(registro.get('dependencia_digital_pct') or 0)))
             usar_cidade = st.checkbox('Simular um indicador territorial hipotético')
             if usar_cidade:
                 simulado['seguranca_da_cidade_0_1'] = st.slider('Segurança relativa hipotética',0.,1.,.9,.01)
-                simulado['confianca_territorial_0_1'] = .5
-                simulado['fonte'] = 'SIMULAÇÃO; não é dado observado'
+                simulado['confianca_seguranca_0_1'] = .5
+                simulado['fonte_seguranca'] = 'SIMULAÇÃO; não é dado observado'
+            if st.checkbox('Simular reposição de vidros confirmada'):
+                simulado['possui_vidros_confirmado']='SIM'
+                simulado['valor_vidros_reposicao_brl']=st.number_input('Valor hipotético de reposição dos vidros (R$)',min_value=0.,value=10000.,step=1000.)
+            clima=st.selectbox('Cenário climático',['Principal','2016–2025','Rajadas 40/60 km/h'])
+            coluna={'2016–2025':'exposicao_climatica_2016_2025','Rajadas 40/60 km/h':'exposicao_climatica_limiares_40_60'}.get(clima)
+            if coluna:
+                if registro.get(coluna) is not None:
+                    simulado['exposicao_climatica_0_1']=registro[coluna]
+                    simulado['periodo_clima']='SIMULAÇÃO: '+clima
+                else:
+                    st.warning('Sem série climática preparada para este cenário.')
             original,novo = motor.analisar_registro(registro),motor.analisar_registro(simulado)
             st.dataframe(pd.DataFrame([{'Cobertura':s['nome'],'Original':s['prioridade'],
                 'Simulado':novo[c]['prioridade'],'Mudança':novo[c]['prioridade']-s['prioridade']}
@@ -255,8 +281,9 @@ def main():
 
     elif pagina == 'Regras e metodologia':
         st.write('Modelo transparente com interação entre evento, impacto e vulnerabilidade. Todos os parâmetros são hipóteses da equipe.')
-        st.code('P = 100 × clip[I × (a + (1−a)R) × (b + (1−b)V) + kIRD, 0, 1]',language='text')
+        st.code('P = 100 × clip[(p+(1−p)I) × (a+(1−a)R) × (b+(1−b)V) + kIRD, 0, 1]',language='text')
         st.caption('R: evento relativo; I: impacto normalizado; V: vulnerabilidade limitada pelos dados; D: interação específica.')
+        st.info('As cinco coberturas comuns são dimensionadas e exportadas. Somente roubo, vendaval, RC empregador e vidros influenciam a escolha. Mudanças nos limiares climáticos exigem regenerar as referências com o script de preparo.')
         novo = st.text_area('Configuração JSON',json.dumps(config,ensure_ascii=False,indent=2),height=420)
         a,b = st.columns(2)
         if a.button('Validar e aplicar regras',type='primary'):
@@ -272,7 +299,7 @@ def main():
         st.download_button('Baixar configuração ativa',json.dumps(config,ensure_ascii=False,indent=2),
                            file_name='config_regras.json',mime='application/json')
         st.subheader('Sensibilidade do corte de roubo e furto')
-        resumo = obter_resumo(pasta,externo,versao,config_json)
+        resumo = obter_resumo(pasta,externo,versao,config_json,referencias,confirmacoes)
         corte = st.slider('Prioridade mínima para sinalizar análise',0,100,int(config['planos']['limiar_cobertura']))
         selecionados = resumo[ROUBO].ge(corte)
         st.metric('Unidades sinalizadas',int(selecionados.sum()))
@@ -283,7 +310,7 @@ def main():
     elif pagina == 'Exportar':
         st.write('Gere os dois templates oficiais com as colunas originais e uma trilha completa dos cálculos.')
         st.warning('Faixas são cenários para análise, não preços do seguro. Cobertura cibernética não será incluída como contratada.')
-        chave = (pasta,externo,versao,config_json)
+        chave = (pasta,externo,versao,config_json,referencias,confirmacoes)
         if st.button('Preparar exportação',type='primary'):
             with st.spinner('Gerando templates e auditoria…'):
                 r,c,a = analisar_base(base,config)

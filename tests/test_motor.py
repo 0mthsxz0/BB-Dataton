@@ -2,7 +2,7 @@ import copy
 import math
 import pytest
 from motor_pontuacao import (MotorPontuacao, ROUBO, ELETRICO, INCENDIO, VIDROS,
-    CIBER, DESPESAS, ALUGUEL, TERCEIROS, carregar_config, normalizar_financeiro)
+    CIBER, DESPESAS, ALUGUEL, TERCEIROS, EMPREGADOR, VENDAVAL, DECISORIAS, carregar_config, normalizar_financeiro)
 
 
 def test_patrimonio_muda_impacto_sem_mudar_evento(registro):
@@ -24,23 +24,24 @@ def test_cidade_segura_nao_zera_protecao(registro):
     assert 0 < seguro['prioridade'] < exposto['prioridade']
 
 
-def test_aumentar_equipamentos_afeta_danos_eletricos(registro):
+def test_aumentar_equipamentos_afeta_dimensionamento_eletrico(registro):
     motor = MotorPontuacao()
-    a = motor.analisar_registro(registro)[ELETRICO]
-    b = motor.analisar_registro(dict(registro,equipamentos_ponderados=300000))[ELETRICO]
-    assert b['prioridade'] > a['prioridade']
+    a = motor.dimensionar_coberturas(registro)[ELETRICO]
+    b = motor.dimensionar_coberturas(dict(registro,equipamentos_ponderados=300000))[ELETRICO]
+    assert b['faixa_valor_min'] > a['faixa_valor_min']
+    assert 'prioridade' not in a
 
 
-def test_dependencia_digital_aumenta_impacto_e_prioridade(registro):
+def test_digital_nao_e_quinto_indice_de_decisao(registro):
     motor = MotorPontuacao()
-    a = motor.analisar_registro(dict(registro,dependencia_digital_pct=10))[CIBER]
-    b = motor.analisar_registro(dict(registro,dependencia_digital_pct=95))[CIBER]
-    assert b['prioridade'] > a['prioridade']
+    a = motor.analisar_registro(dict(registro,dependencia_digital_pct=10))
+    b = motor.analisar_registro(dict(registro,dependencia_digital_pct=95))
+    assert a == b and CIBER not in a
 
 
 def test_maturidade_nao_e_vulnerabilidade_cibernetica(registro):
     motor = MotorPontuacao()
-    assert motor.analisar_registro(dict(registro,indice_maturidade_digital=0))[CIBER] == motor.analisar_registro(dict(registro,indice_maturidade_digital=100))[CIBER]
+    assert motor.analisar_registro(dict(registro,indice_maturidade_digital=0)) == motor.analisar_registro(dict(registro,indice_maturidade_digital=100))
 
 
 def test_sinal_loja_afeta_vidros_sem_inventar_valor(registro):
@@ -58,11 +59,10 @@ def test_area_sozinha_nao_prova_vidracas(registro):
 
 def test_atividade_nao_e_contada_novamente_como_impacto_financeiro_rc(registro):
     motor = MotorPontuacao()
-    a = motor.analisar_registro(dict(registro,grupo_atividade='ESCRITORIO'))[TERCEIROS]
-    b = motor.analisar_registro(dict(registro,grupo_atividade='CLINICA'))[TERCEIROS]
-    assert a['impacto_normalizado'] == b['impacto_normalizado']
+    a = motor.dimensionar_coberturas(dict(registro,grupo_atividade='ESCRITORIO'))[TERCEIROS]
+    b = motor.dimensionar_coberturas(dict(registro,grupo_atividade='CLINICA'))[TERCEIROS]
+    assert a['faixa_valor_min'] == b['faixa_valor_min'] is None
     assert a['fator_impacto']['confianca'] == b['fator_impacto']['confianca'] == 0
-    assert a['risco_evento_relativo'] < b['risco_evento_relativo']
 
 
 def test_ausencia_territorial_reduz_confianca_sem_zerar(registro):
@@ -76,22 +76,22 @@ def test_ausencia_territorial_reduz_confianca_sem_zerar(registro):
 
 
 def test_receita_empresa_nao_e_dividida_entre_unidades(registro):
-    v = MotorPontuacao().analisar_registro(dict(registro,quantidade_unidades=2))[DESPESAS]
+    v = MotorPontuacao().analisar_registro(dict(registro,quantidade_unidades=2))[ROUBO]
     assert v['fator_vulnerabilidade']['confianca'] == 0
     assert v['fator_vulnerabilidade']['valor_original'] is None
 
 
 def test_custos_nao_somam_aluguel_e_folha_novamente(registro, config):
-    s = MotorPontuacao().analisar_registro(registro)[DESPESAS]
+    s = MotorPontuacao().dimensionar_coberturas(registro)[DESPESAS]
     assert s['faixa_valor_min'] == registro['despesa_fixa_mensal_estimada']
     assert s['faixa_valor_max'] == registro['despesa_fixa_mensal_estimada'] * config['cenarios']['meses_paralisacao_max']
 
 
 def test_ausencia_aluguel_nao_prova_imovel_proprio(registro):
-    s = MotorPontuacao().analisar_registro(dict(registro,valor_aluguel_recorrente=0,pagamento_aluguel_recorrente='NAO'))[ALUGUEL]
+    s = MotorPontuacao().dimensionar_coberturas(dict(registro,valor_aluguel_recorrente=0,pagamento_aluguel_recorrente='NAO'))[ALUGUEL]
     assert s['faixa_valor_min'] is None
     assert s['fator_impacto']['confianca'] == 0
-    assert s['prioridade'] > 0
+    assert 'prioridade' not in s
 
 
 def test_estoque_pico_e_cenario_sem_soma_duplicada(registro):
@@ -100,10 +100,12 @@ def test_estoque_pico_e_cenario_sem_soma_duplicada(registro):
     assert s['faixa_valor_max'] == registro['bens_total_referencia'] + registro['estoque_pico_estimado']
 
 
-def test_nove_coberturas_e_adicional_com_limites_e_decomposicao(registro):
+def test_quatro_indices_nove_dimensionamentos_com_limites(registro):
     pontos = MotorPontuacao().analisar_registro(registro)
-    assert len(pontos) == 10
-    assert sum(not s['adicional'] for s in pontos.values()) == 9
+    assert set(pontos) == set(DECISORIAS)
+    dimensoes=MotorPontuacao().dimensionar_coberturas(registro)
+    assert len(dimensoes)==9
+    assert all('prioridade' not in d for d in dimensoes.values())
     for s in pontos.values():
         assert 0 <= s['prioridade_min'] <= s['prioridade'] <= s['prioridade_max'] <= 100
         d = s['decomposicao']
@@ -118,7 +120,7 @@ def test_normalizacao_limitada_preserva_ordem(valor):
     assert normalizar_financeiro(-1,3000000) is None
 
 
-@pytest.mark.parametrize('cobertura',['INCENDIO_RAIO_EXPLOSAO_FUMACA','DANOS_ELETRICOS','DESPESAS_FIXAS',ROUBO])
+@pytest.mark.parametrize('cobertura',[ROUBO,VENDAVAL])
 def test_monotonicidade_financeira_cenarios_contrastantes(registro,cobertura):
     motor = MotorPontuacao()
     notas = []
@@ -140,3 +142,48 @@ def test_config_invalida_rejeitada(config,mudanca):
     mudanca(config)
     with pytest.raises(ValueError):
         carregar_config(config)
+
+
+def test_local_tem_mais_influencia_sem_confundir_com_patrimonio(registro):
+    motor=MotorPontuacao()
+    pequeno=motor.analisar_registro(dict(registro,bens_ponderados=30000,estoque_medio_estimado=0,
+        seguranca_da_cidade_0_1=.1))[ROUBO]
+    grande=motor.analisar_registro(dict(registro,bens_ponderados=3000000,estoque_medio_estimado=0,
+        seguranca_da_cidade_0_1=.9))[ROUBO]
+    assert pequeno['risco_evento_relativo']>grande['risco_evento_relativo']
+    assert pequeno['prioridade']>grande['prioridade']
+    assert grande['prioridade']>0
+
+
+def test_confianca_territorial_nao_altera_perigo_observado(registro):
+    motor=MotorPontuacao()
+    a=motor.analisar_registro(dict(registro,confianca_seguranca_0_1=.2))[ROUBO]
+    b=motor.analisar_registro(dict(registro,confianca_seguranca_0_1=.8))[ROUBO]
+    assert a['prioridade']==b['prioridade']
+    assert a['risco_evento_relativo']==b['risco_evento_relativo']
+    assert a['confianca']<b['confianca']
+
+
+def test_nr4_afeta_evento_sem_multiplicar_folha_por_funcionarios(registro):
+    motor=MotorPontuacao()
+    a=motor.analisar_registro(dict(registro,grau_risco_nr4=1))[EMPREGADOR]
+    b=motor.analisar_registro(dict(registro,grau_risco_nr4=3))[EMPREGADOR]
+    assert a['prioridade']<b['prioridade']
+    assert a['impacto_normalizado']==b['impacto_normalizado']
+    c=motor.analisar_registro(dict(registro,grau_risco_nr4=3,quantidade_funcionarios_estimada=10000))[EMPREGADOR]
+    assert b['prioridade']==c['prioridade']
+
+
+def test_funcionarios_empresa_nao_sao_atribuidos_a_filial(registro):
+    motor=MotorPontuacao()
+    f=motor.fatores(dict(registro,quantidade_unidades=2))['funcionarios']
+    assert f.confianca==0
+
+
+def test_vidros_confirmados_e_ausencia_explicita(registro):
+    motor=MotorPontuacao()
+    a=motor.analisar_registro(dict(registro,possui_vidros_confirmado='SIM',valor_vidros_reposicao_brl=10000))[VIDROS]
+    b=motor.analisar_registro(dict(registro,possui_vidros_confirmado='SIM',valor_vidros_reposicao_brl=100000))[VIDROS]
+    assert b['prioridade']>a['prioridade'] and a['faixa_valor_min']==10000
+    sem=motor.analisar_registro(dict(registro,possui_vidros_confirmado='NAO'))[VIDROS]
+    assert sem['prioridade_min']==sem['prioridade']==sem['prioridade_max']==0

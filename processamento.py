@@ -5,7 +5,9 @@ from dataclasses import dataclass
 from pathlib import Path
 import hashlib
 import math
+import os
 import pandas as pd
+from referencias import classe_cnae
 
 ARQUIVOS = (
     'empresas', 'enderecos_estabelecimentos', 'sinais_financeiros_operacionais',
@@ -19,6 +21,14 @@ TIPOS_ELETRICOS = {
     'MAQUINA', 'EQUIPAMENTO_BELEZA', 'EQUIPAMENTO_COZINHA',
 }
 NULOS = {'', 'NAO_DISPONIVEL', 'NÃO_DISPONIVEL', 'NA', 'N/A', 'NULL', 'NAN'}
+
+
+def localizar_referencias(pasta=None):
+    if pasta or os.environ.get('BB_DATATHON_REFERENCIAS'):
+        return Path(pasta or os.environ['BB_DATATHON_REFERENCIAS'])
+    raiz=Path(__file__).parent
+    local=raiz/'data'/'referencias'
+    return local if local.exists() else raiz/'references'
 
 
 def numero(valor):
@@ -135,7 +145,7 @@ def agregar_bens(bens, enderecos):
     return pd.DataFrame(saida, columns=CHAVES + list(next(iter(acumulados.values()), {})))
 
 
-def carregar_base(pasta=None, enriquecimento=None):
+def carregar_base(pasta=None, enriquecimento=None, referencias=None, confirmacoes=None):
     pasta = localizar_dados(pasta)
     faltantes = [f'{n}.csv' for n in ARQUIVOS if not (pasta / f'{n}.csv').is_file()]
     if faltantes:
@@ -182,16 +192,62 @@ def carregar_base(pasta=None, enriquecimento=None):
                       'equipamentos_total_referencia', 'informatica_ponderada',
                       'cozinha_ponderada', 'confianca_bens']:
             dados[campo] = None
+    fontes_lidas = {}
+    # Referências públicas são locais e opcionais. Nenhuma rede durante a análise.
+    pasta_ref = localizar_referencias(referencias)
+    for nome, tipo in [('seguranca_municipal.csv','seguranca'),('clima_municipal.csv','clima')]:
+        caminho = pasta_ref/nome
+        if caminho.exists():
+            dados = incorporar_indicador(dados,caminho,tipo)
+            fontes_lidas[str(caminho.resolve())] = hashlib.sha256(caminho.read_bytes()).hexdigest()
+    caminho = pasta_ref/'nr4_cnae.csv'
+    if caminho.exists():
+        nr4 = ler_csv(caminho)
+        validar_chave(nr4,['classe_cnae'],'nr4')
+        for coluna in ['grau_risco_nr4','fonte_nr4','versao_nr4']:
+            if coluna not in nr4:
+                raise ValueError(f'Referência NR-4 sem {coluna}.')
+        if nr4.grau_risco_nr4.map(numero).isna().any() or not nr4.grau_risco_nr4.isin(['1','2','3','4']).all():
+            raise ValueError('Graus NR-4 devem ser inteiros de 1 a 4.')
+        dados['classe_cnae'] = dados.cnae_principal.map(classe_cnae)
+        dados = dados.merge(nr4,on='classe_cnae',how='left',validate='many_to_one')
+        fontes_lidas[str(caminho.resolve())] = hashlib.sha256(caminho.read_bytes()).hexdigest()
     if enriquecimento:
         dados = incorporar_territorio(dados, enriquecimento)
-    else:
-        avisos.append('Sem enriquecimento territorial: exposição a roubo e clima não observada.')
+    if confirmacoes:
+        confirmado = ler_csv(confirmacoes)
+        validar_chave(confirmado,CHAVES,'confirmacoes')
+        permitidas = CHAVES + ['possui_vidros_confirmado','valor_vidros_reposicao_brl','funcionarios_unidade_confirmados']
+        if set(confirmado.columns)-set(permitidas):
+            raise ValueError('Confirmações contêm colunas não previstas.')
+        if 'possui_vidros_confirmado' in confirmado and not confirmado.possui_vidros_confirmado.isin(['SIM','NAO','']).all():
+            raise ValueError('Presença de vidros deve ser SIM, NAO ou vazia.')
+        for c in ['valor_vidros_reposicao_brl','funcionarios_unidade_confirmados']:
+            if c in confirmado:
+                preenchidos=confirmado[c].ne('')
+                n=confirmado.loc[preenchidos,c].map(numero)
+                if n.isna().any() or (c=='funcionarios_unidade_confirmados' and any(x!=int(x) for x in n)):
+                    raise ValueError(f'Confirmação numérica inválida: {c}')
+        if {'possui_vidros_confirmado','valor_vidros_reposicao_brl'}<=set(confirmado):
+            if (confirmado.possui_vidros_confirmado.eq('NAO') & confirmado.valor_vidros_reposicao_brl.map(numero).fillna(0).gt(0)).any():
+                raise ValueError('Confirmação contraditória: ausência de vidros com valor positivo.')
+        if not set(map(tuple,confirmado[CHAVES].to_numpy())).issubset(set(map(tuple,dados[CHAVES].to_numpy()))):
+            raise ValueError('Confirmação para empresa-estabelecimento inexistente.')
+        dados = dados.merge(confirmado,on=CHAVES,how='left',validate='one_to_one')
+        fontes_lidas[str(Path(confirmacoes).resolve())] = hashlib.sha256(Path(confirmacoes).read_bytes()).hexdigest()
+    for coluna, descricao in [('seguranca_da_cidade_0_1','segurança territorial'),
+                              ('exposicao_climatica_0_1','exposição climática'),
+                              ('grau_risco_nr4','classificação NR-4')]:
+        n = dados[coluna].map(numero).notna().sum() if coluna in dados else 0
+        if n < len(dados):
+            avisos.append(f'{descricao}: {n}/{len(dados)} unidades com referência; ausências ampliam a incerteza.')
     templates = {n: tabelas[n].columns.tolist() for n in ('template_resultado_times', 'template_coberturas_times')}
     catalogo = tabelas['catalogo_coberturas_fixas_planos']
     validar_chave(catalogo, ['plano', 'cobertura_fixa'], 'catalogo')
     if set(catalogo.plano) != {'ESSENCIAL', 'PRATICO', 'TOTAL'}:
         raise ValueError('Catálogo deve conter ESSENCIAL, PRATICO e TOTAL.')
     hashes = {f'{n}.csv': hashlib.sha256((pasta / f'{n}.csv').read_bytes()).hexdigest() for n in ARQUIVOS}
+    hashes.update(fontes_lidas)
     if enriquecimento:
         hashes['enriquecimento_territorial.csv'] = hashlib.sha256(Path(enriquecimento).read_bytes()).hexdigest()
     return BaseDados(pasta, dados.astype(object).where(pd.notna(dados), None),
@@ -218,5 +274,35 @@ def incorporar_territorio(dados, caminho):
         raise ValueError('Esta versão aceita enriquecimento municipal; não replica precisão de rua.')
     if not set(externo.ano_referencia.str.fullmatch(r'\d{4}')).issubset({True}):
         raise ValueError('ano_referencia deve conter o ano da observação com quatro dígitos.')
-    manter = obrigatorias + indicadores
-    return dados.merge(externo[manter], on='codigo_ibge_municipio', how='left', validate='many_to_one')
+    # Compatibilidade do CSV anterior: expande metadados por indicador.
+    for indicador in indicadores:
+        tipo = 'seguranca' if indicador=='seguranca_da_cidade_0_1' else 'clima'
+        metadados = {'fonte':f'fonte_{tipo}','ano_referencia':f'periodo_{tipo}',
+            'granularidade':f'granularidade_{tipo}','metodologia':f'metodologia_{tipo}',
+            'confianca_territorial_0_1':f'confianca_{tipo}_0_1'}
+        parte = externo[['codigo_ibge_municipio',indicador]+list(metadados)].rename(columns=metadados)
+        dados = juntar_indicador(dados,parte)
+    return dados
+
+
+def juntar_indicador(dados, externo):
+    substituir = [c for c in externo if c in dados and c!='codigo_ibge_municipio']
+    return dados.drop(columns=substituir).merge(externo,on='codigo_ibge_municipio',how='left',validate='many_to_one')
+
+
+def incorporar_indicador(dados,caminho,tipo):
+    externo = ler_csv(caminho)
+    indicador = 'seguranca_da_cidade_0_1' if tipo=='seguranca' else 'exposicao_climatica_0_1'
+    metadados = [f'fonte_{tipo}',f'periodo_{tipo}',f'granularidade_{tipo}',
+                 f'metodologia_{tipo}',f'confianca_{tipo}_0_1']
+    for c in ['codigo_ibge_municipio',indicador]+metadados:
+        if c not in externo or externo[c].str.strip().eq('').any():
+            raise ValueError(f'Referência {tipo}: campo ausente ou vazio: {c}')
+    validar_chave(externo,['codigo_ibge_municipio'],tipo)
+    for c in [indicador,f'confianca_{tipo}_0_1']:
+        n=externo[c].map(numero)
+        if n.isna().any() or n.gt(1).any():
+            raise ValueError(f'{c} deve estar entre 0 e 1.')
+    if externo[f'granularidade_{tipo}'].ne('MUNICIPIO').any():
+        raise ValueError('Referência territorial exige granularidade municipal.')
+    return juntar_indicador(dados,externo.drop(columns=['municipio'],errors='ignore'))

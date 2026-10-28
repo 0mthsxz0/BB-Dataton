@@ -1,119 +1,103 @@
-# Metodologia do motor multifatorial
+# Metodologia v0.2: quatro índices e nove dimensionamentos
 
-## 1. Contrato do modelo
+## Contrato
 
-A saída principal é prioridade de proteção (0–100), não probabilidade de sinistro. Para cada cobertura, o sistema também devolve indicador relativo do evento (R), impacto normalizado (I), vulnerabilidade limitada pelos dados (V), confiança, valores de cenário, explicações e sensibilidade.
+Apenas ROUBO_FURTO_ARROMBAMENTO, VENDAVAL_EVENTOS_CORRELATOS, RESPONSABILIDADE_CIVIL_EMPREGADOR e QUEBRA_DE_VIDROS recebem prioridade. As cinco coberturas comuns permanecem no catálogo e na exportação com dimensionamento, sem pontuação. Cibernética não interfere na escolha de Essencial, Prático ou Total.
 
-Todos os pesos são hipóteses iniciais da equipe; não são parâmetros oficiais da BB Seguros. Sem histórico de sinistros e exposição por período, não é possível demonstrar calibração atuarial ou estimar perda anual esperada. O produto entre um índice relativo e patrimônio não é tratado como perda esperada em reais.
+Todos os parâmetros são hipóteses da equipe. As notas representam prioridade de proteção, não probabilidades de sinistro, acidentes, responsabilidades jurídicas ou parâmetros oficiais da seguradora.
 
-## 2. Unidade de análise e patrimônio
+## Componentes separados
 
-Uma linha por `(empresa_id, imovel_id)`. Bens são agregados antes das junções. Cruzamentos validam relações muitos-para-um/um-para-um, chaves e vínculos. Registros de bens exatamente repetidos são deduplicados; conflitos de identificação são rejeitados.
+- R: exposição relativa ao evento, derivada das referências disponíveis.
+- I: impacto ou escala econômica normalizada; quando financeiro desconhecido, é hipótese explicitamente identificada.
+- V: vulnerabilidade estimada, com limitações por ausência de caixa, reservas e recuperação.
+- D: interação específica, utilizada em vidros para sinal presencial.
+- Confiança: qualidade relativa da evidência, apresentada separadamente da nota central.
 
-```
-B_ponderado = soma(valor_cadastrado × probabilidade_bem_no_imovel_referencia)
-E_central = B_ponderado + estoque_medio_estimado
-E_alternativo = B_total_referencia + max(estoque_medio, estoque_pico)
-```
+O motor não interpreta patrimônio alto como probabilidade alta de roubo. O vínculo probabilístico de um bem distribui seu valor entre unidades; não mede ocorrência de sinistro.
 
-O valor ponderado é recalculado: não se multiplica novamente `valor_bem_ponderado_referencia`, que pode conter arredondamentos. A probabilidade de localização distribui patrimônio; não representa sinistro. Os bens das unidades sem cadastro são desconhecidos, não comprovadamente inexistentes. Vínculos inválidos reduzem a completude. O cenário integral é exploratório, não confirma a presença de todos os bens.
+## Fórmula
 
-Estoque médio e pico são alternativas, nunca somados. Confirmar sobreposição e quais bens são suscetíveis à perda do evento e contratualmente cobertos. A primeira versão não estima a fração roubável de cada bem, valor de reconstrução do prédio ou custo de reposição a partir do preço cadastrado.
+    P = 100 × clip[(p+(1-p)I) × (a+(1-a)R) × (b+(1-b)V) + kIRD, 0, 1]
 
-## 3. Impacto financeiro
+Padrões iniciais: a=0,20, p=0,25, b=0,70. A amplitude relativa do ajuste do evento é 5 vezes (0,20 a 1), enquanto a do impacto normalizado é 4 vezes (0,25 a 1). Isso aumenta a influência territorial sobre roubo em relação à versão 0.1, cujo ajuste do evento variava apenas entre 0,65 e 1. Não se trata de pesos de uma média: os fatores interagem por multiplicação.
 
-Para valores monetários observados:
+Os pisos são preferências explícitas de triagem, não probabilidades mínimas. Mantêm atenção a perdas relevantes e a valores ainda incompletos. Valores altos em regiões mais seguras não são automaticamente tratados como dispensáveis. A configuração é inicial e precisa de validação substantiva com sinistros e especialistas.
 
-```
-I = clip[ln(1 + E/s) / ln(1 + E_ref/s), 0, 1]
-```
+k=0,10 para a interação de vidros; k=0 nas outras três coberturas. A decomposição registra base, interação e efeito da limitação a 100. Ausência de vidros informada em confirmação da unidade é uma regra explícita de inaplicabilidade: prioridade zero e explicação própria.
 
-`s = R$ 10.000` é a escala inicial; `E_ref` depende da cobertura. Referências iniciais: R$ 3 milhões para conteúdo em incêndio/roubo/vendaval; R$ 1 milhão para equipamentos; R$ 300 mil para cenário de aluguel; R$ 1,5 milhão para despesas de paralisação; R$ 1 milhão para cenário digital parcial.
+Para exposição monetária E:
 
-Justificativa: comprimir diferenças de ordens de grandeza sem fazer uma média entre dinheiro e índices. Esses valores organizam a escala do protótipo; precisam de revisão e análise de sensibilidade. Não são limites oficiais, cotação ou importância segurada recomendada por contrato. O valor bruto permanece visível acima da saturação.
+    I = clip[ln(1+E/s) / ln(1+E_ref/s), 0, 1]
 
-Não há ajuste automático por lote: o desenvolvimento e o teste usam as mesmas referências. Não se ajusta o modelo usando a distribuição do teste.
+s=R$10 mil. Referências iniciais: R$3 milhões para conteúdo, R$1 milhão para equipamentos, R$300 mil para aluguel, R$1,5 milhão para despesas de paralisação e R$100 mil para reposição de vidros. No RC empregador, usa-se folha mensal com referência R$500 mil, apenas como escala econômica contextual. Não converte folha em valor de indenização. Referências ficam fixas no desenvolvimento e no teste; o valor bruto é preservado acima da saturação.
 
-## 4. Indicador do evento
+Classes: [0,25) muito baixa; [25,50) baixa; [50,70) moderada; [70,85) alta; [85,100] muito alta. Prioridade maior significa maior atenção.
 
-`R = soma(peso_j × fator_j)`. A combinação ponderada ocorre dentro da dimensão do evento. A prioridade final não é média dos componentes: inclui multiplicação e interações.
+## Roubo: território separado do patrimônio
 
-| Cobertura | Indicadores e pesos iniciais de R | Impacto e limitações |
-|---|---|---|
-| Incêndio | Atividade 50%, material 30%, padrão 20% | Bens/estoque; equipamento de cozinha observado acrescenta interação. Não presume cozinha pela atividade. |
-| Danos elétricos | Despesa de energia 60%, atividade 40% | Equipamentos elétricos; dependência digital aumenta a consequência operacional. Energia não prova falha. |
-| Aluguel | Atividade 60%, material 40% | Aluguel observado × cenário de paralisação. Relação locador/inquilino e aplicação contratual a confirmar. |
-| RC estabelecimento | Atividade 70%, sinal de loja 30% | Impacto financeiro desconhecido; não reutiliza atividade como valor de indenização. |
-| Despesas fixas | Atividade 40%, dependência digital 30%, material 30% | Despesa agregada × cenário; sem somar novamente folha/aluguel. |
-| Roubo | Exposição territorial 100% | Patrimônio exposto; sem colocar patrimônio no componente do evento. |
-| Vendaval | Clima 70%, padrão 30% | Conteúdo cadastrado. Sem clima externo, fator climático ausente e confiança baixa. |
-| RC empregador | Atividade 70%, funcionários 30% | Folha normalizada apenas como proxy de porte da exposição; não vira indenização. Funcionários são do nível da empresa. |
-| Vidros | Sinal de loja/galeria 65%, atividade 35% | Impacto desconhecido; confirmação necessária. Área não comprova vidraças. |
-| Cibernética adicional | Indicador de tratamento de dados 100% | Cenário parcial de custos de interrupção proporcional à dependência digital e bens de informática. Não mede ataque nem controles. |
+Referência pública: tabelas IBGE/SIDRA 8508, 8510 e 8512, ano 2021. O preparador obtém os totais municipais de domicílios e domicílios com vítimas, categorias Total, em unidades compatíveis. Calcula furto/total e roubo/total; faz média com pesos iguais e min-max nas 27 capitais publicadas. Segurança relativa é 1 menos a exposição normalizada; R é 1 menos essa segurança.
 
-As variáveis da dimensão do evento são proxies contextuais e hipóteses, não frequências observadas. Pesos maiores indicam maior influência pretendida na triagem, sem alegar associação empírica comprovada. Os mapas por atividade e construção estão no JSON e ficam visíveis na auditoria.
+Não é índice oficial do IBGE nem taxa empresarial. Pessoas/domicílios diferem de estabelecimentos e o ano é antigo; confiança contextual inicial 0,35. Não soma as duas taxas como se fossem eventos disjuntos. A referência é congelada no snapshot; não se normaliza novamente por lote de empresas. Não diferencia bairros de uma mesma cidade.
 
-A primeira versão usa um representante por fenômeno digital: dependência digital e tratamento de dados, evitando somar todos os índices derivados correlacionados. Os demais campos permanecem na base para revisão futura. Maturidade digital e equipamentos de segurança cadastrados não reduzem a exposição sem evidência dos controles técnicos/funcionamento.
+Impacto central: soma(valor cadastrado × probabilidade de localização) + estoque médio. Cenário alternativo: valor integral dos bens de referência + máximo entre estoque médio e pico. O cenário integral é exploratório; confirmar presença, suscetibilidade à subtração, sobreposição e elegibilidade contratual dos bens. Estoque médio e pico não são somados. Bens são consolidados antes dos cruzamentos, sem duplicar bens ou faturamento. Confiança dos vínculos afeta incerteza, não o indicador de criminalidade.
 
-## 5. Vulnerabilidade
+## Vendaval: clima, consequências e construção
 
-Na ausência de caixa, reservas e custos de recuperação, o modelo usa uma proxy limitada:
+Fonte: Open-Meteo, modelo ERA5 explicitamente selecionado. Série diária de 1996-01-01 a 2025-12-31, 10.958 dias por cidade. Unidades verificadas: rajada máxima diária em km/h e precipitação diária em mm. Coordenada pública da cidade e célula de reanálise são registradas; nenhuma coordenada perturbada do cliente é usada.
 
-```
-V = clip(despesa_fixa_mensal_da_unidade / faturamento_mensal_da_empresa, 0, 1)
-```
+    A = dias com rajada >=50 / dias com vento válido
+    B = dias com rajada >=70 / dias com vento válido
+    C = dias com rajada >=40 e chuva >=50 / dias com ambas as observações válidas
+    F = 0,50A + 0,30B + 0,20C
+    R = F / (F + 0,01)
 
-Aplicada somente a empresa de uma unidade. A confiança dessa proxy é limitada a 0,40. Não representa liquidez ou solvência. Para múltiplas unidades ou receita/despesas ausentes, o ponto central é a hipótese configurada (0,50), com confiança zero e sensibilidade ampla. Faturamento não é distribuído arbitrariamente entre unidades.
+O limiar de severidade B adiciona peso aos dias já presentes em A, intencionalmente. A coincidência diária de vento e chuva não comprova simultaneidade horária. Ausências não viram dias sem evento; completude usa todo o intervalo esperado, incluindo datas faltantes. Duplicações e séries incompatíveis são rejeitadas.
 
-## 6. Prioridade e interações
+0,01 é a referência configurável de frequência ponderada para organizar a escala, não taxa anual de sinistro. É fixa entre lotes. Os limiares, pesos e referência são hipóteses acadêmicas, não critérios contratuais. A confiança inicial é 0,55 × completude.
 
-```
-P = 100 × clip[I × (a + (1-a)R) × (b + (1-b)V) + k × I × R × D, 0, 1]
-```
+O preparador também calcula 2016–2025 e limiares alternativos 40/60 km/h. A interface compara seus efeitos. Alterações de pesos/referência podem ser recalculadas das frequências; mudanças de período/limiares exigem regenerar as séries derivadas. O motor identifica divergência de parâmetros e não usa silenciosamente referência incompatível.
 
-Parâmetros iniciais: `a = 0,65`, `b = 0,70`. O componente do evento pode reduzir a parcela multiplicativa até 35%, mantendo um piso de atenção à severidade; a vulnerabilidade pode modulá-la até 30%. Esses pisos são preferências de decisão do protótipo para não anular perdas elevadas. Não representam risco residual de 65%/70% nem probabilidades mínimas de evento.
+I usa conteúdo e estoque. V combina 60% da proxy financeira e 40% do padrão construtivo, que não comprova resistência do telhado. Área não vira valor do prédio. Granizo, tornado e reconstrução da edificação não foram estimados.
 
-`D` descreve uma interação específica. `k` varia de 0 a 0,15: cozinha 0,12; dependência digital 0,15; comprometimento de custos 0,10–0,12; presença física 0,10; trabalhadores/atividade 0,12. Roubo e vendaval não têm interação adicional além da multiplicação dos componentes.
+## RC empregador
 
-Os coeficientes limitam o efeito adicional a no máximo 15 pontos. Sua justificativa inicial é impedir que uma proxy isolada domine a decisão. O efeito real depende dos produtos entre fatores. O sistema exporta base, interação e efeito da limitação a 100, permitindo reconstruir a nota.
+Fonte: PDF NR-4, edição indicada como atualizada 2023, Anexo I, no portal oficial do MTE. O preparador extrai 673 classes, incluindo descrições em múltiplas linhas, e registra página e hash do documento. A subclasse CNAE de sete dígitos é relacionada à classe de cinco dígitos. CNAEs não encontrados ficam desconhecidos, com confiança zero.
 
-Aumentar patrimônio mantém R de roubo constante e aumenta I até a saturação. Segurança territorial relativa máxima não zera P quando há impacto. Reduções de R, V ou D reduzem a prioridade mantendo os outros fatores, dentro dos pisos. Dados ausentes não são automaticamente fatores protetores.
+Mapa ordinal inicial: GR1=0,25; GR2=0,50; GR3=0,75; GR4=1. A transformação é hipótese da equipe; não implica que grau 4 tenha quatro vezes a frequência de acidentes do grau 1. Confiança contextual inicial 0,60. A classificação não substitui análise da atividade efetiva ou de segurança do trabalho e não comprova responsabilidade jurídica.
 
-Classes iniciais: [0,25) muito baixa; [25,50) baixa; [50,70) moderada; [70,85) alta; [85,100] muito alta.
+I usa folha mensal local como proxy econômica, com confiança limitada a 0,40. Funcionários da empresa não são multiplicados pela folha, não se repetem como exposição principal em cada filial e não geram interação adicional. O total empresarial só pode ser interpretado como local em empresa de uma unidade; contagens locais opcionais são identificadas separadamente para confirmação, sem alterar o modelo principal por duplicação do porte. Não há estimativa defensável de indenização apenas com folha: faixa monetária permanece pendente.
 
-## 7. Ausências, confiança e sensibilidade
+## Vidros
 
-Fatores ausentes usam ponto central 0,50 e confiança zero. O ponto central do evento totalmente ausente e da vulnerabilidade ausente é configurável. Categoria não reconhecida é desconhecida, não risco zero. Valor negativo/não finito é inválido. Zero cadastrado pode ser observado, mas ausência de aluguel não prova propriedade.
+O evento contextual usa sinais de loja/galeria (65%) e atividade com presença de terceiros (35%). Sinal textual não comprova vitrine; área não prova quantidade de vidro. Sem orçamento, impacto é desconhecido, com confiança zero e faixa monetária pendente.
 
-Confiança do resultado = média da confiança do evento, impacto e vulnerabilidade. Trata-se de qualidade relativa da evidência, não probabilidade de acerto. A confiança do evento pondera a qualidade dos fatores. A confiança dos bens considera completude da ponderação e vínculos de baixa confiança. Todos os valores são hipóteses explícitas da equipe.
+O CSV opcional de confirmações informa presença e reposição por empresa-estabelecimento. Um valor informado é normalizado e dimensionado com rastreabilidade. Ausência explícita de vidros zera a prioridade; ausência de informação mantém incerteza. Valor negativo, contagem inválida e ausência de vidros com valor positivo são rejeitados.
 
-Para um fator x com confiança c, a sensibilidade é explorada de `x×c` a `x+(1-c)×(1-x)`. O motor propaga extremos dos componentes não negativos. É uma faixa de sensibilidade à evidência incompleta, não intervalo de confiança estatístico. A confiança não multiplica a prioridade final para transformá-la em falsa baixa necessidade.
+## Vulnerabilidade, confiança e ausências
 
-## 8. Seleção de plano
+A proxy financeira é despesa fixa mensal da unidade / faturamento mensal da empresa, limitada entre 0 e 1. Só é aplicada a empresa de uma unidade; confiança máxima 0,40. Faturamento não é caixa, lucro ou solvência. Em várias unidades, não há rateio arbitrário: ponto central 0,50 e confiança zero.
 
-O catálogo é lido do CSV. Essencial é a base. Cada candidato é comparado ao escolhido até então. Calculam-se adequação relativa, contribuição das novas coberturas e lacunas importantes.
+Fatores ausentes usam ponto central explícito (0,50 por padrão) e confiança zero. Categoria desconhecida não vira proteção comprovada. Valores negativos/não finitos são inválidos. Confiança final é a média da qualidade do evento, impacto e vulnerabilidade, não probabilidade de acerto; não multiplica a nota para criar falsa baixa prioridade.
 
-```
-adequação = soma(peso_c × prioridade_c coberta) / soma(peso_c × prioridade_c total)
-ganho = soma(peso_c × prioridade_c nova) / soma(peso_c × prioridade_c total)
-```
+A sensibilidade de um fator x com confiança c vai de x×c a x+(1-c)×(1-x). Os extremos dos componentes não negativos são propagados. Essa faixa não é intervalo estatístico. O plano também é calculado nos cenários inferior/superior para sinalizar instabilidade.
 
-Pesos iniciais das coberturas = 1. Upgrade quando acrescenta cobertura com nota ≥60 e ganho ≥15%, ou resolve uma lacuna crítica ≥85. Entre alternativas que atendem ao critério, o processamento mantém o menor plano suficiente. Coberturas comuns nunca justificam upgrade sozinhas. Os limiares são hipóteses de decisão e não devem ser calibrados para selecionar uma fração desejada da base.
+## Escolha do plano
 
-O algoritmo também avalia as faixas inferior/superior para sinalizar instabilidade da recomendação. Não otimiza custo, margem ou acessibilidade sem cotação. A análise de preço sempre permanece pendente.
+Essencial é o ponto de partida. Somente os quatro índices entram nos pesos, no denominador de adequação e no benefício incremental. Coberturas comuns podem ter valores grandes ou lacunas de informação, sem mudar essa comparação.
 
-## 9. Elegibilidade e valores sugeridos
+Upgrade quando as novas coberturas incluem prioridade >=60 e representam ganho >=15% da necessidade dos quatro índices, ou resolvem lacuna crítica >=85. Parâmetros configuráveis. Prático acrescenta roubo e vendaval; Total acrescenta RC empregador e vidros. O algoritmo compara os conjuntos e mantém o menor plano que atende ao critério, com razões e lacunas registradas. Não usa preços inexistentes nem afirma acessibilidade econômica por faturamento.
 
-Regras preliminares baseadas no guia do desafio: material combustível, obra/situação cadastral e vínculo do endereço geram confirmação. Não existe tabela de aceitação oficial por CNAE no pacote; aceitação de atividade e regras contratuais são pendentes por padrão. O motor não transforma hipóteses em exclusões oficiais. Plano sugerido é condicional; a exportação registra as pendências.
+## Dimensionamento, elegibilidade e exportação
 
-Faixas patrimoniais usam cenários de bens/estoque; elétricos usam equipamentos. Aluguel e despesas usam 1 a 3 meses inicialmente, configuráveis e sem presumir duração média do sinistro. São referências de exposição para discutir dimensionamento, sem valores de franquia, limite aprovado ou preço de seguro. O cenário de incêndio não cobre silenciosamente prédio sem valor de reconstrução.
+Todas as coberturas fixas do plano escolhido são exportadas nas colunas originais, mesmo sem índice decisório. Incêndio usa conteúdo/estoque; danos elétricos usam equipamentos; aluguel e despesas usam cenários de 1 a 3 meses. Despesas agregadas não somam aluguel e folha novamente. Ausência de aluguel não comprova imóvel próprio.
 
-RC estabelecimento/empregador e vidros exigem estimativa adicional para faixa monetária defensável. O sistema justifica a ausência em vez de multiplicar faturamento, folha ou área por constantes sem fundamento. Cibernética fica na auditoria como avaliação adicional; não é exportada como cobertura fixa/disponível.
+Sem base defensável para indenizações de RC, prédio ou vidros não informados, a limitação é registrada. Faixas não são prêmio, limite contratado ou aceitação. Obra, material combustível, irregularidade, aceitação da atividade e condições contratuais permanecem na triagem preliminar, com confirmação exigida por padrão.
 
-## 10. Validação e próximos dados
+A auditoria separa quatro pontuações de nove dimensionamentos. Fonte, período e confiança de clima e segurança são independentes. Manifestos registram hashes das entradas públicas/privadas, parâmetros e saídas. A aplicação funciona offline; somente o preparador acessa fontes externas. Os snapshots públicos não contêm os CSVs de empresas.
 
-Testes verificam contraste de R$30 mil/R$3 milhões na mesma cidade; monotonicidade; proteção não anulada por segurança relativa; equipamentos; dependência digital; sinais de loja; maturidade não interpretada como vulnerabilidade; unidades independentes; confiança; duplicações; exportação e estabilidade.
+## Verificação
 
-Aceitação desta versão: todas as unidades processadas, nove notas fixas + uma adicional, cálculos finitos e reconstruíveis, colunas dos templates preservadas, vínculos validados, cenários documentados e nenhuma probabilidade de sinistro ou preço inventado.
+Testes exercitam patrimônio versus ocorrência, influência territorial, valores elevados em cidade segura, fontes independentes, funcionários não duplicados, NR-4, ausência e reposição de vidros, séries climáticas incompletas, parâmetros divergentes, independência das coberturas comuns, esquema dos templates, reprodutibilidade e fluxo da interface.
 
-Próxima validação substantiva: revisão dos mapas e coeficientes com especialistas, sensibilidade das referências e limiares, valores de reposição, inventário de vidros, segurança em funcionamento, reservas/caixa, aceitação contratual e histórico de sinistros com períodos de exposição. Casos contrastantes validam coerência lógica, não precisão preditiva.
+Coerência dos cenários e processamento integral não demonstram precisão preditiva. Calibração posterior exige sinistros, períodos de exposição e revisão de especialistas. Nenhum corte foi ajustado para selecionar uma proporção desejada da base.

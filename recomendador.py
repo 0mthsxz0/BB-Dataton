@@ -1,7 +1,7 @@
 """Seleção de planos por adequação incremental e elegibilidade preliminar."""
 from __future__ import annotations
 
-from motor_pontuacao import CIBER, carregar_config
+from motor_pontuacao import DECISORIAS, COMUNS, carregar_config
 from processamento import NULOS
 
 ORDEM_PLANOS = ['ESSENCIAL', 'PRATICO', 'TOTAL']
@@ -29,13 +29,13 @@ def verificar_elegibilidade(registro, config):
 
 def recomendar_plano(pontuacoes, catalogo, config=None, registro=None):
     cfg = carregar_config(config)
-    fixas = {c: s for c, s in pontuacoes.items() if not s['adicional']}
+    fixas = {c: pontuacoes[c] for c in DECISORIAS}
     conjuntos = {p: set(catalogo.loc[catalogo.plano.eq(p), 'cobertura_fixa']) for p in ORDEM_PLANOS}
-    if any(conjuntos[p] - set(fixas) for p in ORDEM_PLANOS):
+    if any(conjuntos[p] - (set(DECISORIAS)|set(COMUNS)) for p in ORDEM_PLANOS):
         raise ValueError('Catálogo contém cobertura sem modelo de análise.')
     if not conjuntos['ESSENCIAL'] <= conjuntos['PRATICO'] <= conjuntos['TOTAL']:
         raise ValueError('Catálogo deve preservar a inclusão das coberturas dos planos anteriores.')
-    if conjuntos['TOTAL'] != set(fixas):
+    if conjuntos['TOTAL'] != set(DECISORIAS)|set(COMUNS):
         raise ValueError('Catálogo e nove coberturas do motor divergem.')
     limites = cfg['planos']
     pesos = {c: cfg['coberturas'][c]['peso_plano'] for c in fixas}
@@ -45,7 +45,7 @@ def recomendar_plano(pontuacoes, catalogo, config=None, registro=None):
         total = sum(pesos[c] * n for c, n in necessidades.items()) or 1
         escolhido = 'ESSENCIAL'
         for candidato in ORDEM_PLANOS[1:]:
-            novas = conjuntos[candidato] - conjuntos[escolhido]
+            novas = (conjuntos[candidato] - conjuntos[escolhido]) & set(fixas)
             ganho = sum(pesos[c] * necessidades[c] for c in novas) / total
             relevantes = [c for c in novas if necessidades[c] * 100 >= limites['limiar_cobertura']]
             criticas = [c for c in novas if necessidades[c] * 100 >= limites['limiar_critico']]
@@ -60,9 +60,9 @@ def recomendar_plano(pontuacoes, catalogo, config=None, registro=None):
     for plano in ORDEM_PLANOS:
         cobertas = conjuntos[plano]
         descobertas = [c for c, s in fixas.items() if c not in cobertas and s['prioridade'] >= limites['limiar_cobertura']]
-        novas = cobertas - anterior
+        novas = (cobertas - anterior) & set(fixas)
         comparacao.append({'plano': plano,
-            'adequacao_relativa': sum(pesos[c] * fixas[c]['prioridade'] for c in cobertas) / total,
+            'adequacao_relativa': sum(pesos[c] * fixas[c]['prioridade'] for c in cobertas & set(fixas)) / total,
             'ganho_incremental': sum(pesos[c] * fixas[c]['prioridade'] for c in novas) / total,
             'coberturas_importantes_descobertas': descobertas,
             'coberturas_acrescentadas': sorted(novas), 'analise_preco': 'PENDENTE'})
@@ -77,8 +77,6 @@ def recomendar_plano(pontuacoes, catalogo, config=None, registro=None):
     perguntas = list(elegibilidade['motivos'])
     perguntas += ['Confirmar caixa/reservas, valores de reposição e períodos de paralisação.',
                   'Obter cotação, franquias, exclusões e limites contratuais.']
-    if pontuacoes.get(CIBER, {}).get('prioridade', 0) >= limites['limiar_cobertura']:
-        perguntas.append('Avaliar seguro cibernético separado; não confirmado no catálogo fixo.')
     return {'plano_recomendado': escolhido, 'coberturas': sorted(conjuntos[escolhido]),
         'confianca_geral': sum(s['confianca'] for s in fixas.values()) / len(fixas),
         'elegibilidade': elegibilidade, 'comparacao': comparacao,
@@ -86,4 +84,4 @@ def recomendar_plano(pontuacoes, catalogo, config=None, registro=None):
         'recomendacao_estavel': inferior == superior,
         'justificativa': motivo + ' Adequação relativa; preço e aceitação contratual pendentes.',
         'perguntas_confirmacao': perguntas,
-        'adicionais_para_avaliar': [CIBER] if pontuacoes.get(CIBER, {}).get('prioridade', 0) >= limites['limiar_cobertura'] else []}
+        'adicionais_para_avaliar': []}
