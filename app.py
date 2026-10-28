@@ -15,6 +15,7 @@ from exportacao import analisar_base, csv_bytes
 from motor_pontuacao import DECISORIAS, ROUBO, MotorPontuacao, carregar_config
 from processamento import ARQUIVOS, carregar_base, localizar_dados, localizar_referencias
 from recomendador import recomendar_plano
+from localizacao import consultar_cep, aplicar_localizacao
 
 st.set_page_config(page_title='Protege Empresa | Datathon', page_icon='🛡️', layout='wide')
 st.markdown('''<style>
@@ -75,6 +76,50 @@ def dinheiro(valor):
     if valor is None:
         return 'Não observado'
     return f'R$ {valor:,.0f}'.replace(',', '.')
+
+
+@st.cache_data(ttl=86400, show_spinner='Consultando o CEP…', max_entries=1000)
+def obter_localizacao(cep):
+    return consultar_cep(cep)
+
+
+def consulta_por_cep(base, config, referencias):
+    st.write('Informe o CEP para localizar o município e consultar as referências disponíveis.')
+    st.caption('A consulta envia apenas o CEP ao ViaCEP. Bairro e rua ajudam a localizar; os indicadores desta versão são municipais.')
+    with st.form('consulta_cep'):
+        cep = st.text_input('CEP', placeholder='01001-000', max_chars=9)
+        enviar = st.form_submit_button('Consultar CEP')
+    if enviar:
+        st.session_state.pop('localizacao_cep', None)
+        try:
+            st.session_state.localizacao_cep = obter_localizacao(cep)
+        except ValueError as erro:
+            st.error(str(erro))
+    local = st.session_state.get('localizacao_cep')
+    if not local:
+        return
+    st.success(f'{local["municipio_real"]}/{local["uf_real"]} · IBGE {local["codigo_ibge_municipio"]}')
+    st.write('Bairro:', local['bairro'] or 'Não informado pelo serviço')
+    st.write('Logradouro:', local['logradouro'] or 'Não informado pelo serviço')
+    st.info('Abrangência: município inteiro. Este resultado não mede o risco específico do bairro, da rua ou do imóvel.')
+    territorial, avisos = aplicar_localizacao({}, local, referencias)
+    for aviso in avisos:
+        st.warning(aviso)
+    st.dataframe(pd.DataFrame([
+        {'Indicador': nome, 'Índice relativo': territorial.get(indicador),
+         'Período': territorial.get(f'periodo_{tipo}'), 'Fonte': territorial.get(f'fonte_{tipo}')}
+        for nome, tipo, indicador in [('Segurança', 'seguranca', 'seguranca_da_cidade_0_1'),
+                                      ('Exposição climática', 'clima', 'exposicao_climatica_0_1')]
+    ]), hide_index=True, use_container_width=True)
+    st.caption('Valores ausentes não significam risco zero. Segurança maior indica contexto mais seguro; exposição climática maior indica maior exposição relativa. Nenhum índice é probabilidade de sinistro.')
+    with st.expander('Localização e origem da consulta'):
+        st.json(local)
+    if st.checkbox('Calcular prioridades com os dados de uma empresa cadastrada'):
+        st.warning('Esta consulta combina o CEP informado com os valores e características da unidade selecionada. Os CSVs e as exportações em lote mantêm o cadastro original.')
+        registro = seletor(base, 'cep')
+        if registro:
+            novo, _ = aplicar_localizacao(registro, local, referencias)
+            detalhar(novo, base, config)
 
 
 def grafico(pontos):
@@ -171,7 +216,7 @@ def main():
     st.sidebar.markdown('## Protege Empresa')
     st.sidebar.caption('Datathon · recomendação explicável')
     pagina = st.sidebar.radio('Navegação', ['Visão geral', 'Analisar estabelecimento', 'Comparar',
-                                           'Simular cenários', 'Regras e metodologia', 'Exportar'])
+                                           'Simular cenários', 'Consultar por CEP', 'Regras e metodologia', 'Exportar'])
     try:
         padrao = str(localizar_dados(os.environ.get('BB_DATATHON_DADOS')))
     except ValueError:
@@ -216,6 +261,9 @@ def main():
         st.caption('Todos os planos são sugestões condicionais à elegibilidade. Preços e condições contratuais pendentes.')
         st.dataframe(resumo[['empresa_id','imovel_id','grupo_atividade','municipio_real','plano','confianca','elegivel']],
                      hide_index=True,use_container_width=True)
+
+    elif pagina == 'Consultar por CEP':
+        consulta_por_cep(base, config, referencias)
 
     elif pagina == 'Analisar estabelecimento':
         registro = seletor(base)

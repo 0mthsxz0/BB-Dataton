@@ -94,7 +94,9 @@ Todas as coberturas fixas do plano escolhido são exportadas nas colunas origina
 
 Sem base defensável para indenizações de RC, prédio ou vidros não informados, a limitação é registrada. Faixas não são prêmio, limite contratado ou aceitação. Obra, material combustível, irregularidade, aceitação da atividade e condições contratuais permanecem na triagem preliminar, com confirmação exigida por padrão.
 
-A auditoria separa quatro pontuações de nove dimensionamentos. Fonte, período e confiança de clima e segurança são independentes. Manifestos registram hashes das entradas públicas/privadas, parâmetros e saídas. A aplicação funciona offline; somente o preparador acessa fontes externas. Os snapshots públicos não contêm os CSVs de empresas.
+A auditoria separa quatro pontuações de nove dimensionamentos. Fonte, período e confiança de clima e segurança são independentes. Manifestos registram hashes das entradas públicas/privadas, parâmetros e saídas. O cálculo funciona offline; o preparador e a consulta opcional de CEP acessam fontes externas. Os snapshots públicos não contêm os CSVs de empresas.
+
+Na consulta por CEP, o ViaCEP fornece a localização e o código municipal IBGE; não fornece risco. A associação usa exatamente esse código nas referências disponíveis. Não há interpolação de cidades próximas ou atribuição de risco ao bairro informado. Município sem correspondência permanece desconhecido com incerteza ampliada. A consulta conserva URL e horário UTC da localização, usa cache de 24 horas e não modifica os dados ou exportações originais. Prioridades exigem os demais dados da unidade selecionada.
 
 ## Verificação
 

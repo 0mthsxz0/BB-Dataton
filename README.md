@@ -25,11 +25,15 @@ Para baixar novamente e reconstruir os indicadores, sem APIs pagas:
 
     .\.venv\Scripts\python.exe scripts/preparar_referencias.py --dados "CAMINHO_DOS_CSVS"
 
-Use --somente seguranca, clima ou nr4 para reconstruir uma referência. Downloads ficam em data/referencias/cache; consultas climáticas de 30 anos respeitam intervalo entre cidades. Em caso de limitação da fonte, execute novamente depois: os downloads já concluídos serão reutilizados. A análise da aplicação não faz consultas de rede.
+Use --somente seguranca, clima ou nr4 para reconstruir uma referência. Downloads ficam em data/referencias/cache; consultas climáticas de 30 anos respeitam intervalo entre cidades. Em caso de limitação da fonte, execute novamente depois: os downloads já concluídos serão reutilizados. O cálculo dos índices usa referências locais; a consulta opcional por CEP acessa o ViaCEP.
 
 A geocodificação automática desta versão valida os dez municípios/UFs do pacote. Outras localidades exigem coordenada pública validada e atualização do preparador. Não são usadas as coordenadas perturbadas dos estabelecimentos. Dados municipais não distinguem bairros ou ruas.
 
 ## Interface
+
+Em **Consultar por CEP**, informe oito dígitos (com ou sem hífen). Apenas o CEP é enviado ao ViaCEP, com timeout e cache de até 24 horas. Município, UF e código IBGE vinculam os indicadores locais; bairro e logradouro são exibidos quando disponíveis. A tela informa abrangência municipal, fonte, período e ausência de referências. Não há inferência de criminalidade pelo CEP nem busca automática de novos indicadores para municípios sem cobertura.
+
+Para calcular as quatro prioridades, marque a opção de combinar a localização com uma empresa cadastrada. Os valores e características dessa unidade continuam sendo necessários; o CEP sozinho não fornece patrimônio, folha ou vidros. Essa consulta não grava alterações nos CSVs nem nas exportações em lote. Ao mudar a localização, indicadores e fontes anteriores são descartados, inclusive se o novo município não possuir referência.
 
 - Visão geral: quatro prioridades, planos, confiança e sensibilidade.
 - Análise: busca por atividade, porte ou CNAE; decomposição, fontes e valores das nove coberturas.
