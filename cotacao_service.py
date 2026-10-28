@@ -112,9 +112,9 @@ def validar(payload):
     elif not any(s['id'] == sub for s in activity['subactivities']):
         raise ValueError('A subatividade não pertence à atividade escolhida.')
     answers = payload.get('answers')
-    if not isinstance(answers, dict) or any(type(answers.get(k)) is not bool for k in QUESTION_IDS):
-        raise ValueError('Responda às oito perguntas com Sim ou Não.')
-    if not answers['hasEmployees'] and answers['hazardousWork']:
+    if not isinstance(answers, dict) or any(k not in answers or (type(answers[k]) is not bool and not (k == 'hasEmployees' and answers[k] is None)) for k in QUESTION_IDS):
+        raise ValueError('Responda às perguntas sobre proteção. A presença de empregados pode ficar desconhecida quando a quantidade não for informada.')
+    if answers['hasEmployees'] is False and answers['hazardousWork']:
         raise ValueError('Sem empregados, responda Não à pergunta sobre tarefas dos empregados.')
     if not answers['hasGlass'] and answers['glassExposed']:
         raise ValueError('Sem vidros, responda Não à pergunta sobre exposição dos vidros.')
@@ -129,6 +129,11 @@ def validar(payload):
                 raise ValueError(f'Valor inválido no campo {k}. Use número positivo ou zero.')
             if k in ('employees','units') and (float(v) != int(float(v)) or float(v) > 1000000 or k == 'units' and float(v) < 1):
                 raise ValueError('Quantidade de empregados/unidades deve ser um inteiro válido; unidades deve ser pelo menos um.')
+    employee_count = numero(payload.get('employees'))
+    if employee_count is not None and answers['hasEmployees'] is not None and answers['hasEmployees'] != (employee_count > 0):
+        raise ValueError('A quantidade de empregados não combina com a presença declarada de empregados.')
+    if employee_count == 0 and answers['hazardousWork']:
+        raise ValueError('Sem empregados, não há tarefas dos empregados a confirmar.')
     glass_count = payload.get('glassCount')
     if glass_count is not None and glass_count != '':
         value = numero(glass_count)
@@ -250,15 +255,20 @@ def analisar(payload, base=None, municipio_fn=consultar_municipio):
     if payload.get('glassCount') not in (None, ''):
         record['quantidade_vidros_declarada'] = int(float(payload['glassCount']))
         origins['quantidade_vidros_declarada'] = 'Quantidade aproximada declarada no formulário; não é valor de reposição'
-    q = payload['answers']
+    q = dict(payload['answers'])
+    employee_count = numero(payload.get('employees'))
+    if employee_count is not None:
+        q['hasEmployees'] = employee_count > 0
     record['questionario'] = q
     record['escopo_protecao'] = payload['protection']
     record['grupo_atividade'] = ACTIVITY_GROUPS.get(activity['id'])
     origins['grupo_atividade'] = 'Mapa contextual da atividade selecionada no formulário'
     record['possui_vidros_confirmado'] = 'SIM' if q['hasGlass'] else 'NAO'
-    record['possui_empregados_confirmado'] = 'SIM' if q['hasEmployees'] else 'NAO'
+    record['possui_empregados_confirmado'] = None if q['hasEmployees'] is None else 'SIM' if q['hasEmployees'] else 'NAO'
     origins['possui_vidros_confirmado'] = origins['possui_empregados_confirmado'] = 'Declarado nas oito perguntas do formulário'
-    if not q['hasEmployees']:
+    if q['hasEmployees'] is None:
+        warnings.append('Quantidade de empregados nesta unidade ainda não informada; ausência não foi presumida.')
+    if q['hasEmployees'] is False:
         if numero(payload.get('employees')) not in (None, 0) or numero(payload.get('payroll')) not in (None, 0):
             raise ValueError('Sem empregados, quantidade e folha devem ficar vazias ou ser zero.')
         record['funcionarios_unidade_confirmados'] = record['folha_pagamento_mensal'] = 0

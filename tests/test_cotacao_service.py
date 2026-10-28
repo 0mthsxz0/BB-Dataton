@@ -284,3 +284,17 @@ def test_zero_vidros_significa_ausencia_confirmada(analyze,payload):
     r=analyze(p)
     assert r['vidrosDeclarados']['quantidade']==0
     assert r['indices'][VIDROS]['prioridade']==0
+
+def test_quantidade_define_presenca_sem_pergunta_duplicada(analyze,payload):
+    p=copy.deepcopy(payload);p['answers']['hasEmployees']=None
+    r=analyze(p)
+    assert r['respostas']['hasEmployees'] is True
+    p['employees']=p['payroll']=0;p['answers']['hazardousWork']=False
+    r=analyze(p);assert r['respostas']['hasEmployees'] is False
+    assert r['indices'][EMPREGADOR]['prioridade']==0
+
+def test_quantidade_desconhecida_nao_vira_ausencia(analyze,payload):
+    p=copy.deepcopy(payload);p.pop('employees');p['answers']['hasEmployees']=None
+    r=analyze(p);assert r['respostas']['hasEmployees'] is None
+    assert any('ausência não foi presumida' in x for x in r['avisos'])
+    assert r['indices'][EMPREGADOR]['prioridade']>0

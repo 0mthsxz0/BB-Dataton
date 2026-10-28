@@ -31,11 +31,22 @@ export async function api(url, payload) {
   return data;
 }
 
+export function employeePresence(state) {
+ const raw=state.employees;
+ if(raw==null||String(raw).trim()==='')return null;
+ const n=Number(raw);return Number.isInteger(n)&&n>=0&&n<=1000000?n>0:null;
+}
+export function syncEmployeeExposure(state,previousEmployees) {
+ const presence=employeePresence(state);
+ if(presence===false)state.hazardousWork='no';
+ else if(previousEmployees!=null&&String(previousEmployees).trim()!==''&&Number(previousEmployees)===0)state.hazardousWork='';
+ return presence;
+}
 export function riskPayload(state, questionnaire) {
   const [empresaId, imovelId] = (state.sourceKey || '').split('|');
   const keys = ['activityId','subactivityId','otherSubactivity','protection','shopping','city','uf','cnae','glassCount',...NUMERIC_FIELDS.map(([key])=>key)];
   return {...Object.fromEntries(keys.map(k=>[k,state[k]])), empresaId:empresaId || '', imovelId:imovelId || '',
-    answers:Object.fromEntries(questionnaire.groups.flatMap(g=>g.questions.map(q=>[q.id,state[q.id] === 'yes' ? true : state[q.id] === 'no' ? false : null])))};
+    answers:Object.fromEntries(questionnaire.groups.flatMap(g=>g.questions.map(q=>[q.id,q.id==='hasEmployees'?employeePresence(state):q.id==='hazardousWork'&&employeePresence(state)===false?false:state[q.id] === 'yes' ? true : state[q.id] === 'no' ? false : null])))};
 }
 
 const CUSTOMER_LABELS={
@@ -53,10 +64,10 @@ export function glassFields(field) {
 }
 export function riskFields(state, questionnaire, field, {internal=false}={}) {
   return `<p class="quote-helper">${esc(questionnaire.notice)} Campos financeiros vazios aproveitam o cadastro vinculado; sem cadastro, ficam desconhecidos. Zero significa ausência confirmada.</p>
+    <section class="risk-questions"><h2>Oito perguntas sobre a proteção</h2>${questionnaire.groups.map(group=>`<section class="risk-group"><h3>${esc(!internal&&group.code==='RESPONSABILIDADE_CIVIL_EMPREGADOR'?'Proteção dos funcionários':group.name)}</h3>${group.questions.map(q=>q.id==='hasEmployees'?field('employees',internal?'Quantidade de empregados nesta unidade':'Quantas pessoas são empregadas neste local?',{type:'number',required:false,min:'0',max:'1000000',increment:'1',inputmode:'numeric',help:'Informe zero se não houver empregados. Deixe em branco se ainda não souber; isso não será considerado ausência.'}):`<fieldset class="risk-question" ${q.id==='hazardousWork'?'data-employee-exposure':''}><legend>${esc(q.text)}</legend>${[['yes','Sim'],['no','Não']].map(([value,label])=>`<label><input type="radio" name="${q.id}" value="${value}" ${q.id==='hazardousWork'&&employeePresence(state)===false?'disabled':'required'} ${(q.id==='hazardousWork'&&employeePresence(state)===false?value==='no':state[q.id]===value)?'checked':''}> ${label}</label>`).join('')}</fieldset>`).join('')}</section>`).join('')}</section>
     <section class="risk-inventory"><h2>Valores do estabelecimento</h2><p>Equipamentos já fazem parte dos bens: informe apenas a parcela elétrica no segundo campo. Estoque fica separado. Os valores devem refletir reposição, sem somar os mesmos itens duas vezes.</p>
     <div class="form-grid">${field('cnae',internal?'CNAE principal (sete dígitos)':'Código da atividade no CNPJ (CNAE), se souber',{required:false,full:true,maxlength:10,help:'Se vincular uma empresa, deixe vazio para usar o CNAE cadastrado. O código da lista de atividades não é um CNAE.'})}
-    ${NUMERIC_FIELDS.filter(([key])=>internal||key!=='glassValue').map(([key,label])=>field(key,internal?label:(CUSTOMER_LABELS[key]||label),{type:'number',required:false,min:'0',max:key==='employees'?'1000000':'1000000000000',inputmode:'decimal'})).join('')}${glassFields(field)}</div></section>
-    <section class="risk-questions"><h2>Oito perguntas sobre a proteção</h2>${questionnaire.groups.map(group=>`<section class="risk-group"><h3>${esc(!internal&&group.code==='RESPONSABILIDADE_CIVIL_EMPREGADOR'?'Proteção dos funcionários':group.name)}</h3>${group.questions.map(q=>`<fieldset class="risk-question"><legend>${esc(q.text)}</legend>${[['yes','Sim'],['no','Não']].map(([value,label])=>`<label><input type="radio" name="${q.id}" value="${value}" required ${state[q.id]===value?'checked':''}> ${label}</label>`).join('')}</fieldset>`).join('')}</section>`).join('')}</section>`;
+    ${NUMERIC_FIELDS.filter(([key])=>key!=='employees'&&(internal||key!=='glassValue')).map(([key,label])=>field(key,internal?label:(CUSTOMER_LABELS[key]||label),{type:'number',required:false,min:'0',max:key==='employees'?'1000000':'1000000000000',inputmode:'decimal'})).join('')}${glassFields(field)}</div></section>`;
 }
 
 export function baseFields(context, state) {

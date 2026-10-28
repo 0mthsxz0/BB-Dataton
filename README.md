@@ -114,3 +114,5 @@ A comparação considera a meta e as lacunas dos dez itens padrão, acrescentand
 Validação: `.venv/Scripts/python.exe -m pytest -q`, `npm.cmd --prefix frontend run check` e `npm.cmd --prefix frontend test`.
 
 Na jornada pública, vidros são informados pela quantidade aproximada de janelas, portas, vitrines e espelhos, sem exigir orçamento de reposição. O motor registra a quantidade em campo separado, sem converter contagem em reais; o consultor conserva o campo financeiro e confirma o valor posteriormente. Quantidade vazia significa desconhecida; zero deve concordar com a ausência de vidros declarada.
+
+As perguntas de proteção aparecem antes dos valores. A quantidade de empregados é coletada uma única vez no bloco do empregador e define a presença: zero = ausência, positivo = presença e vazio = desconhecido. Com zero, a pergunta de exposição ocupacional é dispensada; ao voltar a informar empregados, ela exige nova resposta.
