@@ -78,6 +78,20 @@ class ClienteLigacoes:
         self.config = config
         self._opener = build_opener(SemRedirecionamento())
 
+    def _mensagem_segura(self, mensagem):
+        """Expõe a explicação do provedor sem mostrar credenciais ou telefones."""
+        if not isinstance(mensagem, str):
+            return ""
+        mensagem = mensagem.replace(self.config.token, "[token oculto]")
+        mensagem = mensagem.replace(self.config.conta, "[conta oculta]")
+        credencial = base64.b64encode(
+            f"{self.config.conta}:{self.config.token}".encode()).decode()
+        mensagem = mensagem.replace(credencial, "[credencial oculta]")
+        mensagem = re.sub(r"https?://\S+", "[link omitido]", mensagem)
+        mensagem = re.sub(r"\b(?:AC|SK|CA)?[0-9a-fA-F]{32}\b", "[identificador oculto]", mensagem)
+        mensagem = re.sub(r"(?<!\w)\+?[0-9][0-9 ()-]{6,}[0-9](?!\w)", "[telefone oculto]", mensagem)
+        return " ".join(mensagem.split())[:600]
+
     def _requisicao(self, sufixo="", dados=None):
         url = f"https://api.twilio.com/2010-04-01/Accounts/{self.config.conta}/Calls{sufixo}.json"
         credencial = base64.b64encode(
@@ -94,8 +108,13 @@ class ClienteLigacoes:
                 raise ValueError("Resposta inesperada")
             return {k: resultado.get(k) for k in ("sid", "status", "duration")}
         except HTTPError as erro:
+            detalhe = ""
             try:
-                codigo = json.loads(erro.read()).get("code")
+                corpo = json.loads(erro.read())
+                codigo = corpo.get("code")
+                detalhe = self._mensagem_segura(corpo.get("message"))
+                if isinstance(codigo, str) and codigo.isascii() and codigo.isdigit():
+                    codigo = int(codigo)
             except (ValueError, AttributeError):
                 codigo = None
             mensagens = {
@@ -111,8 +130,11 @@ class ClienteLigacoes:
             if erro.code >= 500:
                 raise ResultadoIncerto("A Twilio falhou ao responder. Consulte o console antes de repetir o envio.") from None
             codigo_seguro = str(codigo) if isinstance(codigo, int) else "indisponível"
-            raise ErroLigacao(mensagens.get(codigo,
-                f"Twilio recusou a operação (HTTP {erro.code}, código {codigo_seguro}). Confira o console.")) from None
+            explicacao = mensagens.get(codigo)
+            if explicacao is None:
+                explicacao = f"Twilio recusou a operação (HTTP {erro.code}, código {codigo_seguro})."
+                explicacao += " Detalhe da Twilio: " + detalhe if detalhe else " Confira os logs de Voice no console."
+            raise ErroLigacao(explicacao) from None
         except (URLError, TimeoutError, socket.timeout, OSError, ValueError, HTTPException):
             raise ResultadoIncerto(
                 "Não foi possível confirmar a resposta. Consulte os logs de Voice no console antes de repetir o envio.") from None

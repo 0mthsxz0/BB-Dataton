@@ -93,6 +93,36 @@ def test_erro_trial_sem_vazamento(cliente):
     assert TOKEN not in str(erro.value)
 
 
+def test_codigo_zero_preserva_explicacao_sem_segredos(cliente):
+    credencial = base64.b64encode(f"{CONTA}:{TOKEN}".encode()).decode()
+    detalhe = (f"Call not allowed for this trial. Account {CONTA}; token {TOKEN}; "
+               f"Authorization Basic {credencial}; To +5511888888888; "
+               "https://api.twilio.com/path?token=privado")
+    cliente._opener.open.side_effect = HTTPError("url", 400, "Bad", {},
+        io.BytesIO(json.dumps({"code": 0, "message": detalhe}).encode()))
+    with pytest.raises(ErroLigacao) as erro:
+        cliente.ligar("+5511888888888", "Olá")
+    exibido = str(erro.value)
+    assert "Call not allowed for this trial" in exibido
+    assert "código 0" in exibido
+    for segredo in (TOKEN, CONTA, credencial, "+5511888888888", "token=privado"):
+        assert segredo not in exibido
+
+
+def test_codigo_numerico_como_texto(cliente):
+    cliente._opener.open.side_effect = HTTPError("url", 400, "Bad", {},
+        io.BytesIO(b'{"code":"21219","message":"test"}'))
+    with pytest.raises(ErroLigacao, match="verifique o destino"):
+        cliente.ligar("+5511888888888", "Olá")
+
+
+@pytest.mark.parametrize("corpo", [b"[]", b"not-json", b'{"code":0,"message":null}'])
+def test_erro_sem_mensagem_valida(cliente, corpo):
+    cliente._opener.open.side_effect = HTTPError("url", 400, "Bad", {}, io.BytesIO(corpo))
+    with pytest.raises(ErroLigacao, match="logs de Voice"):
+        cliente.ligar("+5511888888888", "Olá")
+
+
 @pytest.mark.parametrize("falha", [URLError("credencial privada"), TimeoutError(),
     HTTPError("url", 503, "Bad", {}, io.BytesIO(b"{}"))])
 def test_envio_incerto_nao_repete(cliente, falha):
