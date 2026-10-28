@@ -65,7 +65,7 @@ async function body(req) {
 }
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8', '.png': 'image/png', '.svg': 'image/svg+xml' };
 const routes = new Set(['/', '/seguros', '/seguros/seguro-empresarial', '/seguros/seguro-empresarial/']);
-const quoteRoutes = new Set(['/cotacao', '/cotacao/', '/cotacao/home', '/home']);
+const quoteRoutes = new Set(['/cotacao', '/cotacao/', '/cotacao/home', '/home', '/interno', '/interno/']);
 export const server = http.createServer(async (req, res) => {
   try {
     const host = req.headers.host || '';

@@ -16,14 +16,15 @@ def main():
     parser.add_argument('--meta',type=float,help='Meta de aderência de 0 a 100; padrão 80')
     parser.add_argument('--indispensavel',action='append',default=[],help='Código de cobertura da qual não abrir mão; pode repetir')
     parser.add_argument('--saida', default='output', help='Pasta de resultados')
+    parser.add_argument('--data-analise', help='Data ISO AAAA-MM-DD para reproduzir a validade das referências; padrão hoje')
     args = parser.parse_args()
     try:
-        base = carregar_base(args.dados, args.territorio, args.referencias, args.confirmacoes)
+        base = carregar_base(args.dados, args.territorio, args.referencias, args.confirmacoes, data_analise=args.data_analise)
         config = carregar_config(args.config)
         if args.meta is not None:
             config['planos']['meta_aderencia'] = args.meta
         config['planos']['indispensaveis'] = sorted(set(config['planos']['indispensaveis']+args.indispensavel))
-        r, c = exportar(base, config, args.saida)
+        r, c = exportar(base, config, args.saida, data_analise=args.data_analise)
     except (ValueError, KeyError, OSError) as erro:
         parser.exit(1, f'Erro de processamento: {erro}\n')
     print(json.dumps({'estabelecimentos': len(r), 'coberturas': len(c),

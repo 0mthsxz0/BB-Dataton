@@ -16,4 +16,6 @@ test('index report shows raw external values and period, safely escaping source 
   assert.ok(!html.includes('<script>'));
   assert.ok(html.includes('&lt;script&gt;'));
   assert.ok(!indexEvidence('TESTE',{...s,referencia_publica:null}).includes('href="https://sidra'));
+  const blocked=indexEvidence('TESTE',{...s,qualidade_seguranca:{status:'INCOMPATIVEL',data_analise:'2026-10-28',politica:'seguranca-1.0',motivos:['Vitimização domiciliar excluída <teste>']}});
+  for(const text of ['Base territorial: Dados incompatíveis','Vitimização domiciliar excluída &lt;teste&gt;','2026-10-28','não é precisão estatística'])assert.ok(blocked.includes(text));
 });

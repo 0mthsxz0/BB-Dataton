@@ -97,6 +97,10 @@ def anexar_evidencias(record, indices, dimensoes, origens, base=None):
 
     def referencia(tipo, campos, nome_arquivo, modo):
         arquivo = caminho_referencia(nome_arquivo)
+        if tipo == 'seguranca' and record.get('arquivo_seguranca'):
+            from pathlib import Path
+            arquivo = Path(record['arquivo_seguranca'])
+            nome_arquivo = arquivo.name
         numericos = {'taxa_furto_domicilios','taxa_roubo_domicilios','exposicao_bruta','seguranca_da_cidade_0_1','confianca_seguranca_0_1',
             'roubo_comercio_total','estabelecimentos_referencia','taxa_por_mil_estabelecimentos','referencia_taxa_por_mil',
             'frequencia_rajada_forte','frequencia_rajada_severa','frequencia_vento_chuva','exposicao_climatica_bruta','exposicao_climatica_0_1',
@@ -105,15 +109,15 @@ def anexar_evidencias(record, indices, dimensoes, origens, base=None):
             'periodo': record.get('periodo_' + tipo, record.get('versao_' + tipo)),
             'granularidade': record.get('granularidade_' + tipo, 'CLASSE CNAE' if tipo=='nr4' else None),
             'modo_acesso': modo, 'consulta_ao_vivo': False,
-            'arquivo': nome_arquivo, 'sha256_snapshot': hashlib.sha256(arquivo.read_bytes()).hexdigest() if arquivo.exists() else None,
+            'arquivo': nome_arquivo, 'sha256_snapshot': (record.get('sha256_snapshot_seguranca') if tipo == 'seguranca' else None) or (hashlib.sha256(arquivo.read_bytes()).hexdigest() if arquivo.exists() else None),
             'metodologia': record.get('metodologia_' + tipo),
             'dados': {c: numero(record.get(c)) if c in numericos else record.get(c) for c in campos},
             'vinculo': {'codigo_ibge_municipio': record.get('codigo_ibge_municipio'),
                        'municipio': record.get('municipio_real'), 'uf': record.get('uf_real')} if tipo!='nr4' else
                       {'cnae': record.get('cnae_principal'), 'classe_cnae': record.get('classe_cnae')}}
 
-    ssp = numero(record.get('roubo_comercio_total')) is not None
-    seguranca = referencia('seguranca', (['roubo_comercio_total','estabelecimentos_referencia','taxa_por_mil_estabelecimentos','referencia_taxa_por_mil','regioes_fonte','atualizado_em_utc'] if ssp else
+    ssp = record.get('indicador_disponivel') in ('SIM','NAO') or numero(record.get('roubo_comercio_total')) is not None
+    seguranca = referencia('seguranca', (['roubo_comercio_total','estabelecimentos_referencia','taxa_por_mil_estabelecimentos','referencia_taxa_por_mil','regioes_fonte','atualizado_em_utc','fonte_denominador','ano_denominador','meses_observados_seguranca','integridade_seguranca'] if ssp else
         ['taxa_furto_domicilios','taxa_roubo_domicilios','exposicao_bruta']) + ['seguranca_da_cidade_0_1','confianca_seguranca_0_1'],
         'seguranca_ssp.csv' if ssp else 'seguranca_municipal.csv',
         'Arquivo público SSP importado e normalizado localmente.' if ssp else 'Snapshot de tabelas públicas IBGE/SIDRA obtidas pelo preparador; não é consulta ao vivo.')
@@ -190,6 +194,14 @@ def anexar_evidencias(record, indices, dimensoes, origens, base=None):
                 (numero(record.get('confianca_'+tipo+'_0_1', record.get('confianca_territorial_0_1'))) or 0) > 0)
             externa['disponivel'] = disponivel
             externa['condicao'] = 'Referência presente; conferir nos fatores a contribuição efetiva e eventuais exclusões de exposição.' if disponivel else 'Referência ausente ou sem confiança utilizável. O componente desconhecido mantém incerteza explícita; não foi criada uma taxa externa.'
+            if tipo == 'seguranca':
+                qualidade = s['qualidade_seguranca']
+                externa['disponivel'] = qualidade['utilizavel']
+                externa['qualidade'] = qualidade
+                externa['condicao'] = ' '.join(qualidade['motivos'])
+                if not qualidade['utilizavel']:
+                    contexto = 'Referência territorial excluída: ' + externa['condicao'] + ' A prioridade restante usa cenário e informações empresariais, sem criminalidade territorial validada.'
+                    s['explicacao_contextual'] = contexto
         s['referencia_publica'] = externa
         s['respostas_utilizadas'] = {k: (record.get('questionario') or {}).get(k) for k in
             ({'ROUBO_FURTO_ARROMBAMENTO':['securityControls','portableGoods'], 'VENDAVAL_EVENTOS_CORRELATOS':['roofMaintained','exposedAssets'],

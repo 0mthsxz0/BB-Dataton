@@ -38,6 +38,7 @@ def registro():
         'probabilidade_tratamento_dados':.5, 'indice_maturidade_digital':20,
         'seguranca_da_cidade_0_1':.9, 'confianca_territorial_0_1':.6,
         'fonte':'Fixture de teste', 'ano_referencia':'2021',
+        'tipo_seguranca':'SIMULACAO',  # Testes da fórmula; não representa base territorial validada.
     }
 
 

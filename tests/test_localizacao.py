@@ -59,10 +59,12 @@ def test_vincula_referencias_reais(registro, config):
     pasta = Path(__file__).resolve().parents[1] / 'references'
     local = {'codigo_ibge_municipio': '3550308', 'municipio_real': 'São Paulo', 'uf_real': 'SP'}
     novo, avisos = aplicar_localizacao(registro, local, pasta)
-    assert not avisos
+    assert any('domiciliar' in a for a in avisos)
     assert novo['granularidade_seguranca'] == novo['granularidade_clima'] == 'MUNICIPIO'
     motor = MotorPontuacao(None, config)
     pontos = motor.analisar_registro(novo)
-    assert pontos[ROUBO]['risco_evento_relativo'] == pytest.approx(1-float(novo['seguranca_da_cidade_0_1']))
+    assert pontos[ROUBO]['risco_evento_relativo'] == .5
+    assert pontos[ROUBO]['confianca_evento'] == 0
+    assert pontos[ROUBO]['qualidade_seguranca']['status'] == 'INCOMPATIVEL'
     assert pontos[VENDAVAL]['risco_evento_relativo'] == pytest.approx(float(novo['exposicao_climatica_0_1']))
     assert pontos[ROUBO]['valor_exposto_brl'] == motor.analisar_registro(registro)[ROUBO]['valor_exposto_brl']

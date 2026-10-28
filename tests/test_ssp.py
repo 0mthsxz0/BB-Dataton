@@ -1,4 +1,6 @@
 from unittest.mock import Mock
+import hashlib
+import json
 import pandas as pd
 import pytest
 
@@ -9,11 +11,18 @@ from motor_pontuacao import MotorPontuacao, ROUBO
 
 
 def registro_ssp(ibge='5300108',regiao='A',total=100,estabelecimentos=100,**extras):
-    return dict({'uf':'DF','regiao_administrativa':regiao,'ano':'2025',
+    return dict({'uf':{'53':'DF','35':'SP','33':'RJ'}.get(ibge[:2],'DF'),'regiao_administrativa':regiao,'ano':'2025',
         'codigo_ibge_municipio':ibge,'roubo_comercio_total':total,
         'estabelecimentos':estabelecimentos,'meses_observados':12,
         'cobertura_municipal_completa':'SIM','fonte':'https://fonte.exemplo/planilha',
-        'sha256_arquivo':'a'*64},**extras)
+        'sha256_arquivo':'a'*64, 'fonte_denominador':'Fonte sintética dos estabelecimentos',
+        'ano_denominador':'2025'},**extras)
+
+
+def salvar_ssp(df, caminho):
+    df.to_csv(caminho,index=False)
+    caminho.with_name(caminho.name+'.manifesto.json').write_text(json.dumps({
+        'arquivos':{caminho.name:hashlib.sha256(caminho.read_bytes()).hexdigest()}}),encoding='utf-8')
 
 
 def planilha(caminho,ausente=False,total=12):
@@ -59,6 +68,14 @@ def test_taxa_consolidada_e_referencia_estavel():
     assert s['seguranca_da_cidade_0_1']==t['seguranca_da_cidade_0_1']
 
 
+def test_planilha_com_meses_duplicados_nao_e_interpretada_silenciosamente(tmp_path):
+    caminho=tmp_path/'ambiguo.xlsx'
+    pd.DataFrame([['NATUREZA DO CRIME',*MESES,'JAN','TOTAL'],
+        ['ROUBO EM COMÉRCIO',*([1]*12),2,14]]).to_excel(caminho,index=False,header=False)
+    with pytest.raises(ValueError,match='duplicado'):
+        ler_balanco_ssp(caminho,uf='DF',regiao='TOTAL',ano=2025,codigo_ibge_municipio='5300108',fonte='teste')
+
+
 def test_ausente_nao_vira_zero_e_denominador_nao_se_mistura():
     a=registro_ssp(total=None)
     b=registro_ssp(ibge='3550308',estabelecimentos=None)
@@ -87,16 +104,20 @@ def test_anos_parciais_duplicados_e_sobreposicao_rejeitados():
 def test_ssp_na_base_no_motor_e_no_cep(pasta_csv,tmp_path,registro):
     referencias=tmp_path/'referencias'
     referencias.mkdir()
-    ssp=construir_enriquecimento([registro_ssp(ibge='0000000')])
+    ssp=construir_enriquecimento([registro_ssp()])
     caminho=referencias/'seguranca_ssp.csv'
-    ssp.to_csv(caminho,index=False)
+    salvar_ssp(ssp,caminho)
+    enderecos=pd.read_csv(pasta_csv/'enderecos_estabelecimentos.csv',dtype=str)
+    enderecos['codigo_ibge_municipio']='5300108'
+    enderecos['uf_real']='DF'
+    enderecos.to_csv(pasta_csv/'enderecos_estabelecimentos.csv',index=False)
     base=carregar_base(pasta_csv,referencias=referencias)
     r=base.registro('EMP_TESTE','IMO_TESTE')
     s=MotorPontuacao(base).analisar_registro(r)[ROUBO]
     assert s['referencia_evento']['roubo_comercio_total']=='100.0'
     assert s['risco_evento_relativo']==pytest.approx(1000/1100,abs=1e-6)
     assert str(caminho.resolve()) in base.hashes
-    local={'codigo_ibge_municipio':'0000000','municipio_real':'Teste','uf_real':'DF'}
+    local={'codigo_ibge_municipio':'5300108','municipio_real':'Teste','uf_real':'DF'}
     novo,avisos=aplicar_localizacao(registro,local,referencias)
     assert novo['sha256_arquivos']=='a'*64
     assert MotorPontuacao().analisar_registro(novo)[ROUBO]['risco_evento_relativo']==s['risco_evento_relativo']
@@ -138,7 +159,8 @@ def test_download_cache_e_atualizacao_deliberada(tmp_path,monkeypatch):
     monkeypatch.setattr('territorio_ssp.requests.get',get)
     manifesto=tmp_path/'manifesto.csv'
     pd.DataFrame([dict(arquivo='',url='https://fonte.exemplo/arquivo.xlsx',uf='DF',regiao='TOTAL',
-        ano='2025',codigo_ibge_municipio='5300108',estabelecimentos='100',cobertura_municipal_completa='SIM')]).to_csv(manifesto,index=False)
+        ano='2025',codigo_ibge_municipio='5300108',estabelecimentos='100',cobertura_municipal_completa='SIM',
+        fonte_denominador='Fonte sintética do denominador',ano_denominador='2025')]).to_csv(manifesto,index=False)
     destino=tmp_path/'refs'/'seguranca_ssp.csv'
     construir_de_manifesto(manifesto,destino)
     construir_de_manifesto(manifesto,destino)

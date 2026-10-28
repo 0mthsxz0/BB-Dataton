@@ -76,3 +76,7 @@ O motor Python do datathon permanece separado deste front-end. Os CSVs da organi
 
 
 Atualização do item 10: veja [GUIA_ATUALIZADO.md](docs/GUIA_ATUALIZADO.md). Matriz do desafio 6/8/10, cobertura cibernética obrigatória, triagem e composição personalizada implementadas na versão 0.4.
+
+## Jornadas de prospecção
+
+A landing page leva a `/cotacao`: cadastro próprio, sem consulta de empresas, recomendação simples e resumo sem índices ou rastreabilidade. `/interno` abre o painel de prospecção ativa a partir da seleção de estabelecimento, com fontes, dados e justificativas técnicas. Os dois fluxos usam o mesmo motor Python e recalculam a escolha do plano. O painel interno é local e demonstrativo: requer autenticação e autorização de servidor antes de publicação. O cadastro é mantido em memória durante a sessão, sem persistência de leads.

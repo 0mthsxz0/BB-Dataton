@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-28",
+  "url": "http://localhost:4180/cotacao",
+  "checks": [
+    {"case":"Selecionar cadastro exibe análise sem preencher atividade ou questionário","status":"PASS"},
+    {"case":"EMP_00001 / IMO_EMP_00001_01 recomenda Empresarial Prático na etapa 2","status":"PASS"},
+    {"case":"Exibe dados usados, quatro índices, pesos das nove necessidades e comparação dos planos","status":"PASS"},
+    {"case":"Trocar rapidamente para segunda unidade preserva resultado da segunda seleção","status":"PASS"},
+    {"case":"Remover vínculo limpa o resultado cadastral","status":"PASS"},
+    {"case":"Sem transbordamento horizontal: documento 905px, viewport 920px","status":"PASS"}
+  ],
+  "firstEstablishmentFitPercent":{"ESSENCIAL":64.55128776683895,"PRATICO":85.62743859930771,"TOTAL":100},
+  "questionnaireAnswers":null,
+  "validation":{"pythonPassed":122,"nodePassed":24,"syntax":"PASS","http":"PASS","consoleErrorsObserved":[]},
+  "screenshot":"../screenshots/cadastro-recomendacao-imediata.png"
+}

@@ -2,12 +2,14 @@
 from datetime import datetime, timezone
 from pathlib import Path
 import hashlib
+import json
 import math
 import re
 import unicodedata
 
 import pandas as pd
 import requests
+from seguranca import UF_PREFIXOS
 
 MESES = ('JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ')
 
@@ -37,13 +39,16 @@ def _numero(valor):
 
 
 def ler_balanco_ssp(caminho, *, uf, regiao, ano, codigo_ibge_municipio,
-                    fonte, estabelecimentos=None, cobertura_municipal_completa='NAO'):
+                    fonte, estabelecimentos=None, cobertura_municipal_completa='NAO',
+                    fonte_denominador='', ano_denominador=''):
     caminho = Path(caminho)
     raw = pd.read_excel(caminho, header=None)
     cabecalho = None
     for i in range(len(raw)):
         valores = [_texto(v) for v in raw.iloc[i]]
         if any('NATUREZA DO CRIME' in v for v in valores) and 'TOTAL' in valores:
+            if any(valores.count(m)>1 for m in (*MESES,'TOTAL')):
+                raise ValueError('Cabeçalho SSP com mês ou total duplicado; layout ambíguo.')
             cabecalho = (i, next(j for j,v in enumerate(valores) if 'NATUREZA DO CRIME' in v),
                          valores.index('TOTAL'), {v:j for j,v in enumerate(valores) if v in MESES})
             break
@@ -72,6 +77,7 @@ def ler_balanco_ssp(caminho, *, uf, regiao, ano, codigo_ibge_municipio,
         'codigo_ibge_municipio':str(codigo_ibge_municipio), 'roubo_comercio_total':total,
         'meses_observados':sum(x is not None for x in meses), 'estabelecimentos':_numero(estabelecimentos),
         'cobertura_municipal_completa':cobertura_municipal_completa, 'fonte':fonte,
+        'fonte_denominador':fonte_denominador, 'ano_denominador':str(ano_denominador),
         'sha256_arquivo':hashlib.sha256(caminho.read_bytes()).hexdigest()}
 
 
@@ -102,8 +108,10 @@ def construir_enriquecimento(registros, *, ano_referencia=None, referencia_taxa_
         ibge = str(r.get('codigo_ibge_municipio',''))
         if not re.fullmatch(r'[0-9]{7}',ibge) or not re.fullmatch('[A-Z]{2}',str(r.get('uf',''))):
             raise ValueError('Registro SSP sem código IBGE ou UF válido.')
+        if not ibge.startswith(UF_PREFIXOS.get(r['uf'], '!')):
+            raise ValueError('Código IBGE incompatível com a UF SSP.')
         regiao = _texto(r.get('regiao_administrativa'))
-        if not regiao or not r.get('fonte') or not r.get('sha256_arquivo'):
+        if not regiao or not str(r.get('fonte','')).strip() or not re.fullmatch(r'[0-9a-f]{64}',str(r.get('sha256_arquivo',''))):
             raise ValueError('SSP exige região, fonte e hash do arquivo.')
         chave = (ibge,regiao)
         if chave in chaves:
@@ -123,6 +131,8 @@ def construir_enriquecimento(registros, *, ano_referencia=None, referencia_taxa_
         denominadores = [_numero(r.get('estabelecimentos')) for r in linhas]
         completo = all(r.get('meses_observados') == 12 for r in linhas) and all(x is not None for x in totais)
         denominador_ok = all(x is not None and x > 0 and x.is_integer() for x in denominadores)
+        denominador_ok &= all(str(r.get('ano_denominador','')) == ano and
+                              str(r.get('fonte_denominador','')).strip() for r in linhas)
         if any(x is not None and not x.is_integer() for x in totais):
             raise ValueError('Ocorrências SSP devem ser contagens inteiras.')
         total = sum(totais) if completo else None
@@ -132,6 +142,7 @@ def construir_enriquecimento(registros, *, ano_referencia=None, referencia_taxa_
         observacao = ('Taxa anual por mil estabelecimentos; ocorrências não são empresas distintas.' if taxa is not None
                       else 'INDISPONÍVEL: período incompleto, contagem ausente ou sem denominador de estabelecimentos; ponto central 0,5 com confiança zero.')
         saida.append({'codigo_ibge_municipio':ibge,'uf':linhas[0]['uf'],
+            'categoria_seguranca':'ROUBO_EM_COMERCIO',
             'seguranca_da_cidade_0_1':1-risco if risco is not None else .5,
             'confianca_seguranca_0_1':.55 if risco is not None else 0.,
             'fonte_seguranca':' | '.join(sorted({r['fonte'] for r in linhas})),
@@ -141,6 +152,10 @@ def construir_enriquecimento(registros, *, ano_referencia=None, referencia_taxa_
             'roubo_comercio_total':total,'estabelecimentos_referencia':estabelecimentos,
             'taxa_por_mil_estabelecimentos':taxa,'referencia_taxa_por_mil':referencia,
             'regioes_fonte':'|'.join(sorted(regioes)),
+            'meses_observados_seguranca':12 if completo else min(r.get('meses_observados',0) for r in linhas),
+            'cobertura_municipal_completa':'SIM',
+            'fonte_denominador':' | '.join(sorted({str(r.get('fonte_denominador','')) for r in linhas})),
+            'ano_denominador':ano if denominador_ok else '',
             'sha256_arquivos':'|'.join(sorted({r['sha256_arquivo'] for r in linhas})),
             'atualizado_em_utc':datetime.now(timezone.utc).isoformat()})
     return pd.DataFrame(saida)
@@ -167,7 +182,20 @@ def construir_de_manifesto(manifesto_csv, destino, *, ano_referencia=None,
                 conteudo = resposta.content
                 if not (conteudo.startswith(b'PK') or conteudo.startswith(bytes.fromhex('D0CF11E0A1B11AE1'))):
                     raise ValueError('Download SSP não retornou uma planilha XLS/XLSX.')
+                if caminho.exists():
+                    anterior = caminho.read_bytes()
+                    versao_anterior = cache/(hashlib.sha256(anterior).hexdigest()+extensao)
+                    if not versao_anterior.exists():
+                        versao_anterior.write_bytes(anterior)
                 caminho.write_bytes(conteudo)
+                # Preserva cada versão recebida, mesmo quando a URL é atualizada.
+                original = cache/(hashlib.sha256(conteudo).hexdigest()+extensao)
+                if not original.exists():
+                    original.write_bytes(conteudo)
+                recibo = original.with_suffix(original.suffix+'.json')
+                if not recibo.exists():
+                    recibo.write_text(json.dumps({'url':url,'baixado_em_utc':datetime.now(timezone.utc).isoformat(),
+                        'sha256':hashlib.sha256(conteudo).hexdigest()},indent=2),encoding='utf-8')
         else:
             if not linha.get('arquivo'):
                 raise ValueError('Manifesto exige arquivo local ou URL de planilha.')
@@ -177,9 +205,16 @@ def construir_de_manifesto(manifesto_csv, destino, *, ano_referencia=None,
         registros.append(ler_balanco_ssp(caminho,uf=linha['uf'],regiao=linha['regiao'],ano=linha['ano'],
             codigo_ibge_municipio=linha['codigo_ibge_municipio'],fonte=linha.get('fonte') or url,
             estabelecimentos=linha.get('estabelecimentos'),
+            fonte_denominador=linha.get('fonte_denominador',''), ano_denominador=linha.get('ano_denominador',''),
             cobertura_municipal_completa=linha.get('cobertura_municipal_completa','NAO')))
     resultado = construir_enriquecimento(registros,ano_referencia=ano_referencia,referencia_taxa_por_mil=referencia_taxa_por_mil)
     destino = Path(destino)
     destino.parent.mkdir(parents=True,exist_ok=True)
     resultado.to_csv(destino,index=False,encoding='utf-8-sig')
+    destino.with_name(destino.name+'.manifesto.json').write_text(json.dumps({
+        'gerado_em_utc':datetime.now(timezone.utc).isoformat(),
+        'arquivos':{destino.name:hashlib.sha256(destino.read_bytes()).hexdigest()},
+        'manifesto_entrada_sha256':hashlib.sha256(Path(manifesto_csv).read_bytes()).hexdigest(),
+        'originais_sha256':sorted({r['sha256_arquivo'] for r in registros}),
+    },indent=2),encoding='utf-8')
     return resultado

@@ -6,8 +6,10 @@ from pathlib import Path
 import hashlib
 import math
 import os
+from io import BytesIO
 import pandas as pd
 from referencias import classe_cnae
+from seguranca import verificar_snapshot, avaliar_seguranca
 
 ARQUIVOS = (
     'empresas', 'enderecos_estabelecimentos', 'sinais_financeiros_operacionais',
@@ -119,9 +121,12 @@ def agregar_bens(bens, enderecos):
             'bens_total_referencia': 0., 'bens_ponderados': 0.,
             'equipamentos_ponderados': 0., 'equipamentos_total_referencia': 0.,
             'informatica_ponderada': 0., 'cozinha_ponderada': 0.,
+            'letreiros_ponderados': 0., 'eletronicos_ponderados': 0., 'tipos_bens_cadastrados': [],
             'bens_quantidade': 0, 'bens_validos': 0, 'bens_ponderacao_validos': 0,
             'bens_baixa_confianca': 0,
         })
+        if bem['tipo_bem'] not in a['tipos_bens_cadastrados']:
+            a['tipos_bens_cadastrados'].append(bem['tipo_bem'])
         a['bens_quantidade'] += 1
         valor = numero(bem['valor_cadastrado'])
         prob = numero(bem['probabilidade_bem_no_imovel_referencia'])
@@ -141,6 +146,10 @@ def agregar_bens(bens, enderecos):
         a['bens_ponderados'] += atribuido
         if eletrico:
             a['equipamentos_ponderados'] += atribuido
+        if bem['tipo_bem'] in ('EQUIPAMENTO_ELETRONICO', 'EQUIPAMENTO_INFORMATICA'):
+            a['eletronicos_ponderados'] += atribuido
+        if bem['tipo_bem'] == 'LETREIRO':
+            a['letreiros_ponderados'] += atribuido
         if bem['tipo_bem'] == 'EQUIPAMENTO_INFORMATICA':
             a['informatica_ponderada'] += atribuido
         if bem['tipo_bem'] == 'EQUIPAMENTO_COZINHA':
@@ -152,13 +161,13 @@ def agregar_bens(bens, enderecos):
                               * (1 - .5 * a['bens_baixa_confianca'] / n))
         if not a['bens_ponderacao_validos']:
             for campo in ['bens_ponderados', 'equipamentos_ponderados',
-                          'informatica_ponderada', 'cozinha_ponderada']:
+                          'informatica_ponderada', 'cozinha_ponderada', 'letreiros_ponderados', 'eletronicos_ponderados']:
                 a[campo] = None
         saida.append({'empresa_id': empresa, 'imovel_id': imovel, **a})
     return pd.DataFrame(saida, columns=CHAVES + list(next(iter(acumulados.values()), {})))
 
 
-def carregar_base(pasta=None, enriquecimento=None, referencias=None, confirmacoes=None):
+def carregar_base(pasta=None, enriquecimento=None, referencias=None, confirmacoes=None, data_analise=None):
     pasta = localizar_dados(pasta)
     faltantes = [f'{n}.csv' for n in ARQUIVOS if not (pasta / f'{n}.csv').is_file()]
     if faltantes:
@@ -231,6 +240,10 @@ def carregar_base(pasta=None, enriquecimento=None, referencias=None, confirmacoe
         fontes_lidas[str(caminho.resolve())] = hashlib.sha256(caminho.read_bytes()).hexdigest()
     if enriquecimento:
         dados = incorporar_territorio(dados, enriquecimento)
+    if 'seguranca_da_cidade_0_1' in dados:
+        excluidos = sum(not avaliar_seguranca(r,data_analise)['utilizavel'] for r in dados.to_dict('records'))
+        if excluidos:
+            avisos.append(f'Segurança empresarial: {excluidos}/{len(dados)} unidades sem referência territorial utilizável. Consulte os motivos na auditoria; a nota permanece heurística.')
     if confirmacoes:
         confirmado = ler_csv(confirmacoes)
         validar_chave(confirmado,CHAVES,'confirmacoes')
@@ -304,6 +317,9 @@ def incorporar_territorio(dados, caminho):
             dados = dados.drop(columns=['indicador_disponivel','roubo_comercio_total',
                 'taxa_por_mil_estabelecimentos','estabelecimentos_referencia','referencia_taxa_por_mil',
                 'regioes_fonte','sha256_arquivos','atualizado_em_utc',
+                'fonte_denominador','ano_denominador','meses_observados_seguranca','cobertura_municipal_completa',
+                'integridade_seguranca','arquivo_seguranca','sha256_snapshot_seguranca','tipo_seguranca',
+                'categoria_seguranca',
                 'taxa_roubo_domicilios','taxa_furto_domicilios','exposicao_bruta'],errors='ignore')
         metadados = {'fonte':f'fonte_{tipo}','ano_referencia':f'periodo_{tipo}',
             'granularidade':f'granularidade_{tipo}','metodologia':f'metodologia_{tipo}',
@@ -318,8 +334,15 @@ def juntar_indicador(dados, externo):
     return dados.drop(columns=substituir).merge(externo,on='codigo_ibge_municipio',how='left',validate='many_to_one')
 
 
-def incorporar_indicador(dados,caminho,tipo):
-    externo = ler_csv(caminho)
+def ler_indicador(caminho,tipo):
+    conteudo = Path(caminho).read_bytes()
+    externo = ler_csv(BytesIO(conteudo))
+    if tipo == 'seguranca':
+        externo = externo.drop(columns=['tipo_seguranca'], errors='ignore')
+        integridade = verificar_snapshot(caminho, conteudo)
+        externo['integridade_seguranca'] = integridade
+        externo['arquivo_seguranca'] = str(Path(caminho).resolve())
+        externo['sha256_snapshot_seguranca'] = hashlib.sha256(conteudo).hexdigest()
     indicador = 'seguranca_da_cidade_0_1' if tipo=='seguranca' else 'exposicao_climatica_0_1'
     metadados = [f'fonte_{tipo}',f'periodo_{tipo}',f'granularidade_{tipo}',
                  f'metodologia_{tipo}',f'confianca_{tipo}_0_1']
@@ -333,14 +356,16 @@ def incorporar_indicador(dados,caminho,tipo):
             raise ValueError(f'{c} deve estar entre 0 e 1.')
     if externo[f'granularidade_{tipo}'].ne('MUNICIPIO').any():
         raise ValueError('Referência territorial exige granularidade municipal.')
-    return juntar_indicador(dados,externo.drop(columns=['municipio'],errors='ignore'))
+    return externo.drop(columns=['municipio'],errors='ignore')
+
+
+def incorporar_indicador(dados,caminho,tipo):
+    return juntar_indicador(dados,ler_indicador(caminho,tipo))
 
 
 def incorporar_ssp(dados, caminho):
     """SSP substitui segurança apenas em municípios explicitamente presentes no arquivo."""
-    externo = ler_csv(caminho)
-    # Reutiliza validação de valores, chaves e metadados do formato público.
-    incorporar_indicador(dados[['codigo_ibge_municipio']],caminho,'seguranca')
+    externo = ler_indicador(caminho,'seguranca')
     for coluna in ['indicador_disponivel','roubo_comercio_total','taxa_por_mil_estabelecimentos',
                    'estabelecimentos_referencia','sha256_arquivos','atualizado_em_utc']:
         if coluna not in externo:
@@ -355,6 +380,9 @@ def incorporar_ssp(dados, caminho):
     for coluna in ['taxa_furto_domicilios','taxa_roubo_domicilios','exposicao_bruta']:
         if coluna in resultado:
             resultado.loc[mascara,coluna] = None
+    if 'tipo_seguranca' in resultado:
+        resultado.loc[mascara,'tipo_seguranca'] = None
+    externo = externo.drop(columns=['tipo_seguranca'], errors='ignore')
     referencia = externo.set_index('codigo_ibge_municipio')
     for coluna in externo:
         if coluna in ['codigo_ibge_municipio','municipio','uf']:

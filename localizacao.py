@@ -4,6 +4,7 @@ import re
 
 import pandas as pd
 import requests
+from seguranca import avaliar_seguranca
 
 from processamento import incorporar_indicador, incorporar_ssp, incorporar_territorio, ler_csv, localizar_referencias, caminho_referencia
 
@@ -60,6 +61,10 @@ def aplicar_localizacao(registro, localizacao, referencias=None, enriquecimento=
                   'taxa_por_mil_estabelecimentos','referencia_taxa_por_mil','regioes_fonte',
                   'sha256_arquivos','atualizado_em_utc']:
         novo.pop(campo, None)
+    for campo in ['fonte_denominador','ano_denominador','meses_observados_seguranca',
+                  'cobertura_municipal_completa','tipo_seguranca']:
+        novo.pop(campo, None)
+    novo.pop('categoria_seguranca', None)
     novo.update(localizacao)
     dados = pd.DataFrame([novo])
     for tipo, indicador in [('seguranca', 'seguranca_da_cidade_0_1'),
@@ -81,4 +86,7 @@ def aplicar_localizacao(registro, localizacao, referencias=None, enriquecimento=
                 or tipo == 'seguranca' and dados.iloc[0].get('indicador_disponivel') == 'NAO'):
             avisos.append(f'Sem referência de {tipo} para este município; o risco permanece desconhecido.')
     resultado = dados.astype(object).where(pd.notna(dados), None).iloc[0].to_dict()
+    qualidade = avaliar_seguranca(resultado)
+    if not qualidade['utilizavel'] and not any('Sem referência de seguranca' in a for a in avisos):
+        avisos.append('Segurança empresarial: ' + ' '.join(qualidade['motivos']))
     return resultado, avisos

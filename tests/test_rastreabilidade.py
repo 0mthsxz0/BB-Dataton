@@ -38,7 +38,8 @@ def test_fontes_publicas_mostram_valores_periodos_e_natureza_sem_api_inventada(p
     r=analisar_cadastro({'empresaId':'EMP_TESTE','imovelId':'IMO_TESTE'},base)
     p=r['indices'][ROUBO]['referencia_publica']
     assert p['dados']['taxa_furto_domicilios']==.04 and p['periodo']=='2021'
-    assert p['consulta_ao_vivo'] is False and p['disponivel']
+    assert p['consulta_ao_vivo'] is False and not p['disponivel']
+    assert not p['qualidade']['utilizavel']  # Valor histórico visível, sem usá-lo como risco empresarial.
     assert r['indices'][VENDAVAL]['referencia_publica']['dados']['frequencia_rajada_forte']==.123
     assert r['indices'][EMPREGADOR]['referencia_publica']['dados']['grau_risco_nr4']==2
     assert 'documento oficial' in r['indices'][EMPREGADOR]['referencia_publica']['modo_acesso']

@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-28",
+  "environment": "Navegador integrado do Codex, servidor local na porta 4180",
+  "checks": [
+    {"case":"Descrição de pizzaria retorna atividade 625 e subatividade R3.10 reais","status":"PASS"},
+    {"case":"Confirmação aplica atividade e subatividade ao formulário","status":"PASS"},
+    {"case":"Inventário e oito perguntas obrigatórias aparecem na etapa Proteção","status":"PASS"},
+    {"case":"Análise sem vínculo utiliza os valores declarados e informa ausências","status":"PASS"},
+    {"case":"Alterar uma resposta exige recalcular antes de abrir planos","status":"PASS"},
+    {"case":"Fluxo passa por revisão, pagamento demonstrativo e conclusão sem cobrança","status":"PASS"},
+    {"case":"Seleção da base carrega 2978 estabelecimentos e herda cidade/UF","status":"PASS"},
+    {"case":"Farmácia é vinculada à atividade real com subatividade válida","status":"PASS"},
+    {"case":"Resultado da unidade vinculada exibe quatro índices e plano Total marcado","status":"PASS"}
+  ],
+  "linkedScenario": {
+    "plan": "TOTAL",
+    "indicesRounded": {"roubo":33,"vendaval":52.7,"empregador":36.4,"vidros":51.5}
+  },
+  "consoleErrorsObserved": [],
+  "automatedValidation": {"pythonPassed":116,"nodePassed":23,"syntax":"PASS","http":"PASS"},
+  "screenshot":"../screenshots/integracao-mvp-planos.png",
+  "limitations":["Dados de demonstração; sem contratação ou integração bancária de produção.","Testes de navegador usam cenários fictícios; não medem adequação atuarial."]
+}

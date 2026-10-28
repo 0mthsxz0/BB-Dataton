@@ -137,7 +137,7 @@ def validar(payload):
 
 def validar_personalizacao(payload):
     operations = payload.get('operations', {})
-    if not isinstance(operations, dict) or set(operations) - {'refrigeration','delivery','homeOffice','cash','shoppingControls'} or any(type(v) is not bool and v is not None for v in operations.values()):
+    if not isinstance(operations, dict) or set(operations) - set(REGRAS['operations']) or any(type(v) is not bool and v is not None for v in operations.values()):
         raise ValueError('Confirmações operacionais inválidas.')
     if operations.get('shoppingControls') is True and payload.get('shopping') != 'yes':
         raise ValueError('Requisitos de shopping só podem ser confirmados para estabelecimento em shopping.')
@@ -223,6 +223,9 @@ def analisar(payload, base=None, municipio_fn=consultar_municipio):
         if value is not None and value != '':
             record[column] = float(value)
             origins[column] = 'Informado no formulário'
+            if key in ('contentsValue', 'equipmentValue'):
+                for aggregate in ('informatica_ponderada', 'eletronicos_ponderados', 'letreiros_ponderados', 'tipos_bens_cadastrados'):
+                    record.pop(aggregate, None)
             if key == 'contentsValue':
                 record['bens_total_referencia'] = float(value)
                 record['confianca_bens'] = .85
@@ -299,6 +302,7 @@ def analisar(payload, base=None, municipio_fn=consultar_municipio):
         if payload.get(key):
             record[column] = payload[key]
             origins[column] = 'Informado no formulário'
+    record['_origens'] = origins
     motor = MotorFormulario(config=cfg)
     return montar_resultado(record, motor, base.catalogo if base else None, activity, payload['subactivityId'], q, warnings, origins, has_link, base=base if has_link else None)
 
@@ -331,6 +335,9 @@ def montar_resultado(record, motor, catalog, activity, subactivity_id, q, warnin
                         'disponivel': numero(record.get({'seguranca': 'seguranca_da_cidade_0_1',
                             'clima': 'exposicao_climatica_0_1', 'nr4': 'grau_risco_nr4'}[kind])) is not None
                             and (kind == 'nr4' or confidence is not None and confidence > 0)})
+        if kind == 'seguranca':
+            sources[-1]['disponivel'] = indices['ROUBO_FURTO_ARROMBAMENTO']['qualidade_seguranca']['utilizavel']
+            sources[-1]['qualidade'] = indices['ROUBO_FURTO_ARROMBAMENTO']['qualidade_seguranca']
     return clean({'versao': '0.4.0-formulario.2', 'modelo': 'Motor determinístico do MVP + guia item 10',
         'atividade': {'id': activity['id'], 'subactivityId': subactivity_id, 'cnaeUtilizado': record.get('cnae_principal')},
         'planoId': PLAN_IDS[recommendation['plano_recomendado']], 'indices': indices,

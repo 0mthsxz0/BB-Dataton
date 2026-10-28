@@ -1,0 +1,149 @@
+[
+  {
+    "grupo": "Pacote Prático / Total",
+    "cobertura": "Roubo ou furto de bens mediante arrombamento",
+    "campos": "bens_cadastrados: tipo_bem, valor_bem_ponderado_referencia, nivel_confianca_vinculo; sinais_financeiros_operacionais: estoque_medio_estimado",
+    "sinal": "Bens e estoque indicam patrimônio exposto; cruzar com índice territorial existente.",
+    "confirmar": "Controles de segurança, histórico, subtração coberta e valores na unidade."
+  },
+  {
+    "grupo": "Pacote Prático / Total",
+    "cobertura": "Vendaval, furacão, tornado, ciclone e granizo",
+    "campos": "enderecos_estabelecimentos: municipio_real, uf_real, codigo_ibge_municipio, padrao_construtivo_cadastrado; bens_cadastrados: valor_bem_ponderado_referencia",
+    "sinal": "Vincular ao índice climático existente; o CSV territorial sozinho não mede vendaval.",
+    "confirmar": "Telhado, manutenção, exposição, granizo e reconstrução."
+  },
+  {
+    "grupo": "Pacote Prático / Total",
+    "cobertura": "Quebra de vidros",
+    "campos": "enderecos_estabelecimentos: tipo_unidade, possui_termo_loja, possui_termo_galeria, area_cadastrada_m2, confianca_area",
+    "sinal": "Sinais de vitrine e área orientam a pergunta; cruzar com índice de vidros.",
+    "confirmar": "Presença, dimensão, tipo e valor de reposição dos vidros; loja não comprova vitrine."
+  },
+  {
+    "grupo": "Pacote Prático / Total",
+    "cobertura": "Responsabilidade civil empregador",
+    "campos": "empresas: cnae_principal, quantidade_funcionarios_estimada; sinais_financeiros_operacionais: folha_pagamento_mensal",
+    "sinal": "Folha e atividade orientam relevância; usar índice empregador/NR-4 existente.",
+    "confirmar": "Empregados efetivos nesta unidade, tarefas, exposição e medidas preventivas."
+  },
+  {
+    "grupo": "Atividade: Prático / Total",
+    "cobertura": "Home Office",
+    "campos": "empresas: dependencia_digital_pct, percentual_vendas_online_estimado; bens_cadastrados: tipo_bem, valor_cadastrado",
+    "sinal": "Dependência tecnológica orienta pergunta; vendas online não comprovam trabalho remoto.",
+    "confirmar": "Trabalho remoto real, equipamentos fora da unidade, propriedade e locais cobertos."
+  },
+  {
+    "grupo": "Atividade: Prático / Total",
+    "cobertura": "Delivery",
+    "campos": "empresas: percentual_receita_delivery_est; sinais_financeiros_operacionais: probabilidade_delivery_referencia; empresas: cnae_principal",
+    "sinal": "Receita e probabilidade estimadas indicam operação a confirmar.",
+    "confirmar": "Entregas próprias ou terceirizadas, mercadorias, trajetos e responsabilidade."
+  },
+  {
+    "grupo": "Atividade: Prático / Total",
+    "cobertura": "Deterioração de mercadorias em ambientes frigorificados",
+    "campos": "sinais_financeiros_operacionais: probabilidade_refrigeracao_referencia, energia_media_mensal_6m, estoque_medio_estimado, estoque_pico_estimado; bens_cadastrados: tipo_bem",
+    "sinal": "Refrigeração e estoque sugerem perguntar sobre cadeia fria; energia alta não prova perecíveis.",
+    "confirmar": "Mercadoria perecível, temperaturas, equipamentos, alarmes e valor efetivamente refrigerado."
+  },
+  {
+    "grupo": "Atividade: Prático / Total",
+    "cobertura": "Roubo ou furto de valores mediante arrombamento",
+    "campos": "sinais_financeiros_operacionais: percentual_recebimentos_digitais; empresas: faturamento_mensal, cnae_principal",
+    "sinal": "Recebimento não digital é indício indireto; não equivale a dinheiro em caixa.",
+    "confirmar": "Numerário real, cofre, permanência, transporte, controles e limites."
+  },
+  {
+    "grupo": "Qualquer plano: bens / eventos",
+    "cobertura": "Tumultos, greves e locautes",
+    "campos": "empresas: cnae_principal; enderecos_estabelecimentos: municipio_real, bairro, tipo_unidade",
+    "sinal": "Atividade e localização ajudam a investigar; CSV não contém histórico desses eventos.",
+    "confirmar": "Histórico local, exposição e condições contratuais; não pontuar bairro como prova de risco."
+  },
+  {
+    "grupo": "Qualquer plano: bens / eventos",
+    "cobertura": "Recomposição de registros e documentos",
+    "campos": "empresas: dependencia_digital_pct; sinais_financeiros_operacionais: probabilidade_tratamento_dados, pagamentos_software_mensais",
+    "sinal": "Dependência de registros sugere impacto potencial de perda, sem comprovar custo de recomposição.",
+    "confirmar": "Documentos críticos, suporte físico/digital, backups e custo de reconstituição."
+  },
+  {
+    "grupo": "Qualquer plano: bens / eventos",
+    "cobertura": "Impacto de veículos terrestres e queda de aeronave",
+    "campos": "enderecos_estabelecimentos: tipo_unidade, logradouro, area_cadastrada_m2",
+    "sinal": "Características do local apenas orientam inspeção; não há tráfego, recuo ou rota aérea nos CSVs.",
+    "confirmar": "Fachada, recuo, barreiras, tráfego e condições do produto."
+  },
+  {
+    "grupo": "Qualquer plano: bens / eventos",
+    "cobertura": "Letreiros e anúncios luminosos",
+    "campos": "bens_cadastrados: tipo_bem, valor_cadastrado, probabilidade_bem_no_imovel_referencia, nivel_confianca_vinculo",
+    "sinal": "Tipo LETREIRO, quando presente, indica bem a validar; cadastro não prova instalação atual.",
+    "confirmar": "Existência no local, instalação, dimensões e reposição."
+  },
+  {
+    "grupo": "Qualquer plano: bens / eventos",
+    "cobertura": "Derrame acidental de água de sprinklers",
+    "campos": "bens_cadastrados: tipo_bem; enderecos_estabelecimentos: tipo_unidade, area_cadastrada_m2",
+    "sinal": "SISTEMA_SEGURANCA não confirma sprinkler; tipo de imóvel é apenas contexto.",
+    "confirmar": "Existência de sprinkler, manutenção, testes e bens suscetíveis."
+  },
+  {
+    "grupo": "Qualquer plano: bens / eventos",
+    "cobertura": "Equipamentos eletrônicos sem cobertura de roubo",
+    "campos": "bens_cadastrados: tipo_bem, valor_cadastrado, valor_bem_ponderado_referencia, nivel_confianca_vinculo; sinais_financeiros_operacionais: indice_dependencia_tecnologica",
+    "sinal": "Filtrar eletrônicos/informática, agregar uma vez por unidade e verificar concentração de valor.",
+    "confirmar": "Inventário, reposição, uso, limites e eventos cobertos. Este adicional não cobre roubo."
+  },
+  {
+    "grupo": "Qualquer plano: bens / eventos",
+    "cobertura": "Riscos diversos: bens e mercadorias ao ar livre",
+    "campos": "bens_cadastrados: tipo_bem, valor_bem_ponderado_referencia; sinais_financeiros_operacionais: estoque_medio_estimado; enderecos_estabelecimentos: area_cadastrada_m2",
+    "sinal": "Existência de bens/estoque não indica se ficam ao ar livre.",
+    "confirmar": "Exposição externa real, tempo, proteção física e valores."
+  },
+  {
+    "grupo": "Qualquer plano: responsabilidade",
+    "cobertura": "RC garagista (compreensiva)",
+    "campos": "empresas: cnae_principal, descricao_cnae; enderecos_estabelecimentos: tipo_unidade, area_cadastrada_m2",
+    "sinal": "Atividade compatível pode justificar pergunta sobre guarda de veículos.",
+    "confirmar": "Guarda de veículos de terceiros, capacidade, serviços, controles e valores."
+  },
+  {
+    "grupo": "Qualquer plano: responsabilidade",
+    "cobertura": "RC danos morais",
+    "campos": "empresas: cnae_principal, descricao_cnae, quantidade_funcionarios_estimada, percentual_receita_delivery_est",
+    "sinal": "Atividade e interação com terceiros orientam entrevista; não quantificam responsabilidade jurídica.",
+    "confirmar": "Atendimento, reclamações, histórico e hipóteses contratuais cobertas."
+  },
+  {
+    "grupo": "Qualquer plano: interrupção",
+    "cobertura": "Lucro bruto simples",
+    "campos": "empresas: faturamento_mensal, confianca_faturamento; sinais_financeiros_operacionais: despesa_fixa_mensal_estimada, folha_pagamento_mensal, valor_aluguel_recorrente, compras_fornecedores_media_mensal, estoque_medio_estimado",
+    "sinal": "Receitas e despesas sinalizam impacto de paralisação; não calculam lucro contábil nem escolhem modalidade.",
+    "confirmar": "DRE por unidade, margem bruta/líquida, período indenitário, eventos e definições de simples/ampla."
+  },
+  {
+    "grupo": "Qualquer plano: interrupção",
+    "cobertura": "Lucro líquido simples",
+    "campos": "empresas: faturamento_mensal, confianca_faturamento; sinais_financeiros_operacionais: despesa_fixa_mensal_estimada, folha_pagamento_mensal, valor_aluguel_recorrente, compras_fornecedores_media_mensal, estoque_medio_estimado",
+    "sinal": "Receitas e despesas sinalizam impacto de paralisação; não calculam lucro contábil nem escolhem modalidade.",
+    "confirmar": "DRE por unidade, margem bruta/líquida, período indenitário, eventos e definições de simples/ampla."
+  },
+  {
+    "grupo": "Qualquer plano: interrupção",
+    "cobertura": "Lucro bruto ampla",
+    "campos": "empresas: faturamento_mensal, confianca_faturamento; sinais_financeiros_operacionais: despesa_fixa_mensal_estimada, folha_pagamento_mensal, valor_aluguel_recorrente, compras_fornecedores_media_mensal, estoque_medio_estimado",
+    "sinal": "Receitas e despesas sinalizam impacto de paralisação; não calculam lucro contábil nem escolhem modalidade.",
+    "confirmar": "DRE por unidade, margem bruta/líquida, período indenitário, eventos e definições de simples/ampla."
+  },
+  {
+    "grupo": "Qualquer plano: interrupção",
+    "cobertura": "Lucro líquido ampla",
+    "campos": "empresas: faturamento_mensal, confianca_faturamento; sinais_financeiros_operacionais: despesa_fixa_mensal_estimada, folha_pagamento_mensal, valor_aluguel_recorrente, compras_fornecedores_media_mensal, estoque_medio_estimado",
+    "sinal": "Receitas e despesas sinalizam impacto de paralisação; não calculam lucro contábil nem escolhem modalidade.",
+    "confirmar": "DRE por unidade, margem bruta/líquida, período indenitário, eventos e definições de simples/ampla."
+  }
+]

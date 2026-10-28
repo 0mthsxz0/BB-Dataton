@@ -67,6 +67,12 @@ def test_exportacao_esquema_completo_e_reprodutivel(pasta_csv,tmp_path):
     exportar(base,destino=destino)
     assert antes==(destino/'template_resultado_times.csv').read_bytes()
     assert json.loads((destino/'manifesto.json').read_text(encoding='utf-8'))['estabelecimentos']==2
+    exportar(base,destino=destino,data_analise='2026-10-28')
+    manifesto=json.loads((destino/'manifesto.json').read_text(encoding='utf-8'))
+    assert manifesto['data_analise']=='2026-10-28'
+    assert manifesto['politica_seguranca']=='seguranca-1.0'
+    a=json.loads((destino/'auditoria.json').read_text(encoding='utf-8'))
+    assert all(l['pontuacoes'][ROUBO]['qualidade_seguranca']['data_analise']=='2026-10-28' for l in a)
 
 
 def notas_controladas(registro):

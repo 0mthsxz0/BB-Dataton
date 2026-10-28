@@ -2,7 +2,8 @@
 
 Snapshots preparados em 28/10/2026 para uso acadêmico. Não contêm dados das empresas do desafio.
 
-- seguranca_municipal.csv: 27 capitais, IBGE/SIDRA 8508/8510/8512, ano 2021; proxy de vitimização domiciliar e segurança relativa.
+- seguranca_municipal.csv: 27 capitais, IBGE/SIDRA 8508/8510/8512, ano 2021; proxy histórica domiciliar, excluída do índice empresarial pela política seguranca-1.0.
+- auditoria_sinesp_2025.json: inspeção da planilha oficial VDE 2025; data de download, hashes, colunas e categorias. O original integral e as notas estão no cache local `data/referencias/cache/sinesp/`. Não contém roubo em comércio e não alimenta a pontuação empresarial.
 - clima_municipal.csv: dez municípios, ERA5 via Open-Meteo, 1996–2025; frequências, completude, coordenadas públicas/células e cenários alternativos.
 - nr4_cnae.csv: 673 classes extraídas da edição do PDF NR-4 indicada nas linhas, com página e hash; uso contextual ocupacional.
 - manifesto_fontes.json: hashes dos snapshots e dos arquivos públicos baixados. O cache integral fica localmente em data/referencias/cache.

@@ -6,6 +6,8 @@ from pathlib import Path
 import copy
 import json
 import math
+from datetime import date
+from seguranca import avaliar_seguranca
 
 from processamento import BaseDados, NULOS, carregar_base, numero
 
@@ -140,9 +142,10 @@ def soma_observada(*valores):
 
 
 class MotorPontuacao:
-    def __init__(self, base: BaseDados | None = None, config=None):
+    def __init__(self, base: BaseDados | None = None, config=None, data_analise=None):
         self.base = base
         self.config = carregar_config(config)
+        self.data_analise = date.fromisoformat(data_analise) if isinstance(data_analise,str) else (data_analise or date.today())
 
     def fatores(self, r):
         cfg = self.config
@@ -190,6 +193,11 @@ class MotorPontuacao:
             confianca_territorio = numero(r.get(f'confianca_{tipo}_0_1',r.get('confianca_territorial_0_1')))
             n = numero(r.get(coluna))
             observacao_clima=''
+            if inverter:
+                qualidade = avaliar_seguranca(r, self.data_analise)
+                observacao_clima = ' ' + ' '.join(qualidade['motivos'])
+                if not qualidade['utilizavel']:
+                    n = None
             if not inverter and r.get('metodologia_clima'):
                 try:
                     origem=json.loads(r['metodologia_clima'])
@@ -401,6 +409,8 @@ class MotorPontuacao:
                             contribuicao_evento=f[chave].valor_normalizado * peso) for chave, peso in pesos.items()]
             limitacoes = [impacto.observacao, vulnerabilidade.observacao,
                           'Índice de prioridade, sem interpretação como probabilidade de sinistro.']
+            if codigo == ROUBO:
+                limitacoes.extend(avaliar_seguranca(r, self.data_analise)['motivos'])
             if ce < .6:
                 limitacoes.append('Componente do evento com evidência limitada; conferir fatores ausentes e origem dos dados.')
             if codigo in (CIBER, ELETRICO):
@@ -455,6 +465,9 @@ class MotorPontuacao:
                 'justificativa': justificativa, 'limitacoes': limitacoes,
                 'confirmar': list(dict.fromkeys([x for x in limitacoes if 'confirmar' in x.lower() or 'sem caixa' in x.lower() or 'não observad' in x.lower()])),
             }
+            if codigo == ROUBO:
+                saida[codigo]['qualidade_seguranca'] = avaliar_seguranca(r, self.data_analise)
+                saida[codigo]['risco_territorial_observado'] = saida[codigo]['qualidade_seguranca']['status'] == 'EXPERIMENTAL'
         return saida
 
     def dimensionar_coberturas(self,r):

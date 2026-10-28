@@ -16,6 +16,7 @@ from motor_pontuacao import DECISORIAS, ROUBO, MotorPontuacao, carregar_config
 from processamento import ARQUIVOS, carregar_base, localizar_dados, localizar_referencias, caminho_referencia
 from recomendador import recomendar_plano
 from localizacao import consultar_cep, aplicar_localizacao
+from seguranca import avaliar_seguranca
 
 st.set_page_config(page_title='Protege Empresa | Datathon', page_icon='🛡️', layout='wide')
 st.markdown('''<style>
@@ -108,10 +109,11 @@ def consulta_por_cep(base, config, referencias, externo=''):
     st.write('Logradouro:', local['logradouro'] or 'Não informado pelo serviço')
     st.info('Abrangência: município inteiro. Este resultado não mede o risco específico do bairro, da rua ou do imóvel.')
     territorial, avisos = aplicar_localizacao({}, local, referencias, externo or None)
+    qualidade = avaliar_seguranca(territorial)
     for aviso in avisos:
         st.warning(aviso)
     st.dataframe(pd.DataFrame([
-        {'Indicador': nome, 'Índice relativo': territorial.get(indicador) if territorial.get(f'confianca_{tipo}_0_1') not in (0, '0', '0.0') else None,
+        {'Indicador': nome, 'Índice relativo': territorial.get(indicador) if (qualidade['utilizavel'] if tipo == 'seguranca' else territorial.get(f'confianca_{tipo}_0_1') not in (0, '0', '0.0')) else None,
          'Período': territorial.get(f'periodo_{tipo}'), 'Fonte': territorial.get(f'fonte_{tipo}')}
         for nome, tipo, indicador in [('Segurança', 'seguranca', 'seguranca_da_cidade_0_1'),
                                       ('Exposição climática', 'clima', 'exposicao_climatica_0_1')]
@@ -329,6 +331,8 @@ def main():
                 simulado['seguranca_da_cidade_0_1'] = st.slider('Segurança relativa hipotética',0.,1.,.9,.01)
                 simulado['confianca_seguranca_0_1'] = .5
                 simulado['fonte_seguranca'] = 'SIMULAÇÃO; não é dado observado'
+                simulado['tipo_seguranca'] = 'SIMULACAO'
+                simulado['indicador_disponivel'] = 'SIM'
             if st.checkbox('Simular reposição de vidros confirmada'):
                 simulado['possui_vidros_confirmado']='SIM'
                 simulado['valor_vidros_reposicao_brl']=st.number_input('Valor hipotético de reposição dos vidros (R$)',min_value=0.,value=10000.,step=1000.)

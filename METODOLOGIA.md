@@ -36,9 +36,9 @@ Classes: [0,25) muito baixa; [25,50) baixa; [50,70) moderada; [70,85) alta; [85,
 
 ## Roubo: território separado do patrimônio
 
-Referência pública: tabelas IBGE/SIDRA 8508, 8510 e 8512, ano 2021. O preparador obtém os totais municipais de domicílios e domicílios com vítimas, categorias Total, em unidades compatíveis. Calcula furto/total e roubo/total; faz média com pesos iguais e min-max nas 27 capitais publicadas. Segurança relativa é 1 menos a exposição normalizada; R é 1 menos essa segurança.
+O snapshot histórico IBGE/SIDRA 8508, 8510 e 8512, ano 2021, descreve vitimização domiciliar nas 27 capitais. A política `seguranca-1.0` o exclui do índice empresarial por incompatibilidade de população e fenômeno observado. Seus valores brutos são conservados para consulta histórica.
 
-Não é índice oficial do IBGE nem taxa empresarial. Pessoas/domicílios diferem de estabelecimentos e o ano é antigo; confiança contextual inicial 0,35. Não soma as duas taxas como se fossem eventos disjuntos. A referência é congelada no snapshot; não se normaliza novamente por lote de empresas. Não diferencia bairros de uma mesma cidade.
+Somente referências comerciais compatíveis, com ano encerrado, doze meses, estabelecimentos do mesmo ano e fonte, integridade conferida e até 24 meses após dezembro do ano observado podem contribuir. Dados inadequados deixam R=0,5 e confiança territorial zero. As regras e a inspeção do Sinesp VDE 2025 estão em [CONFIABILIDADE_SEGURANCA.md](CONFIABILIDADE_SEGURANCA.md). O VDE inspecionado não contém roubo em comércio e não substitui essa medida. Referências SSP elegíveis continuam experimentais, sem calibração atuarial e sem precisão de bairro ou rua.
 
 Impacto central: soma(valor cadastrado × probabilidade de localização) + estoque médio. Cenário alternativo: valor integral dos bens de referência + máximo entre estoque médio e pico. O cenário integral é exploratório; confirmar presença, suscetibilidade à subtração, sobreposição e elegibilidade contratual dos bens. Estoque médio e pico não são somados. Bens são consolidados antes dos cruzamentos, sem duplicar bens ou faturamento. Confiança dos vínculos afeta incerteza, não o indicador de criminalidade.
 

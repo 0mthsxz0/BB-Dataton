@@ -41,28 +41,9 @@ def triagem(registro):
 
 def personalizar(registro, recomendacao, dimensoes):
     from processamento import numero
+    from opcionais import avaliar_opcionais, comparar_alternativas
     operacao = registro.get('operacao_confirmada', {})
-    adicionais = []
-    sinais = {'refrigeration': ('probabilidade_refrigeracao_referencia', 'Estoque refrigerado'),
-              'delivery': ('probabilidade_delivery_referencia', 'Entregas'),
-              'homeOffice': ('percentual_vendas_online_estimado', 'Bens em trabalho remoto'),
-              'cash': ('percentual_recebimentos_digitais', 'Dinheiro e valores')}
-    for extra in REGRAS['optional']:
-        item = dict(extra)
-        chave = item.get('operation')
-        sinal = numero(registro.get(sinais[chave][0])) if chave in sinais else None
-        confirmado = operacao.get(chave)
-        item['confirmacao'] = confirmado
-        item['sinal_estimado'] = sinal
-        item['sugerida'] = confirmado is True or (confirmado is None and chave in ('refrigeration', 'delivery') and sinal is not None and sinal >= .5)
-        item['motivo'] = ('Operação confirmada pelo usuário; compatibilidade contratual ainda deve ser validada.' if confirmado is True
-                          else 'Ausência confirmada pelo usuário.' if confirmado is False
-                          else 'Sinal cadastral estimado; confirme a operação antes de incluir.' if item['sugerida']
-                          else 'Informação insuficiente para recomendar inclusão automática.')
-        if chave == 'homeOffice' and confirmado is None:
-            item['motivo'] = 'Vendas online não comprovam bens da empresa em trabalho remoto; confirme a operação.'
-        item['disponibilidade'] = 'SUJEITA_A_ATIVIDADE_E_ACEITACAO' if chave else 'SUJEITA_A_CONDICOES'
-        adicionais.append(item)
+    adicionais = avaliar_opcionais(registro, REGRAS)
     selecionado = registro.get('plano_escolhido') or recomendacao['plano_recomendado']
     padrao = set(REGRAS['plans'][selecionado])
     ajustes = registro.get('ajustes_coberturas', {})
@@ -72,6 +53,11 @@ def personalizar(registro, recomendacao, dimensoes):
     if set(registro.get('coberturas_indispensaveis', [])) - pacote:
         raise ValueError('O pacote escolhido não contém todas as coberturas que você considerou indispensáveis. Inclua a cobertura ou escolha outro plano.')
     pedidos = set(registro.get('adicionais_escolhidos', []))
+    validos = {x['code'] for x in adicionais}
+    if pedidos - validos:
+        raise ValueError('Adicional desconhecido.')
+    if len([c for c in pedidos if c.startswith('LUCRO_')]) > 1:
+        raise ValueError('Escolha apenas uma modalidade de lucro; confirme a DRE e as condições com o especialista.')
     for extra in adicionais:
         extra['solicitada'] = extra['code'] in pedidos
         extra['permitida_no_plano'] = selecionado in extra['plans']
@@ -83,6 +69,7 @@ def personalizar(registro, recomendacao, dimensoes):
     lacunas = [n['nome'] for c, n in necessidades.items() if c not in pacote and (n['indispensavel'] or n['prioridade'] >= 70)]
     return {'versaoRegras': REGRAS['version'], 'fontesRegras': REGRAS['sources'], 'conciliacao': REGRAS['reconciliation'],
         'triagem': triagem(registro), 'adicionais': adicionais,
+        'alternativas': comparar_alternativas(recomendacao, adicionais),
         'pacote': {'plano': selecionado, 'coberturas': sorted(pacote), 'obrigatorias': REGRAS['mandatory'],
             'adicionais_condicionais': sorted(pedidos), 'vigencia_anos': registro.get('vigencia_anos', 1),
             'aderencia_percentual': 100 * pontos / total, 'lacunas_prioritarias': lacunas,
