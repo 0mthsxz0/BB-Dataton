@@ -1,5 +1,17 @@
 # Formulário de cotação e busca de atividades
 
+## Consulta municipal de segurança
+
+Na branch `dados-de-seguranca`, a etapa de endereço permite consultar o índice
+municipal pelo servidor local. Somente cidade/UF e, depois, o código IBGE são
+enviados nessa consulta; dados pessoais e o endereço completo continuam na página.
+O resultado mostra período, faixa, situação do dado e fontes. Banco ausente ou
+dados insuficientes aparecem como indisponibilidade, sem risco presumido.
+O cenário de necessidade usa valor dos bens, garagem e uso, com multiplicadores
+explicitamente hipotéticos. Consulte [a metodologia e o estado da coleta](../../docs/DADOS_DE_SEGURANCA.md).
+As afirmações históricas abaixo sobre ausência de requisições se referem à versão
+original do formulário; a consulta municipal local é a adição descrita nesta seção.
+
 ## Entrega em 28/10/2026
 
 A pasta `frontend/` reúne a home e a página empresarial da etapa anterior e um fluxo local em seis etapas:

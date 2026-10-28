@@ -1,0 +1,13 @@
+{
+  "versao": 1,
+  "crimes_indice": [
+    "Roubo de veículo",
+    "Roubo de carga",
+    "Roubo a instituição financeira",
+    "Roubo seguido de morte (latrocínio)"
+  ],
+  "minimo_municipios": 30,
+  "selecao": "Recorte de naturezas de roubo a confirmar no dicionário da edição SINESP baixada. Não incluir totais e subtipos sobrepostos. CRITIC estima os pesos; não escolhe quais crimes são pertinentes.",
+  "faixas": "Convenção de comunicação: baixo [0,25), moderado [25,50), alto [50,75), muito alto [75,100]. Não são limiares atuariais.",
+  "populacao": "Censo 2022, agregado IBGE 4714: população 93 e área 6318. Ano explicitado, sem projetar população. Comparação temporal requer revisão."
+}

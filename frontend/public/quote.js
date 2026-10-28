@@ -1,4 +1,5 @@
 import { createActivityIndex, searchActivities, normalize, isValidSelection } from './activity-search.js';
+import { relativeNeed, coverageSuggestion, matchingMunicipality } from './security.js';
 
 const $=(s,root=document)=>root.querySelector(s);
 const $$=(s,root=document)=>[...root.querySelectorAll(s)];
@@ -16,13 +17,62 @@ let catalog,index,plans;
 let step=0;
 let completed=0;
 let picker;
+let securityRisk = null, securityMessage = '', securityRequest = 0;
 const state={personType:'pf',name:'',cnpj:'',birthDate:'',maritalStatus:'',phone:'',email:'',activityId:'',subactivityId:'',otherSubactivity:'',protection:'',shopping:'',cep:'',street:'',number:'',complement:'',district:'',city:'',uf:'',planId:new URLSearchParams(location.search).get('plano')||'',payment:'',installments:'1',paymentDay:'5',reviewed:false,description:''};
+Object.assign(state, { insuredValue: '', garage: '', goodsUse: '' });
+
+function securityMarkup() {
+  const r = securityRisk;
+  const valid = typeof r?.indice_roubo_0_100 === 'number';
+  const need = valid ? relativeNeed(r.indice_roubo_0_100, state.insuredValue, state.garage, state.goodsUse) : null;
+  const suggested = valid ? coverageSuggestion(r, plans.plans) : [];
+  return `<h2>Risco de roubo no município</h2>${securityMessage ? `<p role="status">${esc(securityMessage)}</p>` : ''}
+    ${valid ? `<p><strong>${r.indice_roubo_0_100.toFixed(1)} / 100 · ${esc(r.faixa)}</strong> — ${esc(r.municipio)} / ${esc(r.uf)}</p>
+      <p>Período: ${esc(r.inicio)} a ${esc(r.fim)}. Situação do dado: ${esc({insuficiente:'insuficiente',revisar:'requer revisão',completo_na_fonte:'completo na fonte'}[r.confianca] || 'não avaliada')}. Completude: ${(100*r.completude_0_1).toFixed(0)}%.</p>
+      ${need ? `<p>Prioridade de exposição neste cenário: <strong>${need.points.toFixed(2)} pontos</strong>. Usa o valor dos bens informado e fatores hipotéticos de garagem (${need.garageFactor}) e uso (${need.useFactor}). Não é perda esperada nem preço de seguro.</p>` : '<p>Para explorar a necessidade relativa, informe valor dos bens, garagem e uso. Campos vazios não recebem respostas presumidas.</p>'}
+      ${suggested.length ? `<p>Para avaliar a cobertura de roubo ou furto mediante arrombamento, compare: ${suggested.map(esc).join(', ')}. A adequação depende dos bens, atividade, condições e exclusões contratuais.</p>` : ''}
+      <details><summary>Fontes e limites</summary><p>Índice relativo na coorte observada, não probabilidade de roubo. Completude não mede subnotificação. Não representa roubo a residência nem risco específico do seu imóvel.</p>
+      ${(r.alertas || []).map(a => `<p>${esc(a)}</p>`).join('')}
+      ${(r.fontes || []).filter(f => f.url.startsWith('https://')).map(f => `<p><a href="${esc(f.url)}" target="_blank" rel="noopener noreferrer">Fonte oficial</a></p>`).join('')}</details>`
+      : '<p>Índice indisponível até haver dados municipais suficientes na base. Ausência de informação não significa risco baixo.</p>'}
+    ${step === 2 ? '<button type="button" class="btn btn-outline" id="consult-security">Consultar município informado</button><p class="catalog-note">A consulta envia somente cidade/UF ao servidor local. Endereço completo e dados pessoais ficam na página.</p>' : ''}`;
+}
+
+function securityBox() { return `<section class="security-box" id="security-box" aria-label="Risco municipal">${securityMarkup()}</section>`; }
+function updateSecurityBox() {
+  const box = $('#security-box');
+  if (box) { box.innerHTML = securityMarkup(); $('#consult-security')?.addEventListener('click', loadSecurity); }
+}
+
+async function loadSecurity() {
+  if (!state.uf || state.city.trim().length < 2) { securityMessage = 'Informe cidade e UF para consultar.'; updateSecurityBox(); return; }
+  const request = ++securityRequest, city = state.city, uf = state.uf;
+  securityRisk = null; securityMessage = 'Consultando a base municipal…'; updateSecurityBox();
+  const button = $('#consult-security'); if (button) button.disabled = true;
+  try {
+    const response = await fetch(`/api/seguranca/municipios?uf=${encodeURIComponent(uf)}&q=${encodeURIComponent(city.trim())}`);
+    const candidates = await response.json();
+    if (!response.ok) throw new Error(candidates.erro || 'Base de segurança indisponível.');
+    const selected = matchingMunicipality(city, uf, candidates.municipios);
+    if (!selected) throw new Error('Município não identificado. Confira o nome completo e a UF.');
+    const result = await fetch(`/api/seguranca/${selected.codigo_ibge}`);
+    const risk = await result.json();
+    if (!result.ok) throw new Error(risk.erro || 'Índice indisponível.');
+    if (request !== securityRequest) return;
+    securityRisk = risk;
+    securityMessage = typeof risk.indice_roubo_0_100 === 'number' ? '' : 'O município foi identificado, mas os dados ainda não permitem calcular seu índice.';
+  } catch (error) {
+    if (request !== securityRequest) return;
+    securityRisk = null; securityMessage = error.message;
+  }
+  if (request === securityRequest) updateSecurityBox();
+}
 
 function selectedActivity(){return catalog.activities.find(a=>a.id===state.activityId);}
 function selectedSubactivity(){return selectedActivity()?.subactivities.find(s=>s.id===state.subactivityId);}
 function selectedPlan(){return plans.plans.find(p=>p.id===state.planId);}
 function field(key,label,{type='text',required=true,full=false,autocomplete='off',placeholder='',maxlength='',help='',min='',max='',inputmode=''}={}){
-  return `<div class="qfield ${full?'span-two':''}"><label for="${key}">${label}${required?'':' <span class="small-note">(opcional)</span>'}</label><input id="${key}" name="${key}" type="${type}" value="${esc(state[key])}" ${required?'required':''} autocomplete="${autocomplete}" ${placeholder?`placeholder="${esc(placeholder)}"`:''} ${maxlength?`maxlength="${maxlength}"`:''} ${inputmode?`inputmode="${inputmode}"`:''} ${min?`min="${min}"`:''} ${max?`max="${max}"`:''} ${help?`aria-describedby="${key}-help"`:''}>${help?`<small id="${key}-help">${help}</small>`:''}</div>`;
+  return `<div class="qfield ${full?'span-two':''}"><label for="${key}">${label}${required?'':' <span class="small-note">(opcional)</span>'}</label><input id="${key}" name="${key}" type="${type}" ${type==='number'?'step="0.01"':''} value="${esc(state[key])}" ${required?'required':''} autocomplete="${autocomplete}" ${placeholder?`placeholder="${esc(placeholder)}"`:''} ${maxlength?`maxlength="${maxlength}"`:''} ${inputmode?`inputmode="${inputmode}"`:''} ${min?`min="${min}"`:''} ${max?`max="${max}"`:''} ${help?`aria-describedby="${key}-help"`:''}>${help?`<small id="${key}-help">${help}</small>`:''}</div>`;
 }
 function selectField(key,label,choices,{required=true,full=false,placeholder='Selecione'}={}){
   return `<div class="qfield ${full?'span-two':''}"><label for="${key}">${label}</label><select id="${key}" name="${key}" ${required?'required':''}><option value="">${placeholder}</option>${choices.map(c=>{const v=Array.isArray(c)?c[0]:c,t=Array.isArray(c)?c[1]:c;return `<option value="${esc(v)}" ${String(state[key])===String(v)?'selected':''}>${esc(t)}</option>`;}).join('')}</select></div>`;
@@ -87,6 +137,7 @@ function render(){
     form.addEventListener('submit',e=>{e.preventDefault();if(!form.reportValidity())return;if(!validateStep())return;completed=Math.max(completed,step+1);go(step+1);});
     $('#quote-back')?.addEventListener('click',()=>go(step-1));
   }
+  $('#consult-security')?.addEventListener('click', loadSecurity);
   if(step===0)$$('[name=personType]').forEach(r=>r.addEventListener('change',e=>{state.personType=e.target.value;state.cnpj='';state.birthDate='';state.maritalStatus='';render();}));
   if(step===1){
     picker=new ActivityPicker($('#activity-picker'),(activity,sub)=>{
@@ -100,7 +151,7 @@ function render(){
     $$('[name=subactivityId]').forEach(r=>r.addEventListener('change',e=>{state.subactivityId=e.target.value;state.otherSubactivity='';render();}));
   }
   if(step===4){$('#payment')?.addEventListener('change',e=>{state.payment=e.target.value;render();});}
-  if(step===5){$('#download-summary').addEventListener('click',downloadSummary);$('#restart-quote').addEventListener('click',()=>{Object.keys(state).forEach(k=>state[k]=typeof state[k]==='boolean'?false:'');state.personType='pf';state.installments='1';state.paymentDay='5';completed=0;go(0);});}
+  if(step===5){$('#download-summary').addEventListener('click',downloadSummary);$('#restart-quote').addEventListener('click',()=>{securityRisk=null;securityMessage='';securityRequest++;Object.keys(state).forEach(k=>state[k]=typeof state[k]==='boolean'?false:'');state.personType='pf';state.installments='1';state.paymentDay='5';completed=0;go(0);});}
 }
 function form(body,button='Avançar'){return `<form id="quote-form" aria-labelledby="form-title">${body}<div class="quote-navigation"><button type="button" class="back-button" id="quote-back" ${step===0?'disabled':''}>← Voltar</button><button class="btn" type="submit">${button} →</button></div></form>`;}
 function personal(){const pj=state.personType==='pj';const today=new Date().toISOString().slice(0,10);return form(`<fieldset class="person-types"><legend>Você está cotando como</legend><label><input type="radio" name="personType" value="pj" ${pj?'checked':''}> Pessoa Jurídica</label><label><input type="radio" name="personType" value="pf" ${!pj?'checked':''}> Pessoa Física</label></fieldset><div class="form-grid">${field('name',pj?'Razão social':'Nome completo',{full:true,autocomplete:pj?'organization':'name',maxlength:160})}${pj?field('cnpj','CNPJ da empresa',{full:true,placeholder:'00.000.000/0000-00',maxlength:18,inputmode:'numeric'}):field('birthDate','Data de nascimento',{type:'date',autocomplete:'bday',min:'1900-01-01',max:today})}${!pj?selectField('maritalStatus','Estado civil',['Solteiro(a)','Casado(a)','Separado(a)']):''}${field('phone','Celular',{type:'tel',autocomplete:'tel',placeholder:'(00) 00000-0000',maxlength:16,inputmode:'tel'})}${field('email','E-mail',{type:'email',autocomplete:'email',maxlength:160,full:pj})}</div>`);}
@@ -109,8 +160,8 @@ function business(){
   const sub=activity?`<div class="qfield" id="subactivity-field"><span id="subactivity-label">Qual é a subatividade econômica?</span><div class="subactivity-options" role="radiogroup" aria-labelledby="subactivity-label">${activity.subactivities.map(s=>`<label class="subactivity-choice"><input type="radio" name="subactivityId" value="${esc(s.id)}" ${s.id===state.subactivityId?'checked':''} required><span>${esc(s.label)}</span></label>`).join('')}<label class="subactivity-choice"><input type="radio" name="subactivityId" value="other" ${state.subactivityId==='other'?'checked':''} required><span>Outra subatividade — quero especificar</span></label></div>${state.subactivityId==='other'?`<div class="other-search">${field('otherSubactivity','Especifique a subatividade',{full:true,maxlength:300})}</div><small>Esta descrição precisa de confirmação de enquadramento. Não é uma categoria aprovada automaticamente.</small>`:''}<p class="sub-description">Revise a atividade e a subatividade escolhidas, mesmo quando vierem de uma sugestão.</p></div>`:'<p class="sub-description">A lista de subatividades aparece depois que você escolhe a atividade econômica.</p>';
   return form(`<div class="quote-form"><div id="activity-picker"></div>${sub}<div class="form-grid">${selectField('protection','O que você deseja proteger?',[['both','Imóvel e conteúdo'],['building','Somente o imóvel'],['contents','Somente o conteúdo']],{full:true})}${selectField('shopping','Sua empresa está localizada em shopping center?',[['yes','Sim'],['no','Não']],{full:true})}</div><p class="catalog-note">${catalog.counts.activities} atividades do catálogo consultado em 28/10/2026. Os nomes foram escritos por extenso para facilitar a leitura. A escolha precisa refletir a atividade principal do negócio.</p></div>`);
 }
-function address(){return form(`<p class="quote-subtitle">Informe o endereço do local que você quer proteger.</p><div class="form-grid">${field('cep','CEP',{placeholder:'00000-000',maxlength:9,inputmode:'numeric',autocomplete:'postal-code'})}${field('number','Número',{maxlength:12,help:'Se não houver número, informe “sem número”.'})}${field('street','Endereço',{full:true,autocomplete:'address-line1',maxlength:200})}${field('complement','Complemento',{full:true,required:false,autocomplete:'address-line2',maxlength:100})}${field('district','Bairro',{maxlength:100})}${field('city','Cidade',{autocomplete:'address-level2',maxlength:100})}${selectField('uf','UF',['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'],{full:true})}</div><p class="catalog-note">O endereço é preenchido localmente. Nenhuma consulta de CEP ou envio à seguradora é realizado neste protótipo.</p>`,'Ver os planos');}
-function planStep(){return form(`<p class="quote-subtitle">Os valores abaixo são referências públicas, não o resultado de uma precificação para os seus dados.</p><div class="qplans">${plans.plans.map(p=>`<label class="qplan"><span class="qplan-top"><input type="radio" name="planId" value="${p.id}" ${p.id===state.planId?'checked':''} required><strong>${esc(p.name)}</strong></span><p>${p.assistances} assistências + ${p.coverageCount} coberturas</p><div class="qplan-price">${esc(p.price)}<small> / mês*</small></div><details><summary>Ver itens associados ao plano</summary><ul>${plans.coverages.filter(c=>p.coverages.includes(c.id)).map(c=>`<li>${esc(c.name)}</li>`).join('')}</ul></details></label>`).join('')}</div><p class="catalog-note">*Preços de referência da página pública de 27/10/2026. O valor varia com o perfil e as condições do produto. A simulação local não calcula prêmio nem garante aceitação.</p>`,'Continuar');}
+function address(){return form(`<p class="quote-subtitle">Informe o endereço do local que você quer proteger.</p><div class="form-grid">${field('cep','CEP',{placeholder:'00000-000',maxlength:9,inputmode:'numeric',autocomplete:'postal-code'})}${field('number','Número',{maxlength:12,help:'Se não houver número, informe “sem número”.'})}${field('street','Endereço',{full:true,autocomplete:'address-line1',maxlength:200})}${field('complement','Complemento',{full:true,required:false,autocomplete:'address-line2',maxlength:100})}${field('district','Bairro',{maxlength:100})}${field('city','Cidade',{autocomplete:'address-level2',maxlength:100})}${selectField('uf','UF',['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'],{full:true})}</div><h2>Exposição dos bens (opcional)</h2><div class="form-grid">${field('insuredValue','Valor dos bens a proteger (R$)',{type:'number',required:false,min:'0',max:'1000000000000',inputmode:'decimal'})}${selectField('garage','Os bens ficam em garagem ou área fechada?',[['sim','Sim'],['nao','Não']],{required:false})}${selectField('goodsUse','Uso dos bens',[['interno','Uso interno'],['externo','Uso externo'],['misto','Uso misto']],{required:false})}</div><p class="catalog-note">Cenário exploratório: os fatores de garagem e uso são hipóteses não calibradas em sinistros.</p>${securityBox()}<p class="catalog-note">Não há consulta de CEP nem envio de informações à seguradora.</p>`,'Ver os planos');}
+function planStep(){return form(`${securityBox()}<p class="quote-subtitle">Os valores abaixo são referências públicas, não o resultado de uma precificação para os seus dados.</p><div class="qplans">${plans.plans.map(p=>`<label class="qplan"><span class="qplan-top"><input type="radio" name="planId" value="${p.id}" ${p.id===state.planId?'checked':''} required><strong>${esc(p.name)}</strong></span><p>${p.assistances} assistências + ${p.coverageCount} coberturas</p><div class="qplan-price">${esc(p.price)}<small> / mês*</small></div><details><summary>Ver itens associados ao plano</summary><ul>${plans.coverages.filter(c=>p.coverages.includes(c.id)).map(c=>`<li>${esc(c.name)}</li>`).join('')}</ul></details></label>`).join('')}</div><p class="catalog-note">*Preços de referência da página pública de 27/10/2026. O valor varia com o perfil e as condições do produto. A simulação local não calcula prêmio nem garante aceitação.</p>`,'Continuar');}
 function summary({includeContact=false}={}){
   const activity=selectedActivity(),sub=selectedSubactivity(),plan=selectedPlan();
   return `<div class="quote-review"><h2>Seu resumo</h2><dl>${includeContact?`<dt>${state.personType==='pj'?'Empresa':'Nome'}</dt><dd>${esc(state.name)}</dd><dt>Contato</dt><dd>${esc(state.email)}<br>${esc(state.phone)}</dd>`:''}<dt>Atividade</dt><dd>${esc(activity?.label||'Não selecionada')}</dd><dt>Subatividade</dt><dd>${esc(sub?.label||state.otherSubactivity||'A confirmar')}</dd><dt>Proteção</dt><dd>${esc({both:'Imóvel e conteúdo',building:'Somente o imóvel',contents:'Somente o conteúdo'}[state.protection]||'')}</dd><dt>Localização</dt><dd>${esc(state.city)} / ${esc(state.uf)}</dd><dt>Plano</dt><dd>${esc(plan?.name||'')}</dd></dl></div>`;
@@ -118,7 +169,7 @@ function summary({includeContact=false}={}){
 function review(){return form(`${summary({includeContact:true})}<div class="form-grid">${selectField('payment','Como gostaria de pagar?',[['card','Cartão de crédito'],['debit','Débito em conta'],['boleto','Boleto bancário']],{full:true})}${selectField('installments','Quantidade de parcelas',[['1','À vista'],['2','2 parcelas'],['3','3 parcelas'],['4','4 parcelas'],['5','5 parcelas'],['6','6 parcelas'],['7','7 parcelas'],['8','8 parcelas'],['9','9 parcelas'],['10','10 parcelas'],['11','11 parcelas'],['12','12 parcelas']])}${selectField('paymentDay','Dia de vencimento',[['5','Dia 5'],['10','Dia 10'],['15','Dia 15'],['20','Dia 20'],['25','Dia 25']])}</div><p class="payment-note">Esta etapa demonstra a escolha de pagamento. Não solicita cartão, código de segurança ou dados bancários. Disponibilidade de parcelas, vencimentos e preço final precisam ser confirmados na contratação oficial.</p><label class="local-agreement"><input name="reviewed" type="checkbox" required ${state.reviewed?'checked':''}><span>Revisei as informações e quero concluir esta demonstração. Isso não contrata um seguro e não gera cobrança.</span></label>`,'Concluir demonstração');}
 function success(){return `<div class="quote-success"><div class="success-icon" aria-hidden="true">✓</div><p>Você percorreu todas as etapas da demonstração. As informações foram mantidas somente na memória desta página.</p>${summary()}<p>Para obter uma cotação válida e contratar, utilize o canal oficial da BB Seguros. Os dados preenchidos aqui não são transferidos.</p><button class="btn" id="download-summary">Baixar resumo sem dados pessoais</button><a class="btn btn-outline" href="https://cotacaoseguroempresarial.bbseguros.com.br/home" target="_blank" rel="noopener noreferrer">Abrir cotação oficial ↗</a><p><button class="back-button" id="restart-quote">Começar novamente e limpar os dados</button></p></div>`;}
 
-function remember(e){const t=e.target;if(!t.name||!(t.name in state))return;state[t.name]=t.type==='checkbox'?t.checked:t.value;if(t.name==='phone'){let v=t.value.replace(/\D/g,'').slice(0,11);if(v.length>2)v=`(${v.slice(0,2)}) ${v.slice(2)}`;if(v.replace(/\D/g,'').length>7)v=v.slice(0,-4)+'-'+v.slice(-4);t.value=v;state.phone=v;}if(t.name==='cep'){const v=t.value.replace(/\D/g,'').slice(0,8);t.value=v.length>5?v.slice(0,5)+'-'+v.slice(5):v;state.cep=t.value;}}
+function remember(e){const t=e.target;if(!t.name||!(t.name in state))return;const previous=state[t.name];state[t.name]=t.type==='checkbox'?t.checked:t.value;if(previous!==state[t.name]&&['city','uf'].includes(t.name)){securityRisk=null;securityMessage='';securityRequest++;updateSecurityBox();}if(previous!==state[t.name]&&['insuredValue','garage','goodsUse'].includes(t.name))updateSecurityBox();if(t.name==='phone'){let v=t.value.replace(/\D/g,'').slice(0,11);if(v.length>2)v=`(${v.slice(0,2)}) ${v.slice(2)}`;if(v.replace(/\D/g,'').length>7)v=v.slice(0,-4)+'-'+v.slice(-4);t.value=v;state.phone=v;}if(t.name==='cep'){const v=t.value.replace(/\D/g,'').slice(0,8);t.value=v.length>5?v.slice(0,5)+'-'+v.slice(5):v;state.cep=t.value;}}
 function fail(message){$('#form-errors').innerHTML=`<p class="quote-error">${esc(message)}</p>`;$('#form-errors').scrollIntoView({block:'nearest'});return false;}
 function validCnpj(value){const digits=value.replace(/\D/g,'');if(digits.length!==14||/^(\d)\1+$/.test(digits))return false;function digit(base){let weight=base.length-7;let sum=0;for(const c of base){sum+=Number(c)*weight--;if(weight===1)weight=9;}const rest=sum%11;return rest<2?'0':String(11-rest);}return digit(digits.slice(0,12))===digits[12]&&digit(digits.slice(0,13))===digits[13];}
 function validateStep(){

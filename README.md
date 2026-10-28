@@ -1,5 +1,13 @@
 # Protege Empresa | BB Datathon
 
+## Base de segurança municipal
+
+A branch `dados-de-seguranca` inclui coleta SINESP/IBGE, banco SQLite consultável,
+índice relativo de roubo com suavização e pesos CRITIC, exportação CSV e integração
+com o formulário. Consulte [fontes, comandos, método e limitações](docs/DADOS_DE_SEGURANCA.md).
+Os downloads oficiais estão pendentes de liberação de rede do ambiente; a base
+operacional ainda não contém ocorrências reais. Dados ausentes não recebem índice zero.
+
 ## Portal e formulário web
 
 O diretório [frontend/](frontend/) contém a home, o Seguro Empresarial e um formulário demonstrativo de seis etapas, sem campo CPF. A seleção econômica tem as 970 atividades do catálogo público, nomes por extenso e busca por lista, nome ou descrição do negócio, com sugestão de subatividade.
