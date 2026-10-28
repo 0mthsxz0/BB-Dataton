@@ -2,6 +2,10 @@
 
 ## Teste grátis (padrão)
 
+Para experimentar uma fala própria em português sem TwiML Bin, veja
+[VOZ_PERSONALIZADA.md](VOZ_PERSONALIZADA.md). Essa opção requer um servidor e
+uma URL HTTPS externa, e depende das permissões de Custom da conta Twilio.
+
 O modo `trial` chama um destino verificado e reproduz o template de demonstração
 Text-to-Speech da Twilio. O idioma e o texto pertencem ao template; não há campo
 para escrever mensagem neste modo. O número de origem é escolhido pela Twilio.

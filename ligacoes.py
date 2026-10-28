@@ -9,7 +9,7 @@ import os
 import re
 import socket
 from urllib.error import HTTPError, URLError
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlsplit
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 from xml.etree.ElementTree import Element, SubElement, tostring
 
@@ -52,6 +52,7 @@ class Configuracao:
     token: str = field(repr=False)
     origem: str = ""
     modo: str = "trial"
+    twiml_url: str = ""
 
     def __post_init__(self):
         if not re.fullmatch(r"AC[0-9a-fA-F]{32}", self.conta):
@@ -60,6 +61,12 @@ class Configuracao:
             raise ValueError("TWILIO_AUTH_TOKEN deve conter o Auth Token da conta.")
         if self.modo not in {"trial", "completo"}:
             raise ValueError("TWILIO_MODE deve ser trial ou completo.")
+        if self.twiml_url:
+            partes = urlsplit(self.twiml_url)
+            if partes.scheme != "https" or not partes.hostname or partes.username or partes.password or partes.fragment:
+                raise ValueError("TWILIO_TWIML_URL deve ser uma URL HTTPS sem credenciais ou fragmento.")
+            if partes.hostname in {"localhost", "127.0.0.1", "::1"}:
+                raise ValueError("TWILIO_TWIML_URL precisa ser acessível pela internet, não localhost.")
         if self.modo == "completo":
             if not self.origem:
                 raise ValueError("Configure TWILIO_FROM_NUMBER para o modo completo.")
@@ -73,7 +80,8 @@ class Configuracao:
         if faltantes:
             raise ValueError("Configure no servidor: " + ", ".join(faltantes))
         return cls(*valores, origem=os.environ.get("TWILIO_FROM_NUMBER", "").strip(),
-                   modo=os.environ.get("TWILIO_MODE", "trial").strip().lower())
+                   modo=os.environ.get("TWILIO_MODE", "trial").strip().lower(),
+                   twiml_url=os.environ.get("TWILIO_TWIML_URL", "").strip())
 
 
 class SemRedirecionamento(HTTPRedirectHandler):
@@ -152,10 +160,10 @@ class ClienteLigacoes:
         destino = validar_telefone(destino)
         if self.config.modo == "trial":
             if mensagem.strip() or limite is not None:
-                raise ValueError("No modo trial, use a demonstração da Twilio sem mensagem ou duração personalizada.")
+                raise ValueError("No modo trial, use a URL de voz configurada sem mensagem ou duração no pedido da API.")
             # O trial escolhe a origem. From, Twiml, TimeLimit e Timeout são
             # parâmetros da API completa e não devem seguir nesta requisição.
-            return self._requisicao(dados={"To": destino, "Url": TEMPLATE_TRIAL})
+            return self._requisicao(dados={"To": destino, "Url": self.config.twiml_url or TEMPLATE_TRIAL})
         if limite is None:
             limite = 120
         if type(limite) is not int or not 10 <= limite <= 600:

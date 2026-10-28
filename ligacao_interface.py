@@ -16,7 +16,11 @@ def renderizar():
         st.write("O teste grátis seleciona o número de origem automaticamente. Veja LIGACOES.md para configurar.")
         return
     trial = config.modo == "trial"
-    if trial:
+    if trial and config.twiml_url:
+        st.info("Modo teste com fala personalizada: a Twilio buscará o roteiro na URL HTTPS configurada. "
+                "Se estiver usando nosso servidor, edite mensagem_ligacao.txt e mantenha o servidor e o túnel ligados. "
+                "A disponibilidade de Custom é controlada pela Twilio.")
+    elif trial:
         st.info("Modo teste grátis: a chamada reproduz a demonstração de voz da Twilio. "
                 "Neste modo, não enviamos texto personalizado nem escolhemos o número de origem. "
                 "O idioma e a mensagem são definidos pela demonstração da Twilio.")
