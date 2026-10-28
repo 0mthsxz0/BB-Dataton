@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "notice": "Pesos experimentais do MVP. Respostas se referem ao estabelecimento que você quer proteger.",
+  "groups": [
+    {"code":"ROUBO_FURTO_ARROMBAMENTO","name":"Roubo, furto e arrombamento","questions":[
+      {"id":"securityControls","text":"O local possui alarme monitorado e controle de acesso em funcionamento?"},
+      {"id":"portableGoods","text":"Há mercadorias ou equipamentos de fácil transporte e revenda no local?"}
+    ]},
+    {"code":"VENDAVAL_EVENTOS_CORRELATOS","name":"Vendaval e eventos correlatos","questions":[
+      {"id":"roofMaintained","text":"O telhado e suas fixações foram inspecionados e estão em bom estado?"},
+      {"id":"exposedAssets","text":"Há bens, estruturas ou equipamentos em áreas externas expostas ao vento?"}
+    ]},
+    {"code":"RESPONSABILIDADE_CIVIL_EMPREGADOR","name":"Responsabilidade civil do empregador","questions":[
+      {"id":"hasEmployees","text":"Há empregados trabalhando neste estabelecimento?"},
+      {"id":"hazardousWork","text":"Esses empregados trabalham com máquinas, calor, produtos químicos, altura ou esforço físico frequente?"}
+    ]},
+    {"code":"QUEBRA_DE_VIDROS","name":"Quebra de vidros","questions":[
+      {"id":"hasGlass","text":"O local possui vidros, espelhos ou vitrines que precisam de proteção?"},
+      {"id":"glassExposed","text":"Esses vidros ficam expostos à rua, à circulação de pessoas ou a impactos?"}
+    ]}
+  ]
+}

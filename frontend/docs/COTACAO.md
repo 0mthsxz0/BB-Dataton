@@ -1,5 +1,7 @@
 # Formulário de cotação e busca de atividades
 
+> Esta é a documentação da entrega visual inicial. A implementação atual tem sete etapas, API local, oito perguntas e recomendação calculada pelo motor Python. Consulte [INTEGRACAO_MVP.md](INTEGRACAO_MVP.md) para o funcionamento e os requisitos atuais. A escolha de plano anterior pode ser substituída pela recomendação após o cálculo.
+
 ## Entrega em 28/10/2026
 
 A pasta `frontend/` reúne a home e a página empresarial da etapa anterior e um fluxo local em seis etapas:
@@ -71,3 +73,6 @@ O layout mantém a referência de cabeçalho amarelo, imagem lateral, campos con
 - Nenhum erro de console retornado nas ações testadas.
 
 Os testes estão em `tests/activity-search.test.js`. Capturas em `docs/screenshots/cotacao-*.jpg` e relatório de checagens em `docs/evidence/cotacao-browser-checks.json`.
+
+
+Atualização do item 10: veja [GUIA_ATUALIZADO.md](GUIA_ATUALIZADO.md). Matriz do desafio 6/8/10, cobertura cibernética obrigatória, triagem e composição personalizada implementadas na versão 0.4.

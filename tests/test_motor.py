@@ -100,11 +100,11 @@ def test_estoque_pico_e_cenario_sem_soma_duplicada(registro):
     assert s['faixa_valor_max'] == registro['bens_total_referencia'] + registro['estoque_pico_estimado']
 
 
-def test_quatro_indices_nove_dimensionamentos_com_limites(registro):
+def test_quatro_indices_dez_dimensionamentos_com_limites(registro):
     pontos = MotorPontuacao().analisar_registro(registro)
     assert set(pontos) == set(DECISORIAS)
     dimensoes=MotorPontuacao().dimensionar_coberturas(registro)
-    assert len(dimensoes)==9
+    assert len(dimensoes)==10
     assert all('prioridade' not in d for d in dimensoes.values())
     for s in pontos.values():
         assert 0 <= s['prioridade_min'] <= s['prioridade'] <= s['prioridade_max'] <= 100

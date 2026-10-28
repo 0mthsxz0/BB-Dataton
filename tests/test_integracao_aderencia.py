@@ -13,12 +13,12 @@ from recomendador import recomendar_plano
 from exportacao import analisar_base
 
 
-def test_quatro_indices_continuos_e_cinco_heuristicas(registro, config):
+def test_quatro_indices_continuos_e_seis_heuristicas(registro, config):
     motor = MotorPontuacao(config=config)
     pontos = motor.analisar_registro(registro)
     necessidades = motor.necessidades_plano(registro, pontos)
     assert set(pontos) == set(DECISORIAS)
-    assert len(necessidades) == 9
+    assert len(necessidades) == 10
     for c in DECISORIAS:
         assert necessidades[c]['prioridade'] == pontos[c]['prioridade']
         assert necessidades[c]['origem'] == 'INDICE_MULTIFATORIAL'
@@ -57,7 +57,7 @@ def test_intervalos_razao_contem_todos_os_extremos(registro,catalogo):
     pontos=MotorPontuacao().analisar_registro(registro)
     r=recomendar_plano(pontos,catalogo,registro=registro)
     itens=list(r['necessidades'].items())
-    for escolhas in itertools.product(['prioridade_min','prioridade_max'],repeat=9):
+    for escolhas in itertools.product(['prioridade_min','prioridade_max'],repeat=10):
         valores={c:s[k]*s['peso'] for (c,s),k in zip(itens,escolhas)}
         total=sum(valores.values())
         if not total:
@@ -73,8 +73,8 @@ def test_preferencias_auditadas_e_exportadas(pasta_csv,config):
     base=carregar_base(pasta_csv)
     r,c,a=analisar_base(base,config)
     assert r.plano_recomendado.eq('TOTAL').all()
-    assert len(c)==9*len(r)
-    assert all(len(x['pontuacoes'])==4 and len(x['necessidades_plano'])==9 for x in a)
+    assert len(c)==10*len(r)
+    assert all(len(x['pontuacoes'])==4 and len(x['necessidades_plano'])==10 for x in a)
     assert all(x['recomendacao']['indispensaveis']==[VIDROS] for x in a)
     json.dumps(a,allow_nan=False)
 

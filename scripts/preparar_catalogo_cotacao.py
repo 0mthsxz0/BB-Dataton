@@ -12,6 +12,14 @@ OUTPUT = ROOT / 'frontend' / 'public' / 'activities.json'
 # Editorial expansions preserve the insurer's internal identifiers. They do not
 # convert the catalog into CNAE, nor assert insurer-approved descriptions.
 EXPANSIONS = {
+    'FRIGORIF':'frigorífico','ADMINIST':'administração','ASSOCIAC':'associações',
+    'BRINQUED':'brinquedos','CICLOMOT':'ciclomotores','COMUN':'comunicação',
+    'CONCENTR':'concentrados','CONFEDER':'confederações','FISCALIZ':'fiscalização',
+    'METALURG':'metalurgia','PUBLICIT':'publicitários','TREFILAD':'trefilados',
+    'CINEMATOGR':'cinematográficos','COMERCIALIZAC':'comercialização','DIGITALIZ':'digitalização',
+    'ELETROELETR':'eletroeletrônicos','ESPECIALI':'especializados','FERRAMENT':'ferramentas',
+    'INTRUMENT':'instrumentos','MOTOCICLE':'motocicletas','REVESTIMENT':'revestimentos',
+    'EQUIDEOS':'equídeos','AÇOUGUES':'açougues','ACOUGUES':'açougues',
     'FABR':'fabricação','FABRIC':'fabricação','FAB':'fabricação','FABRICACAO':'fabricação',
     'MAQ':'máquinas','MAQUIN':'máquinas','MAQUINAS':'máquinas','APAR':'aparelhos','APAREL':'aparelhos',
     'EQUIP':'equipamentos','EQUIPAM':'equipamentos','EQUIPAMEN':'equipamentos','EQUIPAMENTOS':'equipamentos',

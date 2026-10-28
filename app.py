@@ -172,15 +172,15 @@ def detalhar(registro, base, config):
     st.subheader(f'{registro["imovel_id"]} · {registro["grupo_atividade"]}')
     st.caption(f'{registro["empresa_id"]} · CNAE {registro["cnae_principal"]} · {registro["municipio_real"]}/{registro["uf_real"]}')
     a, b, c = st.columns(3)
-    a.metric('Plano sugerido', plano['plano_recomendado'])
+    a.metric('Plano sugerido', 'ANÁLISE OFICIAL' if plano['indicacao_bloqueada'] else plano['plano_recomendado'])
     b.metric('Confiança dos dados', f'{plano["confianca_geral"]:.0%}')
     c.metric('Aceitação contratual', plano['elegibilidade']['elegivel'])
     st.info(plano['justificativa'])
     if not plano['recomendacao_estavel']:
         st.warning(f'Sensível à incerteza dos dados: cenários variam entre {plano["plano_cenario_inferior"]} e {plano["plano_cenario_superior"]}.')
     st.plotly_chart(grafico(pontos), use_container_width=True)
-    st.caption('Quatro índices multifatoriais preservam evento, impacto e vulnerabilidade. A escolha do plano considera nove necessidades; nota não é probabilidade de sinistro.')
-    with st.expander('Valores das nove coberturas do catálogo'):
+    st.caption('Quatro índices multifatoriais preservam evento, impacto e vulnerabilidade. A escolha do plano considera dez necessidades; nota não é probabilidade de sinistro.')
+    with st.expander('Valores das dez coberturas do catálogo'):
         dimensoes=motor.dimensionar_coberturas(registro)
         st.dataframe(pd.DataFrame([{'Cobertura':x['nome'],'Papel':x['papel'],
             'Cenário mínimo':dinheiro(x['faixa_valor_min']),'Cenário máximo':dinheiro(x['faixa_valor_max']),
@@ -208,7 +208,7 @@ def detalhar(registro, base, config):
     st.subheader('Comparação dos planos')
     st.dataframe(pd.DataFrame(plano['comparacao']).astype(str), hide_index=True, use_container_width=True)
     st.caption('Aderência mede presença de coberturas no catálogo; não considera limites, franquias ou exclusões. Total com 100% não significa proteção integral.')
-    st.subheader('As nove necessidades usadas na escolha')
+    st.subheader('As dez necessidades usadas na escolha')
     st.dataframe(pd.DataFrame([{'Cobertura':s['nome'], 'Pontos':s['prioridade'],
         'Origem':s['origem'], 'Participação (%)':s['participacao_percentual'],
         'Não abrir mão':s['indispensavel'], 'Confiança':s['confianca'],
@@ -352,7 +352,7 @@ def main():
         st.write('Modelo transparente com interação entre evento, impacto e vulnerabilidade. Todos os parâmetros são hipóteses da equipe.')
         st.code('P = 100 × clip[(p+(1−p)I) × (a+(1−a)R) × (b+(1−b)V) + kIRD, 0, 1]',language='text')
         st.caption('R: evento relativo; I: impacto normalizado; V: vulnerabilidade limitada pelos dados; D: interação específica.')
-        st.info('Aderência = pontos ponderados das coberturas presentes / pontos ponderados das nove necessidades. Meta padrão: 80%. O menor plano que alcança a meta e contém todas as indispensáveis é sugerido. Quatro índices contínuos e cinco heurísticas explícitas entram na decisão. Não há comparação de preços.')
+        st.info('Aderência = pontos ponderados das coberturas presentes / pontos ponderados das dez necessidades. Meta padrão: 80%. O menor plano que alcança a meta e contém todas as indispensáveis é sugerido. Quatro índices contínuos e seis heurísticas explícitas entram na decisão. Não há comparação de preços.')
         st.caption('Parâmetros climáticos diferentes exigem regenerar referências. SSP usa dados municipais de roubo em comércio e uma escala fixa; não é probabilidade de sinistro.')
         novo = st.text_area('Configuração JSON',json.dumps(config,ensure_ascii=False,indent=2),height=420)
         a,b = st.columns(2)

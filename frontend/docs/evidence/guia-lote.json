@@ -1,0 +1,14 @@
+{
+  "estabelecimentos": 2978,
+  "linhas_cobertura": 22670,
+  "encaminhamentos_sem_oferta": 78,
+  "planos": {
+    "PRATICO": 2623,
+    "ESSENCIAL": 271,
+    "ENCAMINHAMENTO": 78,
+    "TOTAL": 6
+  },
+  "obrigatorias_em_todos_pacotes": "PASS",
+  "sem_duplicar_unidades": "PASS",
+  "regras": "guia-item10-2026.1"
+}

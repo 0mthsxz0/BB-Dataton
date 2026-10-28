@@ -63,4 +63,4 @@ def test_indispensavel_interface_e_exportacao(pasta_csv,monkeypatch):
         auditoria=json.loads(z.read('auditoria.json'))
     assert config['planos']['indispensaveis']==[VIDROS]
     assert all(x['recomendacao']['plano_recomendado']=='TOTAL' for x in auditoria)
-    assert all(len(x['necessidades_plano'])==9 for x in auditoria)
+    assert all(len(x['necessidades_plano'])==10 for x in auditoria)

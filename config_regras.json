@@ -1,5 +1,5 @@
 {
-  "versao": "0.3.0",
+  "versao": "0.4.0",
   "nota": "Hipóteses da equipe para o Datathon. Não são parâmetros oficiais ou probabilidades de sinistro.",
   "modelo": {
     "piso_evento": 0.2,
@@ -225,6 +225,16 @@
       "peso_plano": 1,
       "adicional": false,
       "papel": "decisao"
+    },
+    "PROTECAO_CIBERNETICA_AVALIAR": {
+      "nome": "Proteção cibernética",
+      "papel": "dimensionamento",
+      "exposicao": "digital",
+      "pesos_evento": {},
+      "referencia_financeira": 1000000,
+      "coeficiente_interacao": 0,
+      "peso_plano": 1,
+      "adicional": false
     }
   },
   "clima": {

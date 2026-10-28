@@ -37,7 +37,8 @@ export function createActivityIndex(catalog) {
   const entries=catalog.activities.map(activity=>{
     const text=activity.label;
     const ts=tokens(text);
-    return {activity,normalized:normalize(text),tokens:ts,bag:new Set(ts)};
+    return {activity,normalized:normalize(text),tokens:ts,bag:new Set(ts),
+      subTokens:new Set(activity.subactivities.flatMap(s=>tokens(s.label)))};
   });
   const frequency=new Map();
   for(const row of entries)for(const word of row.bag)frequency.set(word,(frequency.get(word)||0)+1);
@@ -62,7 +63,8 @@ function candidateOperation(label){if(label.startsWith('fabricacao')||label.star
 export function searchActivities(index, query, {mode='name',limit=12}={}) {
   const q=normalize(query);
   if(!q)return {results:mode==='name'?index.entries.slice(0,limit).map(x=>({activity:x.activity,score:0,reason:'Lista de atividades'})):[],confidence:'none',question:mode==='description'?'Conte o que você vende, produz ou faz e quem são seus clientes.':null};
-  const rawTokens=tokens(query);
+  // Ignore negated operations/products before ranking, not just when detecting intent.
+  const rawTokens=tokens(mode==='description'?negatedText(q):query);
   if(mode==='description'&&rawTokens.length<2)return {results:[],confidence:'none',question:'Conte o que você vende, produz ou faz e quem são seus clientes.'};
   const clean=negatedText(q);
   const concepts=mode==='description'?CONCEPTS.filter(c=>c.pattern.test(clean)):[];
@@ -76,9 +78,11 @@ export function searchActivities(index, query, {mode='name',limit=12}={}) {
       const exact=row.bag.has(token);
       const prefix=!exact&&token.length>=4&&[...row.bag].some(w=>w.startsWith(token)||token.startsWith(w)&&w.length>=4);
       if(exact||prefix){score+=idf(index,token)*(exact?1:.65)*(rawTokens.includes(token)?1:.65);matches.push(token);}
+      else if(row.subTokens.has(token)){score+=idf(index,token)*.55;matches.push(token);}
     }
     if(row.normalized.includes(q))score+=15;
     if(row.activity.id===query.trim())score+=40;
+    if(row.activity.subactivities.some(s=>normalize(s.id)===q))score+=35;
     for(const concept of concepts){if(concept.ids?.includes(row.activity.id))score+=17;}
     if(/roupas?|vestuario|brecho|boutique|moda/.test(clean)){
       if(op==='retail'&&row.activity.id==='484')score+=24;
@@ -99,8 +103,9 @@ export function searchActivities(index, query, {mode='name',limit=12}={}) {
     if(mode==='name'&&score<3&&qtokens.length<=3){const fuzzy=Math.max(...qtokens.map(t=>Math.max(0,...row.tokens.map(w=>similarity(t,w)))));if(fuzzy>.62)score+=fuzzy*5;}
     if(score<=0)continue;
     const subCandidates=row.activity.subactivities.map(s=>{
-      const st=new Set(tokens(s.label));let subScore=0;for(const t of qtokens)if(st.has(t))subScore+=idf(index,t);
+      const st=new Set(tokens(s.label));let subScore=0;for(const t of qtokens){if(st.has(t))subScore+=idf(index,t);else if(t.length>=5&&[...st].some(w=>w.length>=5&&similarity(t,w)>.72))subScore+=idf(index,t)*.5;}
       if(normalize(s.label).includes(q))subScore+=10;
+      if(normalize(s.id)===q)subScore+=40;
       return {subactivity:s,score:subScore};
     }).sort((a,b)=>b.score-a.score||a.subactivity.label.localeCompare(b.subactivity.label,'pt-BR'));
     const sub= subCandidates.length===1 ? subCandidates[0].subactivity : subCandidates[0]?.score>0&&(subCandidates[0].score-(subCandidates[1]?.score||0))>=2 ? subCandidates[0].subactivity : null;
@@ -109,7 +114,7 @@ export function searchActivities(index, query, {mode='name',limit=12}={}) {
   }
   ranked.sort((a,b)=>b.score-a.score||a.activity.label.localeCompare(b.activity.label,'pt-BR'));
   const top=ranked[0],margin=top?(top.score-(ranked[1]?.score||0)):0;
-  const sufficient=mode==='name'||(top&&top.score>=12&&(concepts.length>0||rawTokens.filter(t=>top.activity.label&&tokens(top.activity.label).includes(t)).length>=2));
+  const sufficient=mode==='name'||(top&&top.score>=12&&(concepts.length>0||rawTokens.filter(t=>tokens(top.activity.label+' '+(top.subactivity?.label||'')).includes(t)).length>=2));
   const results=sufficient?(mode==='description'?ranked.filter(r=>r.score>=Math.max(8,(top?.score||0)*.4)):ranked).slice(0,limit):[];
   const confidence=!results.length?'none':mode==='name'?'match':top.score>=22&&margin>=7?'strong':margin<4?'ambiguous':'suggestion';
   let question=null;

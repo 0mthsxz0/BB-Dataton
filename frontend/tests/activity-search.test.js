@@ -19,7 +19,7 @@ test('all 970 source activities and all 1007 relationships are preserved',()=>{
   }
 });
 test('display labels remove the main source abbreviations for every option',()=>{
-  const pattern=/\b(FABR|ATACAD|VAREJ|MAQ|APAR|EQUIP|ARTEF|CLASSIF|PROD|PREP|COMPUT|INSTR|TRANSP|ENERG|CONSTR)\b/i;
+  const pattern=/(?<!\p{L})(FABR|ATACAD|VAREJ|MAQ|APAR|EQUIP|ARTEF|CLASSIF|PROD|PREP|COMPUT|INSTR|TRANSP|ENERG|CONSTR|FRIGORIF|ADMINIST|ASSOCIAC|BRINQUED|CICLOMOT|COMUN|CONCENTR|CONFEDER|FISCALIZ|METALURG|PUBLICIT|TREFILAD)(?!\p{L})/iu;
   for(const row of catalog.activities){assert.ok(!pattern.test(row.label),row.label);assert.ok(row.label.length>0);for(const sub of row.subactivities)assert.ok(!pattern.test(sub.label),sub.label);}
 });
 const cases=[

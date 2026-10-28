@@ -21,7 +21,7 @@ EMPREGADOR = 'RESPONSABILIDADE_CIVIL_EMPREGADOR'
 VIDROS = 'QUEBRA_DE_VIDROS'
 CIBER = 'PROTECAO_CIBERNETICA_AVALIAR'
 DECISORIAS = (ROUBO, VENDAVAL, EMPREGADOR, VIDROS)
-COMUNS = (INCENDIO, ELETRICO, ALUGUEL, TERCEIROS, DESPESAS)
+COMUNS = (INCENDIO, ELETRICO, ALUGUEL, TERCEIROS, DESPESAS, CIBER)
 
 
 def limitar(x):
@@ -41,8 +41,8 @@ def validar_config(cfg):
     """Rejeita parâmetros inválidos antes de qualquer processamento."""
     def finito(x):
         return isinstance(x, (int, float)) and not isinstance(x, bool) and math.isfinite(x)
-    if cfg.get('versao')!='0.3.0':
-        raise ValueError('Configuração incompatível. Use o modelo v0.3.0: quatro índices e nove necessidades.')
+    if cfg.get('versao')!='0.4.0':
+        raise ValueError('Configuração incompatível. Use o modelo v0.4.0: quatro índices e dez necessidades.')
     m = cfg['modelo']
     for chave in ['piso_evento', 'piso_impacto', 'piso_vulnerabilidade', 'interacao_maxima',
                   'risco_ausente', 'vulnerabilidade_ausente']:
@@ -76,8 +76,8 @@ def validar_config(cfg):
     if limites != sorted(set(limites)) or limites[-1] <= 100:
         raise ValueError('Classes devem ser crescentes e cobrir a nota 100.')
     if set(cfg['coberturas']) != {INCENDIO, ELETRICO, ALUGUEL, TERCEIROS, DESPESAS,
-                                 ROUBO, VENDAVAL, EMPREGADOR, VIDROS}:
-        raise ValueError('Configuração deve conter nove coberturas: quatro índices e cinco heurísticas.')
+                                 ROUBO, VENDAVAL, EMPREGADOR, VIDROS, CIBER}:
+        raise ValueError('Configuração deve conter dez coberturas: quatro índices e seis heurísticas.')
     for codigo, regra in cfg['coberturas'].items():
         pesos = list(regra['pesos_evento'].values())
         if codigo in DECISORIAS and (not pesos or any(not finito(x) or x < 0 for x in pesos) or not math.isclose(sum(pesos), 1)):
@@ -252,6 +252,13 @@ class MotorPontuacao:
             minimo = valor
             maximo = soma_observada(total, max(x for x in [media, pico] if x is not None) if media is not None or pico is not None else None)
             nota = 'Conteúdo cadastrado e estoque, sem valor de reconstrução do prédio. Confirmar bens cobertos, suscetibilidade à subtração e sobreposição com estoque.'
+            predio = numero(r.get('valor_predio_reposicao_brl'))
+            if tipo == 'patrimonio' and predio is not None:
+                valor = soma_observada(valor, predio)
+                minimo = valor
+                maximo = soma_observada(maximo, predio)
+                dados['valor_predio_reposicao_brl'] = predio
+                nota = 'Conteúdo e estoque, acrescidos do valor de reconstrução informado, sem terreno. Confirmar reposição e sobreposição dos itens.'
         elif tipo == 'equipamentos':
             valor = equipamentos
             dados = {'equipamentos_ponderados': equipamentos,
@@ -278,7 +285,8 @@ class MotorPontuacao:
             dados = {'informatica_ponderada': it, 'despesa_fixa': custos,
                      'dependencia_digital_pct': r.get('dependencia_digital_pct')}
             confianca = .35 if valor is not None else 0
-            nota = 'Cenário operacional parcial, sem estimar multas ou indenizações. Disponibilidade e condições da cobertura cibernética não confirmadas.'
+            minimo = maximo = None
+            nota = 'Cenário operacional parcial, sem converter equipamentos e interrupção em limite de indenização cibernética. Faixa depende de condições e cenários contratuais; confirmar exposição a dados, recuperação e terceiros.'
         else:
             # Não converte folha ou área em indenização fictícia.
             if tipo == 'empregador':
@@ -336,6 +344,14 @@ class MotorPontuacao:
                     .6*v.confianca+.4*fisico.confianca,
                     '0,60 × proxy financeira + 0,40 × padrão construtivo',
                     'Resistência do telhado não documentada; padrão construtivo é apenas proxy.')
+                q = r.get('questionario')
+                if q:
+                    vv = .5 * vv + .25 * (not q['roofMaintained']) + .25 * q['exposedAssets']
+                    vulnerabilidade = fator('Condições financeiras, construtivas e exposição ao vento',
+                        {'componente_mvp':asdict(vulnerabilidade), 'roofMaintained':q['roofMaintained'],
+                         'exposedAssets':q['exposedAssets']}, vv, .5*vulnerabilidade.confianca+.5*.8,
+                        '0,50 × vulnerabilidade MVP + 0,25 × ausência de manutenção + 0,25 × bens expostos',
+                        'Respostas declaradas pelo usuário; não substituem vistoria.')
             # Para riscos ausentes, ponto central explícito e faixa ampla, nunca zero automático.
             if ce == 0:
                 evento = cfg['modelo']['risco_ausente']
@@ -370,11 +386,14 @@ class MotorPontuacao:
             vl, vh = vulnerabilidade.limites()
             # Todos os termos são não negativos: extremos dão limites conservadores.
             baixo, alto = pontuar(il, el, vl, 0), pontuar(ih, eh, vh, 1 if interacao else 0)
-            if codigo==VIDROS and r.get('possui_vidros_confirmado')=='NAO':
+            sem_exposicao = ((codigo==VIDROS and r.get('possui_vidros_confirmado')=='NAO') or
+                             (codigo==EMPREGADOR and r.get('possui_empregados_confirmado')=='NAO') or
+                             (codigo==ROUBO and r.get('escopo_protecao')=='building'))
+            if sem_exposicao:
                 baixo=alto=0.
             base_pontos = 100 * (p+(1-p)*i) * (a + (1-a)*evento) * (b + (1-b)*vv)
             j_pontos = 100 * coef * i * evento * d
-            if codigo==VIDROS and r.get('possui_vidros_confirmado')=='NAO':
+            if sem_exposicao:
                 prioridade=baixo=alto=base_pontos=j_pontos=0.
             confianca = (ce + impacto.confianca + vulnerabilidade.confianca) / 3
             nivel = next(cl['nome'] for cl in cfg['classes'] if prioridade < cl['limite'])
@@ -397,6 +416,10 @@ class MotorPontuacao:
                              f'Confiança {confianca:.0%}.')
             if codigo==VIDROS and r.get('possui_vidros_confirmado')=='NAO':
                 justificativa+=' Ausência de vidros informada na confirmação da unidade; sem exposição identificada.'
+            if codigo==EMPREGADOR and r.get('possui_empregados_confirmado')=='NAO':
+                justificativa+=' Ausência de empregados informada na unidade; sem exposição identificada para RC empregador.'
+            if codigo==ROUBO and r.get('escopo_protecao')=='building':
+                justificativa+=' Conteúdo excluído pelo escopo de proteção somente do imóvel.'
             if codigo==ROUBO:
                 campos=['fonte_seguranca','periodo_seguranca','granularidade_seguranca','metodologia_seguranca',
                         'taxa_furto_domicilios','taxa_roubo_domicilios','roubo_comercio_total',
@@ -435,7 +458,7 @@ class MotorPontuacao:
         return saida
 
     def dimensionar_coberturas(self,r):
-        """Dimensiona as nove coberturas, sem atribuir notas às cinco comuns."""
+        """Dimensiona as dez coberturas, sem criar índices para as seis comuns."""
         f=self.fatores(r)
         dimensoes={}
         for codigo,regra in self.config['coberturas'].items():
@@ -449,7 +472,7 @@ class MotorPontuacao:
         return dimensoes
 
     def necessidades_plano(self, r, pontuacoes=None):
-        """Nove preferências; quatro índices físicos e cinco heurísticas explícitas."""
+        """Dez necessidades; quatro índices físicos e seis heurísticas explícitas."""
         pontos = self.analisar_registro(r) if pontuacoes is None else pontuacoes
         saida = {c: {'nome': s['nome'], 'prioridade': s['prioridade'],
             'prioridade_min': s['prioridade_min'], 'prioridade_max': s['prioridade_max'],
@@ -496,6 +519,9 @@ class MotorPontuacao:
                 .4, 'base_despesas + amplitude_despesas × despesa/(despesa + ancora_despesa_mensal)',
                 {'despesa_fixa_mensal_estimada': despesa, 'ancora': h['ancora_despesa_mensal']},
                 'Importância experimental da continuidade operacional; não é soma de perdas.')
+        incluir(CIBER, 30 + 60*tecnologia if tecnologia is not None else None, .35,
+                '30 + 60 × dependência tecnológica; preferência experimental',
+                {campo: r.get(campo)}, 'Cobertura obrigatória na matriz do guia; dependência não mede ataque ou controles.')
         return {c: saida[c] for c in self.config['coberturas']}
 
     def calcular_pontuacoes(self, empresa_id, imovel_id):

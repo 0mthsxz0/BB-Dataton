@@ -21,30 +21,6 @@
       ]
     },
     {
-      "id": "867",
-      "label": "Abate e ou frigorif de suínos, conservação e produtos derivados",
-      "sourceLabel": "ABATE E/OU FRIGORIF DE SUINOS, CONSERV E PROD DERIVADOS",
-      "subactivities": [
-        {
-          "id": "M5.20",
-          "label": "Abate e ou frigorificação de suínos, bovinos, ovinos conservação e produtos derivados",
-          "sourceLabel": "ABATE E/OU FRIGORIFICACAO DE SUINOS, BOVINOS, OVINOS CONSERV E PROD DERIV"
-        }
-      ]
-    },
-    {
-      "id": "367",
-      "label": "Abate e ou frigorif equideos, ovinos e caprinos, conservação e produtos",
-      "sourceLabel": "ABATE E/OU FRIGORIF EQUIDEOS, OVINOS E CAPR, CONSERV E PROD",
-      "subactivities": [
-        {
-          "id": "M5.20",
-          "label": "Abate e ou frigorificação de suínos, bovinos, ovinos conservação e produtos derivados",
-          "sourceLabel": "ABATE E/OU FRIGORIFICACAO DE SUINOS, BOVINOS, OVINOS CONSERV E PROD DERIV"
-        }
-      ]
-    },
-    {
       "id": "866",
       "label": "Abate e ou frigorificação bovinos, conservação e produtos derivados-empresas exportação",
       "sourceLabel": "ABATE E/OU FRIGOR BOVINOS, CONSERV E PROD DERIV-EMPR EXPORT",
@@ -84,6 +60,30 @@
       "id": "366",
       "label": "Abate e ou frigorificação de suínos, conservação e produtos derivados",
       "sourceLabel": "ABATE E/OU FRIGORIFICACAO DE SUINOS, CONSERV E PROD DERIV",
+      "subactivities": [
+        {
+          "id": "M5.20",
+          "label": "Abate e ou frigorificação de suínos, bovinos, ovinos conservação e produtos derivados",
+          "sourceLabel": "ABATE E/OU FRIGORIFICACAO DE SUINOS, BOVINOS, OVINOS CONSERV E PROD DERIV"
+        }
+      ]
+    },
+    {
+      "id": "867",
+      "label": "Abate e ou frigorífico de suínos, conservação e produtos derivados",
+      "sourceLabel": "ABATE E/OU FRIGORIF DE SUINOS, CONSERV E PROD DERIVADOS",
+      "subactivities": [
+        {
+          "id": "M5.20",
+          "label": "Abate e ou frigorificação de suínos, bovinos, ovinos conservação e produtos derivados",
+          "sourceLabel": "ABATE E/OU FRIGORIFICACAO DE SUINOS, BOVINOS, OVINOS CONSERV E PROD DERIV"
+        }
+      ]
+    },
+    {
+      "id": "367",
+      "label": "Abate e ou frigorífico equídeos, ovinos e caprinos, conservação e produtos",
+      "sourceLabel": "ABATE E/OU FRIGORIF EQUIDEOS, OVINOS E CAPR, CONSERV E PROD",
       "subactivities": [
         {
           "id": "M5.20",
@@ -147,12 +147,12 @@
     },
     {
       "id": "471",
-      "label": "Acougues",
+      "label": "Açougues",
       "sourceLabel": "ACOUGUES",
       "subactivities": [
         {
           "id": "A4.10",
-          "label": "Acougues / peixarias / avicolas - permitido abate de pequenos animais",
+          "label": "Açougues / peixarias / avicolas - permitido abate de pequenos animais",
           "sourceLabel": "ACOUGUES/PEIXARIAS/AVICOLAS - PERMITIDO ABATE DE PEQUENOS ANIMAIS"
         }
       ]
@@ -1274,7 +1274,7 @@
     },
     {
       "id": "989",
-      "label": "Clubes de desporto profissional, suas federacoes e confeder",
+      "label": "Clubes de desporto profissional, suas federacoes e confederações",
       "sourceLabel": "CLUBES DE DESPORTO PROFISSIONAL, SUAS FEDERACOES E CONFEDER.",
       "subactivities": [
         {
@@ -1543,7 +1543,7 @@
     },
     {
       "id": "598",
-      "label": "Comércio atacadista de brinqued / artigos recreativos, peças e ou acessórios",
+      "label": "Comércio atacadista de brinquedos / artigos recreativos, peças e ou acessórios",
       "sourceLabel": "COM ATACAD DE BRINQUED/ARTIGOS RECREATIVOS, PECAS E/OU ACESS",
       "subactivities": [
         {
@@ -1596,7 +1596,7 @@
       "subactivities": [
         {
           "id": "A4.10",
-          "label": "Acougues / peixarias / avicolas - permitido abate de pequenos animais",
+          "label": "Açougues / peixarias / avicolas - permitido abate de pequenos animais",
           "sourceLabel": "ACOUGUES/PEIXARIAS/AVICOLAS - PERMITIDO ABATE DE PEQUENOS ANIMAIS"
         }
       ]
@@ -1723,7 +1723,7 @@
     },
     {
       "id": "571",
-      "label": "Comércio atacadista de ferragens, ferramentas, produtos metalurg e ou materiais de cutelaria",
+      "label": "Comércio atacadista de ferragens, ferramentas, produtos metalurgia e ou materiais de cutelaria",
       "sourceLabel": "COM ATACAD DE FERRAG, FERRAM, PROD METALURG E/OU MAT DE CUT",
       "subactivities": [
         {
@@ -2064,7 +2064,7 @@
       "subactivities": [
         {
           "id": "A4.10",
-          "label": "Acougues / peixarias / avicolas - permitido abate de pequenos animais",
+          "label": "Açougues / peixarias / avicolas - permitido abate de pequenos animais",
           "sourceLabel": "ACOUGUES/PEIXARIAS/AVICOLAS - PERMITIDO ABATE DE PEQUENOS ANIMAIS"
         }
       ]
@@ -4787,7 +4787,7 @@
     },
     {
       "id": "816",
-      "label": "Fabricação de aparelhos eletroeletr uso doméstico e pessoal-audio e video",
+      "label": "Fabricação de aparelhos eletroeletrônicos uso doméstico e pessoal-audio e video",
       "sourceLabel": "FABR DE APAR ELETROELETR USO DOMEST. E PESSOAL-AUDIO E VIDEO",
       "subactivities": [
         {
@@ -4799,7 +4799,7 @@
     },
     {
       "id": "817",
-      "label": "Fabricação de aparelhos eletroeletr usos doméstico e pessoal - portateis",
+      "label": "Fabricação de aparelhos eletroeletrônicos usos doméstico e pessoal - portateis",
       "sourceLabel": "FABR DE APAR ELETROELETR USOS DOMEST E PESSOAL - PORTATEIS",
       "subactivities": [
         {
@@ -5220,7 +5220,7 @@
     },
     {
       "id": "956",
-      "label": "Fabricação de artefatos de papel, papelão, cartao e cartão para revestiment",
+      "label": "Fabricação de artefatos de papel, papelão, cartao e cartão para revestimentos",
       "sourceLabel": "FABR DE ARTEF DE PAPEL, PAPELAO, CARTAO E CART P/REVESTIMENT",
       "subactivities": [
         {
@@ -5292,7 +5292,7 @@
     },
     {
       "id": "104",
-      "label": "Fabricação de artefatos de trefilad de ferro, aço e metais não-ferros",
+      "label": "Fabricação de artefatos de trefilados de ferro, aço e metais não-ferros",
       "sourceLabel": "FABR DE ARTEF DE TREFILAD DE FERRO, ACO E METAIS NAO-FERROS",
       "subactivities": [
         {
@@ -6008,7 +6008,7 @@
       "subactivities": [
         {
           "id": "A4.10",
-          "label": "Acougues / peixarias / avicolas - permitido abate de pequenos animais",
+          "label": "Açougues / peixarias / avicolas - permitido abate de pequenos animais",
           "sourceLabel": "ACOUGUES/PEIXARIAS/AVICOLAS - PERMITIDO ABATE DE PEQUENOS ANIMAIS"
         }
       ]
@@ -6644,6 +6644,12 @@
       ]
     },
     {
+      "id": "409",
+      "label": "Fabricação de instrumentos, utensílios e aparelhos de médico para usos técnica / profissionais",
+      "sourceLabel": "FABR DE INTRUMENT, UTENS E APAR DE MEDIC P/ USOS TECN/PROF",
+      "subactivities": []
+    },
+    {
       "id": "839",
       "label": "Fabricação de intermediarios para fertilizantes",
       "sourceLabel": "FABR DE INTERMEDIARIOS PARA FERTILIZANTES",
@@ -6666,12 +6672,6 @@
           "sourceLabel": "PRODUTOS QUIMICOS - FABRICAS"
         }
       ]
-    },
-    {
-      "id": "409",
-      "label": "Fabricação de intrument, utensílios e aparelhos de médico para usos técnica / profissionais",
-      "sourceLabel": "FABR DE INTRUMENT, UTENS E APAR DE MEDIC P/ USOS TECN/PROF",
-      "subactivities": []
     },
     {
       "id": "295",
@@ -6920,7 +6920,7 @@
     },
     {
       "id": "818",
-      "label": "Fabricação de máquinas eletroeletr uso doméstico e pessoal - não portateis",
+      "label": "Fabricação de máquinas eletroeletrônicos uso doméstico e pessoal - não portateis",
       "sourceLabel": "FABR DE MAQ ELETROELETR USO DOMEST E PESSOAL - NAO PORTATEIS",
       "subactivities": [
         {
@@ -7199,7 +7199,7 @@
     },
     {
       "id": "401",
-      "label": "Fabricação de materiais impresso para uso indústria, comercial e ou publicit",
+      "label": "Fabricação de materiais impresso para uso indústria, comercial e ou publicitários",
       "sourceLabel": "FABR DE MAT IMPRESSO P/ USO INDUSTR, COMERCIAL E/OU PUBLICIT",
       "subactivities": [
         {
@@ -7765,7 +7765,7 @@
     },
     {
       "id": "190",
-      "label": "Fabricação de peças e acessórios para aparelhos e equipamentos de comun, imagem, som, entre",
+      "label": "Fabricação de peças e acessórios para aparelhos e equipamentos de comunicação, imagem, som, entre",
       "sourceLabel": "FABR DE PECAS E ACES P/APAR E EQUIP DE COMUN,IMAG,SOM, ENTRE",
       "subactivities": [
         {
@@ -8085,7 +8085,7 @@
       "subactivities": [
         {
           "id": "A4.10",
-          "label": "Acougues / peixarias / avicolas - permitido abate de pequenos animais",
+          "label": "Açougues / peixarias / avicolas - permitido abate de pequenos animais",
           "sourceLabel": "ACOUGUES/PEIXARIAS/AVICOLAS - PERMITIDO ABATE DE PEQUENOS ANIMAIS"
         }
       ]
@@ -8464,7 +8464,7 @@
     },
     {
       "id": "130",
-      "label": "Fabricação de utensílios e ferrament para máquinas indústria e fabricação de caixas, modelos",
+      "label": "Fabricação de utensílios e ferramentas para máquinas indústria e fabricação de caixas, modelos",
       "sourceLabel": "FABR DE UTENS E FERRAMENT P/MAQ IND E FAB DE CAIXAS, MODELOS",
       "subactivities": [
         {
@@ -8655,7 +8655,7 @@
     },
     {
       "id": "877",
-      "label": "Fabricação e envasamento de suco concentr e congelado de laranja",
+      "label": "Fabricação e envasamento de suco concentrados e congelado de laranja",
       "sourceLabel": "FABR E ENVASAMENTO DE SUCO CONCENTR E CONGELADO DE LARANJA",
       "subactivities": [
         {
@@ -9710,7 +9710,7 @@
       "subactivities": [
         {
           "id": "A4.10",
-          "label": "Acougues / peixarias / avicolas - permitido abate de pequenos animais",
+          "label": "Açougues / peixarias / avicolas - permitido abate de pequenos animais",
           "sourceLabel": "ACOUGUES/PEIXARIAS/AVICOLAS - PERMITIDO ABATE DE PEQUENOS ANIMAIS"
         }
       ]
@@ -9777,7 +9777,7 @@
     },
     {
       "id": "753",
-      "label": "Pesquisa / produtos.de mudas e ou sementes fiscaliz / certificadas",
+      "label": "Pesquisa / produtos.de mudas e ou sementes fiscalização / certificadas",
       "sourceLabel": "PESQUISA/PROD.DE MUDAS E/OU SEMENTES FISCALIZ/CERTIFICADAS",
       "subactivities": [
         {
@@ -9914,7 +9914,7 @@
       "subactivities": [
         {
           "id": "A4.10",
-          "label": "Acougues / peixarias / avicolas - permitido abate de pequenos animais",
+          "label": "Açougues / peixarias / avicolas - permitido abate de pequenos animais",
           "sourceLabel": "ACOUGUES/PEIXARIAS/AVICOLAS - PERMITIDO ABATE DE PEQUENOS ANIMAIS"
         }
       ]
@@ -10569,7 +10569,7 @@
     },
     {
       "id": "686",
-      "label": "Serviços auxiliares / administ prestação a empresariais, entidades e pessoas não especificados",
+      "label": "Serviços auxiliares / administração prestação a empresariais, entidades e pessoas não especificados",
       "sourceLabel": "SERV AUX/ADMINIST PREST A EMPRES, ENTID E PESSOAS NAO ESPEC",
       "subactivities": [
         {
@@ -10581,7 +10581,7 @@
     },
     {
       "id": "677",
-      "label": "Serviços auxiliares a produção de películas cinematogr e fitas para video e som",
+      "label": "Serviços auxiliares a produção de películas cinematográficos e fitas para video e som",
       "sourceLabel": "SERV AUX A PRODUC DE PELIC CINEMATOGR E FITAS P/ VIDEO E SOM",
       "subactivities": [
         {
@@ -10857,7 +10857,7 @@
     },
     {
       "id": "669",
-      "label": "Serviços de escritório de arquitetura, engenharia, e assessoria técnica especiali",
+      "label": "Serviços de escritório de arquitetura, engenharia, e assessoria técnica especializados",
       "sourceLabel": "SERV DE ESCRIT DE ARQUIT, ENGENHARIA, E ASSES TECN ESPECIALI",
       "subactivities": [
         {
@@ -11018,7 +11018,7 @@
     },
     {
       "id": "682",
-      "label": "Serviços de microfilmagem fotocopias digitaliz e serviços correlatos",
+      "label": "Serviços de microfilmagem fotocopias digitalização e serviços correlatos",
       "sourceLabel": "SERV DE MICROFILMAGEM FOTOCOPIAS DIGITALIZ E SERV CORRELATOS",
       "subactivities": [
         {
@@ -11414,7 +11414,7 @@
     },
     {
       "id": "706",
-      "label": "Sociedades de crédito imobiliário e associac de poupanca e empréstimo",
+      "label": "Sociedades de crédito imobiliário e associações de poupanca e empréstimo",
       "sourceLabel": "SOCIED DE CRED IMOBILIARIO E ASSOCIAC DE POUPANCA E EMPREST",
       "subactivities": [
         {

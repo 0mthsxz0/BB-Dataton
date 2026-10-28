@@ -265,6 +265,9 @@ def carregar_base(pasta=None, enriquecimento=None, referencias=None, confirmacoe
     validar_chave(catalogo, ['plano', 'cobertura_fixa'], 'catalogo')
     if set(catalogo.plano) != {'ESSENCIAL', 'PRATICO', 'TOTAL'}:
         raise ValueError('Catálogo deve conter ESSENCIAL, PRATICO e TOTAL.')
+    from produto import adaptar_catalogo
+    catalogo = adaptar_catalogo(catalogo)
+    avisos.append('Catálogo efetivo guia-item10-2026.1: sexta comum cibernética adicionada; CSV recebido e hashes preservados.')
     hashes = {f'{n}.csv': hashlib.sha256((pasta / f'{n}.csv').read_bytes()).hexdigest() for n in ARQUIVOS}
     hashes.update(fontes_lidas)
     if enriquecimento:

@@ -9,6 +9,7 @@ import pandas as pd
 
 from motor_pontuacao import MotorPontuacao
 from recomendador import recomendar_plano
+from produto import REGRAS, personalizar
 
 
 def analisar_base(base, config=None):
@@ -18,6 +19,8 @@ def analisar_base(base, config=None):
         pontos = motor.analisar_registro(registro)
         dimensoes = motor.dimensionar_coberturas(registro)
         recomendacao = recomendar_plano(pontos, base.catalogo, motor.config, registro)
+        personalizacao = personalizar(registro, recomendacao, dimensoes)
+        bloqueada = recomendacao['indicacao_bloqueada']
         aluguel = registro.get('pagamento_aluguel_recorrente') == 'SIM'
         linha = {
             'empresa_id': registro['empresa_id'], 'imovel_id': registro['imovel_id'],
@@ -25,16 +28,16 @@ def analisar_base(base, config=None):
             'motivo_inelegibilidade': ' | '.join(recomendacao['elegibilidade']['motivos']),
             'tipo_localizacao_sugerido': 'LOJA' if registro.get('possui_termo_loja') == 'SIM' else 'A_CONFIRMAR',
             'relacao_imovel_sugerida': 'INQUILINO_A_CONFIRMAR' if aluguel else 'A_CONFIRMAR',
-            'plano_recomendado': recomendacao['plano_recomendado'],
-            'coberturas_recomendadas': '|'.join(recomendacao['coberturas']),
+            'plano_recomendado': '' if bloqueada else recomendacao['plano_recomendado'],
+            'coberturas_recomendadas': '' if bloqueada else '|'.join(personalizacao['pacote']['coberturas']),
             'confianca_geral': round(recomendacao['confianca_geral'], 6),
-            'justificativa_recomendacao': recomendacao['justificativa'],
+            'justificativa_recomendacao': ('Indicação bloqueada pela triagem. ' + ' '.join(recomendacao['elegibilidade']['motivos'])) if bloqueada else recomendacao['justificativa'],
             'perguntas_confirmacao': ' | '.join(recomendacao['perguntas_confirmacao']),
             'fontes_publicas_adicionais': ' | '.join(dict.fromkeys(str(registro.get(c)) for c in
                 ['fonte_seguranca','fonte_clima','fonte_nr4'] if registro.get(c))),
         }
         resultados.append(linha)
-        for codigo in recomendacao['coberturas']:
+        for codigo in ([] if bloqueada else personalizacao['pacote']['coberturas']):
             s = pontos.get(codigo, dimensoes[codigo])
             coberturas.append({
                 'empresa_id': registro['empresa_id'], 'imovel_id': registro['imovel_id'],
@@ -50,7 +53,8 @@ def analisar_base(base, config=None):
             })
         auditoria.append({'empresa_id': registro['empresa_id'], 'imovel_id': registro['imovel_id'],
                          'pontuacoes': pontos, 'necessidades_plano': recomendacao['necessidades'],
-                         'dimensionamento': dimensoes, 'recomendacao': recomendacao})
+                         'dimensionamento': dimensoes, 'recomendacao': recomendacao,
+                         'personalizacao': personalizacao})
     r = pd.DataFrame(resultados, columns=base.templates['template_resultado_times'])
     c = pd.DataFrame(coberturas, columns=base.templates['template_coberturas_times'])
     return r, c, auditoria
@@ -72,6 +76,8 @@ def exportar(base, config=None, destino='output'):
     (pasta / 'auditoria.json').write_text(json.dumps(auditoria, ensure_ascii=False, allow_nan=False), encoding='utf-8')
     config_texto = json.dumps(motor.config, ensure_ascii=False, sort_keys=True, allow_nan=False)
     manifesto = {'versao': motor.config['versao'], 'gerado_em_utc': datetime.now(timezone.utc).isoformat(),
+                 'regras_produto': REGRAS,
+                 'regras_produto_sha256': hashlib.sha256(json.dumps(REGRAS, sort_keys=True, ensure_ascii=False).encode()).hexdigest(),
                  'entradas_sha256': base.hashes, 'config_sha256': hashlib.sha256(config_texto.encode()).hexdigest(),
                  'configuracao': motor.config,
                  'saidas_sha256': {n: hashlib.sha256(b).hexdigest() for n, b in arquivos.items()},

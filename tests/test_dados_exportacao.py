@@ -59,7 +59,7 @@ def test_exportacao_esquema_completo_e_reprodutivel(pasta_csv,tmp_path):
     for linha in r.to_dict('records'):
         cs=c.loc[c.imovel_id.eq(linha['imovel_id'])]
         assert set(cs.cobertura)==set(linha['coberturas_recomendadas'].split('|'))
-        assert CIBER not in set(cs.cobertura)
+        assert CIBER in set(cs.cobertura)
         assert cs.justificativa.str.len().gt(0).all()
     destino=tmp_path/'saida'
     exportar(base,destino=destino)
@@ -83,7 +83,7 @@ def test_heuristicas_comuns_e_indices_baixos_permitem_essencial(registro,catalog
     assert all(x['analise_preco']=='PENDENTE' for x in r['comparacao'])
 
 
-def test_nove_necessidades_compartilham_denominador(registro,catalogo,config):
+def test_dez_necessidades_compartilham_denominador(registro,catalogo,config):
     p=notas_controladas(registro)
     antes=recomendar_plano(p,catalogo,config,registro)
     from motor_pontuacao import COMUNS
@@ -93,7 +93,7 @@ def test_nove_necessidades_compartilham_denominador(registro,catalogo,config):
     assert antes['plano_recomendado']=='ESSENCIAL'
     assert depois['plano_recomendado']=='TOTAL'
     assert antes['comparacao'][0]['pontos_totais']>depois['comparacao'][0]['pontos_totais']
-    assert len(antes['necessidades'])==9
+    assert len(antes['necessidades'])==10
     assert sum(s['participacao_percentual'] for s in antes['necessidades'].values())==pytest.approx(100)
 
 
@@ -109,7 +109,7 @@ def test_empregador_relevante_justifica_total(registro,catalogo):
 
 def test_elegibilidade_nao_e_inventada(registro,config):
     e=verificar_elegibilidade(dict(registro,situacao_imovel_cadastral='EM_OBRA'),config)
-    assert e['elegivel']=='PENDENTE'
+    assert e['elegivel']=='NAO'
     assert any('obra' in p for p in e['motivos'])
 
 

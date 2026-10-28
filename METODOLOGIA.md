@@ -1,8 +1,8 @@
-# Metodologia v0.3: quatro índices, nove necessidades e SSP
+# Metodologia v0.4: quatro índices, dez necessidades e SSP
 
 ## Contrato
 
-ROUBO_FURTO_ARROMBAMENTO, VENDAVAL_EVENTOS_CORRELATOS, RESPONSABILIDADE_CIVIL_EMPREGADOR e QUEBRA_DE_VIDROS preservam seus índices multifatoriais contínuos. As cinco coberturas comuns recebem pontuações heurísticas de preferência, explicitamente separadas dos modelos físicos. As nove necessidades entram na aderência; as nove coberturas continuam com dimensionamento. Cibernética não interfere na escolha de Essencial, Prático ou Total.
+ROUBO_FURTO_ARROMBAMENTO, VENDAVAL_EVENTOS_CORRELATOS, RESPONSABILIDADE_CIVIL_EMPREGADOR e QUEBRA_DE_VIDROS preservam seus índices multifatoriais contínuos. As seis coberturas comuns recebem pontuações heurísticas de preferência, explicitamente separadas dos modelos físicos. As dez necessidades entram na aderência; as dez coberturas continuam com dimensionamento. Proteção cibernética é comum obrigatória na política do guia: preferência experimental 30 + 60 × dependência tecnológica, sem índice de ataque ou indenização inventada. A faixa monetária fica pendente de base contratual defensável.
 
 Todos os parâmetros são hipóteses da equipe. As notas representam prioridade de proteção, não probabilidades de sinistro, acidentes, responsabilidades jurídicas ou parâmetros oficiais da seguradora.
 
@@ -84,9 +84,9 @@ A sensibilidade de um fator x com confiança c vai de x×c a x+(1-c)×(1-x). Os 
 
 ## Escolha do plano
 
-Aderência(plano) = soma(peso × pontos das necessidades presentes) / soma(peso × pontos das nove necessidades). Meta inicial de 80%, configurável. Os pesos iniciais são 1. O menor nível que alcança a meta e contém todas as coberturas indispensáveis é escolhido. Uma indispensável vale mesmo com zero pontos e meta zero. Não há preços ou teste de orçamento; não se afirma menor custo. Os cortes antigos de upgrade foram retirados.
+Aderência(plano) = soma(peso × pontos das necessidades presentes) / soma(peso × pontos das dez necessidades). Meta inicial de 80%, configurável. Os pesos iniciais são 1. O menor nível que alcança a meta e contém todas as coberturas indispensáveis é escolhido. Uma indispensável vale mesmo com zero pontos e meta zero. Não há preços ou teste de orçamento; não se afirma menor custo. Os cortes antigos de upgrade foram retirados.
 
-Os quatro índices entram com sua precisão contínua, sem conversão em 25/55/85 nem nova multiplicação pelo patrimônio. As cinco heurísticas iniciais, inspiradas no MVP enviado, são:
+Os quatro índices entram com sua precisão contínua, sem conversão em 25/55/85 nem nova multiplicação pelo patrimônio. As seis heurísticas iniciais, inspiradas no MVP enviado, são:
 
 | Necessidade comum | Preferência inicial |
 |---|---|
@@ -96,9 +96,9 @@ Os quatro índices entram com sua precisão contínua, sem conversão em 25/55/8
 | RC estabelecimento | 70 com sinal de loja/galeria; 50 sem sinal |
 | Despesas fixas | 30 + 60 × despesa/(despesa + 30.000) |
 
-Todos os coeficientes estão em heuristicas_comuns. Ausências usam ponto central 50 com confiança zero. Essas regras de preferência não medem probabilidade nem perda esperada. O dimensionamento financeiro continua separado. Confiança contextual das heurísticas: 0,35 para incêndio/elétrico/aluguel, 0,30 para RC estabelecimento e 0,40 para despesas, quando há sinal observado; são hipóteses conservadoras. A confiança geral é a média ponderada das nove necessidades, não acurácia.
+Todos os coeficientes estão em heuristicas_comuns. Ausências usam ponto central 50 com confiança zero. Essas regras de preferência não medem probabilidade nem perda esperada. O dimensionamento financeiro continua separado. Confiança contextual das heurísticas: 0,35 para incêndio/elétrico/aluguel, 0,30 para RC estabelecimento e 0,40 para despesas, quando há sinal observado; são hipóteses conservadoras. A confiança geral é a média ponderada das dez necessidades, não acurácia.
 
-Aderência mede presença binária no catálogo: Total apresenta 100% das necessidades, sem garantir que limites, franquias ou exclusões atendam a qualquer perda. A contribuição de cada necessidade, a conta e as indispensáveis são auditadas. Preferências globais da sessão também se aplicam aos lotes exportados. As cinco comuns agora influenciam o denominador e podem alterar a escolha, conforme a nova instrução do projeto.
+Aderência mede presença binária no catálogo: Total apresenta 100% das necessidades, sem garantir que limites, franquias ou exclusões atendam a qualquer perda. A contribuição de cada necessidade, a conta e as indispensáveis são auditadas. Preferências globais da sessão também se aplicam aos lotes exportados. As seis comuns agora influenciam o denominador e podem alterar a escolha, conforme a nova instrução do projeto.
 
 As faixas de cada pontuação preservam a regra x×c a x+(1-c)×(100-x) em pontos. Para cada plano, o mínimo de aderência usa coberturas presentes no limite inferior e ausentes no superior; o máximo usa o inverso. Não basta reduzir ou aumentar todas as notas juntas, porque a aderência é uma razão. O intervalo não é estatístico. A comparação sinaliza o menor plano possível e o menor que atende em toda essa faixa conservadora, respeitando as indispensáveis.
 
@@ -120,12 +120,23 @@ Todas as coberturas fixas do plano escolhido são exportadas nas colunas origina
 
 Sem base defensável para indenizações de RC, prédio ou vidros não informados, a limitação é registrada. Faixas não são prêmio, limite contratado ou aceitação. Obra, material combustível, irregularidade, aceitação da atividade e condições contratuais permanecem na triagem preliminar, com confirmação exigida por padrão.
 
-A auditoria separa quatro pontuações de nove dimensionamentos. Fonte, período e confiança de clima e segurança são independentes. Manifestos registram hashes das entradas públicas/privadas, parâmetros e saídas. O cálculo funciona offline; o preparador e a consulta opcional de CEP acessam fontes externas. Os snapshots públicos não contêm os CSVs de empresas.
+A auditoria separa quatro pontuações de dez dimensionamentos. Fonte, período e confiança de clima e segurança são independentes. Manifestos registram hashes das entradas públicas/privadas, parâmetros e saídas. O cálculo funciona offline; o preparador e a resolução opcional do município IBGE acessam fontes externas. Os snapshots públicos não contêm os CSVs de empresas.
 
 Na consulta por CEP, o ViaCEP fornece a localização e o código municipal IBGE; não fornece risco. A associação usa exatamente esse código nas referências disponíveis. Não há interpolação de cidades próximas ou atribuição de risco ao bairro informado. Município sem correspondência permanece desconhecido com incerteza ampliada. A consulta conserva URL e horário UTC da localização, usa cache de 24 horas e não modifica os dados ou exportações originais. Prioridades exigem os demais dados da unidade selecionada.
 
 ## Verificação
 
-Testes exercitam patrimônio versus ocorrência, influência territorial, valores elevados em cidade segura, fontes independentes, funcionários não duplicados, NR-4, ausência e reposição de vidros, séries climáticas incompletas, parâmetros divergentes, participação das nove necessidades, indispensáveis e meta de aderência, esquema dos templates, reprodutibilidade e fluxo da interface.
+Testes exercitam patrimônio versus ocorrência, influência territorial, valores elevados em cidade segura, fontes independentes, funcionários não duplicados, NR-4, ausência e reposição de vidros, séries climáticas incompletas, parâmetros divergentes, participação das dez necessidades, indispensáveis e meta de aderência, esquema dos templates, reprodutibilidade e fluxo da interface.
 
 Coerência dos cenários e processamento integral não demonstram precisão preditiva. Calibração posterior exige sinistros, períodos de exposição e revisão de especialistas. Nenhum corte foi ajustado para selecionar uma proporção desejada da base.
+
+
+## Atualização do guia item 10 (0.4)
+
+A matriz efetiva contém 6/8/10 coberturas. `produto.py` adapta em memória o catálogo 5/7/9 recebido, sem modificar CSVs originais; os hashes de entrada são preservados. `frontend/public/product-rules.json` versiona a fonte e a conciliação entre o guia e a campanha pública. O CSV e a campanha não incluem a sexta comum; o snapshot da página principal a associa aos planos. Extras de atividade seguem Prático/Total nesta simulação, embora a campanha diga qualquer plano conforme atividade. Não há prova de subscrição ou disponibilidade contratual por atividade.
+
+Prioridade >=70 em um dos quatro índices exige cobertura na indicação automática, além da meta global. Assim a sexta comum não pode diluir silenciosamente uma necessidade alta. Preferência individual por patrimônio, continuidade ou terceiros multiplica por 1,5 os pesos correspondentes e registra o efeito. Não altera fatores físicos. A confiança geral continua ponderada pelos pesos efetivos.
+
+Triagem roda antes da escolha: obra, condenação e parede combustível observadas bloqueiam o prosseguimento, e objeto básico acima de R$7,5 milhões encaminha ao produto personalizado. R$7,5 milhões exatos não excedem o corte. Valores ausentes continuam pendentes. O limite considera conteúdo + estoque médio + reconstrução quando disponíveis; não soma RC, despesas e aluguel. Endereços fictícios não alimentam classificação de comunidade, renda ou delegacia.
+
+A edição do pacote mantém as seis obrigatórias, permite ajustar as quatro adicionais padrão no Prático/Total e recalcula sua aderência. Adicionais de operação requerem confirmação; todos permanecem solicitações condicionais à atividade e aceitação. Não são somados ao numerador das dez necessidades e não geram novos índices sem calibração. Assistências permanecem fixas. A vigência aceita inteiros de um a cinco anos. Confirmações e preferências no formulário são locais à unidade e limpas ao trocar o vínculo; as preferências globais da CLI/Streamlit continuam explicitamente globais.

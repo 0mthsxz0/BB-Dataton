@@ -2,15 +2,15 @@
 
 ## Portal e formulário web
 
-O diretório [frontend/](frontend/) contém a home, o Seguro Empresarial e um formulário demonstrativo de seis etapas, sem campo CPF. A seleção econômica tem as 970 atividades do catálogo público, nomes por extenso e busca por lista, nome ou descrição do negócio, com sugestão de subatividade.
+O diretório [frontend/](frontend/) contém a home, o Seguro Empresarial e um formulário integrado de sete etapas, sem campo CPF. A seleção econômica tem as 970 atividades do catálogo público, nomes por extenso e busca por lista, nome ou descrição do negócio, com sugestão de subatividade.
 
 Para abrir: `cd frontend` e `npm run dev` (no PowerShell, `npm.cmd run dev`). Acesse http://localhost:4174/cotacao. Não há dependências npm a instalar. A busca é local; os dados preenchidos não são enviados à seguradora. Pagamento e conclusão são demonstrativos, sem emissão ou cobrança. Consulte [a documentação do formulário](frontend/docs/COTACAO.md) para fontes, testes e limites.
 
-O front-end não altera as regras do motor Python descrito a seguir.
+O formulário chama o motor Python local, com questionário e confirmações por estabelecimento. A seleção de cadastro já gera análise inicial sem respostas presumidas. Veja [as regras e a implementação do guia](frontend/docs/GUIA_ATUALIZADO.md).
 
-Versão 0.3: combina os quatro índices multifatoriais contínuos (roubo/furto, vendaval, RC empregador e vidros) com cinco heurísticas de preferência das coberturas comuns. O plano considera **nove necessidades**, meta padrão de **80% de aderência** e coberturas das quais o usuário **não abre mão**. Não converte os quatro índices em categorias de 25/55/85 pontos nem os multiplica novamente pelo patrimônio. As nove coberturas continuam dimensionadas e exportadas; não há preços nos arquivos do Datathon.
+Versão 0.4: combina os quatro índices multifatoriais contínuos (roubo/furto, vendaval, RC empregador e vidros) com seis heurísticas de preferência das coberturas comuns. O plano considera **dez necessidades**, meta padrão de **80% de aderência** e coberturas das quais o usuário **não abre mão**. Não converte os quatro índices em categorias de 25/55/85 pontos nem os multiplica novamente pelo patrimônio. As dez coberturas continuam dimensionadas e exportadas; não há preços nos arquivos do Datathon.
 
-Aderência = pontos ponderados presentes no plano / pontos ponderados das nove necessidades. Escolhe-se o menor nível que atinge a meta e contém todas as indispensáveis. As preferências da barra lateral valem para todas as unidades da sessão e da exportação; ficam registradas na configuração e auditoria. Aderência mede presença no catálogo, não qualidade contratual, probabilidade ou garantia de indenização. Os cinco valores heurísticos são explicitamente identificados; não são novos modelos físicos de sinistro.
+Aderência = pontos ponderados presentes no plano / pontos ponderados das dez necessidades. Escolhe-se o menor nível que atinge a meta e contém todas as indispensáveis. Índices de 70 ou mais exigem presença da cobertura na indicação automática; não podem ser diluídos por pesos das comuns. As preferências da barra lateral valem para todas as unidades da sessão e da exportação; ficam registradas na configuração e auditoria. Aderência mede presença no catálogo, não qualidade contratual, probabilidade ou garantia de indenização. Os seis valores heurísticos são explicitamente identificados; não são novos modelos físicos de sinistro.
 
 ## Executar
 
@@ -46,7 +46,7 @@ Em **Consultar por CEP**, informe oito dígitos (com ou sem hífen). Apenas o CE
 Para calcular as quatro prioridades, marque a opção de combinar a localização com uma empresa cadastrada. Os valores e características dessa unidade continuam sendo necessários; o CEP sozinho não fornece patrimônio, folha ou vidros. Essa consulta não grava alterações nos CSVs nem nas exportações em lote. Ao mudar a localização, indicadores e fontes anteriores são descartados, inclusive se o novo município não possuir referência.
 
 - Visão geral: quatro prioridades, planos, confiança e sensibilidade.
-- Análise: busca por atividade, porte ou CNAE; decomposição, fontes e valores das nove coberturas.
+- Análise: busca por atividade, porte ou CNAE; decomposição, fontes e valores das dez coberturas.
 - Comparação: dois estabelecimentos, com diferenças dos quatro índices.
 - Simulação: patrimônio, segurança territorial hipotética, vidros e cenários climáticos alternativos.
 - Regras: parâmetros JSON validados, restauração dos padrões e sensibilidade do corte de roubo.
@@ -65,7 +65,7 @@ O arquivo [examples/confirmacoes_modelo.csv](examples/confirmacoes_modelo.csv) p
 
 Opcionais: --referencias PASTA, --territorio CSV (compatibilidade do enriquecimento anterior), --confirmacoes CSV e --config JSON.
 
-Saídas: os dois templates nas colunas originais, auditoria.json (quatro índices, nove necessidades de decisão, nove dimensionamentos e comparação dos planos) e manifesto.json (preferências, regras e hashes). Uma linha por empresa-estabelecimento no resultado; uma linha por cobertura fixa do plano escolhido no template de coberturas. A interface também fornece download em ZIP. Os CSVs são reproduzíveis com as mesmas entradas e parâmetros; a data do manifesto varia.
+Saídas: os dois templates nas colunas originais, auditoria.json (quatro índices, dez necessidades de decisão, dez dimensionamentos e comparação dos planos) e manifesto.json (preferências, regras e hashes). Uma linha por empresa-estabelecimento no resultado; uma linha por cobertura fixa do plano escolhido no template de coberturas. A interface também fornece download em ZIP. Os CSVs são reproduzíveis com as mesmas entradas e parâmetros; a data do manifesto varia.
 
 ## Limitações
 
@@ -79,9 +79,9 @@ Faixas são cenários de exposição para discutir proteção, não preços ou l
 
 A suíte usa fixtures artificiais e referências públicas congeladas, sem rede nem dados privados. A CI testa Python 3.12 e 3.13. Testes cobrem quatro índices, dimensionamento, contraste território/patrimônio, NR-4, ausência de duplicação de funcionários, clima, fontes independentes, vidros, templates e interface.
 
-Arquivos principais: processamento.py organiza os dados; referencias.py calcula indicadores públicos; motor_pontuacao.py calcula os quatro índices e dimensiona nove coberturas; recomendador.py escolhe o plano; exportacao.py gera arquivos; app.py apresenta a interface. Pesos e limites ficam em config_regras.json.
+Arquivos principais: processamento.py organiza os dados; referencias.py calcula indicadores públicos; motor_pontuacao.py calcula os quatro índices e dimensiona dez coberturas; recomendador.py escolhe o plano; exportacao.py gera arquivos; app.py apresenta a interface. Pesos e limites ficam em config_regras.json.
 
-Configurações 0.1/0.2 não são compatíveis com o contrato 0.3: partir do novo JSON e revisar os parâmetros. A interface restaura o novo padrão ao detectar mudança de versão. Os antigos cortes de upgrade de 60/85 e ganho de 15% foram substituídos pela meta; o limiar de 60 permanece somente como sinalização informativa.
+Configurações 0.1/0.2/0.3 não são compatíveis com o contrato 0.4: partir do novo JSON e revisar os parâmetros. A interface restaura o novo padrão ao detectar mudança de versão. Os antigos cortes de upgrade de 60/85 e ganho de 15% foram substituídos pela meta; o limiar de 60 permanece somente como sinalização informativa.
 
 ## Integração SSP
 
