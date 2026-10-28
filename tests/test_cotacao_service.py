@@ -177,7 +177,9 @@ def test_cadastro_recomenda_sem_questionario_ou_atividade_inventados(pasta_csv):
     assert result['preliminar'] is True
     assert result['respostas'] is None
     assert result['atividade']['id'] is None
-    assert result['indices']==expected_indices
+    for code, expected in expected_indices.items():
+        assert all(result['indices'][code][key]==value for key,value in expected.items())
+        assert result['indices'][code]['leitura_contextual']
     assert result['recomendacao']['plano_recomendado']==expected_plan['plano_recomendado']
     assert result['dadosCadastrais']['bens_ponderados']==50000
     assert b.registro('EMP_TESTE','IMO_TESTE')==before
@@ -237,3 +239,20 @@ def test_triagem_impede_indicacao_comparacao_permanece_auditavel(analyze,payload
     assert r['recomendacao']['indicacao_bloqueada']
     assert r['personalizacao']['triagem']['bloqueado']
     assert len(r['recomendacao']['comparacao'])==3
+
+
+def test_rastreabilidade_declara_valores_substituidos_sem_reutilizar_cadastro(analyze,payload,pasta_csv):
+    base=carregar_base(pasta_csv)
+    r=analyze(dict(payload,empresaId='EMP_TESTE',imovelId='IMO_TESTE'),base)
+    e=next(x for x in r['dimensionamento'][ROUBO]['evidencias'] if x['campo']=='bens_ponderados')
+    assert e['valor']==100000 and e['estado']=='DECLARADO' and e['arquivo'] is None
+    assert not r['rastreabilidade']['bens_cadastrais_utilizados']
+    assert r['rastreabilidade']['bens'][0]['valor_ponderado']==50000
+    assert r['patrimonio']['bens_ponderados']==100000
+    total=next(x for x in r['dimensionamento'][ROUBO]['evidencias'] if x['campo']=='bens_total_referencia')
+    assert total['valor']==100000 and total['estado']=='DECLARADO' and total['arquivo'] is None
+    pico=next(x for x in r['dimensionamento'][ROUBO]['evidencias'] if x['campo']=='estoque_pico_estimado')
+    assert pico['valor']==10000 and pico['estado']=='DECLARADO' and pico['arquivo'] is None
+    assert r['indices'][ROUBO]['respostas_utilizadas']['securityControls'] is True
+    assert 'R$ 100.000,00' in r['indices'][ROUBO]['leitura_contextual']
+    assert r['indices'][VIDROS]['referencia_publica'] is None

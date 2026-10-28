@@ -20,7 +20,7 @@
 .index-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
 .index-card{background:#fff;border:1px solid #dfe4fa;border-radius:8px;padding:15px;min-width:0}
 .index-card h3{font-size:14px;line-height:1.5;margin:0 0 10px;color:var(--deep)}
-.index-card p strong{font-size:25px;color:var(--blue)}
+.index-card>header p strong{font-size:25px;color:var(--blue)}
 .index-card progress{width:100%;height:8px;accent-color:var(--blue)}
 .index-card small{display:block;font-size:10px;line-height:1.6;color:#616b8c;margin:8px 0 12px}
 .index-card details,.result-details{font-size:12px;line-height:1.7;overflow-wrap:anywhere}
@@ -48,3 +48,27 @@
 .package-editor,.personalization-result{min-width:0;border:1px solid #d8def5;border-radius:10px;padding:20px;margin:20px 0;line-height:1.7;font-size:12px}.package-editor h2,.personalization-result h2{font-size:20px;color:var(--deep)}.optional-cover{display:flex;align-items:flex-start;gap:10px;margin:15px 0}.optional-cover input{flex:0 0 auto;margin-top:5px}.optional-cover small{display:block;color:#4e597d}.package-editor .btn{margin-top:16px}.personalization-result table th:first-child{min-width:120px}.personalization-result table td:nth-child(2){min-width:140px}@media(max-width:760px){.package-editor,.personalization-result{padding:14px}}
 
 .package-editor .qfield input[type=checkbox]{width:16px;height:16px;min-height:0;padding:0;margin:2px 0 0;flex:0 0 auto;accent-color:var(--blue)}.package-editor .qfield>label:last-child{display:flex;align-items:flex-start;gap:8px;font-size:11px;line-height:1.6;margin-top:6px}.optional-cover input[type=checkbox]{width:16px;height:16px;min-height:0;accent-color:var(--blue)}
+
+/* O relatório usa toda a largura e dispensa a imagem da jornada de cadastro. */
+body.report-mode .quote-layout{display:block;width:100%;max-width:none}
+body.report-mode .quote-visual{display:none}
+body.report-mode .quote-main{padding:40px clamp(20px,4vw,72px) 60px;width:100%}
+body.report-mode #quote-root{max-width:1500px;width:100%;margin:auto}
+body.report-mode .quote-title{max-width:1100px}
+body.report-mode .index-grid{grid-template-columns:minmax(0,1fr)}
+body.report-mode .qplans{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start}
+body.report-mode .recommendation{background:#f7f8ff;padding:clamp(16px,2.5vw,36px)}
+.report-index{padding:clamp(16px,2.5vw,32px);font-size:14px;line-height:1.75}
+.report-index>header{max-width:650px}.report-index h3{font-size:23px}.report-index h4{font-size:16px;color:var(--deep);margin:22px 0 10px}
+.report-index p{max-width:1100px}.report-index details{font-size:13px}.report-index .audit-table,.evidence-table{font-size:12px}
+.public-evidence{border-left:4px solid var(--blue);padding:4px 18px 18px;background:#f5f7ff;margin:20px 0}
+.public-evidence a{color:var(--deep);text-decoration:underline;font-size:13px}.public-evidence td,.public-evidence th{width:50%}
+.calculation-data{display:grid;grid-template-columns:minmax(150px,1fr) minmax(0,2fr);gap:6px 18px;line-height:1.7;margin:12px 0}
+.calculation-data dd{margin:0;overflow-wrap:anywhere}.calculation-data dt{font-weight:600}.calculation-data .calculation-data{grid-template-columns:1fr;gap:4px}
+.dimension-evidence{padding-left:18px;font-size:12px;line-height:1.65}.dimension-evidence li{margin-bottom:13px}.dimension-evidence code{font-size:11px;overflow-wrap:anywhere}
+.personalization-result .audit-table th:first-child{width:16%}.personalization-result .audit-table td:nth-child(2){width:18%}.personalization-result .audit-table td:nth-child(3){width:66%}
+.evidence-table th:first-child{width:22%}.evidence-table td:nth-child(2){width:18%}.evidence-table td:nth-child(3){width:60%}
+.local-evidence,.technical-evidence{border-top:1px solid #dce2f8;padding-top:18px;margin-top:20px}.factor-evidence{border:1px solid #dce2f8;border-radius:6px;padding:0 16px 12px;margin:15px 0}
+.source-note{background:#fff8d6;border-radius:6px;padding:14px}.asset-evidence code,.public-evidence code{overflow-wrap:anywhere}
+@media(max-width:900px){body.report-mode .qplans{grid-template-columns:1fr}.calculation-data{grid-template-columns:1fr}.calculation-data dd{margin-bottom:10px}.public-evidence{padding:4px 12px 12px}}
+@media print{.quote-visual,.quote-header,.quote-progress,.quote-navigation,.package-editor{display:none!important}.quote-layout{display:block}.quote-main,#quote-root{max-width:none!important;width:100%;padding:0!important}.report-index{break-inside:avoid}}

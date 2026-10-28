@@ -23,6 +23,11 @@ if(establishment){
     const sum=Object.entries(initial.recomendacao.necessidades).reduce((total,[code,n])=>total+(p.coberturas.includes(code)?n.prioridade*n.peso:0),0);
     assert.ok(Math.abs(sum-p.pontos_atendidos)<1e-8);
   }
+  const traceSum=initial.rastreabilidade.bens.reduce((sum,b)=>sum+(b.valor_ponderado||0),0);
+  assert.ok(Math.abs(traceSum-initial.patrimonio.bens_ponderados)<1e-6);
+  assert.ok(initial.indices.ROUBO_FURTO_ARROMBAMENTO.referencia_publica.dados.taxa_furto_domicilios!=null);
+  assert.equal(initial.indices.QUEBRA_DE_VIDROS.referencia_publica,null);
+  assert.ok(initial.dimensionamento.ROUBO_FURTO_ARROMBAMENTO.evidencias.some(e=>e.arquivo==='sinais_financeiros_operacionais.csv'));
   evidence.checks.push({check:'Recomendação imediata apenas pelo cadastro, sem respostas presumidas',status:'PASS',
     suggestedPlan:initial.recomendacao.plano_recomendado,questionnaireAnswers:initial.respostas,
     plans:initial.recomendacao.comparacao.map(p=>({plan:p.plano,fit:p.aderencia_percentual}))});

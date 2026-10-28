@@ -16,6 +16,7 @@ from processamento import carregar_base, localizar_dados, caminho_referencia, nu
 from recomendador import recomendar_plano
 from referencias import classe_cnae
 from produto import REGRAS, adaptar_catalogo, personalizar
+from rastreabilidade import anexar_evidencias
 
 ROOT = Path(__file__).parent
 PUBLIC = ROOT / 'frontend' / 'public'
@@ -225,10 +226,13 @@ def analisar(payload, base=None, municipio_fn=consultar_municipio):
             if key == 'contentsValue':
                 record['bens_total_referencia'] = float(value)
                 record['confianca_bens'] = .85
+                origins['bens_total_referencia'] = 'Informado no formulário'
             if key == 'equipmentValue':
                 record['equipamentos_total_referencia'] = float(value)
+                origins['equipamentos_total_referencia'] = 'Informado no formulário'
             if key == 'stockValue':
                 record['estoque_pico_estimado'] = float(value)
+                origins['estoque_pico_estimado'] = 'Informado no formulário'
     if numero(record.get('equipamentos_ponderados')) is not None and numero(record.get('bens_ponderados')) is not None and record['equipamentos_ponderados'] > record['bens_ponderados']:
         raise ValueError('Equipamentos fazem parte dos bens: seu valor não pode superar o total dos bens sem estoque.')
     if numero(record.get('equipamentos_total_referencia')) is not None and numero(record.get('bens_total_referencia')) is not None and record['equipamentos_total_referencia'] > record['bens_total_referencia']:
@@ -237,8 +241,10 @@ def analisar(payload, base=None, municipio_fn=consultar_municipio):
     record['questionario'] = q
     record['escopo_protecao'] = payload['protection']
     record['grupo_atividade'] = ACTIVITY_GROUPS.get(activity['id'])
+    origins['grupo_atividade'] = 'Mapa contextual da atividade selecionada no formulário'
     record['possui_vidros_confirmado'] = 'SIM' if q['hasGlass'] else 'NAO'
     record['possui_empregados_confirmado'] = 'SIM' if q['hasEmployees'] else 'NAO'
+    origins['possui_vidros_confirmado'] = origins['possui_empregados_confirmado'] = 'Declarado nas oito perguntas do formulário'
     if not q['hasEmployees']:
         if numero(payload.get('employees')) not in (None, 0) or numero(payload.get('payroll')) not in (None, 0):
             raise ValueError('Sem empregados, quantidade e folha devem ficar vazias ou ser zero.')
@@ -260,10 +266,13 @@ def analisar(payload, base=None, municipio_fn=consultar_municipio):
         origins['valor_predio_reposicao_brl'] = 'Imóvel excluído pelo escopo somente conteúdo'
     if payload.get('rentValue') not in ('', None):
         record['pagamento_aluguel_recorrente'] = 'SIM' if float(payload['rentValue']) > 0 else 'NAO'
+        origins['pagamento_aluguel_recorrente'] = 'Derivado do aluguel informado no formulário'
     record['possui_termo_galeria'] = 'SIM' if payload.get('shopping') == 'yes' else 'NAO'
+    origins['possui_termo_galeria'] = 'Informado no formulário'
     # Insurer activity IDs are never converted into a CNAE by guesswork.
     if payload.get('cnae'):
         record['cnae_principal'] = payload['cnae']
+        origins['cnae_principal'] = 'Informado no formulário'
         for key in ('grau_risco_nr4','fonte_nr4','versao_nr4','classe_cnae','descricao_nr4','pagina','sha256_documento'):
             record.pop(key, None)
         nr4 = caminho_referencia('nr4_cnae.csv')
@@ -291,10 +300,10 @@ def analisar(payload, base=None, municipio_fn=consultar_municipio):
             record[column] = payload[key]
             origins[column] = 'Informado no formulário'
     motor = MotorFormulario(config=cfg)
-    return montar_resultado(record, motor, base.catalogo if base else None, activity, payload['subactivityId'], q, warnings, origins, has_link)
+    return montar_resultado(record, motor, base.catalogo if base else None, activity, payload['subactivityId'], q, warnings, origins, has_link, base=base if has_link else None)
 
 
-def montar_resultado(record, motor, catalog, activity, subactivity_id, q, warnings, origins, has_link):
+def montar_resultado(record, motor, catalog, activity, subactivity_id, q, warnings, origins, has_link, base=None):
     cfg = motor.config
     indices = motor.analisar_registro(record)
     common = [c for c in cfg['coberturas'] if c not in indices]
@@ -307,7 +316,9 @@ def montar_resultado(record, motor, catalog, activity, subactivity_id, q, warnin
     recommendation = recomendar_plano(indices, catalog, cfg, record)
     if not record.get('plano_escolhido') and any(record.get('ajustes_coberturas', {}).values()) and recommendation['plano_recomendado'] == 'ESSENCIAL':
         raise ValueError('Escolha Prático ou Total para ajustar as quatro coberturas.')
-    personalization = personalizar(record, recommendation, motor.dimensionar_coberturas(record))
+    dimensions = motor.dimensionar_coberturas(record)
+    evidence = anexar_evidencias(record, indices, dimensions, origins, base)
+    personalization = personalizar(record, recommendation, dimensions)
     for p in recommendation['comparacao']:
         p['id'] = PLAN_IDS[p['plano']]
         p['coberturas'] = sorted(catalog.loc[catalog.plano.eq(p['plano']), 'cobertura_fixa'].tolist())
@@ -320,10 +331,10 @@ def montar_resultado(record, motor, catalog, activity, subactivity_id, q, warnin
                         'disponivel': numero(record.get({'seguranca': 'seguranca_da_cidade_0_1',
                             'clima': 'exposicao_climatica_0_1', 'nr4': 'grau_risco_nr4'}[kind])) is not None
                             and (kind == 'nr4' or confidence is not None and confidence > 0)})
-    return clean({'versao': '0.4.0-formulario.1', 'modelo': 'Motor determinístico do MVP + guia item 10',
+    return clean({'versao': '0.4.0-formulario.2', 'modelo': 'Motor determinístico do MVP + guia item 10',
         'atividade': {'id': activity['id'], 'subactivityId': subactivity_id, 'cnaeUtilizado': record.get('cnae_principal')},
         'planoId': PLAN_IDS[recommendation['plano_recomendado']], 'indices': indices,
-        'recomendacao': recommendation, 'dimensionamento': motor.dimensionar_coberturas(record),
+        'recomendacao': recommendation, 'dimensionamento': dimensions, 'rastreabilidade': evidence,
         'personalizacao': personalization,
         'patrimonio': {k: record.get(k) for k in ('bens_ponderados', 'bens_total_referencia',
             'equipamentos_ponderados', 'estoque_medio_estimado', 'valor_predio_reposicao_brl')},
@@ -350,7 +361,7 @@ def analisar_cadastro(payload, base=None):
         if numero(record.get(column)) is None:
             warnings.append(f'Sem referência de {label} para esta unidade; componente desconhecido, com confiança reduzida.')
     result = montar_resultado(record, motor, base.catalogo, {'id':None}, None, None, warnings,
-                             {k:'Cadastro BB/Datathon' for k in record}, True)
+                             {k:'Cadastro BB/Datathon' for k in record}, True, base=base)
     result.update(preliminar=True, modelo='Motor original do MVP aplicado ao cadastro, sem respostas presumidas',
                   cadastro={k:record.get(k) for k in ('empresa_id','imovel_id','grupo_atividade','descricao_cnae','porte')},
                   dadosCadastrais={k:record.get(k) for k in ('bens_quantidade','bens_total_referencia','bens_ponderados',

@@ -59,3 +59,14 @@ Verificação: suíte Python, testes Node, sintaxe JavaScript, HTTP real com os 
 Não há tarifa personalizada, emissão, consulta bancária de produção, autorização comercial de API, validação completa de aceitação por atividade, nem tabela contratual de limites/franquias. As estimativas e cortes são hipóteses do MVP. A exportação em lote usa os dados/configurações do motor; as escolhas individuais feitas na página ficam no resumo JSON da simulação e não reescrevem o cadastro ou a configuração global. Os códigos internos da seguradora não são CNAEs. A busca local conecta descrições a itens reais, sem precisar de API generativa. Endereços perturbados não são usados para localizar delegacias.
 
 Evidência visual da conclusão com pacote personalizado: [captura do navegador](screenshots/guia-pacote-personalizado.png). Validação local final: 147 testes Python e 27 testes Node; fluxo HTTP e navegador até a conclusão demonstrativa, sem erros de console.
+
+
+## Relatório em tela inteira e origem dos dados (formulário .2)
+
+Quando existe resultado cadastral na etapa de empresa, ou nas etapas de planos/revisão/conclusão, a imagem lateral é ocultada e o relatório ocupa a largura disponível (até 1.500 px internos). Ao voltar para preenchimento sem resultado, a jornada de cadastro recupera seu layout. Tabelas têm rolagem interna em telas menores.
+
+A coluna “Origem e confirmação” apresenta os valores usados, arquivo, campos originais e chave empresa/unidade. Agregados de bens explicitam soma de valor × probabilidade, com equipamentos como subconjunto. Um detalhamento separado mostra os bens individuais da unidade e seus valores ponderados. Dados substituídos no formulário ou excluídos pelo escopo não são somados novamente ao inventário original. Documentos pessoais e endereço detalhado não entram nesse relatório.
+
+Cada índice traz leitura contextual com valores da unidade, referência pública com números, período, abrangência e vínculo municipal/CNAE, dados locais e respostas não presumidas, além da memória técnica de fatores, pesos, impacto e vulnerabilidade. A referência de segurança identifica IBGE/SIDRA ou SSP conforme a fonte efetivamente carregada; a de clima expõe frequências e dias válidos da série histórica; NR-4 identifica documento, classe e grau. Vidros informa que não existe API específica integrada. A tela distingue referências armazenadas de consultas ao vivo e conserva ausências em vez de criar dados.
+
+`rastreabilidade.py` acrescenta evidências ao adaptador HTTP, mantendo os índices e regras de recomendação. `BaseDados.bens` conserva somente em memória os registros já carregados para a consulta local por unidade. O resumo JSON inclui a rastreabilidade; os CSVs originais não são alterados. As verificações de rastreabilidade usam fixtures sintéticas e não publicam registros financeiros do cadastro real. Validação desta atualização: 153 testes Python e 29 Node, mais HTTP real e inspeção do navegador.

@@ -90,6 +90,7 @@ class BaseDados:
     dicionario: pd.DataFrame
     avisos: list[str]
     hashes: dict[str, str]
+    bens: pd.DataFrame | None = None
 
     def registro(self, empresa_id, imovel_id):
         df = self.estabelecimentos
@@ -273,7 +274,7 @@ def carregar_base(pasta=None, enriquecimento=None, referencias=None, confirmacoe
     if enriquecimento:
         hashes['enriquecimento_territorial.csv'] = hashlib.sha256(Path(enriquecimento).read_bytes()).hexdigest()
     return BaseDados(pasta, dados.astype(object).where(pd.notna(dados), None),
-                     catalogo, templates, dic, avisos, hashes)
+                     catalogo, templates, dic, avisos, hashes, bens=tabelas['bens_cadastrados'].drop_duplicates().copy())
 
 
 def incorporar_territorio(dados, caminho):
