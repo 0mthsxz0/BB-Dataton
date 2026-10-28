@@ -112,3 +112,5 @@ O mapa do guia contém 21 itens: quatro coberturas ajustáveis e 17 opcionais, i
 A comparação considera a meta e as lacunas dos dez itens padrão, acrescentando os opcionais pertinentes sem diluir prioridades críticas. Essencial + eletrônicos pode aparecer como alternativa; equipamento elétrico genérico não comprova eletrônico e este adicional não cobre roubo. Sem preços não há promessa de economia. As confirmações são mantidas em memória no navegador; não há persistência de leads nem emissão de proposta. Consulte `entregas/mapa-opcionais.md` e o fluxograma SVG.
 
 Validação: `.venv/Scripts/python.exe -m pytest -q`, `npm.cmd --prefix frontend run check` e `npm.cmd --prefix frontend test`.
+
+Na jornada pública, vidros são informados pela quantidade aproximada de janelas, portas, vitrines e espelhos, sem exigir orçamento de reposição. O motor registra a quantidade em campo separado, sem converter contagem em reais; o consultor conserva o campo financeiro e confirma o valor posteriormente. Quantidade vazia significa desconhecida; zero deve concordar com a ausência de vidros declarada.

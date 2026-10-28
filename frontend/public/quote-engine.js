@@ -33,17 +33,30 @@ export async function api(url, payload) {
 
 export function riskPayload(state, questionnaire) {
   const [empresaId, imovelId] = (state.sourceKey || '').split('|');
-  const keys = ['activityId','subactivityId','otherSubactivity','protection','shopping','city','uf','cnae',...NUMERIC_FIELDS.map(([key])=>key)];
+  const keys = ['activityId','subactivityId','otherSubactivity','protection','shopping','city','uf','cnae','glassCount',...NUMERIC_FIELDS.map(([key])=>key)];
   return {...Object.fromEntries(keys.map(k=>[k,state[k]])), empresaId:empresaId || '', imovelId:imovelId || '',
     answers:Object.fromEntries(questionnaire.groups.flatMap(g=>g.questions.map(q=>[q.id,state[q.id] === 'yes' ? true : state[q.id] === 'no' ? false : null])))};
 }
 
-export function riskFields(state, questionnaire, field) {
+const CUSTOMER_LABELS={
+ contentsValue:'Quanto valem os móveis e equipamentos da empresa, sem os produtos em estoque? (R$)',
+ equipmentValue:'Desse valor, quanto é de aparelhos e equipamentos elétricos? (R$)',
+ stockValue:'Quanto valem os produtos e materiais guardados no local? (R$)',
+ buildingValue:'Se souber, quanto custaria reconstruir o imóvel? (R$)',
+ employees:'Quantas pessoas são empregadas neste local?',
+ payroll:'Quanto é pago em salários por mês neste local? (R$)',
+ monthlyExpenses:'Quanto a empresa gasta por mês para manter este local funcionando? (R$)',
+ monthlyRevenue:'Quanto a empresa recebe, em média, por mês com vendas ou serviços? (R$)',
+ units:'Quantos locais de funcionamento a empresa tem?',rentValue:'Quanto é o aluguel mensal deste local? (R$)'};
+export function glassFields(field) {
+ return field('glassCount','Quantos itens de vidro precisam de proteção?',{type:'number',required:false,min:'0',max:'1000000',increment:'1',inputmode:'numeric',help:'Conte janelas, portas de vidro, vitrines e espelhos. Uma quantidade aproximada já ajuda. Deixe em branco se não souber.'})+`<p class="catalog-note span-two">O valor para trocar os vidros pode ser confirmado depois com um especialista. A quantidade, sozinha, não informa esse custo.</p>`;
+}
+export function riskFields(state, questionnaire, field, {internal=false}={}) {
   return `<p class="quote-helper">${esc(questionnaire.notice)} Campos financeiros vazios aproveitam o cadastro vinculado; sem cadastro, ficam desconhecidos. Zero significa ausência confirmada.</p>
     <section class="risk-inventory"><h2>Valores do estabelecimento</h2><p>Equipamentos já fazem parte dos bens: informe apenas a parcela elétrica no segundo campo. Estoque fica separado. Os valores devem refletir reposição, sem somar os mesmos itens duas vezes.</p>
-    <div class="form-grid">${field('cnae','CNAE principal (sete dígitos)',{required:false,full:true,maxlength:10,help:'Se vincular uma empresa, deixe vazio para usar o CNAE cadastrado. O código da lista de atividades não é um CNAE.'})}
-    ${NUMERIC_FIELDS.map(([key,label])=>field(key,label,{type:'number',required:false,min:'0',max:key==='employees'?'1000000':'1000000000000',inputmode:'decimal'})).join('')}</div></section>
-    <section class="risk-questions"><h2>Oito perguntas sobre a proteção</h2>${questionnaire.groups.map(group=>`<section class="risk-group"><h3>${esc(group.name)}</h3>${group.questions.map(q=>`<fieldset class="risk-question"><legend>${esc(q.text)}</legend>${[['yes','Sim'],['no','Não']].map(([value,label])=>`<label><input type="radio" name="${q.id}" value="${value}" required ${state[q.id]===value?'checked':''}> ${label}</label>`).join('')}</fieldset>`).join('')}</section>`).join('')}</section>`;
+    <div class="form-grid">${field('cnae',internal?'CNAE principal (sete dígitos)':'Código da atividade no CNPJ (CNAE), se souber',{required:false,full:true,maxlength:10,help:'Se vincular uma empresa, deixe vazio para usar o CNAE cadastrado. O código da lista de atividades não é um CNAE.'})}
+    ${NUMERIC_FIELDS.filter(([key])=>internal||key!=='glassValue').map(([key,label])=>field(key,internal?label:(CUSTOMER_LABELS[key]||label),{type:'number',required:false,min:'0',max:key==='employees'?'1000000':'1000000000000',inputmode:'decimal'})).join('')}${glassFields(field)}</div></section>
+    <section class="risk-questions"><h2>Oito perguntas sobre a proteção</h2>${questionnaire.groups.map(group=>`<section class="risk-group"><h3>${esc(!internal&&group.code==='RESPONSABILIDADE_CIVIL_EMPREGADOR'?'Proteção dos funcionários':group.name)}</h3>${group.questions.map(q=>`<fieldset class="risk-question"><legend>${esc(q.text)}</legend>${[['yes','Sim'],['no','Não']].map(([value,label])=>`<label><input type="radio" name="${q.id}" value="${value}" required ${state[q.id]===value?'checked':''}> ${label}</label>`).join('')}</fieldset>`).join('')}</section>`).join('')}</section>`;
 }
 
 export function baseFields(context, state) {
@@ -53,7 +66,7 @@ export function baseFields(context, state) {
 export function recommendationView(result) {
   if (!result) return '';
   const rec = result.recomendacao;
-  return `<section class="recommendation" aria-label="Resultado calculado"><p class="result-eyebrow">Recomendação calculada · MVP integrado</p><h2>${rec.indicacao_bloqueada?'Triagem exige análise oficial':esc({ESSENCIAL:'Empresarial Essencial',PRATICO:'Empresarial Prático',TOTAL:'Empresarial Total'}[rec.plano_recomendado])}</h2><p>${esc(rec.justificativa)}</p><p>Confiança dos dados: <strong>${points(rec.confianca_geral*100)}%</strong> · Meta de aderência: ${points(rec.meta_aderencia)}%</p>
+  return `<section class="recommendation" aria-label="Resultado calculado"><p class="result-eyebrow">Recomendação calculada · MVP integrado</p><h2>${rec.indicacao_bloqueada?'Triagem exige análise oficial':esc({ESSENCIAL:'Empresarial Essencial',PRATICO:'Empresarial Prático',TOTAL:'Empresarial Total'}[rec.plano_recomendado])}</h2>${result.vidrosDeclarados?.quantidade!=null?`<p>Vidros: aproximadamente ${esc(result.vidrosDeclarados.quantidade)} itens declarados. A quantidade não é convertida em valor de reposição.</p>`:''}<p>${esc(rec.justificativa)}</p><p>Confiança dos dados: <strong>${points(rec.confianca_geral*100)}%</strong> · Meta de aderência: ${points(rec.meta_aderencia)}%</p>
     ${personalizationView(result)}<div class="index-grid">${Object.entries(result.indices).map(([code,s])=>indexEvidence(code,s)).join('')}</div>
     ${assetEvidence(result.rastreabilidade)}<details class="result-details"><summary>Bens e origem dos dados</summary><dl><dt>Bens ponderados no local</dt><dd>${money(result.patrimonio.bens_ponderados)}</dd><dt>Equipamentos, já incluídos nos bens</dt><dd>${money(result.patrimonio.equipamentos_ponderados)}</dd><dt>Estoque separado</dt><dd>${money(result.patrimonio.estoque_medio_estimado)}</dd><dt>Reconstrução informada</dt><dd>${money(result.patrimonio.valor_predio_reposicao_brl)}</dd></dl><p>Cadastro vinculado: ${result.vinculoBase?'Sim':'Não'}. Bens cadastrados são ponderados uma única vez por probabilidade de vínculo. Valores confirmados no formulário substituem os agregados correspondentes.</p><ul>${Object.entries(result.origens).map(([k,v])=>`<li>${esc(ORIGIN_LABELS[k]||k)}: ${esc(v)}</li>`).join('')}</ul></details>
     <details class="result-details"><summary>Fontes públicas, períodos e pendências</summary><p>Município: ${esc(result.localizacao.municipio_real)} / ${esc(result.localizacao.uf_real)} · CNAE ${esc(result.atividade.cnaeUtilizado||'não informado')} · IBGE ${esc(result.localizacao.codigo_ibge_municipio||'não confirmado')}</p><p>Origem do vínculo municipal: ${esc(result.localizacao.fonte_localizacao||'Não disponível')}.</p>${result.fontes.map(f=>`<p><strong>${esc(f.tipo)}:</strong> ${f.disponivel?'Referência disponível':'Sem referência'} · ${esc(f.periodo||'Período não informado')}</p>${String(f.fonte||'').split(' | ').filter(Boolean).map(url=>/^https:\/\//.test(url)?`<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">Consultar fonte de ${esc(f.tipo)} ↗</a>`:'').join('<br>')}<p>${esc(f.metodologia||'')}</p>`).join('')}<ul>${[...result.avisos,...rec.perguntas_confirmacao].map(x=>`<li>${esc(x)}</li>`).join('')}</ul></details><p class="catalog-note">${esc(result.observacao)} A faixa indica sensibilidade à informação incompleta, sem interpretação estatística.</p></section>`;

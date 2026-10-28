@@ -256,3 +256,31 @@ def test_rastreabilidade_declara_valores_substituidos_sem_reutilizar_cadastro(an
     assert r['indices'][ROUBO]['respostas_utilizadas']['securityControls'] is True
     assert 'R$ 100.000,00' in r['indices'][ROUBO]['leitura_contextual']
     assert r['indices'][VIDROS]['referencia_publica'] is None
+
+def test_quantidade_vidros_nao_inventa_valor_de_reposicao(analyze,payload):
+    payload.pop('glassValue')
+    baseline=analyze(payload)
+    r=analyze(dict(payload,glassCount='8'))
+    assert r['vidrosDeclarados']['quantidade']==8
+    assert r['vidrosDeclarados']['valorReposicaoPendente']
+    assert r['dimensionamento'][VIDROS]['faixa_valor_min'] is None
+    assert r['dimensionamento'][VIDROS]['faixa_valor_max'] is None
+    assert r['indices'][VIDROS]==baseline['indices'][VIDROS]
+
+@pytest.mark.parametrize('q',[-1,1.5,True,1000001,'abc'])
+def test_quantidade_vidros_invalida(analyze,payload,q):
+    with pytest.raises(ValueError,match='quantidade inteira'):
+        analyze(dict(payload,glassCount=q))
+
+@pytest.mark.parametrize('q,presente',[(0,True),(3,False)])
+def test_quantidade_vidros_contraditoria(analyze,payload,q,presente):
+    p=copy.deepcopy(payload);p['glassCount']=q;p['answers']['hasGlass']=presente
+    with pytest.raises(ValueError,match='não combina'):
+        analyze(p)
+
+def test_zero_vidros_significa_ausencia_confirmada(analyze,payload):
+    p=copy.deepcopy(payload);p.update(glassCount=0,glassValue=0)
+    p['answers'].update(hasGlass=False,glassExposed=False)
+    r=analyze(p)
+    assert r['vidrosDeclarados']['quantidade']==0
+    assert r['indices'][VIDROS]['prioridade']==0

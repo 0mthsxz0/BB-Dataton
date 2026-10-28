@@ -129,6 +129,13 @@ def validar(payload):
                 raise ValueError(f'Valor inválido no campo {k}. Use número positivo ou zero.')
             if k in ('employees','units') and (float(v) != int(float(v)) or float(v) > 1000000 or k == 'units' and float(v) < 1):
                 raise ValueError('Quantidade de empregados/unidades deve ser um inteiro válido; unidades deve ser pelo menos um.')
+    glass_count = payload.get('glassCount')
+    if glass_count is not None and glass_count != '':
+        value = numero(glass_count)
+        if isinstance(glass_count, bool) or value is None or value != int(value) or value > 1000000:
+            raise ValueError('Informe uma quantidade inteira de itens de vidro ou deixe em branco.')
+        if (value == 0) == answers['hasGlass']:
+            raise ValueError('A quantidade de itens de vidro não combina com a resposta sobre ter vidros para proteger.')
     cnae = payload.get('cnae')
     if cnae and (not isinstance(cnae, str) or not re.fullmatch(r'\d{4}-?\d/?\d{2}', cnae)):
         raise ValueError('Informe um CNAE de sete dígitos.')
@@ -240,6 +247,9 @@ def analisar(payload, base=None, municipio_fn=consultar_municipio):
         raise ValueError('Equipamentos fazem parte dos bens: seu valor não pode superar o total dos bens sem estoque.')
     if numero(record.get('equipamentos_total_referencia')) is not None and numero(record.get('bens_total_referencia')) is not None and record['equipamentos_total_referencia'] > record['bens_total_referencia']:
         raise ValueError('O inventário de equipamentos herdado supera o total confirmado. Informe também o valor dos equipamentos para atualizar a parcela.')
+    if payload.get('glassCount') not in (None, ''):
+        record['quantidade_vidros_declarada'] = int(float(payload['glassCount']))
+        origins['quantidade_vidros_declarada'] = 'Quantidade aproximada declarada no formulário; não é valor de reposição'
     q = payload['answers']
     record['questionario'] = q
     record['escopo_protecao'] = payload['protection']
@@ -343,6 +353,9 @@ def montar_resultado(record, motor, catalog, activity, subactivity_id, q, warnin
         'planoId': PLAN_IDS[recommendation['plano_recomendado']], 'indices': indices,
         'recomendacao': recommendation, 'dimensionamento': dimensions, 'rastreabilidade': evidence,
         'personalizacao': personalization,
+        'vidrosDeclarados': {'quantidade': record.get('quantidade_vidros_declarada'),
+            'valorReposicaoPendente': numero(record.get('valor_vidros_reposicao_brl')) is None,
+            'observacao': 'Quantidade declarada não é convertida automaticamente em custo de reposição.'},
         'patrimonio': {k: record.get(k) for k in ('bens_ponderados', 'bens_total_referencia',
             'equipamentos_ponderados', 'estoque_medio_estimado', 'valor_predio_reposicao_brl')},
         'origens': {k: origins.get(k, 'Não informado') for k in NUMBER_FIELDS.values()},
