@@ -1,0 +1,671 @@
+{
+  "data": "2026-10-28",
+  "fontes": [
+    {
+      "url": "https://servicodados.ibge.gov.br/api/v1/localidades/municipios",
+      "sha256": "86ecdccdf97d72e7e5e46f0854cfcea8bacc28154cc1bc4ed0e6110e3a6c9c02",
+      "coletado_em": "2026-10-28T23:19:50.051600+00:00"
+    },
+    {
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/4714/periodos/2022/variaveis/93%7C6318?localidades=N6[all]",
+      "sha256": "4def25eae8664924f1a59f366225abbd528fa4a25c2843c5088e95ee2a4b411e",
+      "coletado_em": "2026-10-28T23:19:53.047110+00:00"
+    },
+    {
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/2025/variaveis/9324?localidades=N6[all]",
+      "sha256": "89f529e9b5b3a9be71478eaa1885de98e6be420ebb9737dc366dff0c21feb853",
+      "coletado_em": "2026-10-28T23:22:06.847231+00:00"
+    },
+    {
+      "url": "https://www.gov.br/mj/pt-br/assuntos/sua-seguranca/seguranca-publica/estatistica/download/dnsp-base-de-dados/bancovde-2025.xlsx/@@download/file",
+      "sha256": "6b87609815afc534f44f3423bf8660a69c961130c187f759b9d3e38ee2a8a6e8",
+      "coletado_em": "2026-10-28T23:21:37.657668+00:00"
+    },
+    {
+      "url": "https://www.gov.br/mj/pt-br/assuntos/sua-seguranca/seguranca-publica/estatistica/download/dnsp-base-de-dados/indicadoressegurancapublicamunic_.xlsx/@@download/file",
+      "sha256": "55217586a063ce41fb4e9a8853e51f40af4f732a34a4fa78a04ad7dfe63abcd7",
+      "coletado_em": "2026-10-28T23:22:43.541369+00:00"
+    }
+  ],
+  "contagens_banco": {
+    "municipios": 5571,
+    "vde_registros": 69510,
+    "ocorrencias": 0,
+    "estabelecimentos": 2978,
+    "indices": 5571
+  },
+  "area_censo_2022_ausente": [
+    {
+      "codigo_ibge": "5101837",
+      "municipio": "Boa Esperança do Norte",
+      "uf": "MT"
+    }
+  ],
+  "vde_2025": {
+    "linhas_arquivo": 832302,
+    "colunas": [
+      "uf",
+      "municipio",
+      "evento",
+      "data_referencia",
+      "agente",
+      "arma",
+      "faixa_etaria",
+      "feminino",
+      "masculino",
+      "nao_informado",
+      "total_vitima",
+      "total",
+      "total_peso",
+      "abrangencia"
+    ],
+    "categorias": {
+      "Apreensão de Cocaína": 648,
+      "Apreensão de Maconha": 648,
+      "Arma de Fogo Apreendida": 5832,
+      "Atendimento pré-hospitalar": 324,
+      "Busca e salvamento": 324,
+      "Combate a incêndios": 324,
+      "Emissão de Alvarás de licença": 324,
+      "Estupro": 324,
+      "Estupro de vulnerável": 324,
+      "Feminicídio": 67566,
+      "Furto de veículo": 648,
+      "Homicídio doloso": 67566,
+      "Lesão corporal seguida de morte": 67566,
+      "Mandado de prisão cumprido": 135096,
+      "Morte de Agente do Estado": 2916,
+      "Morte no trânsito ou em decorrência dele (exceto homicídio doloso)": 67566,
+      "Morte por intervenção de Agente do Estado": 972,
+      "Mortes a esclarecer (sem indício de crime)": 67566,
+      "Mortes no trânsito": 67737,
+      "Pessoa Desaparecida": 972,
+      "Pessoa Localizada": 972,
+      "Realização de vistorias": 324,
+      "Roubo a instituição financeira": 648,
+      "Roubo de carga": 648,
+      "Roubo de veículo": 648,
+      "Roubo seguido de morte (latrocínio)": 67566,
+      "Suicídio": 67566,
+      "Suicídio de Agente do Estado": 2916,
+      "Tentativa de feminicídio": 67557,
+      "Tentativa de homicídio": 67566,
+      "Tráfico de drogas": 648
+    },
+    "abrangencias": {
+      "Estadual": 689889,
+      "Polícia Federal": 73893,
+      "Polícia Rodoviária Federal": 68520
+    },
+    "meses": [
+      "2025-01",
+      "2025-02",
+      "2025-03",
+      "2025-04",
+      "2025-05",
+      "2025-06",
+      "2025-07",
+      "2025-08",
+      "2025-09",
+      "2025-10",
+      "2025-11",
+      "2025-12"
+    ],
+    "fonte_id": 4,
+    "linhas_roubo": 69510,
+    "status": {
+      "vitimas_nao_sao_ocorrencias": 66756,
+      "abrangencia_nao_estadual": 972,
+      "sem_municipio": 1314,
+      "chave_municipal_repetida": 396,
+      "municipio_sem_correspondencia": 72
+    },
+    "por_crime": {
+      "Roubo seguido de morte (latrocínio)": {
+        "linhas": 67566,
+        "com_municipio": 67152,
+        "sem_municipio": 414,
+        "ocorrencias_preenchidas": 0,
+        "vitimas_preenchidas": 67566
+      },
+      "Roubo a instituição financeira": {
+        "linhas": 648,
+        "com_municipio": 0,
+        "sem_municipio": 648,
+        "ocorrencias_preenchidas": 321,
+        "vitimas_preenchidas": 0
+      },
+      "Roubo de carga": {
+        "linhas": 648,
+        "com_municipio": 0,
+        "sem_municipio": 648,
+        "ocorrencias_preenchidas": 322,
+        "vitimas_preenchidas": 0
+      },
+      "Roubo de veículo": {
+        "linhas": 648,
+        "com_municipio": 0,
+        "sem_municipio": 648,
+        "ocorrencias_preenchidas": 324,
+        "vitimas_preenchidas": 0
+      }
+    },
+    "por_uf": {
+      "AC": {
+        "vitimas_nao_sao_ocorrencias": 264,
+        "abrangencia_nao_estadual": 36,
+        "sem_municipio": 48
+      },
+      "AL": {
+        "vitimas_nao_sao_ocorrencias": 1224,
+        "sem_municipio": 48,
+        "abrangencia_nao_estadual": 36
+      },
+      "AM": {
+        "vitimas_nao_sao_ocorrencias": 744,
+        "sem_municipio": 50,
+        "abrangencia_nao_estadual": 36
+      },
+      "AP": {
+        "vitimas_nao_sao_ocorrencias": 192,
+        "abrangencia_nao_estadual": 36,
+        "sem_municipio": 48
+      },
+      "BA": {
+        "vitimas_nao_sao_ocorrencias": 5004,
+        "sem_municipio": 50,
+        "abrangencia_nao_estadual": 36
+      },
+      "CE": {
+        "vitimas_nao_sao_ocorrencias": 2208,
+        "abrangencia_nao_estadual": 36,
+        "sem_municipio": 48
+      },
+      "DF": {
+        "chave_municipal_repetida": 396,
+        "sem_municipio": 49,
+        "abrangencia_nao_estadual": 36
+      },
+      "ES": {
+        "vitimas_nao_sao_ocorrencias": 936,
+        "sem_municipio": 48,
+        "abrangencia_nao_estadual": 36
+      },
+      "GO": {
+        "vitimas_nao_sao_ocorrencias": 2952,
+        "abrangencia_nao_estadual": 36,
+        "sem_municipio": 50
+      },
+      "MA": {
+        "vitimas_nao_sao_ocorrencias": 2604,
+        "abrangencia_nao_estadual": 36,
+        "sem_municipio": 48
+      },
+      "MG": {
+        "vitimas_nao_sao_ocorrencias": 10224,
+        "municipio_sem_correspondencia": 12,
+        "abrangencia_nao_estadual": 36,
+        "sem_municipio": 48
+      },
+      "MS": {
+        "vitimas_nao_sao_ocorrencias": 948,
+        "abrangencia_nao_estadual": 36,
+        "sem_municipio": 48
+      },
+      "MT": {
+        "vitimas_nao_sao_ocorrencias": 1680,
+        "abrangencia_nao_estadual": 36,
+        "sem_municipio": 49,
+        "municipio_sem_correspondencia": 12
+      },
+      "PA": {
+        "vitimas_nao_sao_ocorrencias": 1728,
+        "sem_municipio": 48,
+        "abrangencia_nao_estadual": 36
+      },
+      "PB": {
+        "vitimas_nao_sao_ocorrencias": 2676,
+        "sem_municipio": 49,
+        "abrangencia_nao_estadual": 36
+      },
+      "PE": {
+        "vitimas_nao_sao_ocorrencias": 2220,
+        "sem_municipio": 50,
+        "abrangencia_nao_estadual": 36
+      },
+      "PI": {
+        "vitimas_nao_sao_ocorrencias": 2688,
+        "abrangencia_nao_estadual": 36,
+        "sem_municipio": 48
+      },
+      "PR": {
+        "vitimas_nao_sao_ocorrencias": 4788,
+        "sem_municipio": 48,
+        "abrangencia_nao_estadual": 36
+      },
+      "RJ": {
+        "vitimas_nao_sao_ocorrencias": 1104,
+        "abrangencia_nao_estadual": 36,
+        "sem_municipio": 50
+      },
+      "RN": {
+        "vitimas_nao_sao_ocorrencias": 1980,
+        "municipio_sem_correspondencia": 24,
+        "abrangencia_nao_estadual": 36,
+        "sem_municipio": 50
+      },
+      "RO": {
+        "vitimas_nao_sao_ocorrencias": 624,
+        "abrangencia_nao_estadual": 36,
+        "sem_municipio": 48
+      },
+      "RR": {
+        "vitimas_nao_sao_ocorrencias": 168,
+        "abrangencia_nao_estadual": 36,
+        "sem_municipio": 48,
+        "municipio_sem_correspondencia": 12
+      },
+      "RS": {
+        "vitimas_nao_sao_ocorrencias": 5964,
+        "sem_municipio": 50,
+        "abrangencia_nao_estadual": 36
+      },
+      "SC": {
+        "vitimas_nao_sao_ocorrencias": 3540,
+        "sem_municipio": 48,
+        "abrangencia_nao_estadual": 36
+      },
+      "SE": {
+        "vitimas_nao_sao_ocorrencias": 888,
+        "municipio_sem_correspondencia": 12,
+        "abrangencia_nao_estadual": 36,
+        "sem_municipio": 49
+      },
+      "SP": {
+        "vitimas_nao_sao_ocorrencias": 7740,
+        "abrangencia_nao_estadual": 36,
+        "sem_municipio": 48
+      },
+      "TO": {
+        "vitimas_nao_sao_ocorrencias": 1668,
+        "sem_municipio": 48,
+        "abrangencia_nao_estadual": 36
+      }
+    },
+    "observacoes_municipais_importadas": 0,
+    "chaves_estaduais_repetidas": 30,
+    "linhas_estaduais_em_chaves_repetidas": 432,
+    "limite": "Sem rateio estadual, sem somar vítimas a ocorrências e sem preencher ausências com zero."
+  },
+  "ocorrencias_estaduais_sem_municipio": [
+    {
+      "crime": "roubo a instituicao financeira",
+      "linhas": 324,
+      "valores_publicados": 321,
+      "zeros_publicados": 282
+    },
+    {
+      "crime": "roubo de carga",
+      "linhas": 324,
+      "valores_publicados": 322,
+      "zeros_publicados": 120
+    },
+    {
+      "crime": "roubo de veiculos",
+      "linhas": 324,
+      "valores_publicados": 324,
+      "zeros_publicados": 0
+    }
+  ],
+  "arquivo_municipal_legado": {
+    "folhas": [
+      "AC",
+      "AL",
+      "AP",
+      "AM",
+      "BA",
+      "CE",
+      "DF",
+      "ES",
+      "GO",
+      "MA",
+      "MT",
+      "MS",
+      "MG",
+      "PA",
+      "PB",
+      "PR",
+      "PE",
+      "PI",
+      "RJ",
+      "RN",
+      "RS",
+      "RO",
+      "RR",
+      "SC",
+      "SP",
+      "SE",
+      "TO"
+    ],
+    "linhas": 60459,
+    "colunas_por_folha": {
+      "AC": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "AL": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "AP": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "AM": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "BA": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "CE": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "DF": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "ES": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "GO": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "MA": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "MT": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "MS": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "MG": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "PA": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "PB": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "PR": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "PE": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "PI": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "RJ": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "RN": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "RS": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "RO": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "RR": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "SC": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "SP": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "SE": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ],
+      "TO": [
+        "Cód_IBGE",
+        "Município",
+        "Sigla UF",
+        "Região",
+        "Mês/Ano",
+        "Vítimas"
+      ]
+    },
+    "unidade": "Vítimas, não ocorrências de roubo",
+    "importado_em_ocorrencias": false
+  },
+  "cobertura_estabelecimentos": {
+    "sha256_estabelecimentos": "a3d173691af21a1891e9445c4448449bac8c45d51ceb737ec40b662b2e86e381",
+    "estabelecimentos": 2978,
+    "linhas_em_chaves_duplicadas": 0,
+    "correspondencia_ibge": 2978,
+    "municipios_distintos": 10,
+    "com_indice": 0,
+    "cobertura_indice_0_1": 0.0,
+    "motivos_revisao": {},
+    "integridade_sqlite": "ok",
+    "violacoes_fk": 0,
+    "chaves_mensais_duplicadas_banco": 0,
+    "pesos_critic": {},
+    "municipios_com_indice": 0,
+    "cobertura_uf": [
+      {
+        "uf": "BA",
+        "estabelecimentos": 213,
+        "correspondencia_ibge": 213,
+        "com_indice": 0,
+        "cobertura_indice_0_1": 0.0
+      },
+      {
+        "uf": "CE",
+        "estabelecimentos": 188,
+        "correspondencia_ibge": 188,
+        "com_indice": 0,
+        "cobertura_indice_0_1": 0.0
+      },
+      {
+        "uf": "DF",
+        "estabelecimentos": 425,
+        "correspondencia_ibge": 425,
+        "com_indice": 0,
+        "cobertura_indice_0_1": 0.0
+      },
+      {
+        "uf": "GO",
+        "estabelecimentos": 268,
+        "correspondencia_ibge": 268,
+        "com_indice": 0,
+        "cobertura_indice_0_1": 0.0
+      },
+      {
+        "uf": "MG",
+        "estabelecimentos": 304,
+        "correspondencia_ibge": 304,
+        "com_indice": 0,
+        "cobertura_indice_0_1": 0.0
+      },
+      {
+        "uf": "PE",
+        "estabelecimentos": 207,
+        "correspondencia_ibge": 207,
+        "com_indice": 0,
+        "cobertura_indice_0_1": 0.0
+      },
+      {
+        "uf": "PR",
+        "estabelecimentos": 275,
+        "correspondencia_ibge": 275,
+        "com_indice": 0,
+        "cobertura_indice_0_1": 0.0
+      },
+      {
+        "uf": "RJ",
+        "estabelecimentos": 302,
+        "correspondencia_ibge": 302,
+        "com_indice": 0,
+        "cobertura_indice_0_1": 0.0
+      },
+      {
+        "uf": "RS",
+        "estabelecimentos": 225,
+        "correspondencia_ibge": 225,
+        "com_indice": 0,
+        "cobertura_indice_0_1": 0.0
+      },
+      {
+        "uf": "SP",
+        "estabelecimentos": 571,
+        "correspondencia_ibge": 571,
+        "com_indice": 0,
+        "cobertura_indice_0_1": 0.0
+      }
+    ],
+    "limite": "Correspondência IBGE não é cobertura do índice. Universo de clientes é o pacote local do desafio.",
+    "arquivos_sha256": {
+      "cobertura_estabelecimentos_uf.csv": "51e5c33eb4ffe412255a9bf473773d3737e3e1d061a09770062cbb4ba4614133",
+      "estabelecimentos_indice.csv": "3e5f7729d1fd0b4a115e46b08f5fdae3b012e84d1aa9077de2f4ee17282edad3",
+      "estabelecimentos_revisar.csv": "bd342a779e0c173c2630b557e971a1aed00b02f216de724ee6c234af50e7685b",
+      "lacunas_municipio_crime.csv": "423b12f0766f35bffeb3384886dc66283ef684b9a756fefd13170b23c3a4d275"
+    }
+  },
+  "testes": {
+    "python": "115 passaram",
+    "frontend": "23 passaram"
+  },
+  "situacao": "Base alimentada e auditada; índice municipal, CRITIC e ranking indisponíveis."
+}

@@ -22,8 +22,11 @@ def consultar(caminho, codigo=None, uf=None, busca='', limite=100):
             metodo = json.loads(execucao[0]) if execucao else {}
             dados['pesos_critic'] = metodo.get('pesos_critic', {})
             dados['alertas'] = metodo.get('alertas', [])
+            dados['escopo'] = 'contexto_municipal_de_roubos'
+            dados['uso_empresarial_validado'] = False
+            dados['crimes_indice'] = metodo.get('crimes', [])
             dados['fontes'] = [dict(f) for f in con.execute('SELECT DISTINCT url,sha256,coletado_em FROM fontes ORDER BY id')]
-            dados['aviso'] = 'Posição relativa na coorte observada; não é probabilidade de roubo nem previsão de sinistro.'
+            dados['aviso'] = 'Contexto dos tipos de roubo disponíveis, sem roubo em comércio. Não mede probabilidade de roubo de estabelecimento nem previsão de sinistro.'
             return {'status': 200, 'dados': dados}
         if uf is None or not re.fullmatch(r'[A-Z]{2}', uf):
             return {'status': 400, 'erro': 'Informe a sigla da UF.'}

@@ -24,21 +24,22 @@ Object.assign(state, { insuredValue: '', garage: '', goodsUse: '' });
 function securityMarkup() {
   const r = securityRisk;
   const valid = typeof r?.indice_roubo_0_100 === 'number';
-  const need = valid ? relativeNeed(r.indice_roubo_0_100, state.insuredValue, state.garage, state.goodsUse) : null;
+  const need = valid ? relativeNeed(r.indice_roubo_0_100, state.insuredValue, state.garage, state.goodsUse, r.uso_empresarial_validado === true) : null;
   const suggested = valid ? coverageSuggestion(r, plans.plans) : [];
-  return `<h2>Risco de roubo no município</h2>${securityMessage ? `<p role="status">${esc(securityMessage)}</p>` : ''}
+  return `<h2>Contexto municipal de roubos</h2><p>O SINESP 2025 não contém roubo em comércio. Este indicador não mede a probabilidade de roubo de um estabelecimento.</p>${securityMessage ? `<p role="status">${esc(securityMessage)}</p>` : ''}
+    ${r ? `<p>Município consultado: <strong>${esc(r.municipio)} / ${esc(r.uf)}</strong>. Código IBGE: ${esc(r.codigo_ibge)}.</p>` : ''}
     ${valid ? `<p><strong>${r.indice_roubo_0_100.toFixed(1)} / 100 · ${esc(r.faixa)}</strong> — ${esc(r.municipio)} / ${esc(r.uf)}</p>
       <p>Período: ${esc(r.inicio)} a ${esc(r.fim)}. Situação do dado: ${esc({insuficiente:'insuficiente',revisar:'requer revisão',completo_na_fonte:'completo na fonte'}[r.confianca] || 'não avaliada')}. Completude: ${(100*r.completude_0_1).toFixed(0)}%.</p>
-      ${need ? `<p>Prioridade de exposição neste cenário: <strong>${need.points.toFixed(2)} pontos</strong>. Usa o valor dos bens informado e fatores hipotéticos de garagem (${need.garageFactor}) e uso (${need.useFactor}). Não é perda esperada nem preço de seguro.</p>` : '<p>Para explorar a necessidade relativa, informe valor dos bens, garagem e uso. Campos vazios não recebem respostas presumidas.</p>'}
+      ${need ? `<p>Prioridade de exposição neste cenário: <strong>${need.points.toFixed(2)} pontos</strong>. Usa o valor dos bens informado e fatores hipotéticos de garagem (${need.garageFactor}) e uso (${need.useFactor}). Não é perda esperada nem preço de seguro.</p>` : '<p>Sem validação para estabelecimentos, o contexto municipal não gera pontuação de necessidade nem indicação de plano.</p>'}
       ${suggested.length ? `<p>Para avaliar a cobertura de roubo ou furto mediante arrombamento, compare: ${suggested.map(esc).join(', ')}. A adequação depende dos bens, atividade, condições e exclusões contratuais.</p>` : ''}
       <details><summary>Fontes e limites</summary><p>Índice relativo na coorte observada, não probabilidade de roubo. Completude não mede subnotificação. Não representa roubo a residência nem risco específico do seu imóvel.</p>
       ${(r.alertas || []).map(a => `<p>${esc(a)}</p>`).join('')}
       ${(r.fontes || []).filter(f => f.url.startsWith('https://')).map(f => `<p><a href="${esc(f.url)}" target="_blank" rel="noopener noreferrer">Fonte oficial</a></p>`).join('')}</details>`
-      : '<p>Índice indisponível até haver dados municipais suficientes na base. Ausência de informação não significa risco baixo.</p>'}
+      : '<p>Índice indisponível: o recorte VDE 2025 não fornece as séries municipais de ocorrências exigidas. Dados estaduais sem município e vítimas de latrocínio não as substituem. Ausência de informação não significa risco baixo.</p>'}
     ${step === 2 ? '<button type="button" class="btn btn-outline" id="consult-security">Consultar município informado</button><p class="catalog-note">A consulta envia somente cidade/UF ao servidor local. Endereço completo e dados pessoais ficam na página.</p>' : ''}`;
 }
 
-function securityBox() { return `<section class="security-box" id="security-box" aria-label="Risco municipal">${securityMarkup()}</section>`; }
+function securityBox() { return `<section class="security-box" id="security-box" aria-label="Contexto municipal de roubos">${securityMarkup()}</section>`; }
 function updateSecurityBox() {
   const box = $('#security-box');
   if (box) { box.innerHTML = securityMarkup(); $('#consult-security')?.addEventListener('click', loadSecurity); }

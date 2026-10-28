@@ -34,7 +34,7 @@ def download(url, arquivo, atualizar=False, limite_mb=250):
     arquivo.parent.mkdir(parents=True, exist_ok=True)
     meta = arquivo.with_name(arquivo.name+'.fonte.json')
     if arquivo.exists() and meta.exists() and not atualizar:
-        d = json.loads(meta.read_text())
+        d = json.loads(meta.read_text(encoding='utf-8'))
         with arquivo.open('rb') as f:
             digest = hashlib.file_digest(f, 'sha256').hexdigest()
         if d.get('url') != url or digest != d['sha256']:
@@ -76,7 +76,7 @@ def download(url, arquivo, atualizar=False, limite_mb=250):
                  'sha256': digest.hexdigest(), 'content_type': tipo,
                  'coletado_em': datetime.now(timezone.utc).isoformat()}
             os.replace(parcial, arquivo)
-            meta.write_text(json.dumps(d, ensure_ascii=False, indent=2)+'\n')
+            meta.write_text(json.dumps(d, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
             return d
     finally:
         parcial.unlink(missing_ok=True)
@@ -157,7 +157,7 @@ def coletar_sinesp(destino, pagina=SINESP, atualizar=False, limite_paginas=40):
                   'paginas': paginas, 'links_documentos': list(arquivos.values()), 'baixados': baixados,
                   'falhas': falhas, 'limite_paginas_atingido': bool(fila),
                   'escopo': 'Documentos com indicação municipal nos links do portal estatístico; revisar inventário antes de importar.'}
-    (destino/'inventario_sinesp.json').write_text(json.dumps(inventario, ensure_ascii=False, indent=2)+'\n')
+    (destino/'inventario_sinesp.json').write_text(json.dumps(inventario, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
     return inventario
 
 

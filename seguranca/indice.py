@@ -73,12 +73,13 @@ def gerar_indice(con, crimes, fim=None, minimo_municipios=30):
     lugares = pd.DataFrame([dict(r) for r in con.execute('SELECT * FROM municipios ORDER BY codigo_ibge')])
     if lugares.empty:
         raise ValueError('Cadastro municipal vazio.')
-    valores = pd.DataFrame([dict(r) for r in con.execute('SELECT * FROM ocorrencias')])
-    if valores.empty:
-        raise ValueError('Base sem observações SINESP; não gerar índices fictícios.')
+    valores = pd.DataFrame([dict(r) for r in con.execute('SELECT * FROM ocorrencias')],
+                           columns=['codigo_ibge', 'crime', 'mes', 'ocorrencias'])
+    if valores.empty and fim is None:
+        raise ValueError('Base sem observações municipais; informe a janela auditada com --fim para exportar indisponibilidade.')
     selecionados = valores[valores.crime.isin(crimes)].copy()
     faltantes = sorted(set(crimes)-set(selecionados.crime))
-    if faltantes:
+    if faltantes and not valores.empty:
         raise ValueError(f'Crimes selecionados ausentes da fonte: {faltantes}')
     if fim is not None and not re.fullmatch(r'\d{4}-\d{2}', fim):
         raise ValueError('Informe fim no formato AAAA-MM.')
@@ -103,6 +104,11 @@ def gerar_indice(con, crimes, fim=None, minimo_municipios=30):
         'rejeicoes_importacao': con.execute('SELECT count(*) FROM rejeicoes').fetchone()[0],
         'alertas': [],
     }
+    if valores.empty:
+        diagnostico['alertas'].append('Nenhuma ocorrência municipal válida na fonte auditada; índices, pesos CRITIC e ranking indisponíveis.')
+    diagnostico['escopo'] = 'contexto_municipal_de_roubos'
+    diagnostico['uso_empresarial_validado'] = False
+    diagnostico['crimes_ausentes'] = faltantes
     escores = pd.Series(dtype=float)
     detalhes_crimes = {}
     if len(coorte) < minimo_municipios:
@@ -157,10 +163,11 @@ def gerar_indice(con, crimes, fim=None, minimo_municipios=30):
         densidade = float(local.populacao/local.area_km2) if pd.notna(local.populacao) and pd.notna(local.area_km2) and local.area_km2 > 0 else None
         detalhes = {'motivos': motivos, 'meses_por_crime': {c: int(contagem_meses.loc[codigo, c]) for c in crimes},
                     'crimes': detalhes_crimes.get(codigo, {}), 'idade_serie_meses': idade_meses,
-                    'aviso': 'Índice relativo, não probabilidade. Completude não mede subnotificação.'}
+                    'aviso': 'Contexto dos tipos de roubo disponíveis, sem roubo em comércio. Não mede probabilidade de roubo de estabelecimento. Completude não mede subnotificação.'}
         resultado.append({'codigo_ibge': codigo, 'municipio': local.municipio, 'uf': local.uf,
                           'populacao': None if pd.isna(local.populacao) else float(local.populacao),
                           'ano_populacao': ano_pop, 'area_km2': None if pd.isna(local.area_km2) else float(local.area_km2),
+                          'ano_area': None if pd.isna(local.ano_area) else int(local.ano_area),
                           'densidade_hab_km2': densidade, 'indice_roubo_0_100': score, 'faixa': faixa(score),
                           'confianca': confianca, 'completude_0_1': completude,
                           'inicio': meses[0][:7], 'fim': str(ultimo), 'detalhes': detalhes})

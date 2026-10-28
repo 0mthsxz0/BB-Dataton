@@ -1,5 +1,15 @@
 # Protege Empresa | BB Datathon
 
+## Base de segurança: validação real
+
+Na branch `dados-de-seguranca`, a coleta oficial foi retomada e o banco local
+alimentado: 5.571 localidades IBGE, população estimada de 2025, área censitária de
+2022 e 69.510 registros de roubo do VDE 2025. Os 2.978 estabelecimentos têm código
+IBGE validado. A cobertura do índice municipal é **0%**: os três tipos de roubo
+com contagem de ocorrências estão sem município; latrocínio mede vítimas.
+Pesos CRITIC e ranking ficam indisponíveis, e o formulário declara esse limite.
+Veja [a auditoria, as saídas e a reprodução](docs/VALIDACAO_SEGURANCA_2025.md).
+
 ## Base de segurança municipal
 
 A branch `dados-de-seguranca` inclui coleta SINESP/IBGE, banco SQLite consultável,

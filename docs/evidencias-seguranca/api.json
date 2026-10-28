@@ -1,0 +1,113 @@
+{
+  "status": "validado_com_indice_indisponivel",
+  "municipios_csv": 5571,
+  "estabelecimentos": 2978,
+  "vde_registros": 69510,
+  "pesos_critic": {},
+  "ranking": [],
+  "municipios_sem_correspondencia_vde": [
+    {
+      "uf": "MG",
+      "municipio_original": "BARÃO DE MONTE ALTO",
+      "linhas": 12
+    },
+    {
+      "uf": "MT",
+      "municipio_original": "SANTO ANTÔNIO DO LEVERGER",
+      "linhas": 12
+    },
+    {
+      "uf": "RN",
+      "municipio_original": "ARÊS",
+      "linhas": 12
+    },
+    {
+      "uf": "RN",
+      "municipio_original": "AÇU",
+      "linhas": 12
+    },
+    {
+      "uf": "RR",
+      "municipio_original": "SÃO LUIZ",
+      "linhas": 12
+    },
+    {
+      "uf": "SE",
+      "municipio_original": "GRACHO CARDOSO",
+      "linhas": 12
+    }
+  ],
+  "consultas_api": [
+    {
+      "codigo_ibge": "2304400",
+      "municipio": "Fortaleza",
+      "status": 200,
+      "indice": null,
+      "uso_empresarial_validado": false
+    },
+    {
+      "codigo_ibge": "2611606",
+      "municipio": "Recife",
+      "status": 200,
+      "indice": null,
+      "uso_empresarial_validado": false
+    },
+    {
+      "codigo_ibge": "2927408",
+      "municipio": "Salvador",
+      "status": 200,
+      "indice": null,
+      "uso_empresarial_validado": false
+    },
+    {
+      "codigo_ibge": "3106200",
+      "municipio": "Belo Horizonte",
+      "status": 200,
+      "indice": null,
+      "uso_empresarial_validado": false
+    },
+    {
+      "codigo_ibge": "3304557",
+      "municipio": "Rio de Janeiro",
+      "status": 200,
+      "indice": null,
+      "uso_empresarial_validado": false
+    },
+    {
+      "codigo_ibge": "3550308",
+      "municipio": "São Paulo",
+      "status": 200,
+      "indice": null,
+      "uso_empresarial_validado": false
+    },
+    {
+      "codigo_ibge": "4106902",
+      "municipio": "Curitiba",
+      "status": 200,
+      "indice": null,
+      "uso_empresarial_validado": false
+    },
+    {
+      "codigo_ibge": "4314902",
+      "municipio": "Porto Alegre",
+      "status": 200,
+      "indice": null,
+      "uso_empresarial_validado": false
+    },
+    {
+      "codigo_ibge": "5208707",
+      "municipio": "Goiânia",
+      "status": 200,
+      "indice": null,
+      "uso_empresarial_validado": false
+    },
+    {
+      "codigo_ibge": "5300108",
+      "municipio": "Brasília",
+      "status": 200,
+      "indice": null,
+      "uso_empresarial_validado": false
+    }
+  ],
+  "hashes_exportacao": "conferidos"
+}

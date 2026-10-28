@@ -119,10 +119,22 @@ def registrar_fonte(con, arquivo, url, metadados=None):
     arquivo = Path(arquivo)
     with arquivo.open('rb') as entrada:
         digest = hashlib.file_digest(entrada, 'sha256').hexdigest()
+    coletado_em = datetime.now(timezone.utc).isoformat()
+    sidecar = arquivo.with_name(arquivo.name+'.fonte.json')
+    if sidecar.exists():
+        coleta = json.loads(sidecar.read_text(encoding='utf-8'))
+        if coleta['url'] != url or coleta['sha256'] != digest:
+            raise ValueError('Metadados de coleta não correspondem ao arquivo/fonte.')
+        if datetime.fromisoformat(coleta['coletado_em']).tzinfo is None:
+            raise ValueError('Data de coleta sem fuso horário.')
+        coletado_em = coleta['coletado_em']
     con.execute('INSERT OR IGNORE INTO fontes(url,arquivo,sha256,coletado_em,metadados) VALUES(?,?,?,?,?)',
-                (url, str(arquivo.resolve()), digest, datetime.now(timezone.utc).isoformat(),
+                (url, str(arquivo.resolve()), digest, coletado_em,
                  json.dumps(metadados or {}, ensure_ascii=False)))
-    return con.execute('SELECT id FROM fontes WHERE url=? AND sha256=?', (url, digest)).fetchone()[0]
+    fonte = con.execute('SELECT id FROM fontes WHERE url=? AND sha256=?', (url, digest)).fetchone()[0]
+    if sidecar.exists():
+        con.execute('UPDATE fontes SET coletado_em=? WHERE id=?', (coletado_em, fonte))
+    return fonte
 
 
 def numero(valor, inteiro=False):
@@ -142,8 +154,8 @@ def importar_ibge(con, localidades, indicadores, url_localidades, url_indicadore
     """Respostas oficiais: localidades/municipios e agregado 4714 (93 e 6318)."""
     con.execute('DELETE FROM indices')
     localidades, indicadores = Path(localidades), Path(indicadores)
-    lista = json.loads(localidades.read_text())
-    dados = json.loads(indicadores.read_text())
+    lista = json.loads(localidades.read_text(encoding='utf-8'))
+    dados = json.loads(indicadores.read_text(encoding='utf-8'))
     valores = {}
     for variavel in dados:
         chave = {'93': 'populacao', '6318': 'area_km2'}.get(str(variavel['id']))
@@ -182,6 +194,34 @@ def importar_ibge(con, localidades, indicadores, url_localidades, url_indicadore
             (codigo, local['nome'], uf, v.get('populacao'), v.get('area_km2'),
              ano if v.get('populacao') else None, ano if v.get('area_km2') else None, fonte))
     return len(vistos)
+
+
+def importar_populacao(con, arquivo, url, ano):
+    """Estimativa IBGE 6579/9324; atualiza população sem mudar a área censitária."""
+    dados = json.loads(Path(arquivo).read_text(encoding='utf-8'))
+    if (len(dados) != 1 or str(dados[0]['id']) != '9324'
+            or normalizar(dados[0]['unidade']) != 'pessoas'
+            or len(dados[0]['resultados']) != 1):
+        raise ValueError('Estimativa IBGE: variável, unidade ou categorias inesperadas.')
+    series = dados[0]['resultados'][0]['series']
+    valores = {}
+    for s in series:
+        codigo = str(s['localidade']['id'])
+        if codigo in valores or not re.fullmatch(r'\d{7}', codigo):
+            raise ValueError('Estimativa IBGE: código duplicado ou inválido.')
+        valor = numero(s['serie'].get(str(ano)), inteiro=True)
+        if valor is None or valor <= 0:
+            raise ValueError('Estimativa IBGE: população ausente ou não positiva.')
+        valores[codigo] = valor
+    cadastro = {r[0] for r in con.execute('SELECT codigo_ibge FROM municipios')}
+    if set(valores) != cadastro:
+        raise ValueError('Estimativa e cadastro têm códigos diferentes; revisar compatibilidade territorial.')
+    fonte = registrar_fonte(con, arquivo, url, {'ano': ano, 'variavel': '9324'})
+    # Mantém o vínculo censitário da área; o vínculo da estimativa é registrado na fonte.
+    con.execute('DELETE FROM indices')
+    con.executemany('UPDATE municipios SET populacao=?,ano_populacao=? WHERE codigo_ibge=?',
+                    [(v, ano, c) for c, v in valores.items()])
+    return {'municipios': len(valores), 'ano_populacao': ano, 'fonte_id': fonte}
 
 
 def identificar_colunas(colunas, mapa=None):

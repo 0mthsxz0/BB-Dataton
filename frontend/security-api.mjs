@@ -4,19 +4,19 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const project = path.resolve(fileURLToPath(new URL('../', import.meta.url)));
-const candidates = [path.join(project, '.venv/bin/python'), path.resolve(project, '../.venvs/bb-dataton/bin/python')];
+const candidates = [path.join(project, '.venv/Scripts/python.exe'), path.join(project, '.venv/bin/python'), path.resolve(project, '../.venvs/bb-dataton/bin/python')];
 let running = 0;
 
 export function querySecurity({ code, uf, q = '' }) {
   if (running >= 4) return Promise.resolve({ status: 503, erro: 'Consulta ocupada; tente novamente.' });
-  const python = process.env.BB_PYTHON || candidates.find(existsSync) || 'python3';
+  const python = process.env.BB_PYTHON || candidates.find(existsSync) || (process.platform === 'win32' ? 'python' : 'python3');
   const database = process.env.BB_SEGURANCA_DB || path.join(project, 'data/seguranca/seguranca.sqlite');
   const args = ['-m', 'seguranca', '--banco', database, 'consultar'];
   if (code) args.push('--codigo', code);
   else args.push('--uf', uf, '--busca', q);
   running++;
   return new Promise(resolve => {
-    execFile(python, args, { cwd: project, timeout: 15000, maxBuffer: 2 * 1024 * 1024 }, (error, stdout) => {
+    execFile(python, args, { cwd: project, env: { ...process.env, PYTHONUTF8: '1' }, timeout: 15000, maxBuffer: 2 * 1024 * 1024 }, (error, stdout) => {
       running--;
       try {
         const result = JSON.parse(stdout);

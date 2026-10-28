@@ -5,7 +5,8 @@ export const SCENARIO = Object.freeze({
   version: 'hipotese-1',
 });
 
-export function relativeNeed(index, value, garage, use) {
+export function relativeNeed(index, value, garage, use, enterpriseValidated = false) {
+  if (!enterpriseValidated) return null;
   const amount = Number(value);
   if (typeof index !== 'number' || !Number.isFinite(index) || index < 0 || index > 100
       || value === '' || !Number.isFinite(amount) || amount <= 0
@@ -16,7 +17,7 @@ export function relativeNeed(index, value, garage, use) {
 }
 
 export function coverageSuggestion(risk, plans) {
-  if (typeof risk?.indice_roubo_0_100 !== 'number') return [];
+  if (risk?.uso_empresarial_validado !== true || typeof risk?.indice_roubo_0_100 !== 'number') return [];
   // Presença contratual do catálogo, sem escolher prêmio/plano por um corte de risco arbitrário.
   return plans.filter(p => p.coverages.includes('10932')).map(p => p.name);
 }

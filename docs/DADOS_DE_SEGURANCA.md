@@ -8,21 +8,23 @@ base operacional. Fixtures artificiais existem somente em testes temporários.
 
 ## Situação da coleta
 
-Em 28/10/2026 o proxy do ambiente devolveu `403 Forbidden` ao abrir o portal do
-Ministério da Justiça e o serviço do IBGE. Nenhum documento oficial foi baixado.
-O SQLite criado em `data/seguranca/seguranca.sqlite` contém somente o esquema.
-**Não há ainda índice nacional, ranking real ou validação de cobertura real.**
+Coleta retomada em 28/10/2026 no ambiente local Windows. IBGE e o download direto
+do VDE 2025 responderam; o portal pode devolver 403 e o cliente Python apresentou
+falha TLS no MJ. O GET com `curl.exe`, mantendo validação TLS, concluiu os 26.644.100
+bytes; o SHA-256 coincide com a auditoria anterior. Não foi necessário mudar
+permissões ou desligar validação de certificado.
 
-As adições de rede foram salvas no rascunho do ambiente: `www.gov.br`,
-`servicodados.ibge.gov.br`, `apisidra.ibge.gov.br`, `ftp.ibge.gov.br`,
-`dados.gov.br`, `dados.mj.gov.br`. Salvar um rascunho não altera a rede em execução.
-Revise/salve a configuração no produto para liberar a coleta. Outros hosts de
-download eventualmente publicados pelo MJ precisam ser conferidos e liberados
-quando forem efetivamente identificados; não se desabilita TLS ou o proxy.
+O SQLite contém 5.571 localidades do cadastro IBGE, população estimada de 2025,
+área censitária de 2022 quando disponível, os 69.510 registros originais do recorte
+de roubos do VDE e os identificadores/códigos dos 2.978 estabelecimentos.
+**A cobertura geográfica dos estabelecimentos é 100%; a cobertura do índice municipal é 0%.**
 
-O esquema e os adaptadores foram validados com fixtures. Como os arquivos reais
-não puderam ser inspecionados, a compatibilidade com o leiaute da edição SINESP
-publicada continua pendente. Não se afirma que a coleta esgota o acervo SINESP.
+A inspeção real mostrou que veículo, carga e instituição financeira estão sem
+município, mesmo com abrangência `Estadual`. Latrocínio está em `total_vitima`,
+com `total` vazio. A fonte não contém roubo em comércio. Portanto não há série
+municipal de ocorrências compatível com os quatro critérios: pesos CRITIC, índice
+e ranking permanecem indisponíveis. Os CSVs reais expressam essa ausência com
+índice vazio, nunca zero. Consulte [o relatório da validação real](VALIDACAO_SEGURANCA_2025.md).
 
 ## Fontes
 
@@ -36,15 +38,15 @@ publicada continua pendente. Não se afirma que a coleta esgota o acervo SINESP.
   weights in multiple criteria problems: The CRITIC method*, Computers &
   Operations Research 22(7), 763–770, DOI `10.1016/0305-0548(94)00059-H`.
 
-O Censo fornece uma referência populacional explícita de 2022. Não é uma
-estimativa populacional atual: o ano aparece na exportação, e defasagem superior
-a dois anos recebe aviso. Para análises atuais, revisar a troca por estimativas
-IBGE do período, mantendo compatibilidade territorial. Senatran é opcional e
-não foi incorporada; população continua sendo o denominador desta versão.
+A importação censitária preserva população e área de 2022. Neste snapshot, a
+população foi substituída explicitamente pela estimativa oficial de 2025
+(agregado 6579, variável 9324), com igualdade dos conjuntos de códigos do cadastro.
+A área continua censitária de 2022 e seu ano aparece no CSV. Senatran não foi
+incorporada; população continua sendo o denominador do método proposto.
 
 ## Instalação e execução
 
-Use o checkout existente; não é necessário criar outro worktree. Python 3.12,
+Use o checkout da branch `dados-de-seguranca`. Python 3.12,
 dependências de `requirements-lock.txt` e Node >=20 são suficientes. Não há
 dependências npm adicionais. Exemplo com o ambiente preparado:
 
@@ -152,8 +154,9 @@ JOIN fontes f ON f.id = r.fonte_id;
    ocupa os dois extremos. As faixas 25/50/75 são convenções de comunicação,
    explicitadas no arquivo de configuração, não cortes atuariais aprendidos.
 
-`config/seguranca.json` seleciona quatro naturezas de roubo. Os nomes precisam
-ser confirmados no arquivo/dicionário real; o código não presume que existam.
+`config/seguranca.json` preserva quatro naturezas de roubo para tornar explícita
+a falha de cobertura do recorte original. Os nomes existem no arquivo real,
+mas a combinação de granularidade e unidade exigida não existe em 2025.
 Não se mistura agregado de roubo com seus subtipos. Confirmar se as definições
 da fonte permitem sobreposição entre naturezas. CRITIC estima pesos a partir da
 variação e correlação; não demonstra relevância para seguro empresarial, não
@@ -200,11 +203,14 @@ no navegador. Nome completo e UF precisam coincidir; mudar a cidade invalida a
 consulta anterior, inclusive respostas ainda em trânsito. Dados pessoais,
 endereço completo e valores dos bens não entram na requisição do índice.
 
-O formulário mostra posição relativa, período, qualidade do dado, fontes e
-planos cujo catálogo inclui a cobertura de roubo/furto mediante arrombamento,
-sem alterar preços ou escolher automaticamente um plano.
+Quando existe índice, o formulário pode mostrar posição relativa, período,
+qualidade e fontes. O snapshot de 2025 mostra a indisponibilidade. A indicação
+de planos por esse contexto foi bloqueada pela falta de validação empresarial.
 
-Para explorar necessidade, calcula pontos de exposição:
+O cálculo exploratório anterior só é habilitado com validação empresarial
+explícita; a API deste contexto retorna `uso_empresarial_validado=false`.
+O formulário não pontua bens nem sugere planos usando este recorte. A fórmula
+anterior, mantida apenas como hipótese testável no módulo, era:
 `(valor_bens/1000)*(indice/100)*f_garagem*f_uso`. Os fatores são **hipóteses de
 cenário não calibradas**: garagem fechada 0,85, sem garagem fechada 1,15; uso
 interno 1, externo 1,2, misto 1,1. Ficam separados dos pesos CRITIC, versionados em
@@ -232,7 +238,8 @@ npm --prefix frontend run check
 npm --prefix frontend test
 ```
 
-As verificações exercitam importação, zeros versus ausências, conflitos com
+As verificações com fixtures exercitam importação, zeros versus ausências, conflitos com
 rollback, planilhas, junções, suavização, CRITIC, janela comum, cobertura, saída
 CSV/SQLite consistente, API e hipóteses do formulário. Esses resultados validam
-o software com fixtures; não validam a qualidade ou a cobertura dos dados reais.
+o software com fixtures. A auditoria real de 2025 está documentada separadamente;
+ela identifica as limitações da fonte e não calibra risco atuarial.

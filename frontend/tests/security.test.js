@@ -13,13 +13,19 @@ test('ausência de índice não vira zero nem indicação de seguro', () => {
 });
 
 test('cenários combinam valor, risco e hipóteses separadas de CRITIC', () => {
-  const a = relativeNeed(50, 100000, 'sim', 'interno');
-  const b = relativeNeed(50, 200000, 'sim', 'interno');
+  const a = relativeNeed(50, 100000, 'sim', 'interno', true);
+  const b = relativeNeed(50, 200000, 'sim', 'interno', true);
   assert.equal(b.points, 2 * a.points);
   assert.equal(a.garageFactor, 0.85);
   assert.match(a.version, /hipotese/);
-  assert.deepEqual(coverageSuggestion({ indice_roubo_0_100: 90 }, [
+  assert.deepEqual(coverageSuggestion({ indice_roubo_0_100: 90, uso_empresarial_validado: true }, [
     {name: 'A', coverages: []}, {name: 'B', coverages: ['10932']}]), ['B']);
+});
+
+test('contexto SINESP sem validação empresarial não pontua bens nem sugere plano', () => {
+  assert.equal(relativeNeed(90, 100000, 'sim', 'interno'), null);
+  assert.deepEqual(coverageSuggestion({ indice_roubo_0_100: 90, uso_empresarial_validado: false }, [
+    { name: 'Plano teste', coverages: ['10932'] }]), []);
 });
 
 test('município exige nome completo e UF, aceita acentos e evita ambiguidade', () => {
