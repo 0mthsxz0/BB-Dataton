@@ -151,6 +151,11 @@ def detalhar(registro, base, config):
     return pontos, plano
 
 
+def preparar_ligacao(contexto):
+    st.session_state.contexto_ligacao = contexto
+    st.session_state.pagina = 'Ligações'
+
+
 def main():
     if 'config_regras' not in st.session_state:
         st.session_state.config_regras = carregar_config()
@@ -158,10 +163,10 @@ def main():
     st.sidebar.markdown('## Protege Empresa')
     st.sidebar.caption('Datathon · recomendação explicável')
     pagina = st.sidebar.radio('Navegação', ['Visão geral', 'Analisar estabelecimento', 'Comparar',
-                                            'Simular cenários', 'Regras e metodologia', 'Exportar', 'Ligações'])
+                                            'Simular cenários', 'Regras e metodologia', 'Exportar', 'Ligações'], key='pagina')
     if pagina == 'Ligações':
         from ligacao_interface import renderizar
-        renderizar()
+        renderizar(st.session_state.get('contexto_ligacao'))
         return
     try:
         padrao = str(localizar_dados(os.environ.get('BB_DATATHON_DADOS')))
@@ -208,7 +213,16 @@ def main():
     elif pagina == 'Analisar estabelecimento':
         registro = seletor(base)
         if registro:
-            detalhar(registro, base, config)
+            pontos, plano = detalhar(registro, base, config)
+            from mensagens_prospeccao import json_seguro
+            contexto = json_seguro({'registro': registro, 'pontuacoes': pontos, 'recomendacao': plano})
+            st.download_button('Baixar relatório desta análise',
+                json.dumps(contexto, ensure_ascii=False, indent=2, allow_nan=False),
+                file_name='relatorio_estabelecimento.json', mime='application/json')
+            st.subheader('Contato com o cliente')
+            st.write('Prepare um roteiro com os resultados acima e revise antes de iniciar a chamada.')
+            st.button('Preparar ligação com esta recomendação', type='primary',
+                on_click=preparar_ligacao, args=(contexto,))
 
     elif pagina == 'Comparar':
         esquerda,direita = st.columns(2)

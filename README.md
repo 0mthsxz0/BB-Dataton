@@ -9,10 +9,15 @@ e conexão HTTPS por ngrok. Leia o **[guia completo de instalação e uso](VOZ_P
 ele explica como editar a mensagem, iniciar os três terminais, verificar o telefone
 na Twilio, configurar Custom TwiML URL e resolver os erros mais comuns.
 
-O texto fica em `mensagem_ligacao.txt`. `servidor_voz.py` entrega o roteiro em
+O texto de demonstração fica em `mensagem_ligacao.txt`. `servidor_voz.py` entrega o roteiro em
 `http://127.0.0.1:8765/voz.xml`; `ngrok http 8765` cria o acesso público, e
 `ligacao_interface.py` solicita a chamada. Configuração da API e modo completo:
 [LIGACOES.md](LIGACOES.md). As credenciais devem ser definidas no ambiente local.
+
+**Prospecção a partir da análise:** em **Analisar estabelecimento**, clique em
+**Preparar ligação com esta recomendação**. O painel preenche um modelo com os
+resultados e permite editar a mensagem antes de ligar, inclusive no trial com
+URL própria. Cada envio guarda um roteiro exclusivo. Veja [PROSPECCAO.md](PROSPECCAO.md).
 
 ## Executar
 

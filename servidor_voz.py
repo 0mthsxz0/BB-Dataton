@@ -2,9 +2,11 @@
 from functools import partial
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+import re
 from urllib.parse import urlsplit
 
 from ligacoes import criar_twiml
+from roteiros_voz import PADRAO_ID, RoteiroExpirado, ler_roteiro
 
 ARQUIVO_MENSAGEM = Path(__file__).with_name("mensagem_ligacao.txt")
 
@@ -24,14 +26,25 @@ class RoteiroHandler(BaseHTTPRequestHandler):
         super().__init__(*args, **kwargs)
 
     def responder(self):
-        if urlsplit(self.path).path != "/voz.xml":
+        caminho = urlsplit(self.path).path
+        roteiro = re.fullmatch(r"/voz/(" + PADRAO_ID + r")\.xml", caminho)
+        if caminho != "/voz.xml" and not roteiro:
             self.send_error(404)
             return
         try:
-            # Lido a cada pedido: salvar o TXT já altera a próxima fala.
-            with self.arquivo.open(encoding="utf-8-sig") as arquivo:
-                mensagem = arquivo.read(1502)
-            conteudo = criar_twiml(mensagem).encode("utf-8")
+            if roteiro:
+                conteudo = ler_roteiro(roteiro.group(1)).encode("utf-8")
+            else:
+                # A rota de demonstração continua relendo o TXT.
+                with self.arquivo.open(encoding="utf-8-sig") as arquivo:
+                    mensagem = arquivo.read(1502)
+                conteudo = criar_twiml(mensagem).encode("utf-8")
+        except RoteiroExpirado:
+            self.send_error(410, "Roteiro expirado")
+            return
+        except FileNotFoundError:
+            self.send_error(404, "Roteiro nao encontrado")
+            return
         except (OSError, ValueError):
             conteudo = b"Roteiro indisponivel. Confira mensagem_ligacao.txt no servidor."
             self.send_response(503)

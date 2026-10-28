@@ -4,6 +4,11 @@ Este guia explica a instalação inicial, a rotina para ligar e os erros mais co
 O caminho principal usa o modo `trial`, um roteiro em arquivo TXT e uma URL HTTPS
 fornecida pelo ngrok. Não é necessário criar um TwiML Bin para este fluxo.
 
+**Edição na tela e relatório:** a interface agora permite escrever a fala no campo
+**Mensagem que será falada**. Para gerar o roteiro com as variáveis da recomendação
+da empresa, consulte [PROSPECCAO.md](PROSPECCAO.md). Reinicie `servidor_voz.py` após
+atualizar o código para habilitar as rotas individuais de cada chamada.
+
 ## 1. Entender o que cada parte faz
 
 | Parte | Função | Endereço ou arquivo |
@@ -25,15 +30,15 @@ sequenceDiagram
     A->>T: Solicita chamada com To e Url
     T->>N: Busca /voz.xml
     N->>S: Encaminha para 127.0.0.1:8765/voz.xml
-    S->>S: Lê mensagem_ligacao.txt
+    S->>S: Lê o roteiro exclusivo da chamada
     S-->>T: XML com Say em pt-BR e Hangup
     T-->>U: Faz a chamada e reproduz a fala
 ```
 
 O programa reproduz um roteiro com voz sintetizada. Ele não cria respostas por IA
-nem mantém uma conversa com quem atende. O arquivo TXT é compartilhado: se você
-alterá-lo antes de a Twilio buscar o XML de uma chamada na fila, ela poderá ler o
-novo conteúdo. Este fluxo foi feito para testes individuais.
+nem mantém uma conversa com quem atende. A interface guarda uma cópia exclusiva
+da fala para cada envio. A rota de demonstração `/voz.xml`, usada diretamente no
+console, continua lendo o TXT compartilhado. Este fluxo foi feito para testes individuais.
 
 ## 2. Obter o projeto
 
@@ -115,8 +120,9 @@ A função `criar_twiml()` em `ligacoes.py` transforma esse texto em:
 </Response>
 ```
 
-O servidor relê o arquivo a cada solicitação. Basta salvar para mudar a próxima
-fala; não precisa reiniciar o servidor. O idioma é `pt-BR`; o projeto usa a voz
+Na rota `/voz.xml`, o servidor relê o arquivo a cada solicitação. Basta salvar para
+mudar a fala dessa rota. Na interface, o TXT é o valor inicial; o envio usa a mensagem
+revisada no campo da tela. O idioma é `pt-BR`; o projeto usa a voz
 `Polly.Camila`. O aviso do navegador sobre o XML não ter estilo é normal.
 
 ## 5. Terminal 1: iniciar o servidor de voz
@@ -131,7 +137,8 @@ Mantenha esse terminal aberto. No navegador, teste:
 
 [http://127.0.0.1:8765/voz.xml](http://127.0.0.1:8765/voz.xml)
 
-O resultado deve ser um XML com `<Response>`, `<Say>` e sua mensagem. O endereço
+O resultado deve ser um XML com `<Response>`, `<Say>` e sua mensagem. A nova versão
+também atende `/voz/IDENTIFICADOR.xml` para os envios individuais da interface. O endereço
 `http://127.0.0.1:8765/` sem `/voz.xml` retorna 404 por projeto. O servidor entrega
 somente a rota de voz, aceita GET e POST e não disponibiliza a pasta inteira.
 
@@ -263,14 +270,16 @@ pelos seus valores reais apenas no terminal. As variáveis pertencem ao processo
 devem ser definidas no mesmo terminal em que você inicia o Streamlit. Fechar esse
 PowerShell não guarda essas variáveis para a próxima sessão.
 
-Abra [http://127.0.0.1:8501](http://127.0.0.1:8501). A tela deve mostrar **Modo teste
-com fala personalizada**. Informe o mesmo destinatário verificado, marque a
-confirmação e clique em **Ligar agora**. Consulte o status depois de atender ou
+Abra [http://127.0.0.1:8501](http://127.0.0.1:8501). A tela deve indicar **Fala
+personalizada**. Edite **Mensagem que será falada**, informe o destinatário verificado,
+marque a confirmação e clique em **Ligar agora**. Consulte o status depois de atender ou
 encerrar. Uma solicitação aceita não garante atendimento; `completed` pode incluir
 caixa postal. Consulte a documentação [LIGACOES.md](LIGACOES.md) para detalhes da API.
 
 No trial, o código envia `To` e `Url`. Não envia o TXT na requisição de criação:
-a Twilio busca o XML pelo endereço público. `TWILIO_FROM_NUMBER` não é necessário
+a Twilio busca o XML pelo endereço público exclusivo daquela chamada. Os roteiros
+locais expiram após uma hora; mantenha servidor e interface na mesma pasta de
+projeto. `TWILIO_FROM_NUMBER` não é necessário
 neste fluxo. `TWILIO_MODE=completo` é outro modo, destinado à API completa da conta;
 não o selecione para tentar remover restrições do trial.
 
