@@ -76,7 +76,7 @@ def personalizar(registro, recomendacao, dimensoes):
             'alteracoes': {'incluidas': sorted(pacote - padrao), 'excluidas': sorted(padrao - pacote)},
             'observacao': 'Composição de simulação. Adicionais solicitados dependem de atividade, limites e aceitação; não participam da aderência das dez necessidades.'},
         'shopping': {'requisitos_confirmados': operacao.get('shoppingControls'),
-            'mensagem': 'Possível enquadramento para desconto, sujeito à cotação oficial; nenhum percentual foi aplicado.' if operacao.get('shoppingControls') else 'Shopping exige confirmação de segurança própria, brigada, hidrantes e sprinklers. Nenhum desconto presumido.'},
+            'mensagem': 'Prédio comercial ou galeria protegida: condições de segurança e eventual desconto dependem de avaliação oficial; nenhum desconto presumido.' if registro.get('tipo_local_funcionamento_declarado') in ('building', 'gallery') else 'Possível enquadramento para desconto, sujeito à cotação oficial; nenhum percentual foi aplicado.' if operacao.get('shoppingControls') else 'Shopping exige confirmação de segurança própria, brigada, hidrantes e sprinklers. Nenhum desconto presumido.'},
         'assistencias': {'personalizaveis': False, 'mensagem': 'Pacote fixo do plano. Assistência Proteção Digital não substitui cobertura cibernética.'},
         'contexto_confirmado': {'operacao': operacao, 'relacao_imovel': registro.get('relacao_imovel_confirmada'),
             'situacao_imovel': registro.get('situacao_imovel_cadastral'),

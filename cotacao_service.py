@@ -120,8 +120,8 @@ def validar(payload):
         raise ValueError('Sem vidros, responda Não à pergunta sobre exposição dos vidros.')
     if payload.get('protection') not in ('both', 'contents', 'building'):
         raise ValueError('Informe o que deseja proteger.')
-    if payload.get('shopping') not in ('yes', 'no'):
-        raise ValueError('Informe se o local está em shopping.')
+    if payload.get('shopping') not in ('yes', 'no', 'building', 'gallery'):
+        raise ValueError('Informe se a empresa fica em shopping, prédio comercial, galeria protegida ou nenhum desses locais.')
     for k in NUMBER_FIELDS:
         v = payload.get(k)
         if v is not None and v != '':
@@ -290,7 +290,8 @@ def analisar(payload, base=None, municipio_fn=consultar_municipio):
     if payload.get('rentValue') not in ('', None):
         record['pagamento_aluguel_recorrente'] = 'SIM' if float(payload['rentValue']) > 0 else 'NAO'
         origins['pagamento_aluguel_recorrente'] = 'Derivado do aluguel informado no formulário'
-    record['possui_termo_galeria'] = 'SIM' if payload.get('shopping') == 'yes' else 'NAO'
+    record['possui_termo_galeria'] = 'SIM' if payload.get('shopping') in ('yes', 'gallery') else 'NAO'
+    record['tipo_local_funcionamento_declarado'] = payload.get('shopping')
     origins['possui_termo_galeria'] = 'Informado no formulário'
     # Insurer activity IDs are never converted into a CNAE by guesswork.
     if payload.get('cnae'):

@@ -298,3 +298,10 @@ def test_quantidade_desconhecida_nao_vira_ausencia(analyze,payload):
     r=analyze(p);assert r['respostas']['hasEmployees'] is None
     assert any('ausência não foi presumida' in x for x in r['avisos'])
     assert r['indices'][EMPREGADOR]['prioridade']>0
+
+@pytest.mark.parametrize('tipo',['building','gallery'])
+def test_predio_e_galeria_nao_recebem_regras_de_desconto_de_shopping(analyze,payload,tipo):
+    r=analyze(dict(payload,shopping=tipo))
+    assert 'nenhum desconto presumido' in r['personalizacao']['shopping']['mensagem']
+    with pytest.raises(ValueError,match='shopping'):
+        analyze(dict(payload,shopping=tipo,operations={'shoppingControls':True}))
