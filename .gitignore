@@ -7,3 +7,8 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 tmp/
+ngrok.exe
+cloudflared.exe
+ngrok.yml
+ngrok.yaml
+.ngrok/

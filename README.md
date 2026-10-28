@@ -2,6 +2,18 @@
 
 Aplicação acadêmica para analisar necessidades de proteção de empresas e estabelecimentos. Combina risco relativo do evento, impacto financeiro, vulnerabilidade operacional e interações específicas de cada cobertura. Nenhuma nota representa probabilidade de sinistro ou parâmetro oficial da seguradora.
 
+## Ligações com mensagem em português
+
+A branch `codigo-ligacao` inclui chamadas por Twilio, servidor de roteiro Python
+e conexão HTTPS por ngrok. Leia o **[guia completo de instalação e uso](VOZ_PERSONALIZADA.md)**:
+ele explica como editar a mensagem, iniciar os três terminais, verificar o telefone
+na Twilio, configurar Custom TwiML URL e resolver os erros mais comuns.
+
+O texto fica em `mensagem_ligacao.txt`. `servidor_voz.py` entrega o roteiro em
+`http://127.0.0.1:8765/voz.xml`; `ngrok http 8765` cria o acesso público, e
+`ligacao_interface.py` solicita a chamada. Configuração da API e modo completo:
+[LIGACOES.md](LIGACOES.md). As credenciais devem ser definidas no ambiente local.
+
 ## Executar
 
 Python 3.12 ou 3.13. No Windows/PowerShell:
@@ -54,7 +66,8 @@ As notas são calculadas sem arredondamento intermediário. Com as mesmas entrad
 ## Interface
 
 - **Ligações:** chamadas individuais pela Twilio, com demonstração no teste grátis
-  ou mensagem em português no modo completo. Inclui consulta de status e encerramento.
+  ou roteiro próprio via URL HTTPS. A API completa também permite enviar texto
+  diretamente. Inclui consulta de status e encerramento.
   Configure as credenciais conforme [LIGACOES.md](LIGACOES.md).
   A seção funciona sem os CSVs; também pode ser aberta com `streamlit run ligacao_interface.py`.
 
@@ -83,7 +96,7 @@ As médias e distribuições das recomendações avaliam o comportamento do prot
 
 O CSV original não traz índices de segurança ou clima. O sistema funciona sem dados externos, mostra a ausência e reduz a confiança. Não inventa índices pela latitude/longitude.
 
-Use [examples/territorio_modelo.csv](examples/territorio_modelo.csv) como cabeçalho. Para segurança, preencha `codigo_ibge_municipio`, `seguranca_da_cidade_0_1`, `fonte`, `ano_referencia`, `granularidade` (MUNICIPIO), `metodologia` e `confianca_territorial_0_1`. Para clima, use `exposicao_climatica_0_1`. Remova a coluna de indicador que não tiver dados. Uma linha por município; índices entre 0 e 1.
+Use [territorio_modelo.csv](territorio_modelo.csv) como cabeçalho. Para segurança, preencha `codigo_ibge_municipio`, `seguranca_da_cidade_0_1`, `fonte`, `ano_referencia`, `granularidade` (MUNICIPIO), `metodologia` e `confianca_territorial_0_1`. Para clima, use `exposicao_climatica_0_1`. Remova a coluna de indicador que não tiver dados. Uma linha por município; índices entre 0 e 1.
 
 ```powershell
 .\.venv\Scripts\python.exe cli.py --dados "CAMINHO_DOS_CSVS" --territorio "territorio_documentado.csv"

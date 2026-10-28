@@ -6,9 +6,11 @@ Para experimentar uma fala própria em português sem TwiML Bin, veja
 [VOZ_PERSONALIZADA.md](VOZ_PERSONALIZADA.md). Essa opção requer um servidor e
 uma URL HTTPS externa, e depende das permissões de Custom da conta Twilio.
 
-O modo `trial` chama um destino verificado e reproduz o template de demonstração
-Text-to-Speech da Twilio. O idioma e o texto pertencem ao template; não há campo
-para escrever mensagem neste modo. O número de origem é escolhido pela Twilio.
+Sem `TWILIO_TWIML_URL`, o modo `trial` chama um destino verificado e reproduz o
+template de demonstração Text-to-Speech da Twilio. Com essa variável, o app usa
+o roteiro servido pela URL HTTPS indicada. Para editar a fala no servidor deste
+projeto, altere `mensagem_ligacao.txt`, conforme o guia de voz personalizada.
+O número de origem de teste é atribuído pela Twilio.
 
 No PowerShell, na raiz do projeto:
 
@@ -32,10 +34,12 @@ a verificação do telefone de destino. Use esse telefone com `+`, país, DDD e 
 sem espaços. A conta de teste permite até cinco destinatários verificados no mesmo
 país, tem 75 minutos e expira em 30 dias. A Twilio impõe os limites de duração e uso.
 
-O pedido de criação no trial contém apenas `To` e `Url`, usando o template oficial:
+O pedido de criação no trial contém apenas `To` e `Url`. Sem URL própria,
+usa o template oficial:
 `https://webhooks.twilio.com/v1/Voice/Template/voice_text_to_speech`.
 Não envia `From`, `Twiml`, `TimeLimit` nem `Timeout`, pois a API de teste limita os
-parâmetros. Não há repetição automática com parâmetros diferentes.
+parâmetros. Não há repetição automática com parâmetros diferentes. O fluxo com
+URL própria depende da permissão de Custom na conta Twilio.
 
 ## Mensagem personalizada em português (modo completo)
 
