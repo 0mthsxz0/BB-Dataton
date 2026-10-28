@@ -29,6 +29,13 @@ st.markdown('''<style>
  .hero {border-left:5px solid #f4d84c;padding:12px 20px;background:#fff;border-radius:0 12px 12px 0;margin-bottom:24px}
  .hero p {margin:0;color:#52647e}
  .stButton>button {border-radius:9px}
+ @media (max-width:1100px) {
+   [data-testid="stHorizontalBlock"] {flex-wrap:wrap}
+   [data-testid="stColumn"] {flex:1 1 calc(50% - 1rem)!important;min-width:0!important}
+ }
+ @media (max-width:700px) {
+   [data-testid="stColumn"] {flex:1 1 100%!important}
+ }
  </style>''', unsafe_allow_html=True)
 
 
