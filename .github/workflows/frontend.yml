@@ -1,0 +1,24 @@
+name: Front-end de cotação
+on:
+  push:
+    paths:
+      - 'frontend/**'
+      - 'scripts/preparar_catalogo_cotacao.py'
+      - '.github/workflows/frontend.yml'
+  pull_request:
+    paths:
+      - 'frontend/**'
+      - 'scripts/preparar_catalogo_cotacao.py'
+      - '.github/workflows/frontend.yml'
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm run check
+        working-directory: frontend
+      - run: npm test
+        working-directory: frontend

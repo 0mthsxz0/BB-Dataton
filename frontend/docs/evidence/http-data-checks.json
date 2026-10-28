@@ -1,0 +1,52 @@
+{
+  "http": [
+    {
+      "route": "/",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "route": "/seguros/seguro-empresarial",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "route": "/app.js",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "route": "/style.css",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "route": "/plans.json",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "route": "/entrepreneur.png",
+      "status": 200,
+      "expected": 200,
+      "pass": true
+    },
+    {
+      "route": "/arquivo-inexistente",
+      "status": 404,
+      "expected": 404,
+      "pass": true
+    }
+  ],
+  "data": {
+    "plans": 3,
+    "coverages": 13,
+    "assistances": 42,
+    "orphanIds": []
+  }
+}

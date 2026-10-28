@@ -1,5 +1,13 @@
 # Protege Empresa | BB Datathon
 
+## Portal e formulário web
+
+O diretório [frontend/](frontend/) contém a home, o Seguro Empresarial e um formulário demonstrativo de seis etapas, sem campo CPF. A seleção econômica tem as 970 atividades do catálogo público, nomes por extenso e busca por lista, nome ou descrição do negócio, com sugestão de subatividade.
+
+Para abrir: `cd frontend` e `npm run dev` (no PowerShell, `npm.cmd run dev`). Acesse http://localhost:4174/cotacao. Não há dependências npm a instalar. A busca é local; os dados preenchidos não são enviados à seguradora. Pagamento e conclusão são demonstrativos, sem emissão ou cobrança. Consulte [a documentação do formulário](frontend/docs/COTACAO.md) para fontes, testes e limites.
+
+O front-end não altera as regras do motor Python descrito a seguir.
+
 Versão 0.2: escolha de plano baseada em **quatro índices**: roubo/furto, vendaval, responsabilidade civil empregador e quebra de vidros. As cinco coberturas comuns são dimensionadas e exportadas, sem pontuação na decisão. Prioridade maior significa maior atenção recomendada, nunca probabilidade de sinistro.
 
 ## Executar

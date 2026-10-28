@@ -1,0 +1,113 @@
+{
+  "date": "2026-10-27",
+  "checks": [
+    {
+      "name": "Preço do plano Essencial no modal",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "Filtro de coberturas",
+      "pass": true,
+      "actual": 1,
+      "expected": 1
+    },
+    {
+      "name": "Busca vazia informa estado",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "Assistências selecionadas",
+      "pass": true,
+      "actual": "true",
+      "expected": "true"
+    },
+    {
+      "name": "Busca de assistência",
+      "pass": true,
+      "actual": 1,
+      "expected": 1
+    },
+    {
+      "name": "Modal de descrição abre",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "FAQ expande",
+      "pass": true,
+      "actual": "",
+      "expected": ""
+    },
+    {
+      "name": "Navegação por teclado nas abas",
+      "pass": true,
+      "actual": "true",
+      "expected": "true"
+    },
+    {
+      "name": "Navegação para home",
+      "pass": true,
+      "actual": "http://localhost:4173/",
+      "expected": "http://localhost:4173/"
+    },
+    {
+      "name": "Filtro de produtos para empresas",
+      "pass": true,
+      "actual": 1,
+      "expected": 1
+    },
+    {
+      "name": "Busca vazia de produtos",
+      "pass": true,
+      "actual": true,
+      "expected": true
+    },
+    {
+      "name": "Carrossel avança",
+      "pass": true,
+      "actual": "true",
+      "expected": "true"
+    },
+    {
+      "name": "Busca global filtra produto",
+      "pass": true,
+      "actual": 1,
+      "expected": 1
+    },
+    {
+      "name": "Busca global navega ao empresarial",
+      "pass": true,
+      "actual": "http://localhost:4173/seguros/seguro-empresarial",
+      "expected": "http://localhost:4173/seguros/seguro-empresarial"
+    },
+    {
+      "name": "Menu móvel expande",
+      "pass": true,
+      "actual": "true",
+      "expected": "true"
+    },
+    {
+      "name": "Preferência de cookies persiste após recarga",
+      "pass": true,
+      "actual": 0,
+      "expected": 0
+    },
+    {
+      "name": "Seleção real de Total ao abrir modal",
+      "pass": true,
+      "actual": "894",
+      "expected": "894"
+    },
+    {
+      "name": "Escape fecha modal",
+      "pass": true,
+      "actual": false,
+      "expected": false
+    }
+  ]
+}

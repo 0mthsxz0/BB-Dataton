@@ -1,0 +1,20 @@
+{
+  "capturedAt": "2026-10-28",
+  "source": "https://cotacaoseguroempresarial.bbseguros.com.br/home",
+  "spaBundle": "/static/js/main.4c90cfed.js",
+  "files": {
+    "activities.json": {
+      "sha256": "5c582397638d6e7eb9ecb7b72b8ea4e8c7446aacd282d4e1a9f12ae25b55b6dd",
+      "bytes": 75559
+    },
+    "subactivities-by-activity.json": {
+      "sha256": "0cfac131cb32271addc0e07de583f98bb6c62639861b412ee977465036312026",
+      "bytes": 132285
+    },
+    "subactivities.json": {
+      "sha256": "6c3936c5fbceabbc0d4b7b6dbae77f186c39aca4d1b84b674841969220682880",
+      "bytes": 15712
+    }
+  },
+  "spaBundleSha256": "647319b2ab836988af22880d16e97a2c014b975f37ce7985554232e45f1a682d"
+}
