@@ -1,0 +1,942 @@
+{
+  "versao": "0.4.0",
+  "gerado_em_utc": "2026-10-29T06:40:35.102180+00:00",
+  "data_analise": "2026-10-29",
+  "politica_seguranca": "seguranca-1.0",
+  "regras_produto": {
+    "version": "guia-item10-pacote-unificado-2026.3",
+    "basicLimitBRL": 7500000,
+    "sources": [
+      {
+        "title": "Guia dos Times — item 10, páginas 13–15",
+        "reference": "Guia_Times_Datathon_Protecao_Inteligente_Final.pdf",
+        "role": "Política desta simulação do desafio"
+      },
+      {
+        "title": "BB Seguros — Seguro Empresarial",
+        "url": "https://www.bbseguros.com.br/seguros/seguro-empresarial",
+        "accessed": "2026-10-28",
+        "role": "Catálogo público extraído na investigação REA"
+      },
+      {
+        "title": "Campanha oficial — planos customizáveis",
+        "url": "https://campanhas.bbseguros.com.br/seguro-empresarial/",
+        "accessed": "2026-10-28",
+        "role": "Contexto comercial e assistências"
+      }
+    ],
+    "reconciliation": "Esta simulação segue a matriz 6/8/10 do guia. O CSV recebido e a campanha pública apresentam 5/7/9; o snapshot da página principal também associa extras. O guia inclui proteção cibernética e restringe quatro extras de atividade aos planos Prático/Total; a campanha menciona esses extras em qualquer plano conforme atividade. Adotamos a regra do desafio e sinalizamos a divergência, sem afirmar disponibilidade contratual. Condições e orientações oficiais do caso prevalecem na contratação.",
+    "mandatory": [
+      "INCENDIO_RAIO_EXPLOSAO_FUMACA",
+      "DANOS_ELETRICOS",
+      "PERDA_PAGAMENTO_ALUGUEL",
+      "RESPONSABILIDADE_CIVIL_ESTABELECIMENTO",
+      "DESPESAS_FIXAS",
+      "PROTECAO_CIBERNETICA_AVALIAR"
+    ],
+    "adjustable": [
+      "ROUBO_FURTO_ARROMBAMENTO",
+      "VENDAVAL_EVENTOS_CORRELATOS",
+      "RESPONSABILIDADE_CIVIL_EMPREGADOR",
+      "QUEBRA_DE_VIDROS"
+    ],
+    "plans": {
+      "ESSENCIAL": [
+        "INCENDIO_RAIO_EXPLOSAO_FUMACA",
+        "DANOS_ELETRICOS",
+        "PERDA_PAGAMENTO_ALUGUEL",
+        "RESPONSABILIDADE_CIVIL_ESTABELECIMENTO",
+        "DESPESAS_FIXAS",
+        "PROTECAO_CIBERNETICA_AVALIAR"
+      ],
+      "PRATICO": [
+        "INCENDIO_RAIO_EXPLOSAO_FUMACA",
+        "DANOS_ELETRICOS",
+        "PERDA_PAGAMENTO_ALUGUEL",
+        "RESPONSABILIDADE_CIVIL_ESTABELECIMENTO",
+        "DESPESAS_FIXAS",
+        "PROTECAO_CIBERNETICA_AVALIAR",
+        "ROUBO_FURTO_ARROMBAMENTO",
+        "VENDAVAL_EVENTOS_CORRELATOS"
+      ],
+      "TOTAL": [
+        "INCENDIO_RAIO_EXPLOSAO_FUMACA",
+        "DANOS_ELETRICOS",
+        "PERDA_PAGAMENTO_ALUGUEL",
+        "RESPONSABILIDADE_CIVIL_ESTABELECIMENTO",
+        "DESPESAS_FIXAS",
+        "PROTECAO_CIBERNETICA_AVALIAR",
+        "ROUBO_FURTO_ARROMBAMENTO",
+        "VENDAVAL_EVENTOS_CORRELATOS",
+        "RESPONSABILIDADE_CIVIL_EMPREGADOR",
+        "QUEBRA_DE_VIDROS"
+      ]
+    },
+    "optional": [
+      {
+        "code": "HOME_OFFICE",
+        "name": "Home Office",
+        "operation": "homeOffice",
+        "plans": [
+          "PRATICO",
+          "TOTAL"
+        ],
+        "fields": [
+          {
+            "table": "empresas",
+            "field": "dependencia_digital_pct"
+          },
+          {
+            "table": "empresas",
+            "field": "percentual_vendas_online_estimado"
+          },
+          {
+            "table": "bens_cadastrados",
+            "field": "tipo_bem"
+          },
+          {
+            "table": "bens_cadastrados",
+            "field": "valor_cadastrado"
+          }
+        ],
+        "explanation": "Dependência tecnológica orienta pergunta; vendas online não comprovam trabalho remoto.",
+        "question": "Trabalho remoto real, equipamentos fora da unidade, propriedade e locais cobertos."
+      },
+      {
+        "code": "DELIVERY",
+        "name": "Delivery",
+        "operation": "delivery",
+        "plans": [
+          "PRATICO",
+          "TOTAL"
+        ],
+        "fields": [
+          {
+            "table": "empresas",
+            "field": "percentual_receita_delivery_est"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "probabilidade_delivery_referencia"
+          },
+          {
+            "table": "empresas",
+            "field": "cnae_principal"
+          }
+        ],
+        "explanation": "Receita e probabilidade estimadas indicam operação a confirmar.",
+        "question": "Entregas próprias ou terceirizadas, mercadorias, trajetos e responsabilidade."
+      },
+      {
+        "code": "DETERIORACAO_MERCADORIAS_FRIGORIFICADAS",
+        "name": "Deterioração de mercadorias em ambientes frigorificados",
+        "operation": "refrigeration",
+        "plans": [
+          "PRATICO",
+          "TOTAL"
+        ],
+        "fields": [
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "probabilidade_refrigeracao_referencia"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "energia_media_mensal_6m"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "estoque_medio_estimado"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "estoque_pico_estimado"
+          },
+          {
+            "table": "bens_cadastrados",
+            "field": "tipo_bem"
+          }
+        ],
+        "explanation": "Refrigeração e estoque sugerem perguntar sobre cadeia fria; energia alta não prova perecíveis.",
+        "question": "Mercadoria perecível, temperaturas, equipamentos, alarmes e valor efetivamente refrigerado."
+      },
+      {
+        "code": "ROUBO_FURTO_VALORES",
+        "name": "Roubo ou furto de valores mediante arrombamento",
+        "operation": "cash",
+        "plans": [
+          "PRATICO",
+          "TOTAL"
+        ],
+        "fields": [
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "percentual_recebimentos_digitais"
+          },
+          {
+            "table": "empresas",
+            "field": "faturamento_mensal"
+          },
+          {
+            "table": "empresas",
+            "field": "cnae_principal"
+          }
+        ],
+        "explanation": "Recebimento não digital é indício indireto; não equivale a dinheiro em caixa.",
+        "question": "Numerário real, cofre, permanência, transporte, controles e limites."
+      },
+      {
+        "code": "TUMULTOS",
+        "name": "Tumultos, greves e lockouts",
+        "plans": [
+          "ESSENCIAL",
+          "PRATICO",
+          "TOTAL"
+        ],
+        "operation": "unrest",
+        "fields": [
+          {
+            "table": "empresas",
+            "field": "cnae_principal"
+          },
+          {
+            "table": "enderecos_estabelecimentos",
+            "field": "municipio_real"
+          },
+          {
+            "table": "enderecos_estabelecimentos",
+            "field": "bairro"
+          },
+          {
+            "table": "enderecos_estabelecimentos",
+            "field": "tipo_unidade"
+          }
+        ],
+        "explanation": "Atividade e localização ajudam a investigar; CSV não contém histórico desses eventos.",
+        "question": "Histórico local, exposição e condições contratuais; não pontuar bairro como prova de risco."
+      },
+      {
+        "code": "RECOMPOSICAO_REGISTROS",
+        "name": "Recomposição de registros e documentos",
+        "plans": [
+          "ESSENCIAL",
+          "PRATICO",
+          "TOTAL"
+        ],
+        "operation": "records",
+        "fields": [
+          {
+            "table": "empresas",
+            "field": "dependencia_digital_pct"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "probabilidade_tratamento_dados"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "pagamentos_software_mensais"
+          }
+        ],
+        "explanation": "Dependência de registros sugere impacto potencial de perda, sem comprovar custo de recomposição.",
+        "question": "Documentos críticos, suporte físico/digital, backups e custo de reconstituição."
+      },
+      {
+        "code": "IMPACTO_VEICULOS",
+        "name": "Impacto de veículos terrestres e queda de aeronaves",
+        "plans": [
+          "ESSENCIAL",
+          "PRATICO",
+          "TOTAL"
+        ],
+        "operation": "roadside",
+        "fields": [
+          {
+            "table": "enderecos_estabelecimentos",
+            "field": "tipo_unidade"
+          },
+          {
+            "table": "enderecos_estabelecimentos",
+            "field": "logradouro"
+          },
+          {
+            "table": "enderecos_estabelecimentos",
+            "field": "area_cadastrada_m2"
+          }
+        ],
+        "explanation": "Características do local apenas orientam inspeção; não há tráfego, recuo ou rota aérea nos CSVs.",
+        "question": "Fachada, recuo, barreiras, tráfego e condições do produto."
+      },
+      {
+        "code": "ANUNCIOS_LUMINOSOS",
+        "name": "Anúncios luminosos",
+        "plans": [
+          "ESSENCIAL",
+          "PRATICO",
+          "TOTAL"
+        ],
+        "operation": "signage",
+        "fields": [
+          {
+            "table": "bens_cadastrados",
+            "field": "tipo_bem"
+          },
+          {
+            "table": "bens_cadastrados",
+            "field": "valor_cadastrado"
+          },
+          {
+            "table": "bens_cadastrados",
+            "field": "probabilidade_bem_no_imovel_referencia"
+          },
+          {
+            "table": "bens_cadastrados",
+            "field": "nivel_confianca_vinculo"
+          }
+        ],
+        "explanation": "Tipo LETREIRO, quando presente, indica bem a validar; cadastro não prova instalação atual.",
+        "question": "Existência no local, instalação, dimensões e reposição."
+      },
+      {
+        "code": "VAZAMENTO_SPRINKLERS",
+        "name": "Derrame de água de sprinklers",
+        "plans": [
+          "ESSENCIAL",
+          "PRATICO",
+          "TOTAL"
+        ],
+        "operation": "sprinklers",
+        "fields": [
+          {
+            "table": "bens_cadastrados",
+            "field": "tipo_bem"
+          },
+          {
+            "table": "enderecos_estabelecimentos",
+            "field": "tipo_unidade"
+          },
+          {
+            "table": "enderecos_estabelecimentos",
+            "field": "area_cadastrada_m2"
+          }
+        ],
+        "explanation": "SISTEMA_SEGURANCA não confirma sprinkler; tipo de imóvel é apenas contexto.",
+        "question": "Existência de sprinkler, manutenção, testes e bens suscetíveis."
+      },
+      {
+        "code": "EQUIPAMENTOS_ELETRONICOS",
+        "name": "Equipamentos eletrônicos sem subtração",
+        "plans": [
+          "ESSENCIAL",
+          "PRATICO",
+          "TOTAL"
+        ],
+        "operation": "electronics",
+        "fields": [
+          {
+            "table": "bens_cadastrados",
+            "field": "tipo_bem"
+          },
+          {
+            "table": "bens_cadastrados",
+            "field": "valor_cadastrado"
+          },
+          {
+            "table": "bens_cadastrados",
+            "field": "valor_bem_ponderado_referencia"
+          },
+          {
+            "table": "bens_cadastrados",
+            "field": "nivel_confianca_vinculo"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "indice_dependencia_tecnologica"
+          }
+        ],
+        "explanation": "Filtrar eletrônicos/informática, agregar uma vez por unidade e verificar concentração de valor.",
+        "question": "Inventário, reposição, uso, limites e eventos cobertos. Este adicional não cobre roubo."
+      },
+      {
+        "code": "BENS_AR_LIVRE",
+        "name": "Bens ao ar livre",
+        "plans": [
+          "ESSENCIAL",
+          "PRATICO",
+          "TOTAL"
+        ],
+        "operation": "outdoors",
+        "fields": [
+          {
+            "table": "bens_cadastrados",
+            "field": "tipo_bem"
+          },
+          {
+            "table": "bens_cadastrados",
+            "field": "valor_bem_ponderado_referencia"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "estoque_medio_estimado"
+          },
+          {
+            "table": "enderecos_estabelecimentos",
+            "field": "area_cadastrada_m2"
+          }
+        ],
+        "explanation": "Existência de bens/estoque não indica se ficam ao ar livre.",
+        "question": "Exposição externa real, tempo, proteção física e valores."
+      },
+      {
+        "code": "RC_GARAGISTA",
+        "name": "Responsabilidade civil garagista",
+        "plans": [
+          "ESSENCIAL",
+          "PRATICO",
+          "TOTAL"
+        ],
+        "operation": "garage",
+        "fields": [
+          {
+            "table": "empresas",
+            "field": "cnae_principal"
+          },
+          {
+            "table": "empresas",
+            "field": "descricao_cnae"
+          },
+          {
+            "table": "enderecos_estabelecimentos",
+            "field": "tipo_unidade"
+          },
+          {
+            "table": "enderecos_estabelecimentos",
+            "field": "area_cadastrada_m2"
+          }
+        ],
+        "explanation": "Atividade compatível pode justificar pergunta sobre guarda de veículos.",
+        "question": "Guarda de veículos de terceiros, capacidade, serviços, controles e valores."
+      },
+      {
+        "code": "DANOS_MORAIS",
+        "name": "Danos morais",
+        "plans": [
+          "ESSENCIAL",
+          "PRATICO",
+          "TOTAL"
+        ],
+        "operation": "moral",
+        "fields": [
+          {
+            "table": "empresas",
+            "field": "cnae_principal"
+          },
+          {
+            "table": "empresas",
+            "field": "descricao_cnae"
+          },
+          {
+            "table": "empresas",
+            "field": "quantidade_funcionarios_estimada"
+          },
+          {
+            "table": "empresas",
+            "field": "percentual_receita_delivery_est"
+          }
+        ],
+        "explanation": "Atividade e interação com terceiros orientam entrevista; não quantificam responsabilidade jurídica.",
+        "question": "Atendimento, reclamações, histórico e hipóteses contratuais cobertas."
+      },
+      {
+        "code": "LUCRO_BRUTO_SIMPLES",
+        "name": "Lucro bruto simples",
+        "operation": "interruption",
+        "plans": [
+          "ESSENCIAL",
+          "PRATICO",
+          "TOTAL"
+        ],
+        "fields": [
+          {
+            "table": "empresas",
+            "field": "faturamento_mensal"
+          },
+          {
+            "table": "empresas",
+            "field": "confianca_faturamento"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "despesa_fixa_mensal_estimada"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "folha_pagamento_mensal"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "valor_aluguel_recorrente"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "compras_fornecedores_media_mensal"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "estoque_medio_estimado"
+          }
+        ],
+        "explanation": "Receitas e despesas sinalizam impacto de paralisação; não calculam lucro contábil nem escolhem modalidade.",
+        "question": "DRE por unidade, margem bruta/líquida, período indenitário, eventos e definições de simples/ampla."
+      },
+      {
+        "code": "LUCRO_LIQUIDO_SIMPLES",
+        "name": "Lucro líquido simples",
+        "operation": "interruption",
+        "plans": [
+          "ESSENCIAL",
+          "PRATICO",
+          "TOTAL"
+        ],
+        "fields": [
+          {
+            "table": "empresas",
+            "field": "faturamento_mensal"
+          },
+          {
+            "table": "empresas",
+            "field": "confianca_faturamento"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "despesa_fixa_mensal_estimada"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "folha_pagamento_mensal"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "valor_aluguel_recorrente"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "compras_fornecedores_media_mensal"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "estoque_medio_estimado"
+          }
+        ],
+        "explanation": "Receitas e despesas sinalizam impacto de paralisação; não calculam lucro contábil nem escolhem modalidade.",
+        "question": "DRE por unidade, margem bruta/líquida, período indenitário, eventos e definições de simples/ampla."
+      },
+      {
+        "code": "LUCRO_BRUTO_AMPLA",
+        "name": "Lucro bruto ampla",
+        "operation": "interruption",
+        "plans": [
+          "ESSENCIAL",
+          "PRATICO",
+          "TOTAL"
+        ],
+        "fields": [
+          {
+            "table": "empresas",
+            "field": "faturamento_mensal"
+          },
+          {
+            "table": "empresas",
+            "field": "confianca_faturamento"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "despesa_fixa_mensal_estimada"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "folha_pagamento_mensal"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "valor_aluguel_recorrente"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "compras_fornecedores_media_mensal"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "estoque_medio_estimado"
+          }
+        ],
+        "explanation": "Receitas e despesas sinalizam impacto de paralisação; não calculam lucro contábil nem escolhem modalidade.",
+        "question": "DRE por unidade, margem bruta/líquida, período indenitário, eventos e definições de simples/ampla."
+      },
+      {
+        "code": "LUCRO_LIQUIDO_AMPLA",
+        "name": "Lucro líquido ampla",
+        "operation": "interruption",
+        "plans": [
+          "ESSENCIAL",
+          "PRATICO",
+          "TOTAL"
+        ],
+        "fields": [
+          {
+            "table": "empresas",
+            "field": "faturamento_mensal"
+          },
+          {
+            "table": "empresas",
+            "field": "confianca_faturamento"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "despesa_fixa_mensal_estimada"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "folha_pagamento_mensal"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "valor_aluguel_recorrente"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "compras_fornecedores_media_mensal"
+          },
+          {
+            "table": "sinais_financeiros_operacionais",
+            "field": "estoque_medio_estimado"
+          }
+        ],
+        "explanation": "Receitas e despesas sinalizam impacto de paralisação; não calculam lucro contábil nem escolhem modalidade.",
+        "question": "DRE por unidade, margem bruta/líquida, período indenitário, eventos e definições de simples/ampla."
+      }
+    ],
+    "operations": {
+      "homeOffice": "Há bens da empresa cedidos para trabalho em casa?",
+      "delivery": "A empresa realiza entregas de mercadorias?",
+      "refrigeration": "Há mercadorias que precisam de refrigeração?",
+      "cash": "Há dinheiro ou valores mantidos neste local?",
+      "shoppingControls": "O shopping tem segurança própria, brigada, hidrantes e sprinklers?",
+      "unrest": "Há exposição conhecida a tumultos, greves ou locautes?",
+      "records": "A perda de registros ou documentos exigiria gastos para recompô-los?",
+      "roadside": "Há exposição do imóvel ao impacto de veículos?",
+      "signage": "Há letreiros ou anúncios luminosos instalados neste local?",
+      "sprinklers": "O local possui sprinklers instalados?",
+      "electronics": "Há equipamentos eletrônicos importantes para o negócio?",
+      "outdoors": "Há bens ou mercadorias guardados ao ar livre?",
+      "garage": "A empresa guarda veículos de terceiros sob sua responsabilidade?",
+      "moral": "Deseja avaliar proteção para danos morais nas hipóteses previstas no contrato?",
+      "interruption": "Uma paralisação prejudicaria o resultado financeiro desta unidade?"
+    },
+    "optionalThresholds": {
+      "estimatedOperation": 0.5
+    }
+  },
+  "regras_produto_sha256": "2ff97c59d9fedbdc0ba97e322b30c5a11f177b212b9d420cf2e9740c931627f2",
+  "entradas_sha256": {
+    "empresas.csv": "470f5bf17c33a4dab1c36877ff9b8bed31ba4ea9ff054b50aec52f2f1d611345",
+    "enderecos_estabelecimentos.csv": "a3d173691af21a1891e9445c4448449bac8c45d51ceb737ec40b662b2e86e381",
+    "sinais_financeiros_operacionais.csv": "48f5a7a2c2f0e331ffbbd68b2bd741f1a8d75445e37d4e3b5fcd73657a17bc2b",
+    "bens_cadastrados.csv": "8a648196897c1a03f099bff7e6d7893346895be9884b2aa511e51eb717608555",
+    "territorio.csv": "37051cb3f431bf809c93ae5d3544f9828d631f3f55bd0976071d61bda541fdd5",
+    "catalogo_coberturas_fixas_planos.csv": "6decd9c37e35cf1cf451cf7b7af8543a074dcaed07ecb1874793dcdbd01cd2b2",
+    "dicionario_dados.csv": "25bf47ae583a5941478433537300e12c0d1b897a30af9210656abdd972e81b32",
+    "template_resultado_times.csv": "31f756cf1f2708a80052874d54a8270a85b53caa2d6ed0d14621527b97792fac",
+    "template_coberturas_times.csv": "43ae394507c120a5df25d7cca6b9dc8e8b6d675fde407a550775e30020fc0a2a",
+    "C:\\PROJETOS\\BB-Dataton\\references\\seguranca_municipal.csv": "5f336788116f9a232de7666f3706820d057c9ef6a3aa5f091746b8c4c2dd028f",
+    "C:\\PROJETOS\\BB-Dataton\\references\\clima_municipal.csv": "4a7e687f1ab690c4eff53c7ceca577b9fdc4fe4988aba76b93d0aea26b7575ae",
+    "C:\\PROJETOS\\BB-Dataton\\references\\nr4_cnae.csv": "08e511a1cdb2bdbe22afbad6efa2fb04a1055243efed74e3c1a2b3acd68fcaa7"
+  },
+  "config_sha256": "52c61af11b7e50f37bb3f6ced7deef1d65f834424ffe66b935562dc8a1e64b3b",
+  "configuracao": {
+    "versao": "0.4.0",
+    "nota": "Hipóteses da equipe para o Datathon. Não são parâmetros oficiais ou probabilidades de sinistro.",
+    "modelo": {
+      "piso_evento": 0.2,
+      "piso_vulnerabilidade": 0.7,
+      "interacao_maxima": 0.15,
+      "escala_monetaria": 10000,
+      "risco_ausente": 0.5,
+      "vulnerabilidade_ausente": 0.5,
+      "piso_impacto": 0.25
+    },
+    "classes": [
+      {
+        "limite": 25,
+        "nome": "Muito baixa"
+      },
+      {
+        "limite": 50,
+        "nome": "Baixa"
+      },
+      {
+        "limite": 70,
+        "nome": "Moderada"
+      },
+      {
+        "limite": 85,
+        "nome": "Alta"
+      },
+      {
+        "limite": 101,
+        "nome": "Muito alta"
+      }
+    ],
+    "normalizacao": {
+      "bens": 3000000,
+      "energia": 50000,
+      "area": 2000,
+      "funcionarios": 100,
+      "folha": 500000,
+      "aluguel": 100000,
+      "despesas": 500000
+    },
+    "cenarios": {
+      "meses_paralisacao_min": 1,
+      "meses_paralisacao_max": 3
+    },
+    "planos": {
+      "limiar_cobertura": 60,
+      "meta_aderencia": 80,
+      "indispensaveis": []
+    },
+    "elegibilidade": {
+      "atividade_aceita_confirmada": false,
+      "condicoes_contratuais_confirmadas": false,
+      "estados_validar": [
+        "EM_OBRA",
+        "IRREGULAR",
+        "CONDENADO"
+      ],
+      "materiais_validar": [
+        "MADEIRA",
+        "MATERIAL_COMBUSTIVEL"
+      ]
+    },
+    "atividades": {
+      "incendio": {
+        "RESTAURANTE": 0.8,
+        "OFICINA": 0.75,
+        "MERCADO": 0.65,
+        "FARMACIA": 0.45,
+        "ESCOLA_CURSO": 0.4,
+        "VAREJO_MODA": 0.5,
+        "CLINICA": 0.45,
+        "ELETRONICOS": 0.5,
+        "BELEZA": 0.5,
+        "ESCRITORIO": 0.3
+      },
+      "terceiros": {
+        "RESTAURANTE": 0.8,
+        "OFICINA": 0.75,
+        "MERCADO": 0.7,
+        "FARMACIA": 0.6,
+        "ESCOLA_CURSO": 0.8,
+        "VAREJO_MODA": 0.6,
+        "CLINICA": 0.85,
+        "ELETRONICOS": 0.5,
+        "BELEZA": 0.7,
+        "ESCRITORIO": 0.35
+      },
+      "ocupacional": {
+        "RESTAURANTE": 0.7,
+        "OFICINA": 0.85,
+        "MERCADO": 0.6,
+        "FARMACIA": 0.4,
+        "ESCOLA_CURSO": 0.4,
+        "VAREJO_MODA": 0.35,
+        "CLINICA": 0.65,
+        "ELETRONICOS": 0.35,
+        "BELEZA": 0.5,
+        "ESCRITORIO": 0.25
+      }
+    },
+    "materiais": {
+      "ALVENARIA": 0.3,
+      "CONCRETO": 0.25,
+      "MADEIRA": 0.85,
+      "MATERIAL_COMBUSTIVEL": 0.9
+    },
+    "padroes": {
+      "ECONOMICO": 0.65,
+      "NORMAL": 0.45,
+      "SUPERIOR": 0.3
+    },
+    "confiancas": {
+      "ALTA": 0.9,
+      "MEDIA": 0.65,
+      "BAIXA": 0.3
+    },
+    "coberturas": {
+      "INCENDIO_RAIO_EXPLOSAO_FUMACA": {
+        "nome": "Incêndio, raio, explosão e fumaça",
+        "referencia_financeira": 3000000,
+        "pesos_evento": {},
+        "exposicao": "patrimonio",
+        "interacao": null,
+        "coeficiente_interacao": 0,
+        "peso_plano": 1,
+        "adicional": false,
+        "papel": "dimensionamento"
+      },
+      "DANOS_ELETRICOS": {
+        "nome": "Danos elétricos",
+        "referencia_financeira": 1000000,
+        "pesos_evento": {},
+        "exposicao": "equipamentos",
+        "interacao": null,
+        "coeficiente_interacao": 0,
+        "peso_plano": 1,
+        "adicional": false,
+        "papel": "dimensionamento"
+      },
+      "PERDA_PAGAMENTO_ALUGUEL": {
+        "nome": "Perda ou pagamento de aluguel",
+        "referencia_financeira": 300000,
+        "pesos_evento": {},
+        "exposicao": "aluguel",
+        "interacao": null,
+        "coeficiente_interacao": 0,
+        "peso_plano": 1,
+        "adicional": false,
+        "papel": "dimensionamento"
+      },
+      "RESPONSABILIDADE_CIVIL_ESTABELECIMENTO": {
+        "nome": "Responsabilidade civil estabelecimento",
+        "referencia_financeira": 1000000,
+        "pesos_evento": {},
+        "exposicao": "terceiros",
+        "interacao": null,
+        "coeficiente_interacao": 0,
+        "peso_plano": 1,
+        "adicional": false,
+        "papel": "dimensionamento"
+      },
+      "DESPESAS_FIXAS": {
+        "nome": "Despesas fixas",
+        "referencia_financeira": 1500000,
+        "pesos_evento": {},
+        "exposicao": "despesas",
+        "interacao": null,
+        "coeficiente_interacao": 0,
+        "peso_plano": 1,
+        "adicional": false,
+        "papel": "dimensionamento"
+      },
+      "ROUBO_FURTO_ARROMBAMENTO": {
+        "nome": "Roubo, furto e arrombamento",
+        "referencia_financeira": 3000000,
+        "pesos_evento": {
+          "exposicao_territorial": 1
+        },
+        "exposicao": "roubavel",
+        "interacao": null,
+        "coeficiente_interacao": 0,
+        "peso_plano": 1,
+        "adicional": false,
+        "papel": "decisao"
+      },
+      "VENDAVAL_EVENTOS_CORRELATOS": {
+        "nome": "Vendaval e eventos correlatos",
+        "referencia_financeira": 3000000,
+        "pesos_evento": {
+          "exposicao_climatica": 1
+        },
+        "exposicao": "patrimonio",
+        "interacao": null,
+        "coeficiente_interacao": 0,
+        "peso_plano": 1,
+        "adicional": false,
+        "papel": "decisao"
+      },
+      "RESPONSABILIDADE_CIVIL_EMPREGADOR": {
+        "nome": "Responsabilidade civil empregador",
+        "referencia_financeira": 1000000,
+        "pesos_evento": {
+          "atividade_ocupacional": 1
+        },
+        "exposicao": "empregador",
+        "interacao": null,
+        "coeficiente_interacao": 0,
+        "peso_plano": 1,
+        "adicional": false,
+        "papel": "decisao"
+      },
+      "QUEBRA_DE_VIDROS": {
+        "nome": "Quebra de vidros",
+        "referencia_financeira": 100000,
+        "pesos_evento": {
+          "presenca_loja": 0.65,
+          "atividade_terceiros": 0.35
+        },
+        "exposicao": "vidros",
+        "interacao": "presencial",
+        "coeficiente_interacao": 0.1,
+        "peso_plano": 1,
+        "adicional": false,
+        "papel": "decisao"
+      },
+      "PROTECAO_CIBERNETICA_AVALIAR": {
+        "nome": "Proteção cibernética",
+        "papel": "dimensionamento",
+        "exposicao": "digital",
+        "pesos_evento": {},
+        "referencia_financeira": 1000000,
+        "coeficiente_interacao": 0,
+        "peso_plano": 1,
+        "adicional": false
+      }
+    },
+    "clima": {
+      "inicio": "1996-01-01",
+      "fim": "2025-12-31",
+      "rajada_forte_kmh": 50,
+      "rajada_severa_kmh": 70,
+      "rajada_chuva_kmh": 40,
+      "chuva_mm": 50,
+      "pesos": [
+        0.5,
+        0.3,
+        0.2
+      ],
+      "referencia_frequencia": 0.01
+    },
+    "nr4": {
+      "pesos_grau": {
+        "1": 0.25,
+        "2": 0.5,
+        "3": 0.75,
+        "4": 1
+      },
+      "confianca_classificacao": 0.6
+    },
+    "heuristicas_comuns": {
+      "incendio_com_bens": 70,
+      "incendio_sem_inventario": 50,
+      "base_eletrico": 30,
+      "amplitude_eletrico": 60,
+      "aluguel_sim": 75,
+      "aluguel_nao": 25,
+      "terceiros_presencial": 70,
+      "terceiros_sem_sinal": 50,
+      "base_despesas": 30,
+      "amplitude_despesas": 60,
+      "ancora_despesa_mensal": 30000
+    }
+  },
+  "saidas_sha256": {
+    "template_resultado_times.csv": "56b6401f0405a6c8e6b519b45321489fe066eb7dab8372aba0ac483aded6f69e",
+    "template_coberturas_times.csv": "f95c8a74ac8be774359ddc63c60551c30328a17f0f963df430dbbb72b4fd55e4"
+  },
+  "estabelecimentos": 2978,
+  "linhas_cobertura": 23028,
+  "avisos": [
+    "Segurança empresarial: 2978/2978 unidades sem referência territorial utilizável. Consulte os motivos na auditoria; a nota permanece heurística.",
+    "Catálogo efetivo guia-item10-2026.1: sexta comum cibernética adicionada; CSV recebido e hashes preservados."
+  ]
+}

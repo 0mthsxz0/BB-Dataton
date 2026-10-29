@@ -1,4 +1,5 @@
 import { fullName, questionLabel } from './language.js';
+import { installConfidenceEditor } from './confidence-ui.js';
 import { voiceMarkup, bindVoice } from './voice-ui.js';
 import { cnaeReportView } from './cnae-report-ui.js';
 import { customerRecommendationView, customerReport } from './journeys.js';
@@ -34,6 +35,25 @@ let profileRevision=0,profileLoading=false,profileTimer;
 const state={personType:'pf',name:'',cnpj:'',birthDate:'',maritalStatus:'',phone:'',email:'',activityId:'',subactivityId:'',otherSubactivity:'',protection:'',shopping:'',cep:'',street:'',number:'',complement:'',district:'',city:'',uf:'',planId:new URLSearchParams(location.search).get('plano')||'',payment:'',installments:'1',paymentDay:'5',reviewed:false,description:'',sourceKey:'',profileFields:[],prefilledFields:[],cnaeProfile:null,units:'',cnae:'',contentsValue:'',equipmentValue:'',stockValue:'',buildingValue:'',glassValue:'',glassCount:'',employees:'',payroll:'',monthlyExpenses:'',monthlyRevenue:'',rentValue:'',securityControls:'',portableGoods:'',roofMaintained:'',exposedAssets:'',hasEmployees:'',hazardousWork:'',hasGlass:'',glassExposed:''};
 
 function selectedActivity(){return catalog.activities.find(a=>a.id===state.activityId);}
+installConfidenceEditor({
+  getContext(empresaId, imovelId) {
+    const matches = report => report?.confiancaDados?.empresaId === empresaId && report.confiancaDados.imovelId === imovelId;
+    if (!internal && step === 0 && matches(demoResult?.relatorio)) return {kind:'demo',report:demoResult.relatorio,empresaId,imovelId};
+    if (internal && cnaeReport?.tipo === 'individual' && matches(cnaeReport.relatorio)) return {kind:'cnae',report:cnaeReport.relatorio,empresaId,imovelId};
+    if (matches(cadastroRecommendation)) return {kind:internal?'cadastro':'cliente',report:cadastroRecommendation,empresaId,imovelId};
+    return null;
+  },
+  save(context, complemento) {
+    const endpoint = context.kind === 'demo' ? '/api/demo/empresa' : context.kind === 'cliente' ? '/api/cliente/cadastro' : '/api/recomendacao/cadastro';
+    return api(endpoint,{empresaId:context.empresaId,imovelId:context.imovelId,complemento});
+  },
+  onUpdated(context, result) {
+    const report = result.relatorio || result;
+    if (context.kind === 'demo') {demoResult = result;render();}
+    else if (context.kind === 'cnae') {cnaeReport.relatorio=report;render();}
+    else {cadastroRecommendation=report;updateCadastroView();}
+  },
+});
 function selectedSubactivity(){return selectedActivity()?.subactivities.find(s=>s.id===state.subactivityId);}
 function selectedPlan(){return plans.plans.find(p=>p.id===state.planId);}
 function field(key,label,{type='text',required=true,full=false,autocomplete='off',placeholder='',maxlength='',help='',min='',max='',inputmode='',increment='any'}={}){

@@ -90,7 +90,8 @@ export const server = http.createServer(async (req, res) => {
       }
       if (pathname === '/api/cliente/cadastro' && req.method === 'POST') {
         const s=getSession(req);if(s?.role!=='client') {json(res,401,{error:'Vínculo empresarial verificado obrigatório.'});return;}
-        json(res,200,await runMotor({action:'cadastro',payload:{empresaId:s.empresaId,imovelId:s.imovelId}}));return;
+        const data=await body(req);
+        json(res,200,await runMotor({action:'cadastro',payload:{empresaId:s.empresaId,imovelId:s.imovelId,complemento:data.complemento||{}}}));return;
       }
       if (pathname.startsWith('/api/interno/') && !authorized(req,'internal')) {
         json(res,401,{error:'Faça login no painel interno para acessar dados do Datathon.'});return;

@@ -178,27 +178,33 @@ def anexar_evidencias(record, indices, dimensoes, origens, base=None):
             externa, contexto, chaves = None, 'A presença e exposição de vidros vêm do questionário ou de sinais cadastrais fracos de loja/galeria. Não existe uma API externa de quebra de vidros integrada. Sem orçamento de reposição, o valor fica desconhecido; ausência declarada zera a prioridade.', grupos['vidros'] + ['grupo_atividade']
         if code.startswith('ROUBO'):
             leitura = f"Nesta unidade em {local}, os bens atribuídos são {reais('bens_ponderados')} e o estoque médio é {reais('estoque_medio_estimado')}. Reconstrução do prédio não entra no cenário de subtração do conteúdo. "
-            if 'securityControls' in q:
+            if type(q.get('securityControls')) is bool:
                 leitura += ('Foram declarados alarme monitorado e controle de acesso. ' if q['securityControls'] else 'Não foram declarados alarme monitorado e controle de acesso em funcionamento. ')
+            else:
+                leitura += 'Controles de acesso ainda não confirmados. '
+            if type(q.get('portableGoods')) is bool:
                 leitura += ('Há bens declarados de fácil transporte e revenda. ' if q['portableGoods'] else 'Não há bens declarados de fácil transporte e revenda. ')
             else:
-                leitura += 'Controles de acesso e portabilidade dos bens ainda não foram confirmados. '
+                leitura += 'Portabilidade dos bens ainda não confirmada. '
             if record.get('escopo_protecao') == 'building':
                 leitura += 'O escopo protege somente o prédio: a prioridade de roubo do conteúdo foi zerada. '
         elif code.startswith('VENDAVAL'):
             leitura = f"Em {local}, o cenário patrimonial considera bens {reais('bens_ponderados')}, estoque médio {reais('estoque_medio_estimado')} e reconstrução {reais('valor_predio_reposicao_brl')}. "
             leitura += f"O padrão construtivo cadastrado é {record.get('padrao_construtivo_cadastrado') or 'desconhecido'}. "
-            if 'roofMaintained' in q:
+            if type(q.get('roofMaintained')) is bool:
                 leitura += ('O telhado foi declarado inspecionado e conservado. ' if q['roofMaintained'] else 'A inspeção e a conservação do telhado não foram confirmadas. ')
+            else:
+                leitura += 'Manutenção do telhado ainda não respondida. '
+            if type(q.get('exposedAssets')) is bool:
                 leitura += ('Há bens externos declarados expostos ao vento. ' if q['exposedAssets'] else 'Não foram declarados bens externos expostos ao vento. ')
             else:
-                leitura += 'Manutenção do telhado e exposição externa ainda não foram respondidas. '
+                leitura += 'Exposição externa ainda não respondida. '
         elif code.endswith('EMPREGADOR'):
             leitura = f"O CNAE utilizado é {record.get('cnae_principal') or 'desconhecido'}, com grau NR-4 {record.get('grau_risco_nr4') or 'não localizado'}. A folha mensal desta unidade é {reais('folha_pagamento_mensal')}. "
             if q.get('hasEmployees') is False:
                 leitura += 'Você declarou que não há empregados nesta unidade; a prioridade foi zerada. '
             elif q.get('hasEmployees') is True:
-                leitura += ('Há empregados com tarefas declaradas de exposição física. ' if q.get('hazardousWork') else 'Há empregados, sem as tarefas de exposição física descritas no questionário. ')
+                leitura += ('Há empregados com tarefas declaradas de exposição física. ' if q.get('hazardousWork') is True else 'Há empregados, sem as tarefas de exposição física descritas no questionário. ' if q.get('hazardousWork') is False else 'Há empregados; as tarefas de exposição física ainda não foram confirmadas. ')
             else:
                 leitura += 'A presença de empregados nesta unidade ainda precisa de confirmação. '
             if numero(record.get('quantidade_unidades')) != 1 and numero(record.get('funcionarios_unidade_confirmados')) is None:
@@ -208,7 +214,7 @@ def anexar_evidencias(record, indices, dimensoes, origens, base=None):
             if q.get('hasGlass') is False or record.get('possui_vidros_confirmado') == 'NAO':
                 leitura += 'Foi declarada ausência de vidros a proteger; a prioridade foi zerada. '
             elif q.get('hasGlass') is True:
-                leitura += ('Há vidros declarados expostos à rua, circulação ou impactos. ' if q.get('glassExposed') else 'Há vidros declarados, sem a exposição a impactos descrita no questionário. ')
+                leitura += ('Há vidros declarados expostos à rua, circulação ou impactos. ' if q.get('glassExposed') is True else 'Há vidros declarados, sem a exposição a impactos descrita no questionário. ' if q.get('glassExposed') is False else 'Há vidros; a exposição a impactos ainda não foi confirmada. ')
             else:
                 leitura += f"Sem confirmação de vidros, foram usados os sinais cadastrais de loja ({record.get('possui_termo_loja') or 'desconhecido'}) e galeria ({record.get('possui_termo_galeria') or 'desconhecido'}). Esses sinais não comprovam vidraças. "
         s['leitura_contextual'] = leitura

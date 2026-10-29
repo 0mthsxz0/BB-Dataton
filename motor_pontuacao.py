@@ -361,12 +361,13 @@ class MotorPontuacao:
                     '0,60 × proxy financeira + 0,40 × padrão construtivo',
                     'Resistência do telhado não documentada; padrão construtivo é apenas proxy.')
                 q = r.get('questionario')
-                if q:
-                    vv = .5 * vv + .25 * (not q['roofMaintained']) + .25 * q['exposedAssets']
+                known = {k:q[k] for k in ('roofMaintained','exposedAssets') if q and type(q.get(k)) is bool}
+                if known:
+                    weight = .25 * len(known)
+                    vv = (1 - weight) * vv + sum(.25 * (not answer if key=='roofMaintained' else answer) for key,answer in known.items())
                     vulnerabilidade = fator('Condições financeiras, construtivas e exposição ao vento',
-                        {'componente_mvp':asdict(vulnerabilidade), 'roofMaintained':q['roofMaintained'],
-                         'exposedAssets':q['exposedAssets']}, vv, .5*vulnerabilidade.confianca+.5*.8,
-                        '0,50 × vulnerabilidade MVP + 0,25 × ausência de manutenção + 0,25 × bens expostos',
+                        {'componente_mvp':asdict(vulnerabilidade), **known}, vv, (1-weight)*vulnerabilidade.confianca+weight*.8,
+                        'Peso cadastral restante × vulnerabilidade MVP + 0,25 por resposta confirmada sobre telhado/bens expostos',
                         'Respostas declaradas pelo usuário; não substituem vistoria.')
             # Para riscos ausentes, ponto central explícito e faixa ampla, nunca zero automático.
             if ce == 0:

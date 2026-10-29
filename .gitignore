@@ -12,3 +12,4 @@ output/
 tmp/
 *.log
 pytest-cache-files-*/
+/entregas/templates-desenvolvimento/auditoria.json

@@ -1,0 +1,1010 @@
+[
+  {
+    "empresa_id": "CASO_00001",
+    "imovel_id": "IMO_CASO_00001_01",
+    "status_http": 200,
+    "duracao_ms": 30.17,
+    "resposta_sha256": "c544f44fcde4bda26724763bfcd3cfb861b6a8c5db3ea685290e257fc7d8d473"
+  },
+  {
+    "empresa_id": "CASO_00002",
+    "imovel_id": "IMO_CASO_00002_01",
+    "status_http": 200,
+    "duracao_ms": 26.96,
+    "resposta_sha256": "e4b73b9504aa8cf1fc56d6aeb40b36c5c87cadfba7051a881750222c37cd81d5"
+  },
+  {
+    "empresa_id": "CASO_00003",
+    "imovel_id": "IMO_CASO_00003_01",
+    "status_http": 200,
+    "duracao_ms": 42.23,
+    "resposta_sha256": "33cea82040f12d9db3974886df7fa354c08973376f9fc9b88f711c649bd6f017"
+  },
+  {
+    "empresa_id": "CASO_00004",
+    "imovel_id": "IMO_CASO_00004_01",
+    "status_http": 200,
+    "duracao_ms": 23.46,
+    "resposta_sha256": "5712fc899f3fc47623fc160edae7bcddb937e777be75e47dea12b895c61a33c2"
+  },
+  {
+    "empresa_id": "CASO_00005",
+    "imovel_id": "IMO_CASO_00005_01",
+    "status_http": 200,
+    "duracao_ms": 28.35,
+    "resposta_sha256": "4f9371d05dd1a80774065186ccfc10804398dfc510324730a21cd23e9529b7cb"
+  },
+  {
+    "empresa_id": "CASO_00006",
+    "imovel_id": "IMO_CASO_00006_01",
+    "status_http": 200,
+    "duracao_ms": 20.15,
+    "resposta_sha256": "f9e4a767aae645b4cdf343d1aa3a9605a1762191bd941d8ec4adda92ee47c628"
+  },
+  {
+    "empresa_id": "CASO_00006",
+    "imovel_id": "IMO_CASO_00006_02",
+    "status_http": 200,
+    "duracao_ms": 33.95,
+    "resposta_sha256": "f7f63235de4733ce882b14af46f4e32ae9ffa07ad5c2a54ca90f5e863b368ac4"
+  },
+  {
+    "empresa_id": "CASO_00007",
+    "imovel_id": "IMO_CASO_00007_01",
+    "status_http": 200,
+    "duracao_ms": 28.12,
+    "resposta_sha256": "b9767f08f236367723dcba2f8f24a71c3b0932b6bd421555b9e2352f643e9f8f"
+  },
+  {
+    "empresa_id": "CASO_00008",
+    "imovel_id": "IMO_CASO_00008_01",
+    "status_http": 200,
+    "duracao_ms": 14.77,
+    "resposta_sha256": "4f36d0a0c0c151498f003b5171373891a6c53ab950402812ddb2be0f407f183f"
+  },
+  {
+    "empresa_id": "CASO_00009",
+    "imovel_id": "IMO_CASO_00009_01",
+    "status_http": 200,
+    "duracao_ms": 28.76,
+    "resposta_sha256": "b900e56e3a98e148a1c86ef7fa6c49e9c09a865fe01b37e812a7feb538535fc7"
+  },
+  {
+    "empresa_id": "CASO_00010",
+    "imovel_id": "IMO_CASO_00010_01",
+    "status_http": 200,
+    "duracao_ms": 17.95,
+    "resposta_sha256": "06878ee5350cd8c6e69eb6796af503f4961a041c05621753e016105470b81cfb"
+  },
+  {
+    "empresa_id": "CASO_00011",
+    "imovel_id": "IMO_CASO_00011_01",
+    "status_http": 200,
+    "duracao_ms": 20.0,
+    "resposta_sha256": "11eb3757896188d0078698bbc9aff27682b137252b6593f18f67b77c2bba114c"
+  },
+  {
+    "empresa_id": "CASO_00012",
+    "imovel_id": "IMO_CASO_00012_01",
+    "status_http": 200,
+    "duracao_ms": 26.33,
+    "resposta_sha256": "b6db78e54ec8bacc7b668b11042ae5d090815ce4c9d59d2222ddb02129e26975"
+  },
+  {
+    "empresa_id": "CASO_00012",
+    "imovel_id": "IMO_CASO_00012_02",
+    "status_http": 200,
+    "duracao_ms": 38.68,
+    "resposta_sha256": "67037c384fcde8a2a55213cd759211125fa02ee040fcaed99a08a49196331a32"
+  },
+  {
+    "empresa_id": "CASO_00013",
+    "imovel_id": "IMO_CASO_00013_01",
+    "status_http": 200,
+    "duracao_ms": 57.7,
+    "resposta_sha256": "154ca827255fad2669aec809f387eaf28c5e371839513fa40c4a9a5112acb03c"
+  },
+  {
+    "empresa_id": "CASO_00014",
+    "imovel_id": "IMO_CASO_00014_01",
+    "status_http": 200,
+    "duracao_ms": 41.48,
+    "resposta_sha256": "89618cd8556bbf0668bfc99ac1892a1ecb2df2c24d7d830d37c217f928515f09"
+  },
+  {
+    "empresa_id": "CASO_00015",
+    "imovel_id": "IMO_CASO_00015_01",
+    "status_http": 200,
+    "duracao_ms": 26.57,
+    "resposta_sha256": "a75f8ca483208c6c233b8778dbf66548fc92cabcc2e97dc024bb6f5088512165"
+  },
+  {
+    "empresa_id": "CASO_00016",
+    "imovel_id": "IMO_CASO_00016_01",
+    "status_http": 200,
+    "duracao_ms": 23.91,
+    "resposta_sha256": "a2903f0c9faed59858af0867ad49de7f1f73705221b71186d7198a3da2aa47bd"
+  },
+  {
+    "empresa_id": "CASO_00017",
+    "imovel_id": "IMO_CASO_00017_01",
+    "status_http": 200,
+    "duracao_ms": 18.36,
+    "resposta_sha256": "83e28dec26964d8f9b457322e18dc4ad6e60b2e465b1be69725171ea19ea7199"
+  },
+  {
+    "empresa_id": "CASO_00018",
+    "imovel_id": "IMO_CASO_00018_01",
+    "status_http": 200,
+    "duracao_ms": 16.89,
+    "resposta_sha256": "a9ad36e030ac7b14848478b2990d3aedc3a7196553a10339f7128782eb0c8aac"
+  },
+  {
+    "empresa_id": "CASO_00019",
+    "imovel_id": "IMO_CASO_00019_01",
+    "status_http": 200,
+    "duracao_ms": 38.83,
+    "resposta_sha256": "982b4e1a8a07fe83f35138e3f3cba6051a2e45fbbb4049fb0a49f96282194cfb"
+  },
+  {
+    "empresa_id": "CASO_00020",
+    "imovel_id": "IMO_CASO_00020_01",
+    "status_http": 200,
+    "duracao_ms": 27.06,
+    "resposta_sha256": "e76cf9f87281d81982d4f935f245895300641481f0b78439445a6cb6364085dc"
+  },
+  {
+    "empresa_id": "CASO_00020",
+    "imovel_id": "IMO_CASO_00020_02",
+    "status_http": 200,
+    "duracao_ms": 32.38,
+    "resposta_sha256": "d1b957f851cdcda71c7a4235c78e2645dc065678a7b0cf7b73cecc2dff585904"
+  },
+  {
+    "empresa_id": "CASO_00021",
+    "imovel_id": "IMO_CASO_00021_01",
+    "status_http": 200,
+    "duracao_ms": 37.55,
+    "resposta_sha256": "0b4eb1f24c319908965753fdd7482b2959fac1159dd71717053e32152cad3dc1"
+  },
+  {
+    "empresa_id": "CASO_00022",
+    "imovel_id": "IMO_CASO_00022_01",
+    "status_http": 200,
+    "duracao_ms": 33.69,
+    "resposta_sha256": "3695ca9abfce8657d387f28d512bbdb5aa8179243e4a5db9955d3b28dbf506db"
+  },
+  {
+    "empresa_id": "CASO_00022",
+    "imovel_id": "IMO_CASO_00022_02",
+    "status_http": 200,
+    "duracao_ms": 33.91,
+    "resposta_sha256": "6e57c469858fd63686e9dedbbd4af083f3c51d9c2abed3fea9005ed5dbbf2056"
+  },
+  {
+    "empresa_id": "CASO_00023",
+    "imovel_id": "IMO_CASO_00023_01",
+    "status_http": 200,
+    "duracao_ms": 27.35,
+    "resposta_sha256": "425c368c0356b2bebd5fbcfcc49b110df2afb083eeaa0f0952dd78987997b718"
+  },
+  {
+    "empresa_id": "CASO_00023",
+    "imovel_id": "IMO_CASO_00023_02",
+    "status_http": 200,
+    "duracao_ms": 24.49,
+    "resposta_sha256": "c9bbd5d7cbd80378ba5971d6736ce50103ce897aa56e62c2be17dbb90f7c8e36"
+  },
+  {
+    "empresa_id": "CASO_00024",
+    "imovel_id": "IMO_CASO_00024_01",
+    "status_http": 200,
+    "duracao_ms": 26.86,
+    "resposta_sha256": "89d06dfbd02577aea0d6e5d66dd874ff7d7f23ec36cf4fe5a36b5dbecd3a786f"
+  },
+  {
+    "empresa_id": "CASO_00025",
+    "imovel_id": "IMO_CASO_00025_01",
+    "status_http": 200,
+    "duracao_ms": 35.18,
+    "resposta_sha256": "13d60ff68f063ae8c1007373f21875aa17fe1e3d33a93ae915496ca56ec87e09"
+  },
+  {
+    "empresa_id": "CASO_00026",
+    "imovel_id": "IMO_CASO_00026_01",
+    "status_http": 200,
+    "duracao_ms": 20.38,
+    "resposta_sha256": "e09d752cf493aecda32f9f86baca74a042691bf10b58dc34fa7a514add04000b"
+  },
+  {
+    "empresa_id": "CASO_00027",
+    "imovel_id": "IMO_CASO_00027_01",
+    "status_http": 200,
+    "duracao_ms": 34.59,
+    "resposta_sha256": "dabb898efd97681d17ab0621b4d75883f4b76854262b5f6dddb8a7513fd2c56d"
+  },
+  {
+    "empresa_id": "CASO_00028",
+    "imovel_id": "IMO_CASO_00028_01",
+    "status_http": 200,
+    "duracao_ms": 41.16,
+    "resposta_sha256": "c4f68b2cade1a7e8f386d7154f084f128fd82ce3f4176016307010c1b0a60ca4"
+  },
+  {
+    "empresa_id": "CASO_00029",
+    "imovel_id": "IMO_CASO_00029_01",
+    "status_http": 200,
+    "duracao_ms": 35.59,
+    "resposta_sha256": "9232d7f6309e9846ffc4c50fb216f4c4517374944f43338c2d239a211ab510a4"
+  },
+  {
+    "empresa_id": "CASO_00029",
+    "imovel_id": "IMO_CASO_00029_02",
+    "status_http": 200,
+    "duracao_ms": 18.64,
+    "resposta_sha256": "a3bebd2a018fb5cf57c0919546ea9c6bac0cd91790f2075ad04708f0db5d1e0c"
+  },
+  {
+    "empresa_id": "CASO_00030",
+    "imovel_id": "IMO_CASO_00030_01",
+    "status_http": 200,
+    "duracao_ms": 33.68,
+    "resposta_sha256": "afe2394177b787436f5c4e144eaa5773174e8608061e3ea063719f343de70c16"
+  },
+  {
+    "empresa_id": "CASO_00031",
+    "imovel_id": "IMO_CASO_00031_01",
+    "status_http": 200,
+    "duracao_ms": 21.37,
+    "resposta_sha256": "08590c01f8ba20ed66e6343361bf31d42a59b4965f697f491fbb70750ae3bc9a"
+  },
+  {
+    "empresa_id": "CASO_00032",
+    "imovel_id": "IMO_CASO_00032_01",
+    "status_http": 200,
+    "duracao_ms": 17.28,
+    "resposta_sha256": "c91234c674a4bef32bbb8245ff6d01a117878262d84914ac26e1fc88b6b483f7"
+  },
+  {
+    "empresa_id": "CASO_00033",
+    "imovel_id": "IMO_CASO_00033_01",
+    "status_http": 200,
+    "duracao_ms": 33.71,
+    "resposta_sha256": "4a0abd638037bed28d443499f00c38b7e46b9674ad27810c9101f0cc5d594cda"
+  },
+  {
+    "empresa_id": "CASO_00033",
+    "imovel_id": "IMO_CASO_00033_02",
+    "status_http": 200,
+    "duracao_ms": 15.18,
+    "resposta_sha256": "e75ce3287ee94eba834e66e16d10792ea7d8fd3a1e2aabb5c09070c5f4e884e5"
+  },
+  {
+    "empresa_id": "CASO_00034",
+    "imovel_id": "IMO_CASO_00034_01",
+    "status_http": 200,
+    "duracao_ms": 39.79,
+    "resposta_sha256": "a3bea48f6411f02f0daa507cba6506ba9ea7c55a865076188c72eecde02ca2ac"
+  },
+  {
+    "empresa_id": "CASO_00035",
+    "imovel_id": "IMO_CASO_00035_01",
+    "status_http": 200,
+    "duracao_ms": 29.51,
+    "resposta_sha256": "37decd317f2c22f3055dc0a4c186f03bf36c46f2ca28145a38795c082a876c47"
+  },
+  {
+    "empresa_id": "CASO_00036",
+    "imovel_id": "IMO_CASO_00036_01",
+    "status_http": 200,
+    "duracao_ms": 14.23,
+    "resposta_sha256": "649594826e2bdc8cd42b65a900ff8446fb3739388c8835c2e17fe5d494eabf14"
+  },
+  {
+    "empresa_id": "CASO_00037",
+    "imovel_id": "IMO_CASO_00037_01",
+    "status_http": 200,
+    "duracao_ms": 32.51,
+    "resposta_sha256": "9572edc41690317afcb3a2446d9a6045267513bb14dcea4af0247ecdbfee95e8"
+  },
+  {
+    "empresa_id": "CASO_00037",
+    "imovel_id": "IMO_CASO_00037_02",
+    "status_http": 200,
+    "duracao_ms": 13.43,
+    "resposta_sha256": "d5aa28afcb89048377c11cbbfba6fb684d62ad8da05798b2feada1e95c2d8d32"
+  },
+  {
+    "empresa_id": "CASO_00038",
+    "imovel_id": "IMO_CASO_00038_01",
+    "status_http": 200,
+    "duracao_ms": 34.7,
+    "resposta_sha256": "a3fc177aeb9dcf1d9c3451b17465edf7260030ec92f66d776e60cf3320daccee"
+  },
+  {
+    "empresa_id": "CASO_00039",
+    "imovel_id": "IMO_CASO_00039_01",
+    "status_http": 200,
+    "duracao_ms": 13.79,
+    "resposta_sha256": "e251015380a55cf40ae2c0fb724b196ea03ae5b8d1a83d19e86e8249efe2f317"
+  },
+  {
+    "empresa_id": "CASO_00039",
+    "imovel_id": "IMO_CASO_00039_02",
+    "status_http": 200,
+    "duracao_ms": 15.81,
+    "resposta_sha256": "4332652bce0c044acc46aaada7d6128ec1a00975acf7a977f0d85661b23656ab"
+  },
+  {
+    "empresa_id": "CASO_00040",
+    "imovel_id": "IMO_CASO_00040_01",
+    "status_http": 200,
+    "duracao_ms": 15.97,
+    "resposta_sha256": "5450bd3aed492c0a38268ea20988ae53ac03c8c574a0f3570ad564cb2c95082d"
+  },
+  {
+    "empresa_id": "CASO_00041",
+    "imovel_id": "IMO_CASO_00041_01",
+    "status_http": 200,
+    "duracao_ms": 33.14,
+    "resposta_sha256": "5e62df1774c2e18356ec454989d4af20459f2a6f944761523eb2a0bc37152aca"
+  },
+  {
+    "empresa_id": "CASO_00042",
+    "imovel_id": "IMO_CASO_00042_01",
+    "status_http": 200,
+    "duracao_ms": 14.52,
+    "resposta_sha256": "725e4c31640f2bda24840a912b25574d107c1aaf0aa34e0f2731324cb8bdd57d"
+  },
+  {
+    "empresa_id": "CASO_00043",
+    "imovel_id": "IMO_CASO_00043_01",
+    "status_http": 200,
+    "duracao_ms": 35.84,
+    "resposta_sha256": "3b2ff1b401481996a73dbb53ae8e2229d09a47cb696d2cd4edcc86af9dee9174"
+  },
+  {
+    "empresa_id": "CASO_00043",
+    "imovel_id": "IMO_CASO_00043_02",
+    "status_http": 200,
+    "duracao_ms": 29.26,
+    "resposta_sha256": "81ce45b6200db7a1b8bbce1d2313238a629e26d8efa7a7463d1ae441ed72b534"
+  },
+  {
+    "empresa_id": "CASO_00044",
+    "imovel_id": "IMO_CASO_00044_01",
+    "status_http": 200,
+    "duracao_ms": 38.1,
+    "resposta_sha256": "0ff67944be3a5f0bed0aed6241b4336ff74d79f8c05680454b8c44d2cfc957ce"
+  },
+  {
+    "empresa_id": "CASO_00045",
+    "imovel_id": "IMO_CASO_00045_01",
+    "status_http": 200,
+    "duracao_ms": 32.2,
+    "resposta_sha256": "491eae18ee2f58c0800db8e6ebfbf88465b406c782c831314d72c411c3f5b7cf"
+  },
+  {
+    "empresa_id": "CASO_00046",
+    "imovel_id": "IMO_CASO_00046_01",
+    "status_http": 200,
+    "duracao_ms": 14.63,
+    "resposta_sha256": "0d0c4eefa2034ad9dd3f2aa64c08b4ad49e1b2a2df3fc9ab660bca7c91ea5ab1"
+  },
+  {
+    "empresa_id": "CASO_00047",
+    "imovel_id": "IMO_CASO_00047_01",
+    "status_http": 200,
+    "duracao_ms": 29.49,
+    "resposta_sha256": "7d9466d94f3363a74413a5f7895f8ae23bb461ffd79f6312b8147fe09b150225"
+  },
+  {
+    "empresa_id": "CASO_00047",
+    "imovel_id": "IMO_CASO_00047_02",
+    "status_http": 200,
+    "duracao_ms": 13.66,
+    "resposta_sha256": "83928c4db6e13ca0619c27ecc501335f30895b546b48e12d812325a24e6093a9"
+  },
+  {
+    "empresa_id": "CASO_00048",
+    "imovel_id": "IMO_CASO_00048_01",
+    "status_http": 200,
+    "duracao_ms": 33.57,
+    "resposta_sha256": "f2a517f6fa0e7f9f1030ce565f43857b5ed7f307cc747bed1404457141e5b82b"
+  },
+  {
+    "empresa_id": "CASO_00049",
+    "imovel_id": "IMO_CASO_00049_01",
+    "status_http": 200,
+    "duracao_ms": 35.01,
+    "resposta_sha256": "9c560ebdd0da67fff5fba3e4d654566d072392789ac9763883d870ecd2f9838e"
+  },
+  {
+    "empresa_id": "CASO_00050",
+    "imovel_id": "IMO_CASO_00050_01",
+    "status_http": 200,
+    "duracao_ms": 31.32,
+    "resposta_sha256": "a41b20f76d2d4d8feeecd464278cc52c4fe2c684af8b0dd50fa0bb9d9c5c750a"
+  },
+  {
+    "empresa_id": "CASO_00050",
+    "imovel_id": "IMO_CASO_00050_02",
+    "status_http": 200,
+    "duracao_ms": 32.78,
+    "resposta_sha256": "00435773c3cc25400bdf40c8a26b28099f7b9ceb28851521cf7459f48eeff434"
+  },
+  {
+    "empresa_id": "CASO_00051",
+    "imovel_id": "IMO_CASO_00051_01",
+    "status_http": 200,
+    "duracao_ms": 18.28,
+    "resposta_sha256": "aa10656843e06fc739e6f8c4fba691cb5b33cb10001c7d6f7bf2b1be1eb9e5e5"
+  },
+  {
+    "empresa_id": "CASO_00052",
+    "imovel_id": "IMO_CASO_00052_01",
+    "status_http": 200,
+    "duracao_ms": 25.2,
+    "resposta_sha256": "92274a5f60c356f3ef709786cd71ec4bcf782258eb3afc3a4cd94bde2a86b5f9"
+  },
+  {
+    "empresa_id": "CASO_00053",
+    "imovel_id": "IMO_CASO_00053_01",
+    "status_http": 200,
+    "duracao_ms": 33.68,
+    "resposta_sha256": "da22008cf1ed52ddea14ea951ebff8cc377d6949b427e13972ee6ca85378807a"
+  },
+  {
+    "empresa_id": "CASO_00053",
+    "imovel_id": "IMO_CASO_00053_02",
+    "status_http": 200,
+    "duracao_ms": 19.61,
+    "resposta_sha256": "b2d5129663defb409e95a257fbb35a1bf76a44a1c29aa52b1df77e356eacf8b0"
+  },
+  {
+    "empresa_id": "CASO_00054",
+    "imovel_id": "IMO_CASO_00054_01",
+    "status_http": 200,
+    "duracao_ms": 29.41,
+    "resposta_sha256": "afbb729f4d326ba13dd3e7e5074f88743eb1c2a4369f6f494c124cc3ec076cfa"
+  },
+  {
+    "empresa_id": "CASO_00055",
+    "imovel_id": "IMO_CASO_00055_01",
+    "status_http": 200,
+    "duracao_ms": 35.69,
+    "resposta_sha256": "0ea074aca509ccaa126cccbf568d20dc01b3a84115ae7339c727cdb69c4d1494"
+  },
+  {
+    "empresa_id": "CASO_00055",
+    "imovel_id": "IMO_CASO_00055_02",
+    "status_http": 200,
+    "duracao_ms": 40.95,
+    "resposta_sha256": "618088f34795822b13495e1c3619da3681cedef4792481ea79a069254ea33fb8"
+  },
+  {
+    "empresa_id": "CASO_00056",
+    "imovel_id": "IMO_CASO_00056_01",
+    "status_http": 200,
+    "duracao_ms": 15.16,
+    "resposta_sha256": "4b7b9de377a9e39e20a14fe642b735902bf3eb68bcbbcbfdc436bbb138556718"
+  },
+  {
+    "empresa_id": "CASO_00057",
+    "imovel_id": "IMO_CASO_00057_01",
+    "status_http": 200,
+    "duracao_ms": 36.44,
+    "resposta_sha256": "7f9c3ad84848c841ae3ff852eaab42dd83440fb0f86f4b56d229a97afa2e6747"
+  },
+  {
+    "empresa_id": "CASO_00058",
+    "imovel_id": "IMO_CASO_00058_01",
+    "status_http": 200,
+    "duracao_ms": 32.19,
+    "resposta_sha256": "c59f6ed33e23c6641fac2d2518283a19e8e98d69ae410bbbcb297e9159ca7c18"
+  },
+  {
+    "empresa_id": "CASO_00059",
+    "imovel_id": "IMO_CASO_00059_01",
+    "status_http": 200,
+    "duracao_ms": 38.17,
+    "resposta_sha256": "43ac966503c022c7ecd99aecca14a1ea2d6eafa30c55300f8460be70d9fb914f"
+  },
+  {
+    "empresa_id": "CASO_00060",
+    "imovel_id": "IMO_CASO_00060_01",
+    "status_http": 200,
+    "duracao_ms": 16.03,
+    "resposta_sha256": "df4465681f78edacba39bbf6720ff10a83bbc123e5107494e16273aa998814cb"
+  },
+  {
+    "empresa_id": "CASO_00061",
+    "imovel_id": "IMO_CASO_00061_01",
+    "status_http": 200,
+    "duracao_ms": 27.93,
+    "resposta_sha256": "1ac91ce7072d0fafe41118313b49d7715abe26b6b5418cdd6af4b222154bb608"
+  },
+  {
+    "empresa_id": "CASO_00062",
+    "imovel_id": "IMO_CASO_00062_01",
+    "status_http": 200,
+    "duracao_ms": 52.44,
+    "resposta_sha256": "02f5b98e0eb74b77587c07b9565279d2d6524acdee3ab55e6658fb87ea3706cb"
+  },
+  {
+    "empresa_id": "CASO_00063",
+    "imovel_id": "IMO_CASO_00063_01",
+    "status_http": 200,
+    "duracao_ms": 52.99,
+    "resposta_sha256": "b49d45821d142282ab5ff7a7f8f687a1623982f77df99eda020584984565f370"
+  },
+  {
+    "empresa_id": "CASO_00064",
+    "imovel_id": "IMO_CASO_00064_01",
+    "status_http": 200,
+    "duracao_ms": 78.84,
+    "resposta_sha256": "057a469fe161f6ed6dcb587d2c91b6a1fbf3a389610813755e4f9f09b52169b3"
+  },
+  {
+    "empresa_id": "CASO_00065",
+    "imovel_id": "IMO_CASO_00065_01",
+    "status_http": 200,
+    "duracao_ms": 59.92,
+    "resposta_sha256": "e63a40bb7d6880e0e88ab03cbd0f4491c35262545442e4a79198f1f71ee77e70"
+  },
+  {
+    "empresa_id": "CASO_00066",
+    "imovel_id": "IMO_CASO_00066_01",
+    "status_http": 200,
+    "duracao_ms": 60.53,
+    "resposta_sha256": "e37d31b6df84e729b175725ab5164ba49a35d87fbf0bfc475039647d5f1c1509"
+  },
+  {
+    "empresa_id": "CASO_00067",
+    "imovel_id": "IMO_CASO_00067_01",
+    "status_http": 200,
+    "duracao_ms": 52.28,
+    "resposta_sha256": "8dfd490e9d53faf7b1ae5fdc10a76d50c96b38ea18b8f8807c3e6dadaf6b6fab"
+  },
+  {
+    "empresa_id": "CASO_00068",
+    "imovel_id": "IMO_CASO_00068_01",
+    "status_http": 200,
+    "duracao_ms": 96.12,
+    "resposta_sha256": "bc32044e03a443a18414684b9c3d3371db40660e0b0b68cb6da8e39113d4c1c1"
+  },
+  {
+    "empresa_id": "CASO_00069",
+    "imovel_id": "IMO_CASO_00069_01",
+    "status_http": 200,
+    "duracao_ms": 50.39,
+    "resposta_sha256": "3ceb5491032af663f7a3c8d041f0cb536173978e8bccd0931307780e9511384d"
+  },
+  {
+    "empresa_id": "CASO_00070",
+    "imovel_id": "IMO_CASO_00070_01",
+    "status_http": 200,
+    "duracao_ms": 72.13,
+    "resposta_sha256": "523408ce3838f1224dfc79534762ecdb664568ba4a02f456376333ae51d09d79"
+  },
+  {
+    "empresa_id": "CASO_00071",
+    "imovel_id": "IMO_CASO_00071_01",
+    "status_http": 200,
+    "duracao_ms": 73.06,
+    "resposta_sha256": "07194d5bf0b123894080a7a70824a22d11a4f9c3e6df4f73e75cf1442b72dfb4"
+  },
+  {
+    "empresa_id": "CASO_00071",
+    "imovel_id": "IMO_CASO_00071_02",
+    "status_http": 200,
+    "duracao_ms": 56.05,
+    "resposta_sha256": "92c65703fb91a1ed4e42b2a10d61c6d7ab8a72212a1c48bef3d69440b509195b"
+  },
+  {
+    "empresa_id": "CASO_00072",
+    "imovel_id": "IMO_CASO_00072_01",
+    "status_http": 200,
+    "duracao_ms": 67.62,
+    "resposta_sha256": "6b2294abc10ade1dc4582ea932d994930f6ba49e7e4741784d40531ee62ee7ba"
+  },
+  {
+    "empresa_id": "CASO_00073",
+    "imovel_id": "IMO_CASO_00073_01",
+    "status_http": 200,
+    "duracao_ms": 55.53,
+    "resposta_sha256": "0a92c291fae33c2ef2dd144488c8cf77c3358ec5f457d3114faa5402bd828307"
+  },
+  {
+    "empresa_id": "CASO_00074",
+    "imovel_id": "IMO_CASO_00074_01",
+    "status_http": 200,
+    "duracao_ms": 59.26,
+    "resposta_sha256": "166ce5b7a2bce17d221f3eb2781ab7d2ce9f308424a4de4372c9ec1d2195c79c"
+  },
+  {
+    "empresa_id": "CASO_00074",
+    "imovel_id": "IMO_CASO_00074_02",
+    "status_http": 200,
+    "duracao_ms": 56.03,
+    "resposta_sha256": "6281143df48c3d253631cac76f4771cce34c36384bec0146e2cda1164c8ba192"
+  },
+  {
+    "empresa_id": "CASO_00075",
+    "imovel_id": "IMO_CASO_00075_01",
+    "status_http": 200,
+    "duracao_ms": 51.24,
+    "resposta_sha256": "777c0d1cc7b3a9cafab5a07a0aee0ae1bb2623d50c791af75ddc24245ba34b23"
+  },
+  {
+    "empresa_id": "CASO_00076",
+    "imovel_id": "IMO_CASO_00076_01",
+    "status_http": 200,
+    "duracao_ms": 44.63,
+    "resposta_sha256": "eeb338291d4c00d1c53235806e6361e9a9d157de2127e366bb351530a615bba7"
+  },
+  {
+    "empresa_id": "CASO_00077",
+    "imovel_id": "IMO_CASO_00077_01",
+    "status_http": 200,
+    "duracao_ms": 60.95,
+    "resposta_sha256": "7047bdc1adcb11164a04b2fbe1e45490322b3fef6e37ad2ee0b60ba197b6e98b"
+  },
+  {
+    "empresa_id": "CASO_00078",
+    "imovel_id": "IMO_CASO_00078_01",
+    "status_http": 200,
+    "duracao_ms": 55.3,
+    "resposta_sha256": "744620f5cf544fc4456440d37cc1b277077642e7972d1765eacf8b6fa1dcc60c"
+  },
+  {
+    "empresa_id": "CASO_00079",
+    "imovel_id": "IMO_CASO_00079_01",
+    "status_http": 200,
+    "duracao_ms": 52.34,
+    "resposta_sha256": "6dba80873c6b2a17c30ff7b2797b0800bb9f46bd86b382c795a3d7dd1b498149"
+  },
+  {
+    "empresa_id": "CASO_00080",
+    "imovel_id": "IMO_CASO_00080_01",
+    "status_http": 200,
+    "duracao_ms": 85.22,
+    "resposta_sha256": "c8d5f8f1e1a967d739f9af0716da8c1ee6a55da6b6856058bad55beb1a29759c"
+  },
+  {
+    "empresa_id": "CASO_00081",
+    "imovel_id": "IMO_CASO_00081_01",
+    "status_http": 200,
+    "duracao_ms": 44.47,
+    "resposta_sha256": "934686559d1adebf0c0778a2bc2ff7ebeef6d18366122185b7d749fb7b790fc2"
+  },
+  {
+    "empresa_id": "CASO_00082",
+    "imovel_id": "IMO_CASO_00082_01",
+    "status_http": 200,
+    "duracao_ms": 37.31,
+    "resposta_sha256": "efd8d3aca06dbb48e845a090421c5720ff26dfd65a702b6e297c567b4f5ff58a"
+  },
+  {
+    "empresa_id": "CASO_00082",
+    "imovel_id": "IMO_CASO_00082_02",
+    "status_http": 200,
+    "duracao_ms": 31.79,
+    "resposta_sha256": "241d1f922bfe62bc1ba97e44629e38c226bad31834077b3dbc371053f0e2e5e4"
+  },
+  {
+    "empresa_id": "CASO_00083",
+    "imovel_id": "IMO_CASO_00083_01",
+    "status_http": 200,
+    "duracao_ms": 32.45,
+    "resposta_sha256": "c439b40a0b7c7f2e82b956cfa5865b2f2e19d2ed68adc164f8baf32210a662da"
+  },
+  {
+    "empresa_id": "CASO_00084",
+    "imovel_id": "IMO_CASO_00084_01",
+    "status_http": 200,
+    "duracao_ms": 31.52,
+    "resposta_sha256": "9f89affda8dc01a7057832fae0fe83050c6ce46c44cb8acdeaf77a3b277454ef"
+  },
+  {
+    "empresa_id": "CASO_00085",
+    "imovel_id": "IMO_CASO_00085_01",
+    "status_http": 200,
+    "duracao_ms": 34.73,
+    "resposta_sha256": "1d3d107bf77d774b6c2ea22222322eb748b5ebf19c3d24479aa4df9bc03e8247"
+  },
+  {
+    "empresa_id": "CASO_00085",
+    "imovel_id": "IMO_CASO_00085_02",
+    "status_http": 200,
+    "duracao_ms": 20.89,
+    "resposta_sha256": "a2c6ffc4a4ed012aa6dc544699fb30612b511308f3b778abde3ef468586e8722"
+  },
+  {
+    "empresa_id": "CASO_00086",
+    "imovel_id": "IMO_CASO_00086_01",
+    "status_http": 200,
+    "duracao_ms": 39.0,
+    "resposta_sha256": "07621dadc3336756b9742bf1831fbee30f6ca79740ee9d59c0a293f33b4809f0"
+  },
+  {
+    "empresa_id": "CASO_00086",
+    "imovel_id": "IMO_CASO_00086_02",
+    "status_http": 200,
+    "duracao_ms": 31.72,
+    "resposta_sha256": "b424f7eaf0073fe022cc26138e1efa1f7293a2fb506b2579fce92d12d40380f5"
+  },
+  {
+    "empresa_id": "CASO_00087",
+    "imovel_id": "IMO_CASO_00087_01",
+    "status_http": 200,
+    "duracao_ms": 30.68,
+    "resposta_sha256": "add1f9296bbc75702331eed66361722b58d8e52fde412525751bc731c5bc655f"
+  },
+  {
+    "empresa_id": "CASO_00088",
+    "imovel_id": "IMO_CASO_00088_01",
+    "status_http": 200,
+    "duracao_ms": 36.6,
+    "resposta_sha256": "18691f8d29e4663087ee13e52329b1234d8a320b8b7f5e7dde1caeeee8d0aad3"
+  },
+  {
+    "empresa_id": "CASO_00089",
+    "imovel_id": "IMO_CASO_00089_01",
+    "status_http": 200,
+    "duracao_ms": 30.51,
+    "resposta_sha256": "85b9507c033049963b81732527270b4a648337ef81c9fd485ecd959279d437af"
+  },
+  {
+    "empresa_id": "CASO_00090",
+    "imovel_id": "IMO_CASO_00090_01",
+    "status_http": 200,
+    "duracao_ms": 30.88,
+    "resposta_sha256": "0b067acd1118a6b3ecc935d68f75a82938fe1ffd4a974dcd16759dddd7faa50d"
+  },
+  {
+    "empresa_id": "CASO_00090",
+    "imovel_id": "IMO_CASO_00090_02",
+    "status_http": 200,
+    "duracao_ms": 36.54,
+    "resposta_sha256": "a562c5ebb995c2bbf7f8fc7d7d778bb11a684e01746d60e1566814341d07b868"
+  },
+  {
+    "empresa_id": "CASO_00091",
+    "imovel_id": "IMO_CASO_00091_01",
+    "status_http": 200,
+    "duracao_ms": 28.85,
+    "resposta_sha256": "cab6792e3fe970cccd9af59ee14578f8c74638ea857fd8bcd7d33279c378f558"
+  },
+  {
+    "empresa_id": "CASO_00092",
+    "imovel_id": "IMO_CASO_00092_01",
+    "status_http": 200,
+    "duracao_ms": 34.88,
+    "resposta_sha256": "6cfe96ebac9bbdcb1f057e451ed78b4c4b6f8de2a10e7a2cdf0845f9607ac6d3"
+  },
+  {
+    "empresa_id": "CASO_00093",
+    "imovel_id": "IMO_CASO_00093_01",
+    "status_http": 200,
+    "duracao_ms": 30.92,
+    "resposta_sha256": "6aa1e03b8ea7f3f0641c0ecbd464ec7aa2e4d0304618699980d53c04cc9e9a98"
+  },
+  {
+    "empresa_id": "CASO_00094",
+    "imovel_id": "IMO_CASO_00094_01",
+    "status_http": 200,
+    "duracao_ms": 27.8,
+    "resposta_sha256": "40baca03b2cabce5d7039846e08255e7a9c3f8c5d6292bf206cd376a092a7a3c"
+  },
+  {
+    "empresa_id": "CASO_00095",
+    "imovel_id": "IMO_CASO_00095_01",
+    "status_http": 200,
+    "duracao_ms": 33.59,
+    "resposta_sha256": "4046c5e520975cff413b5b5f5290c53c46937ecf0aa64afe69022c84c3d86cad"
+  },
+  {
+    "empresa_id": "CASO_00096",
+    "imovel_id": "IMO_CASO_00096_01",
+    "status_http": 200,
+    "duracao_ms": 36.91,
+    "resposta_sha256": "f8c37466c92ec3cc18e4996c38e75affd6b5d2019ca8a0e2816e692506b2edfb"
+  },
+  {
+    "empresa_id": "CASO_00097",
+    "imovel_id": "IMO_CASO_00097_01",
+    "status_http": 200,
+    "duracao_ms": 28.82,
+    "resposta_sha256": "60921e09c1f626c5b35b1e56646ae110a441a6848dab123dee4d644a40360783"
+  },
+  {
+    "empresa_id": "CASO_00098",
+    "imovel_id": "IMO_CASO_00098_01",
+    "status_http": 200,
+    "duracao_ms": 36.29,
+    "resposta_sha256": "2b02962f65f1854c6c2da517eb7728b2d4430f2fef5592b4818d4719c9171ef6"
+  },
+  {
+    "empresa_id": "CASO_00099",
+    "imovel_id": "IMO_CASO_00099_01",
+    "status_http": 200,
+    "duracao_ms": 29.93,
+    "resposta_sha256": "9184ebe735c6c0fd77684a597861499b01024d7b1f60f97d16dd76987af0328a"
+  },
+  {
+    "empresa_id": "CASO_00099",
+    "imovel_id": "IMO_CASO_00099_02",
+    "status_http": 200,
+    "duracao_ms": 31.48,
+    "resposta_sha256": "ea969a8af96fb394ce1a74c3dfdee05c7bc24269e38a927737089b3456900cb6"
+  },
+  {
+    "empresa_id": "CASO_00100",
+    "imovel_id": "IMO_CASO_00100_01",
+    "status_http": 200,
+    "duracao_ms": 35.57,
+    "resposta_sha256": "8c0fd8a4fdb217a6e96a41d2174bebaab46e140b6c489a6577d2e9fc8765250f"
+  },
+  {
+    "empresa_id": "CASO_00101",
+    "imovel_id": "IMO_CASO_00101_01",
+    "status_http": 200,
+    "duracao_ms": 13.43,
+    "resposta_sha256": "f1f536f6dd8ec230127df538727d5023a1560e600e0d1214ab3c94cb86f028b0"
+  },
+  {
+    "empresa_id": "CASO_00102",
+    "imovel_id": "IMO_CASO_00102_01",
+    "status_http": 200,
+    "duracao_ms": 31.83,
+    "resposta_sha256": "a1c57ac5b1bd3c5ae60007c7b5c0f66400eff92fefd0d41236f06a9c77e34218"
+  },
+  {
+    "empresa_id": "CASO_00103",
+    "imovel_id": "IMO_CASO_00103_01",
+    "status_http": 200,
+    "duracao_ms": 35.26,
+    "resposta_sha256": "0a7a85320028fa3514bac12037457ae2d14d0d3910f238c917603f0ce0cf4453"
+  },
+  {
+    "empresa_id": "CASO_00104",
+    "imovel_id": "IMO_CASO_00104_01",
+    "status_http": 200,
+    "duracao_ms": 14.07,
+    "resposta_sha256": "2a1b25bef9f9e25f690226ae1c5534278d1a415e7b01e072726426dcddbebc40"
+  },
+  {
+    "empresa_id": "CASO_00104",
+    "imovel_id": "IMO_CASO_00104_02",
+    "status_http": 200,
+    "duracao_ms": 13.47,
+    "resposta_sha256": "9fb9ed4c6dde4d75cf6b0387d8d16dc8a5bd4d8c71f50855f7ffcd643d2af923"
+  },
+  {
+    "empresa_id": "CASO_00105",
+    "imovel_id": "IMO_CASO_00105_01",
+    "status_http": 200,
+    "duracao_ms": 32.48,
+    "resposta_sha256": "e20785c9a6dfecd52dc452b6161ff8893324d0bc3037ef97336bf27a0abf0dbb"
+  },
+  {
+    "empresa_id": "CASO_00106",
+    "imovel_id": "IMO_CASO_00106_01",
+    "status_http": 200,
+    "duracao_ms": 14.57,
+    "resposta_sha256": "726a54296ecf33b3c8e87b7a2340dbea0c88ef8e5e54db4e27dc6dd008115622"
+  },
+  {
+    "empresa_id": "CASO_00107",
+    "imovel_id": "IMO_CASO_00107_01",
+    "status_http": 200,
+    "duracao_ms": 38.94,
+    "resposta_sha256": "d5f5fb80a053a528b54c319e2c0df0c0636fec93b2596f9e64a8f1b8da13497e"
+  },
+  {
+    "empresa_id": "CASO_00108",
+    "imovel_id": "IMO_CASO_00108_01",
+    "status_http": 200,
+    "duracao_ms": 29.57,
+    "resposta_sha256": "20d10a2911d9552dfc8c889d5aa7e6f56ab67bf2e8f3915468fc8abdfaf1eff5"
+  },
+  {
+    "empresa_id": "CASO_00108",
+    "imovel_id": "IMO_CASO_00108_02",
+    "status_http": 200,
+    "duracao_ms": 31.04,
+    "resposta_sha256": "7997506f94c5433adcce57bdcb28000523b97f56ce1c2258521247c97aad49bb"
+  },
+  {
+    "empresa_id": "CASO_00109",
+    "imovel_id": "IMO_CASO_00109_01",
+    "status_http": 200,
+    "duracao_ms": 31.69,
+    "resposta_sha256": "bdde1558d469dd2f80299b6b51ea5822b3dfb023d9dcab6f176d2a64d5d69f10"
+  },
+  {
+    "empresa_id": "CASO_00110",
+    "imovel_id": "IMO_CASO_00110_01",
+    "status_http": 200,
+    "duracao_ms": 14.99,
+    "resposta_sha256": "616ef15dd7a4a03d6e96715d417387c779f41a42743fefed9dfc8fb53cd640ff"
+  },
+  {
+    "empresa_id": "CASO_00111",
+    "imovel_id": "IMO_CASO_00111_01",
+    "status_http": 200,
+    "duracao_ms": 31.28,
+    "resposta_sha256": "4639f2f7ce260934a19a24156c33a35372e202874273c8fce6c9bc3e5a6019bd"
+  },
+  {
+    "empresa_id": "CASO_00112",
+    "imovel_id": "IMO_CASO_00112_01",
+    "status_http": 200,
+    "duracao_ms": 35.39,
+    "resposta_sha256": "9e6acea6944f3636c36683c703b2fd1bc5d9ffa86a1c4ec8ccd3e2e2e431cc17"
+  },
+  {
+    "empresa_id": "CASO_00113",
+    "imovel_id": "IMO_CASO_00113_01",
+    "status_http": 200,
+    "duracao_ms": 36.42,
+    "resposta_sha256": "2c2ae2060b1c568e19d2e01940613f2230f9c7e9618a30e301a3bb50d17e912b"
+  },
+  {
+    "empresa_id": "CASO_00114",
+    "imovel_id": "IMO_CASO_00114_01",
+    "status_http": 200,
+    "duracao_ms": 26.88,
+    "resposta_sha256": "5e1a6598669b9ed5acfcf6e1606b4a8b1d0462a3a355b89f880f747f39769b3f"
+  },
+  {
+    "empresa_id": "CASO_00115",
+    "imovel_id": "IMO_CASO_00115_01",
+    "status_http": 200,
+    "duracao_ms": 14.69,
+    "resposta_sha256": "5362d8f0863ecfb141c4fff0cea50c5c2bad778af2356411b9736681da3e9084"
+  },
+  {
+    "empresa_id": "CASO_00115",
+    "imovel_id": "IMO_CASO_00115_02",
+    "status_http": 200,
+    "duracao_ms": 31.54,
+    "resposta_sha256": "fe6da9b46ae6cf7d74bc29647a489dcf887fb27a64a1f519d405ea7a0aa9c7c0"
+  },
+  {
+    "empresa_id": "CASO_00116",
+    "imovel_id": "IMO_CASO_00116_01",
+    "status_http": 200,
+    "duracao_ms": 33.29,
+    "resposta_sha256": "e03257108a30007d189386ed24f827efd7b8f935f6d907dab90feaebaa3541d6"
+  },
+  {
+    "empresa_id": "CASO_00117",
+    "imovel_id": "IMO_CASO_00117_01",
+    "status_http": 200,
+    "duracao_ms": 34.68,
+    "resposta_sha256": "acc9a13f6360adf85f7ff04f49cce520de5743cf851ec92a7f02e89c4ee0acec"
+  },
+  {
+    "empresa_id": "CASO_00118",
+    "imovel_id": "IMO_CASO_00118_01",
+    "status_http": 200,
+    "duracao_ms": 13.57,
+    "resposta_sha256": "c4e9304bd1d645b899af785552e4f530f0cce5e6bc4995d37e02f60f2b584f11"
+  },
+  {
+    "empresa_id": "CASO_00119",
+    "imovel_id": "IMO_CASO_00119_01",
+    "status_http": 200,
+    "duracao_ms": 31.46,
+    "resposta_sha256": "7229bf32a31236a3849ab96dc79b25ca5671f099e3c39970c3c60f73cb88fc29"
+  },
+  {
+    "empresa_id": "CASO_00120",
+    "imovel_id": "IMO_CASO_00120_01",
+    "status_http": 200,
+    "duracao_ms": 36.21,
+    "resposta_sha256": "5ba5828c9b0dbb0c89e3b00239b683af138a197c83417c02d5e11dd0076b0283"
+  }
+]

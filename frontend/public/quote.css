@@ -125,3 +125,44 @@ body.report-mode .recommendation{background:#f7f8ff;padding:clamp(16px,2.5vw,36p
 .demo-direct-report>h2{font-size:clamp(22px,3vw,34px);color:#1d3475}
 .demo-direct-report>p{line-height:1.7}
 @media(max-width:640px){.demo-lookup{padding:16px}.demo-lookup-row{grid-template-columns:1fr}}
+
+/* Confiança e coleta de confirmações pelo colaborador. */
+.confidence-panel{margin:28px 0;padding:28px;border:2px solid #aebde9;border-top:6px solid #f1cf3c;border-radius:18px;background:#f6f8ff;color:#233660;scroll-margin-top:24px}
+.confidence-heading{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.confidence-heading h3{font-size:clamp(24px,3vw,32px);margin:6px 0;color:#192e69}
+.confidence-heading .confidence-score{font-size:clamp(42px,6vw,64px);font-weight:800;letter-spacing:-2px;line-height:1.1;color:#1a3681;white-space:nowrap}
+.confidence-panel .confidence-description{font-size:17px;line-height:1.7;max-width:900px;margin:18px 0 22px}
+.confidence-content{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:24px}
+.confidence-content h4{font-size:18px;margin:0 0 12px;color:#1c326c}
+.confidence-panel p,.confidence-panel li{font-size:15px;line-height:1.7}
+.confidence-panel ul{padding-left:20px;margin:0 0 12px}
+.confidence-panel li+li{margin-top:8px}
+.confidence-guidance{background:#fff;border:1px solid #d9e1f7;border-radius:12px;padding:20px}
+.confidence-guidance p{margin:10px 0}
+.confidence-limitations{border-top:1px solid #d4ddf3;margin-top:20px;padding-top:16px}
+.confidence-limitations summary{font-size:15px;font-weight:700;cursor:pointer;line-height:1.5}
+.confidence-limitations ul{margin-top:12px}
+.confidence-actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:24px;padding-top:20px;border-top:1px solid #d4ddf3}
+.confidence-actions .btn{flex:none;min-width:170px;font-size:16px}
+.confidence-actions p{flex:1;min-width:180px;margin:0}
+.confidence-comparison{padding:14px 18px;background:#fff;border:1px solid #bbcbed;border-radius:10px}
+.confidence-dialog{width:min(900px,calc(100% - 32px));max-height:92dvh;padding:0;border:1px solid #b9c7e7;border-radius:18px;color:#233660;box-shadow:0 24px 90px #15264b55;overflow:hidden}
+.confidence-dialog::backdrop{background:#102044a6}
+.confidence-form{display:flex;flex-direction:column;max-height:92dvh;margin:0}
+.confidence-dialog-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:24px 28px;background:#f3f6ff;border-bottom:1px solid #d5dff2;flex:none}
+.confidence-dialog-heading h2{font-size:26px;line-height:1.25;margin:7px 0;color:#19316d}
+.confidence-dialog-heading p{margin:0;font-size:14px;line-height:1.5;overflow-wrap:anywhere}
+.confidence-dialog-heading button{flex:none}
+.confidence-form-body{padding:20px 28px;overflow-y:auto;overscroll-behavior:contain}
+.confidence-form-body>p{font-size:15px;line-height:1.7;margin:0 0 14px}
+.confidence-field-group{border:1px solid #d9e0ef;border-radius:12px;padding:20px;margin:24px 0;min-width:0}
+.confidence-field-group legend{font-size:19px;font-weight:700;color:#1c3472;padding:0 8px}
+.confidence-field-group .form-grid{gap:22px}
+.confidence-field-group label{font-size:15px;line-height:1.5}
+.confidence-field-group small{font-size:12px;line-height:1.6;color:#52617e}
+.confidence-field-group input,.confidence-field-group select{width:100%;box-sizing:border-box;min-width:0;min-height:46px;background:#fff;border:1px solid #a8b8d8;border-radius:8px;padding:10px;font:inherit;color:#233660}
+.confidence-dialog-footer{padding:16px 28px;background:#fff;border-top:1px solid #d5dff2;flex:none}
+.confidence-dialog-footer p{font-size:13px;line-height:1.5;margin:0 0 12px}
+.confidence-dialog-footer>div{display:flex;justify-content:flex-end;gap:12px}
+.confidence-dialog :focus-visible,.confidence-panel :focus-visible{outline:3px solid #4161d9;outline-offset:3px}
+@media(max-width:650px){.confidence-panel{padding:20px}.confidence-heading{align-items:flex-start;flex-direction:column;gap:10px}.confidence-content{grid-template-columns:1fr;gap:16px}.confidence-dialog{width:calc(100% - 16px);max-height:96dvh}.confidence-form{max-height:96dvh}.confidence-dialog-heading,.confidence-dialog-footer{padding:16px}.confidence-dialog-heading h2{font-size:21px}.confidence-form-body{padding:16px}.confidence-field-group{padding:14px}.confidence-field-group .form-grid{grid-template-columns:1fr}.confidence-dialog-footer>div{flex-wrap:wrap}.confidence-actions .btn{width:100%}}

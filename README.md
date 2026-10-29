@@ -1,5 +1,6 @@
 # Protege Empresa | BB Datathon
 
+<<<<<<< HEAD
 ## Banco público de segurança separado
 
 O motor está preparado para consultar o SQLite da branch de segurança por código IBGE,
@@ -8,6 +9,11 @@ contexto complementar; referências empresariais elegíveis podem ser habilitada
 explicitamente para o evento de roubo. Mosler permanece em avaliação complementar.
 Consulte [instalação, atualização, modos e limitações](docs/INTEGRACAO_SEGURANCA.md).
 Os CSVs do Datathon não entram no banco público.
+=======
+## Templates preenchidos por API
+
+O fluxo de teste pode fazer uma chamada HTTP por empresa-estabelecimento, reutilizando o mesmo motor do lote e retornando a linha consolidada e suas coberturas. Consulte [contrato, execução e equivalência verificada](docs/API_TEMPLATES.md). Os resultados da base comum estão em `entregas/templates-teste-api/`.
+>>>>>>> fix/demo-local-por-id
 
 ## Portal e formulário web
 

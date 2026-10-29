@@ -1,0 +1,64 @@
+{
+  "versao_api": "templates-1.0",
+  "data_analise": "2026-10-29",
+  "versao_regras": "guia-item10-pacote-unificado-2026.3",
+  "estabelecimentos": 144,
+  "colunas": {
+    "template_resultado_times": [
+      "empresa_id",
+      "imovel_id",
+      "elegivel",
+      "motivo_inelegibilidade",
+      "tipo_localizacao_sugerido",
+      "relacao_imovel_sugerida",
+      "plano_recomendado",
+      "coberturas_recomendadas",
+      "confianca_geral",
+      "justificativa_recomendacao",
+      "perguntas_confirmacao",
+      "fontes_publicas_adicionais"
+    ],
+    "template_coberturas_times": [
+      "empresa_id",
+      "imovel_id",
+      "cobertura",
+      "faixa_valor_min",
+      "faixa_valor_max",
+      "confianca_estimativa",
+      "dados_utilizados",
+      "regra_calculo_utilizada",
+      "justificativa",
+      "informacao_a_confirmar",
+      "observacao"
+    ]
+  },
+  "entradas_sha256": {
+    "empresas.csv": "f108cb3d225e2e19a850f61837863b297509e44e5b3dca32750ee5fb0529cfe6",
+    "enderecos_estabelecimentos.csv": "1cafe9b45d215e2b0d649833a0c371e236b9befc08c50484537eb6e27b36c086",
+    "sinais_financeiros_operacionais.csv": "2a75fd426b1a396cdbdf878fb3d01d3b869546004924c4bc8810e6a1a960542b",
+    "bens_cadastrados.csv": "8207f96766c27480568881151b53b82a43a91183419f1395a4c710de4c842e9f",
+    "territorio.csv": "802de4d4144e4a8239dfb113ccd2b5b06935d82d3f607713783726bb755317c8",
+    "catalogo_coberturas_fixas_planos.csv": "6decd9c37e35cf1cf451cf7b7af8543a074dcaed07ecb1874793dcdbd01cd2b2",
+    "dicionario_dados.csv": "25bf47ae583a5941478433537300e12c0d1b897a30af9210656abdd972e81b32",
+    "template_resultado_times.csv": "15fe6d28d49d8e28c0de339256a236ff0f345cafca73ec756b9df79a7092096c",
+    "template_coberturas_times.csv": "43ae394507c120a5df25d7cca6b9dc8e8b6d675fde407a550775e30020fc0a2a",
+    "C:\\PROJETOS\\BB-Dataton\\references\\seguranca_municipal.csv": "5f336788116f9a232de7666f3706820d057c9ef6a3aa5f091746b8c4c2dd028f",
+    "C:\\PROJETOS\\BB-Dataton\\references\\clima_municipal.csv": "4a7e687f1ab690c4eff53c7ceca577b9fdc4fe4988aba76b93d0aea26b7575ae",
+    "C:\\PROJETOS\\BB-Dataton\\references\\nr4_cnae.csv": "08e511a1cdb2bdbe22afbad6efa2fb04a1055243efed74e3c1a2b3acd68fcaa7"
+  },
+  "config_sha256": "52c61af11b7e50f37bb3f6ced7deef1d65f834424ffe66b935562dc8a1e64b3b",
+  "modo": "uma_chamada_http_por_estabelecimento",
+  "url": "http://127.0.0.1:51145",
+  "chamadas_recomendacao": 144,
+  "linhas_cobertura": 1102,
+  "duracao_total_segundos": 5.548,
+  "template_entrada_sha256": "15fe6d28d49d8e28c0de339256a236ff0f345cafca73ec756b9df79a7092096c",
+  "comparacao_lote": {
+    "valores_identicos": true,
+    "csvs_identicos_byte_a_byte": true
+  },
+  "saidas_sha256": {
+    "template_resultado_times.csv": "0cb5734606a356c8572d7f3d298fc8b788ed65a6da4fef7feec29d8515826bf1",
+    "template_coberturas_times.csv": "a84c32c27101ef142b725365b1e16464b3d1bfed17c79bb3f661ede0fac900bf"
+  }
+}

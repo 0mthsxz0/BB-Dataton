@@ -18,6 +18,7 @@ from referencias import classe_cnae
 from perfil_cnae import perfil_cnae, CAMPOS as CAMPOS_PERFIL
 from produto import REGRAS, adaptar_catalogo, personalizar
 from rastreabilidade import anexar_evidencias
+from complemento_cadastro import aplicar_complemento, explicar_confianca, MotorComplemento
 
 ROOT = Path(__file__).parent
 PUBLIC = ROOT / 'frontend' / 'public'
@@ -412,20 +413,24 @@ def analisar_cadastro(payload, base=None):
     if base is None:
         raise ValueError('A base local do Datathon não está disponível.')
     record = base.registro(payload['empresaId'], payload['imovelId'])
-    motor = MotorPontuacao()
-    warnings = ['Análise inicial baseada somente no cadastro e nas referências disponíveis. As oito perguntas ainda não foram respondidas.',
-                'Escopo de imóvel/conteúdo ainda não escolhido; valores de reconstrução e reposição devem ser confirmados.']
+    record, origins, answers, confirmed = aplicar_complemento(record, payload.get('complemento', {}))
+    motor = MotorComplemento() if confirmed else MotorPontuacao()
+    warnings = (['Análise atualizada com as confirmações registradas pelo colaborador. Campos sem resposta preservam as informações e incertezas do cadastro.'] if confirmed else
+                ['Análise inicial baseada somente no cadastro e nas referências disponíveis. As oito perguntas ainda não foram respondidas.'])
+    if not record.get('escopo_protecao'):
+        warnings.append('Escopo de imóvel/conteúdo ainda não escolhido; valores de reconstrução e reposição devem ser confirmados.')
     for column, label in [('seguranca_da_cidade_0_1','segurança municipal'),('exposicao_climatica_0_1','clima'),('grau_risco_nr4','classificação ocupacional')]:
         if numero(record.get(column)) is None:
             warnings.append(f'Sem referência de {label} para esta unidade; componente desconhecido, com confiança reduzida.')
-    result = montar_resultado(record, motor, base.catalogo, {'id':None}, None, None, warnings,
-                             {k:'Cadastro BB/Datathon' for k in record}, True, base=base)
+    result = montar_resultado(record, motor, base.catalogo, {'id':None}, None, answers or None, warnings,
+                             origins, True, base=base)
     fixed = {}
     for key,column,allowed in [('propertyStatus','situacao_imovel_cadastral',('REGULAR','EM_OBRA','CONDENADO')),('wallMaterial','material_parede_externa_cadastrado',('ALVENARIA','CONCRETO','MADEIRA','MATERIAL_COMBUSTIVEL'))]:
         if record.get(column) in allowed:fixed[key]=record[column]
     if record.get('possui_vidros_confirmado') in ('SIM','NAO'):fixed['hasGlass']='yes' if record['possui_vidros_confirmado']=='SIM' else 'no'
     if fixed.get('hasGlass') == 'no':fixed['glassExposed']='no'
-    result.update(confirmacoesDisponiveis=fixed,preenchimento={key:record[col] for key,col in NUMBER_FIELDS.items() if numero(record.get(col)) is not None},preliminar=True, modelo='Motor original do MVP aplicado ao cadastro, sem respostas presumidas',
+    result.update(complemento=confirmed, confiancaDados=explicar_confianca(result, record, confirmed),
+                  confirmacoesDisponiveis=fixed,preenchimento={key:record[col] for key,col in NUMBER_FIELDS.items() if numero(record.get(col)) is not None},preliminar=not bool(confirmed), modelo='Motor do MVP aplicado ao cadastro com confirmações explícitas, sem respostas presumidas',
                   cadastro={k:record.get(k) for k in ('empresa_id','imovel_id','grupo_atividade','descricao_cnae','porte')},
                   dadosCadastrais={k:record.get(k) for k in ('bens_quantidade','bens_total_referencia','bens_ponderados',
                     'confianca_bens','estoque_medio_estimado','estoque_pico_estimado','quantidade_unidades',
@@ -473,7 +478,8 @@ def demonstrar_empresa_por_id(payload, base=None):
         imovel_id = str(unidades.iloc[0]['imovel_id'])
     elif not unidades.imovel_id.eq(imovel_id).any():
         raise ValueError('O estabelecimento não pertence à empresa informada.')
-    report = analisar_cadastro({'empresaId': empresa_id, 'imovelId': imovel_id}, base=base)
+    report = analisar_cadastro({'empresaId': empresa_id, 'imovelId': imovel_id,
+                               'complemento':payload.get('complemento', {})}, base=base)
     return {'tipo': 'relatorio', 'empresaId': empresa_id,
             'imovelId': imovel_id, 'relatorio': report,
             'ambiente': 'MVP_LOCAL', 'identidadeVerificada': False,
