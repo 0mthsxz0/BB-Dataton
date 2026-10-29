@@ -14,6 +14,7 @@ from .indice import gerar_indice
 from .vde import importar_vde
 from .auditoria import auditar
 from .hierarquia import atualizar_hierarquia
+from .mosler import avaliar_cruzamento
 
 
 RAIZ = Path(__file__).resolve().parents[1]
@@ -49,10 +50,16 @@ def main():
     sinesp.add_argument('arquivo', type=Path)
     sinesp.add_argument('--url', required=True, help='URL original oficial do arquivo para proveniência.')
     sinesp.add_argument('--mapa', type=Path, help='JSON com aliases explícitos: codigo,municipio,uf,ano,mes,crime,ocorrencias.')
-    indice = sub.add_parser('gerar-indice')
+    indice = sub.add_parser('gerar-indice', help='Modelo municipal CRITIC anterior; não calcula Mosler por estabelecimento.')
     indice.add_argument('--config', type=Path, default=RAIZ/'config/seguranca.json')
     indice.add_argument('--fim', help='Último mês fechado, AAAA-MM; omitir usa o último publicado.')
     indice.add_argument('--saida', type=Path, default=RAIZ/'data/seguranca/exportacao')
+    mosler = sub.add_parser('avaliar-mosler', help='Cruza IBGE, SINESP e CSV e calcula Mosler por estabelecimento.')
+    mosler.add_argument('--estabelecimentos', type=Path, required=True, help='CSV consolidado, com chaves e avaliações Mosler documentadas.')
+    mosler.add_argument('--config', type=Path, default=RAIZ/'config/seguranca_mosler.json')
+    mosler.add_argument('--fim', required=True, help='Último mês civil encerrado da janela comum, AAAA-MM.')
+    mosler.add_argument('--data-analise', help='AAAA-MM-DD; padrão America/Sao_Paulo.')
+    mosler.add_argument('--saida', type=Path, default=RAIZ/'data/seguranca/mosler')
     consulta = sub.add_parser('consultar')
     consulta.add_argument('--codigo')
     consulta.add_argument('--uf')
@@ -98,6 +105,34 @@ def main():
                     'rejeicoes': con.execute('SELECT count(*) FROM rejeicoes').fetchone()[0],
                     'indices': con.execute('SELECT count(*) FROM indices WHERE indice_roubo_0_100 IS NOT NULL').fetchone()[0]})
         return 0
+    if args.comando == 'avaliar-mosler':
+        config = json.loads(args.config.read_text())
+        with conectar(args.banco, somente_leitura=True) as con:
+            df, diagnostico = avaliar_cruzamento(con, args.estabelecimentos, config, args.fim, args.data_analise)
+        args.saida.mkdir(parents=True, exist_ok=True)
+        csv = df.copy()
+        csv['auditoria'] = csv.auditoria.map(lambda d: json.dumps(d, ensure_ascii=False, allow_nan=False))
+        temporario = args.saida/'indice_estabelecimentos_mosler.csv.partial'
+        csv.to_csv(temporario, index=False, encoding='utf-8-sig', float_format='%.10g')
+        temporario.replace(args.saida/'indice_estabelecimentos_mosler.csv')
+        auditoria = args.saida/'auditoria_mosler.json'
+        auditoria.write_text(json.dumps({'diagnostico': diagnostico, 'estabelecimentos': json.loads(df.to_json(orient='records', force_ascii=False))},
+                                       ensure_ascii=False, indent=2, allow_nan=False)+'\n')
+        cobertura = df.assign(calculado=df.er_mosler.notna()).groupby('codigo_ibge_municipio', dropna=False).agg(
+            estabelecimentos=('empresa_id', 'size'), calculados=('calculado', 'sum'))
+        cobertura['pendentes'] = cobertura.estabelecimentos-cobertura.calculados
+        cobertura.to_csv(args.saida/'cobertura_mosler.csv', encoding='utf-8-sig')
+        manifesto = {'versao': config['versao'], 'status': config['status'], 'config': config,
+            'csv_entrada_sha256': diagnostico['csv_sha256'], 'fontes_banco': diagnostico['fontes_banco'],
+            'data_analise': diagnostico['data_analise'], 'inicio': diagnostico['inicio'], 'fim': args.fim,
+            'arquivos_sha256': {}}
+        for arquivo in args.saida.iterdir():
+            if arquivo.name in ('indice_estabelecimentos_mosler.csv', 'auditoria_mosler.json', 'cobertura_mosler.csv'):
+                manifesto['arquivos_sha256'][arquivo.name] = hashlib.sha256(arquivo.read_bytes()).hexdigest()
+        (args.saida/'manifesto_mosler.json').write_text(json.dumps(manifesto, ensure_ascii=False, indent=2)+'\n')
+        emitir({'calculados': diagnostico['calculados'], 'pendentes': diagnostico['pendentes'], 'csv': str(args.saida/'indice_estabelecimentos_mosler.csv'),
+                'alertas': diagnostico['alertas'], 'status': config['status']})
+        return 0 if diagnostico['calculados'] == diagnostico['estabelecimentos'] else 2
     with conectar(args.banco) as con:
         inicializar(con)
         if args.comando == 'iniciar':

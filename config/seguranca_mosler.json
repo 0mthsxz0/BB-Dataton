@@ -1,0 +1,26 @@
+{
+  "versao": "mosler-integrado-1.0",
+  "metodo": "Mosler com agressao contextual adaptada ao projeto",
+  "status": "EXPERIMENTAL_NAO_CALIBRADO",
+  "pesos_crimes": {
+    "roubo de carga": 0.45,
+    "roubo de veiculos": 0.35,
+    "roubo seguido de morte latrocinio": 0.15,
+    "roubo a instituicao financeira": 0.05
+  },
+  "pesos_agressao": {
+    "contexto_municipal": 0.75,
+    "exposicao_atividade_csv": 0.25
+  },
+  "minimo_municipios_contexto": 30,
+  "sensibilidade_relativa_pesos": 0.20,
+  "justificativa": {
+    "roubo de carga": "Hipotese de proximidade com circulacao de mercadorias e perdas patrimoniais empresariais; nao equivale a roubo em comercio.",
+    "roubo de veiculos": "Hipotese de contexto de mobilidade e ativos transportaveis; exige exposicao do estabelecimento para interpretacao.",
+    "roubo seguido de morte latrocinio": "Sinal contextual de violencia no roubo; consequencias locais continuam avaliadas separadamente em Mosler.",
+    "roubo a instituicao financeira": "Peso residual por baixa transferibilidade a empresas que nao sao instituicoes financeiras.",
+    "agressao": "75% para a medida municipal publicada e 25% para exposicao da atividade avaliada no CSV. Preferencia metodologica inicial, nao coeficientes estimados.",
+    "ibge": "Populacao entra conjuntamente como denominador e exposicao da suavizacao. Area e densidade sao contexto; nao recebem bonus de risco nem percentual aditivo.",
+    "mosler": "F,S,P,E,V sao notas qualitativas documentadas do estabelecimento. A formula ER=(F*S+P*E)*A*V e preservada; os seis criterios nao recebem percentuais adicionais."
+  }
+}

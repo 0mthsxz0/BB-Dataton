@@ -1,5 +1,15 @@
 # Base municipal de segurança
 
+## Evolução para cruzamento integrado com Mosler
+
+A proposta atual de avaliação por estabelecimento está em
+[RELATORIO_INDICE_SEGURANCA_MOSLER.md](RELATORIO_INDICE_SEGURANCA_MOSLER.md).
+Ela cruza IBGE, SINESP e um CSV com avaliações documentadas em cada unidade,
+usa a fórmula Mosler e pesos experimentais explícitos. Execute `python -m
+seguranca avaliar-mosler --help` para os parâmetros. O conteúdo abaixo documenta
+o modelo municipal CRITIC anterior, mantido como comparação; suas faixas e seu
+significado não devem ser usados para interpretar o novo índice Mosler.
+
 Branch: `dados-de-seguranca`, derivada de `codex/formulario-cotacao-busca-inteligente`.
 
 O módulo `seguranca/` reúne coleta, importação, banco SQLite, índice relativo de

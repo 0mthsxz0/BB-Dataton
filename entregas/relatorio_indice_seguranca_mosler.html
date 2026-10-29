@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Índice integrado de segurança — Mosler</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; }
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; }
+code span.at { color: #7d9029; }
+code span.bn { color: #40a070; }
+code span.bu { color: #008000; }
+code span.cf { color: #007020; font-weight: bold; }
+code span.ch { color: #4070a0; }
+code span.cn { color: #880000; }
+code span.co { color: #60a0b0; font-style: italic; }
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; }
+code span.do { color: #ba2121; font-style: italic; }
+code span.dt { color: #902000; }
+code span.dv { color: #40a070; }
+code span.er { color: #ff0000; font-weight: bold; }
+code span.ex { }
+code span.fl { color: #40a070; }
+code span.fu { color: #06287e; }
+code span.im { color: #008000; font-weight: bold; }
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; }
+code span.kw { color: #007020; font-weight: bold; }
+code span.op { color: #666666; }
+code span.ot { color: #007020; }
+code span.pp { color: #bc7a00; }
+code span.sc { color: #4070a0; }
+code span.ss { color: #bb6688; }
+code span.st { color: #4070a0; }
+code span.va { color: #19177c; }
+code span.vs { color: #4070a0; }
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
+</style>
+  <style type="text/css">@page{size:A4;margin:17mm 15mm 20mm} body{font:11px/1.5 Arial,sans-serif;color:#172b44;max-width:180mm;margin:auto}h1{font-size:23px;color:#124777;border-bottom:3px solid #e1b623;padding-bottom:12px}h2{font-size:17px;margin-top:24px;color:#124777;break-after:avoid}h3{font-size:13px;break-after:avoid}p,li{orphans:3;widows:3}table{border-collapse:collapse;width:100%;font-size:10px;margin:12px 0;table-layout:fixed}th,td{border:1px solid #c7d3df;padding:6px;vertical-align:top;overflow-wrap:anywhere}th{background:#eaf1f7}tr{break-inside:avoid}pre{white-space:pre-wrap;overflow-wrap:anywhere;padding:10px;background:#f1f4f7;font-size:9px}code{font-size:.94em}blockquote{border-left:4px solid #e1b623;margin:12px 0;padding:8px 15px;background:#fffaf0}a{color:#125486}svg{width:100%;display:block;margin:16px auto;break-inside:avoid}math[display=block]{font-size:1.15em;margin:12px 0}</style>
+<style>#title-block-header{display:none}</style></head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Índice integrado de segurança — Mosler</h1>
+</header>
+<h1 id="índice-integrado-de-segurança-ibge-sinesp-e-estabelecimentos">Índice
+integrado de segurança: IBGE, SINESP e estabelecimentos</h1>
+<p><strong>Projeto:</strong> BB-Dataton / Protege Empresa<br />
+<strong>Método:</strong> Mosler com agressão contextual adaptada ao
+projeto<br />
+<strong>Versão:</strong> <code>mosler-integrado-1.0</code><br />
+<strong>Data do relatório:</strong> 28/10/2026<br />
+<strong>Situação:</strong> metodologia implementada e testada com dados
+sintéticos; pesos experimentais, ainda sem calibração por sinistros ou
+validação com a base completa.</p>
+<h2 id="resumo-para-apresentação">1. Resumo para apresentação</h2>
+<p>Estruturamos uma análise que cruza três conjuntos de dados em cada
+estabelecimento: o IBGE caracteriza e identifica o município; o SINESP
+descreve as ocorrências criminais publicadas; e o CSV descreve a
+atividade, os impactos e a vulnerabilidade da unidade empresarial. As
+três fontes compõem o mesmo registro analítico, vinculado pelo código
+IBGE de sete dígitos.</p>
+<p>Adotamos o método Mosler para combinar consequências e condições de
+ocorrência do risco. O resultado é um índice de priorização por
+estabelecimento, de 0 a 100, acompanhado dos critérios utilizados,
+fontes, período e pendências. Duas empresas no mesmo município podem ter
+resultados diferentes por apresentarem impactos operacionais e
+vulnerabilidades diferentes.</p>
+<p>Definimos pesos iniciais com base na pertinência conceitual das
+variáveis ao seguro empresarial. Esses pesos são hipóteses de projeto,
+documentadas e editáveis. Não foram estimados a partir dos 2.978
+estabelecimentos, de sinistros ou de uma consulta a especialistas que
+não ocorreu. A implementação permite testar a sensibilidade dessas
+escolhas antes de utilizá-las operacionalmente.</p>
+<h2 id="o-cruzamento-das-três-fontes">2. O cruzamento das três
+fontes</h2>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 260" role="img" aria-label="IBGE, SINESP e CSV convergem para um registro integrado, seguido de Mosler e do índice por estabelecimento">
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="#1b4f72" /></marker></defs>
+<g fill="#eef5fb" stroke="#1b4f72" stroke-width="1.5"><rect x="10" y="10" width="220" height="62" rx="8" /><rect x="250" y="10" width="220" height="62" rx="8" /><rect x="490" y="10" width="220" height="62" rx="8" /><rect x="175" y="115" width="370" height="45" rx="8" /><rect x="175" y="200" width="370" height="45" rx="8" fill="#fff1cd" /></g>
+<g font-family="Arial,sans-serif" fill="#15284c" text-anchor="middle"><text x="120" y="35" font-size="18" font-weight="bold">IBGE</text><text x="120" y="56" font-size="12">Código
+· população · área ·
+ano</text><text x="360" y="35" font-size="18" font-weight="bold">SINESP</text><text x="360" y="56" font-size="12">Município
+· crime · mês ·
+ocorrências</text><text x="600" y="35" font-size="18" font-weight="bold">CSV</text><text x="600" y="56" font-size="12">Unidade
+· notas · exposição ·
+evidências</text><text x="360" y="143" font-size="17">Registro integrado
+por
+estabelecimento</text><text x="360" y="220" font-size="15" font-weight="bold">Mosler:
+F · S · P · E · A · V</text><text x="360" y="238" font-size="12">Índice
+0–100 · faixa · pendências · auditoria</text></g>
+<g stroke="#1b4f72" stroke-width="2" fill="none" marker-end="url(#arrow)"><path d="M120,72 L245,113" /><path d="M360,72 L360,113" /><path d="M600,72 L475,113" /><path d="M360,160 L360,198" /></g>
+</svg>
+<p>As fontes têm papéis complementares, sem uma prioridade geral que
+permita substituir uma pela outra. A população não substitui ocorrências
+criminais; uma taxa municipal não substitui as características da
+empresa; o cadastro empresarial não permite inventar ocorrências
+ausentes.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Fonte</th>
+<th>Campos utilizados</th>
+<th>Papel no registro integrado</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>IBGE</td>
+<td>Código municipal, nome, UF, população, área e anos de
+referência</td>
+<td>Validar o território, normalizar as contagens pela população e
+contextualizar a densidade.</td>
+</tr>
+<tr class="even">
+<td>SINESP</td>
+<td>Município/UF, natureza do crime, mês, ano, ocorrências e
+cobertura</td>
+<td>Medir a exposição criminal contextual na janela comum de 12
+meses.</td>
+</tr>
+<tr class="odd">
+<td>CSV</td>
+<td>Empresa, imóvel/unidade, código municipal, exposição da atividade,
+notas Mosler e evidências</td>
+<td>Caracterizar consequências, extensão operacional e vulnerabilidade
+específicas da unidade.</td>
+</tr>
+</tbody>
+</table>
+<p>O cruzamento usa <code>many_to_one</code>: várias unidades podem
+compartilhar o mesmo município, mas cada chave empresa/unidade aparece
+uma única vez. A contagem de crimes é agregada por município/crime/mês
+<strong>antes</strong> de se associar às empresas; ela não é somada
+novamente a cada estabelecimento. A coorte municipal usada para
+suavização e percentis não muda quando o CSV contém mais empresas de uma
+mesma cidade.</p>
+<p>O identificador final é <code>(empresa_id, imovel_id)</code>,
+preservando <code>codigo_ibge_municipio</code>. Não apresentamos um
+índice individual como se fosse um novo indicador oficial do município.
+Também não generalizamos a média das empresas do desafio para todos os
+estabelecimentos da cidade.</p>
+<h2 id="preparação-conjunta-do-contexto-criminal">3. Preparação conjunta
+do contexto criminal</h2>
+<p>Para cada município e natureza selecionada, utilizamos os mesmos 12
+meses civis encerrados e calculamos:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mrow><mi>m</mi><mo>,</mo><mi>c</mi></mrow></msub><mo>=</mo><mn>100.000</mn><mo>×</mo><mfrac><msub><mi>N</mi><mrow><mi>m</mi><mo>,</mo><mi>c</mi><mo>,</mo><mn>12</mn><mi>m</mi></mrow></msub><mrow><mi>P</mi><mi>o</mi><msub><mi>p</mi><mi>m</mi></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">
+T_{m,c}=100.000\times\frac{N_{m,c,12m}}{Pop_m}
+</annotation></semantics></math></p>
+<p>O numerador é do SINESP; o denominador é do IBGE. A taxa já é uma
+variável construída conjuntamente a partir das duas fontes. Dividir a
+taxa novamente pela população ou pela área duplicaria uma normalização
+sem justificativa.</p>
+<p>Aplicamos suavização empírica Gamma-Poisson, com parâmetros estimados
+na coorte municipal com dados completos, para reduzir instabilidade de
+pequenas exposições. Depois transformamos as taxas suavizadas em
+percentis com postos médios para empates. O arquivo de auditoria
+conserva contagem, taxa bruta, taxa suavizada, contribuição da
+observação na suavização e percentil de cada crime.</p>
+<p>O estimador usado tem <code>e_i=pop_i/100000</code>,
+<code>mu=sum(N_i)/sum(e_i)</code> e
+<code>tau²=max(0,sum((N_i-e_i*mu)²-e_i*mu)/sum(e_i²))</code>. Se
+<code>tau²&gt;0</code>, utiliza <code>beta=mu/tau²</code> e taxa
+posterior <code>(N_i+mu*beta)/(e_i+beta)</code>. Essa escolha é uma
+hipótese de modelagem, não uma correção comprovada de subnotificação.
+Quando não há dispersão identificável em uma natureza selecionada, o
+contexto fica pendente; não criamos uma posição relativa fictícia.</p>
+<p>A densidade <code>população/área</code> é apresentada como contexto.
+Não assumimos que cidades mais densas sejam necessariamente mais
+perigosas. Ela não recebe percentual direto no índice nem é usada como
+denominador do risco.</p>
+<p>Exigimos 12 observações para cada natureza selecionada e população
+válida com ano conhecido, não posterior ao ano do período criminal. O
+mínimo inicial de 30 municípios completos é uma salvaguarda operacional,
+não prova de validade estatística. Uma alteração deliberada desse mínimo
+precisa ficar registrada.</p>
+<h2 id="pesos-que-adotamos-e-por-quê">4. Pesos que adotamos e por
+quê</h2>
+<h3 id="combinação-das-naturezas-criminais">4.1 Combinação das naturezas
+criminais</h3>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 30%" />
+<col style="width: 23%" />
+<col style="width: 23%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Natureza</th>
+<th style="text-align: right;">Peso inicial</th>
+<th>Justificativa de projeto</th>
+<th>Limite da interpretação</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Roubo de carga</td>
+<td style="text-align: right;"><strong>45%</strong></td>
+<td>Aproximação contextual de exposição ligada à circulação de
+mercadorias e ao patrimônio empresarial.</td>
+<td>Transporte de carga não é equivalente a roubo em loja ou
+escritório.</td>
+</tr>
+<tr class="even">
+<td>Roubo de veículos</td>
+<td style="text-align: right;"><strong>35%</strong></td>
+<td>Contexto de mobilidade, ativos transportáveis e circulação
+operacional.</td>
+<td>A pertinência depende do perfil da unidade; não implica que toda
+empresa possua frota.</td>
+</tr>
+<tr class="odd">
+<td>Roubo seguido de morte — latrocínio</td>
+<td style="text-align: right;"><strong>15%</strong></td>
+<td>Sinal contextual de violência associada ao roubo, sem dominar o
+componente patrimonial.</td>
+<td>Não estima dano a pessoas no estabelecimento nem probabilidade de
+vitimização.</td>
+</tr>
+<tr class="even">
+<td>Roubo a instituição financeira</td>
+<td style="text-align: right;"><strong>5%</strong></td>
+<td>Participação residual, pela menor transferibilidade para empresas
+que não são instituições financeiras.</td>
+<td>Para instituições financeiras, o perfil de pesos exige revisão
+específica.</td>
+</tr>
+<tr class="odd">
+<td><strong>Total</strong></td>
+<td style="text-align: right;"><strong>100%</strong></td>
+<td>Preferência metodológica inicial para um perfil empresarial
+genérico.</td>
+<td>Sem comprovação de que esses valores sejam os melhores.</td>
+</tr>
+</tbody>
+</table>
+<p>Se <code>Q_c</code> é o percentil municipal de cada natureza, o
+contexto é:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mi>m</mi></msub><mo>=</mo><mn>0</mn><mo>,</mo><mn>45</mn><msub><mi>Q</mi><mrow><mi>c</mi><mi>a</mi><mi>r</mi><mi>g</mi><mi>a</mi></mrow></msub><mo>+</mo><mn>0</mn><mo>,</mo><mn>35</mn><msub><mi>Q</mi><mrow><mi>v</mi><mi>e</mi><mi>í</mi><mi>c</mi><mi>u</mi><mi>l</mi><mi>o</mi><mi>s</mi></mrow></msub><mo>+</mo><mn>0</mn><mo>,</mo><mn>15</mn><msub><mi>Q</mi><mrow><mi>l</mi><mi>a</mi><mi>t</mi><mi>r</mi><mi>o</mi><mi>c</mi><mi>í</mi><mi>n</mi><mi>i</mi><mi>o</mi></mrow></msub><mo>+</mo><mn>0</mn><mo>,</mo><mn>05</mn><msub><mi>Q</mi><mrow><mi>f</mi><mi>i</mi><mi>n</mi><mi>a</mi><mi>n</mi><mi>c</mi><mi>e</mi><mi>i</mi><mi>r</mi><mi>a</mi><mi>s</mi></mrow></msub></mrow><annotation encoding="application/x-tex">
+R_m=0,45Q_{carga}+0,35Q_{veículos}+0,15Q_{latrocínio}+0,05Q_{financeiras}
+</annotation></semantics></math></p>
+<p>Os valores exatos 45/35/15/5 são uma <strong>decisão normativa de
+modelagem</strong>. A justificativa estabelece uma prioridade
+conceitual, mas não demonstra que 45% seja estatisticamente superior a
+40% ou 50%. Não utilizamos CRITIC para estimar esses pesos nesta versão.
+O CRITIC anterior permanece apenas como modelo municipal comparativo,
+separado do novo Mosler integrado.</p>
+<p>Antes de usar o contexto, é necessário confirmar no dicionário SINESP
+que as naturezas, a unidade de medida e a abrangência escolhidas são
+comparáveis e que não há sobreposição indevida. Vítimas, ocorrências,
+pesos e abrangências Estadual/PF/PRF não podem ser simplesmente somados.
+O importador estrito recusa chaves mensais duplicadas; o leiaute real
+ainda pode exigir adaptação explícita para selecionar ou agregar
+dimensões admissíveis.</p>
+<h3 id="peso-do-contexto-e-da-atividade-no-critério-agressão">4.2 Peso
+do contexto e da atividade no critério Agressão</h3>
+<p>Convertendo o contexto para a escala 1–5:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mrow><mi>m</mi><mi>u</mi><mi>n</mi><mi>i</mi><mi>c</mi><mi>i</mi><mi>p</mi><mi>a</mi><mi>l</mi></mrow></msub><mo>=</mo><mn>1</mn><mo>+</mo><mn>4</mn><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>R</mi><mi>m</mi></msub><mi>/</mi><mn>100</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
+A_{municipal}=1+4(R_m/100)
+</annotation></semantics></math></p>
+<p>Com <code>X</code> representando a exposição da atividade avaliada no
+CSV, também em 1–5:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mrow><mi>c</mi><mi>o</mi><mi>n</mi><mi>t</mi><mi>í</mi><mi>n</mi><mi>u</mi><mi>o</mi></mrow></msub><mo>=</mo><mn>0</mn><mo>,</mo><mn>75</mn><msub><mi>A</mi><mrow><mi>m</mi><mi>u</mi><mi>n</mi><mi>i</mi><mi>c</mi><mi>i</mi><mi>p</mi><mi>a</mi><mi>l</mi></mrow></msub><mo>+</mo><mn>0</mn><mo>,</mo><mn>25</mn><mi>X</mi></mrow><annotation encoding="application/x-tex">
+A_{contínuo}=0,75A_{municipal}+0,25X
+</annotation></semantics></math></p>
+<p>Arredondamos <code>A_contínuo</code> para a nota inteira mais
+próxima, com metade para cima. Assim, 3,5 vira 4, mantendo a escala
+inteira 1–5 na fórmula Mosler.</p>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 40%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Entrada de Agressão</th>
+<th style="text-align: right;">Peso</th>
+<th>Justificativa</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Contexto municipal conjunto SINESP/IBGE</td>
+<td style="text-align: right;"><strong>75%</strong></td>
+<td>Dar maior participação à medida criminal territorial publicada e
+auditável.</td>
+</tr>
+<tr class="even">
+<td>Exposição da atividade registrada no CSV</td>
+<td style="text-align: right;"><strong>25%</strong></td>
+<td>Incorporar diferenças operacionais sem permitir que uma avaliação
+isolada substitua todo o contexto territorial.</td>
+</tr>
+</tbody>
+</table>
+<p>Esses 75/25 também são hipóteses. O contexto municipal continua sendo
+uma proxy com limitações, mesmo com peso maior. O peso da exposição não
+é garantia de correção de um crime inadequado para a atividade. Perfis
+muito diferentes, como um escritório, uma transportadora e um banco,
+precisam de validação substantiva e eventualmente configurações
+próprias, versionadas.</p>
+<p>Não atribuímos um “percentual global ao IBGE” porque população e
+código não são um escore independente de perigo. O IBGE participa de
+todas as taxas e da suavização. Os percentuais acima pesam indicadores
+comparáveis, e não arquivos brutos. O cruzamento conjunto das fontes não
+exige que cada uma receba um terço.</p>
+<h2 id="critérios-mosler-por-estabelecimento">5. Critérios Mosler por
+estabelecimento</h2>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Critério</th>
+<th>O que avaliamos</th>
+<th>Origem e apoio documental</th>
+<th>Âncoras da escala adotada</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>F — Função</strong></td>
+<td>Quanto um evento comprometeria a função principal da unidade.</td>
+<td>CSV, operação descrita, patrimônio, estoque e continuidade.</td>
+<td>1: impacto desprezível; 3: comprometimento parcial relevante; 5:
+paralisação da função essencial.</td>
+</tr>
+<tr class="even">
+<td><strong>S — Substituição</strong></td>
+<td>Dificuldade de repor bens/recursos e restabelecer a função.</td>
+<td>CSV e confirmação de reposição, fornecedores e alternativas.</td>
+<td>1: reposição simples e acessível; 3: dificuldade intermediária; 5:
+substituição inviável ou extremamente difícil no horizonte
+analisado.</td>
+</tr>
+<tr class="odd">
+<td><strong>P — Profundidade</strong></td>
+<td>Gravidade das repercussões sobre pessoas, confiança e continuidade
+das relações.</td>
+<td>Avaliação documentada, não inferida automaticamente de CNAE ou
+cidade.</td>
+<td>1: repercussão mínima; 3: relevante; 5: muito grave e
+persistente.</td>
+</tr>
+<tr class="even">
+<td><strong>E — Extensão</strong></td>
+<td>Alcance geográfico/operacional dos efeitos do evento.</td>
+<td>CSV e declaração da abrangência da operação.</td>
+<td>1: efeito individual; 2: local; 3: regional; 4: nacional; 5:
+internacional.</td>
+</tr>
+<tr class="odd">
+<td><strong>A — Agressão</strong></td>
+<td>Condições relativas de ocorrência no modelo contextual.</td>
+<td>SINESP e IBGE cruzados com exposição da atividade do CSV.</td>
+<td>Nota 1–5 calculada pela adaptação descrita acima. Não é
+probabilidade.</td>
+</tr>
+<tr class="even">
+<td><strong>V — Vulnerabilidade</strong></td>
+<td>Fragilidade dos controles de proteção e de resposta da unidade.</td>
+<td>Controles efetivamente declarados e verificados no
+CSV/questionário.</td>
+<td>1: proteção e resposta consistentes; 3: proteção parcial; 5:
+fragilidade elevada, documentada.</td>
+</tr>
+</tbody>
+</table>
+<p>F, S, P, E e V são notas qualitativas com avaliador, data e
+evidências. Os níveis 2 e 4 representam situações intermediárias entre
+as âncoras, com justificativa obrigatória no registro. A escala é uma
+operacionalização do projeto; não uma calibração ou escala universal
+oficial. Não consultamos especialistas para preencher essas notas nesta
+etapa.</p>
+<p>O valor de um bem pode ajudar a discutir consequências e reposição,
+mas sozinho não define F ou S. Ter vários imóveis não comprova alcance
+nacional. Uma nota V não é calculada a partir de renda municipal ou
+reputação de um bairro. Informação desconhecida fica ausente; não recebe
+nota 1, 3 ou 5 por padrão.</p>
+<p>A nota de exposição da atividade <code>X</code> segue a mesma
+orientação documentada: 1 para baixa exposição operacional externa de
+bens/valores; 3 para exposição intermediária; 5 para
+circulação/exposição frequente e relevante. Ela descreve condições de
+contato/exposição. V descreve fragilidade de controles, evitando
+registrar a mesma característica como se fossem duas evidências
+independentes.</p>
+<h2 id="fórmula-do-índice">6. Fórmula do índice</h2>
+<p>Preservamos a formulação usual de Mosler:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo>=</mo><mi>F</mi><mo>×</mo><mi>S</mi><mo>,</mo><mspace width="2.0em"></mspace><mi>D</mi><mo>=</mo><mi>P</mi><mo>×</mo><mi>E</mi><mo>,</mo><mspace width="2.0em"></mspace><mi>C</mi><mo>=</mo><mi>I</mi><mo>+</mo><mi>D</mi></mrow><annotation encoding="application/x-tex">
+I=F\times S,\qquad D=P\times E,\qquad C=I+D
+</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>R</mi><mo>=</mo><mi>A</mi><mo>×</mo><mi>V</mi><mo>,</mo><mspace width="2.0em"></mspace><mi>E</mi><mi>R</mi><mo>=</mo><mi>C</mi><mo>×</mo><mi>P</mi><mi>R</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>F</mi><mi>S</mi><mo>+</mo><mi>P</mi><mi>E</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>A</mi><mi>V</mi></mrow><annotation encoding="application/x-tex">
+PR=A\times V,\qquad ER=C\times PR=(FS+PE)AV
+</annotation></semantics></math></p>
+<p><code>PR</code> é o produto operacional de duas notas ordinais,
+usualmente denominado “probabilidade” em apresentações do método. Aqui o
+identificamos como <strong>produto Agressão–Vulnerabilidade</strong>
+para não confundi-lo com uma probabilidade estatística entre 0 e 1.</p>
+<p>Não acrescentamos pesos percentuais arbitrários aos seis critérios.
+Eles já participam por produtos e soma na estrutura Mosler. Os pesos
+escolhidos estão nas variáveis que alimentam A, e isso é identificado
+como adaptação. F, S, P, E e V vêm do perfil e das avaliações
+documentadas da unidade.</p>
+<p>Com notas de 1 a 5, o menor ER possível é 2 e o maior é 1.250. A
+conversão é:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Í</mi><mi>n</mi><mi>d</mi><mi>i</mi><mi>c</mi><msub><mi>e</mi><mrow><mn>0</mn><mi>–</mi><mn>100</mn></mrow></msub><mo>=</mo><mn>100</mn><mo>×</mo><mfrac><mrow><mi>E</mi><mi>R</mi><mo>−</mo><mn>2</mn></mrow><mrow><mn>1250</mn><mo>−</mo><mn>2</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">
+Índice_{0–100}=100\times\frac{ER-2}{1250-2}
+</annotation></semantics></math></p>
+<p>É uma transformação da escala, não um percentil nacional nem
+probabilidade de sinistro. Zero representa o menor escore possível no
+modelo, não ausência comprovada de risco. O produto de escalas ordinais
+é uma escolha de modelagem do método: não permite interpretar o dobro do
+escore como o dobro do risco real.</p>
+<h3 id="faixas-adotadas-e-compatibilidade-com-o-formulário">Faixas
+adotadas e compatibilidade com o formulário</h3>
+<table>
+<thead>
+<tr class="header">
+<th>ER Mosler</th>
+<th>Faixa Mosler operacional</th>
+<th>Faixa simplificada do projeto</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2 a 250</td>
+<td>Muito baixo</td>
+<td>Baixo</td>
+</tr>
+<tr class="even">
+<td>251 a 500</td>
+<td>Baixo</td>
+<td>Baixo</td>
+</tr>
+<tr class="odd">
+<td>501 a 750</td>
+<td>Normal</td>
+<td>Moderado</td>
+</tr>
+<tr class="even">
+<td>751 a 1.000</td>
+<td>Alto</td>
+<td>Alto</td>
+</tr>
+<tr class="odd">
+<td>1.001 a 1.250</td>
+<td>Muito alto</td>
+<td>Muito alto</td>
+</tr>
+</tbody>
+</table>
+<p>As faixas do projeto unem as duas primeiras classes. Não reutilizamos
+os cortes 25/50/75 do antigo índice de percentis para interpretar o
+Mosler. Guardamos as duas classificações para evitar confusão. Esses
+cortes são convenções operacionais; não demonstram frequência ou
+severidade esperada de sinistro.</p>
+<h2 id="exemplo-de-cálculo-para-apresentar">7. Exemplo de cálculo para
+apresentar</h2>
+<p><strong>Exemplo inteiramente ilustrativo; não descreve uma empresa da
+base real.</strong></p>
+<p>Admitindo que o cruzamento SINESP/IBGE produza percentis 80 para
+carga, 60 para veículos, 70 para latrocínio e 50 para instituições
+financeiras:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mi>m</mi></msub><mo>=</mo><mn>0</mn><mo>,</mo><mn>45</mn><mrow><mo stretchy="true" form="prefix">(</mo><mn>80</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mn>0</mn><mo>,</mo><mn>35</mn><mrow><mo stretchy="true" form="prefix">(</mo><mn>60</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mn>0</mn><mo>,</mo><mn>15</mn><mrow><mo stretchy="true" form="prefix">(</mo><mn>70</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mn>0</mn><mo>,</mo><mn>05</mn><mrow><mo stretchy="true" form="prefix">(</mo><mn>50</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>70</mn></mrow><annotation encoding="application/x-tex">
+R_m=0,45(80)+0,35(60)+0,15(70)+0,05(50)=70
+</annotation></semantics></math></p>
+<p>Com exposição da atividade <code>X=4</code>, obtemos:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mrow><mi>m</mi><mi>u</mi><mi>n</mi><mi>i</mi><mi>c</mi><mi>i</mi><mi>p</mi><mi>a</mi><mi>l</mi></mrow></msub><mo>=</mo><mn>1</mn><mo>+</mo><mn>4</mn><mrow><mo stretchy="true" form="prefix">(</mo><mn>70</mn><mi>/</mi><mn>100</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>3</mn><mo>,</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">
+A_{municipal}=1+4(70/100)=3,8
+</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mrow><mi>c</mi><mi>o</mi><mi>n</mi><mi>t</mi><mi>í</mi><mi>n</mi><mi>u</mi><mi>o</mi></mrow></msub><mo>=</mo><mn>0</mn><mo>,</mo><mn>75</mn><mrow><mo stretchy="true" form="prefix">(</mo><mn>3</mn><mo>,</mo><mn>8</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mn>0</mn><mo>,</mo><mn>25</mn><mrow><mo stretchy="true" form="prefix">(</mo><mn>4</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>3</mn><mo>,</mo><mn>85</mn><mo>⇒</mo><mi>A</mi><mo>=</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">
+A_{contínuo}=0,75(3,8)+0,25(4)=3,85\Rightarrow A=4
+</annotation></semantics></math></p>
+<p>Para <code>F=4</code>, <code>S=4</code>, <code>P=3</code>,
+<code>E=2</code> e <code>V=3</code>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mi>R</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>4</mn><mo>×</mo><mn>4</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>3</mn><mo>×</mo><mn>2</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">]</mo></mrow><mo>×</mo><mn>4</mn><mo>×</mo><mn>3</mn><mo>=</mo><mn>264</mn></mrow><annotation encoding="application/x-tex">
+ER=[(4\times4)+(3\times2)]\times4\times3=264
+</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Í</mi><mi>n</mi><mi>d</mi><mi>i</mi><mi>c</mi><mi>e</mi><mo>=</mo><mn>100</mn><mrow><mo stretchy="true" form="prefix">(</mo><mn>264</mn><mo>−</mo><mn>2</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>/</mi><mn>1248</mn><mo>≈</mo><mn>20</mn><mo>,</mo><mn>99</mn></mrow><annotation encoding="application/x-tex">
+Índice=100(264-2)/1248\approx20,99
+</annotation></semantics></math></p>
+<p>O resultado está na faixa Mosler <strong>baixo</strong>. O contexto
+municipal 70 e o índice final 20,99 medem objetos diferentes; não são
+dois cálculos concorrentes de probabilidade. O segundo incorpora
+consequências e vulnerabilidade da unidade.</p>
+<p>No mesmo município, outra unidade com <code>F=5</code>,
+<code>S=5</code>, <code>P=4</code>, <code>E=4</code> e <code>V=5</code>,
+mantendo <code>A=4</code>, teria <code>ER=820</code>, índice
+aproximadamente <strong>65,54</strong>, faixa <strong>alto</strong>.
+Isso demonstra como as três fontes se encontram numa avaliação
+individualizada.</p>
+<h2 id="qualidade-ausências-e-sensibilidade">8. Qualidade, ausências e
+sensibilidade</h2>
+<p>Não multiplicamos o índice por um “peso de confiança”. Isso faria
+informação incompleta diminuir artificialmente o risco. Completude,
+defasagem e qualidade são apresentadas separadamente.</p>
+<ul>
+<li>Sem município correspondente, população válida, meses completos ou
+uma nota obrigatória documentada, o resultado fica
+<strong>PENDENTE_DADOS</strong>, com índice nulo.</li>
+<li>Uma contagem zero explicitamente publicada permanece zero; mês
+ausente não recebe zero. A ausência de uma natureza não redistribui
+automaticamente seu peso.</li>
+<li>População muito antiga e série criminal defasada recebem avisos. A
+janela e os anos de referência permanecem visíveis. População do Censo
+2022 não é apresentada como estimativa atual.</li>
+<li>Para cada peso de crime e cada peso de Agressão, calculamos cenários
+com variação relativa de <strong>−20% e +20%</strong>, um de cada vez.
+Os pesos são renormalizados apenas nesses cenários explicitamente
+identificados.</li>
+<li>Registramos mínimo e máximo encontrados, mudança de faixa e cada
+cenário. São cenários de sensibilidade, <strong>não intervalo de
+confiança</strong>, nem limites matemáticos para todas as combinações
+possíveis de pesos.</li>
+<li>O arredondamento de A pode produzir saltos de escore perto dos
+limiares. A auditoria guarda tanto A contínuo quanto A inteiro para
+permitir revisão.</li>
+</ul>
+<p>Além dessa variação automatizada, a validação deverá avaliar perfis
+diferentes, seleção de crimes, escalas qualitativas e estabilidade
+temporal. Não basta a faixa ficar estável nos 12 cenários de pesos para
+considerar o modelo validado.</p>
+<h2 id="situação-dos-dados-e-o-que-ainda-não-foi-executado">9. Situação
+dos dados e o que ainda não foi executado</h2>
+<p>O esquema SQLite e os importadores já existem. Nesta etapa
+implementamos o cruzamento e a avaliação Mosler em código, mas não
+recuperamos o CSV integral dos 2.978 estabelecimentos nem completamos o
+banco oficial SINESP/IBGE. As tentativas anteriores de coleta sofreram
+bloqueio de rede e desconexão. Não calculamos um ranking real desses
+estabelecimentos neste relatório.</p>
+<p>O cadastro conhecido do projeto fornece informações
+financeiras/operacionais, mas não comprova que existam avaliações F, S,
+P, E, V, exposição da atividade, avaliador, data e evidências. Esses
+campos precisam ser preenchidos a partir de dados e declarações
+verificáveis. A implementação não os inventa.</p>
+<p>A auditoria versionada na branch
+<code>codex/guia-atualizado-personalizacao</code> registra um arquivo
+SINESP 2025 com 31 categorias, sem “roubo em comércio”. Essa informação
+foi consultada como registro de outra execução, não como nova inspeção
+do arquivo original nesta tarefa. Veículos, carga, bancos e latrocínio
+continuam sendo proxies contextuais; não equivalem à frequência de roubo
+empresarial de cada unidade.</p>
+<p>Também faltam avaliação especializada das escalas, calibração,
+análise de subnotificação e comparação com desfechos externos. Mais
+complexidade no cruzamento não elimina essas limitações.</p>
+<h2 id="reproduzir-a-implementação">10. Reproduzir a implementação</h2>
+<p>Arquivos principais:</p>
+<ul>
+<li><code>config/seguranca_mosler.json</code>: pesos, justificativas e
+versão.</li>
+<li><code>seguranca/mosler.py</code>: cruzamento, fórmula, pendências e
+sensibilidade.</li>
+<li><code>examples/estabelecimentos_mosler_modelo.csv</code>: somente
+cabeçalho do CSV; sem dados fictícios de produção.</li>
+<li><code>tests/test_mosler_integrado.py</code>: testes com fixtures
+sintéticas isoladas.</li>
+</ul>
+<p>O CSV consolidado utiliza:</p>
+<pre class="text"><code>empresa_id, imovel_id, codigo_ibge_municipio,
+mosler_f, mosler_s, mosler_p, mosler_e, mosler_v,
+exposicao_atividade_1a5, avaliador_mosler,
+data_avaliacao_mosler, evidencias_mosler</code></pre>
+<p>As notas têm valores inteiros de 1 a 5. A data é ISO
+<code>AAAA-MM-DD</code>. Pode-se acrescentar <code>uf_real</code> para
+validar a compatibilidade entre UF e código municipal. Preservar os
+arquivos originais ao preparar esse CSV; avaliações e evidências
+adicionadas devem ser distinguíveis dos campos originalmente
+fornecidos.</p>
+<p>Depois de importar os arquivos oficiais e preparar as avaliações
+documentadas:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /workspace/BB-Dataton</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/workspace/.venvs/bb-dataton/bin/python</span> <span class="at">-m</span> seguranca avaliar-mosler <span class="dt">\</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--estabelecimentos</span> CAMINHO_DO_CSV_CONSOLIDADO <span class="dt">\</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--fim</span> AAAA-MM <span class="dt">\</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--data-analise</span> AAAA-MM-DD <span class="dt">\</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">--saida</span> data/seguranca/mosler</span></code></pre></div>
+<p>Os parâmetros acima são marcadores, não arquivos supostamente
+baixados. O comando lê o SQLite em modo somente leitura e gera:</p>
+<ol type="1">
+<li><code>indice_estabelecimentos_mosler.csv</code>, com uma linha por
+unidade;</li>
+<li><code>auditoria_mosler.json</code>, com critérios, contexto, pesos e
+cenários;</li>
+<li><code>cobertura_mosler.csv</code>, com calculados e pendentes por
+município do CSV;</li>
+<li><code>manifesto_mosler.json</code>, com versão, configuração e
+hashes das entradas/saídas.</li>
+</ol>
+<p>Código de saída 0 significa que todas as unidades puderam ser
+calculadas; código 2 sinaliza pendências ou erro. Mesmo o código 0 não
+significa validação estatística ou aceitação contratual. O comando
+municipal anterior <code>gerar-indice</code> mantém o modelo CRITIC de
+comparação; os arquivos e significados são diferentes.</p>
+<p>O novo resultado por unidade ainda precisa ser conectado ao fluxo do
+formulário que identifica ou avalia o estabelecimento. A consulta
+municipal existente continua sendo apenas contextual; não foi
+apresentada como se já entregasse um Mosler individual sem os campos
+necessários.</p>
+<h2 id="roteiro-curto-para-a-equipe-apresentar">11. Roteiro curto para a
+equipe apresentar</h2>
+<blockquote>
+<p>“Nós cruzamos os dados do IBGE, do SINESP e dos estabelecimentos em
+um registro único por unidade. O IBGE fornece o município e a população
+para normalizar as ocorrências, o SINESP descreve o contexto criminal e
+o CSV caracteriza impactos, exposição e vulnerabilidade da operação.
+Aplicamos Mosler para combinar esses elementos. Atribuímos pesos
+iniciais às naturezas criminais por pertinência ao contexto empresarial
+e documentamos a participação do contexto municipal e da atividade no
+critério Agressão. Esses pesos são hipóteses explícitas, sujeitas a
+análise de sensibilidade. O índice prioriza a análise de proteção; não é
+uma probabilidade de roubo, uma cotação ou uma validação atuarial. A
+execução com a base completa e a calibração externa ainda fazem parte da
+próxima etapa.”</p>
+</blockquote>
+<h2 id="fontes-e-responsabilidade-metodológica">12. Fontes e
+responsabilidade metodológica</h2>
+<ul>
+<li>IBGE, <a href="https://servicodados.ibge.gov.br/api/docs/localidades">API de
+localidades</a> e <a href="https://sidra.ibge.gov.br/tabela/4714">agregado 4714 — Censo
+2022</a>.</li>
+<li>Ministério da Justiça, <a href="https://www.gov.br/mj/pt-br/assuntos/sua-seguranca/seguranca-publica/estatistica/dados-nacionais-1/base-de-dados-e-notas-metodologicas-dos-gestores-estaduais-sinesp-vde-2022-e-2023">página
+oficial SINESP/VDE</a>.</li>
+<li>Auditoria do projeto em outra branch: <a href="https://github.com/0mthsxz0/BB-Dataton/blob/codex/guia-atualizado-personalizacao/CONFIABILIDADE_SEGURANCA.md">CONFIABILIDADE_SEGURANCA.md</a>.</li>
+<li>Implementações públicas consultadas para referência da formulação
+Mosler: <a href="https://github.com/DanielDS5/mosler">DanielDS5/mosler</a> e <a href="https://github.com/nestorPons/mosler">nestorPons/mosler</a>. São
+exemplos de software, não uma norma oficial ou validação científica dos
+pesos deste projeto. Não incorporamos seu código; a implementação local
+inclui validações próprias.</li>
+<li>Os pesos 45/35/15/5 e 75/25, a operacionalização das escalas, a
+normalização para 0–100 e a combinação das classes são decisões desta
+versão do projeto. Nenhuma dessas escolhas é atribuída ao IBGE, ao
+SINESP ou a uma validação empírica inexistente.</li>
+</ul>
+</body>
+</html>

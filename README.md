@@ -19,6 +19,11 @@ Veja [a auditoria, as saídas e a reprodução](docs/VALIDACAO_SEGURANCA_2025.md
 
 ## Base de segurança municipal
 
+**Modelo integrado proposto:** o [relatório Mosler](docs/RELATORIO_INDICE_SEGURANCA_MOSLER.md)
+explica o cruzamento conjunto IBGE + SINESP + CSV por estabelecimento, os pesos
+experimentais e a fórmula. A implementação é executada por `python -m seguranca
+avaliar-mosler --help`; requer notas qualitativas documentadas, não presumidas.
+
 A branch `dados-de-seguranca` inclui coleta SINESP/IBGE, banco SQLite consultável,
 índice relativo de roubo com suavização e pesos CRITIC, exportação CSV e integração
 com o formulário. Consulte [fontes, comandos, método e limitações](docs/DADOS_DE_SEGURANCA.md).
