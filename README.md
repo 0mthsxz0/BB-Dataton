@@ -1,9 +1,16 @@
 # Protege Empresa | BB Datathon
 
-## Base de segurança: validação real
+## Modelo de segurança: cruzamento integrado com Mosler
 
-A [hierarquia de fontes](docs/HIERARQUIA_FONTES.md) já está ativa: produtor estadual
-oficial, consolidação oficial e republicação verificada. Ela selecionou 16.272
+O modelo proposto cruza IBGE, SINESP e CSV em cada estabelecimento, conforme o
+[relatório Mosler e justificativa dos pesos](docs/RELATORIO_INDICE_SEGURANCA_MOSLER.md).
+Use `python -m seguranca avaliar-mosler --help`. O novo comando preserva a
+proveniência SINESP e não aciona a prioridade entre fornecedores da etapa anterior.
+Pesos e notas qualitativas são experimentais e exigem evidências documentadas.
+
+### Histórico da coleta e das fontes complementares
+
+A [hierarquia de fontes anterior](docs/HIERARQUIA_FONTES.md) selecionou 16.272
 observações mensais completas do RJ/RS, com algum indicador para 527 dos 2.978
 estabelecimentos; 302 têm roubo em comércio. Fontes incompatíveis ou incompletas
 cedem lugar à próxima, com motivos registrados. O índice combinado ainda tem
@@ -27,8 +34,9 @@ avaliar-mosler --help`; requer notas qualitativas documentadas, não presumidas.
 A branch `dados-de-seguranca` inclui coleta SINESP/IBGE, banco SQLite consultável,
 índice relativo de roubo com suavização e pesos CRITIC, exportação CSV e integração
 com o formulário. Consulte [fontes, comandos, método e limitações](docs/DADOS_DE_SEGURANCA.md).
-Os downloads oficiais estão pendentes de liberação de rede do ambiente; a base
-operacional ainda não contém ocorrências reais. Dados ausentes não recebem índice zero.
+Os dados reais e os limites de granularidade constam da validação acima. Os
+arquivos brutos permanecem locais e podem não existir em outra instância do
+ambiente. Dados ausentes não recebem índice zero.
 
 ## Portal e formulário web
 

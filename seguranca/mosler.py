@@ -7,6 +7,7 @@ from datetime import date, datetime
 from decimal import Decimal, ROUND_HALF_UP
 from pathlib import Path
 from zoneinfo import ZoneInfo
+from urllib.parse import urlsplit
 import copy
 import hashlib
 import json
@@ -95,6 +96,36 @@ def calcular_mosler(f, s, p, e, a, v):
             'faixa_mosler': tradicional, 'faixa_projeto': projeto}
 
 
+def observacoes_sinesp(con, inicio, fim):
+    """Seleciona proveniência SINESP, sem acionar a hierarquia de fornecedores.
+
+    Uma observação estadual complementar no mesmo SQLite não passa a ser SINESP.
+    A marcação da fonte é declarada na importação ou identificada pela URL MJ.
+    Registros VDE em vítimas ou sem município não entram em ocorrencias.
+    """
+    selecionadas, fontes_usadas = {}, set()
+    fontes = {r['id']: dict(r) for r in con.execute('SELECT * FROM fontes')}
+    admitidas = set()
+    for fonte_id, fonte in fontes.items():
+        meta = json.loads(fonte['metadados'])
+        url = urlsplit(fonte['url'])
+        origem = meta.get('origem_dados', meta.get('fornecedor', ''))
+        oficial_mj = url.scheme == 'https' and url.hostname == 'www.gov.br' and url.path.startswith('/mj/')
+        if str(origem).upper() == 'SINESP' or oficial_mj:
+            admitidas.add(fonte_id)
+    for r in con.execute('''SELECT o.*,v.fonte_id FROM ocorrencias o
+        JOIN ocorrencia_fontes v USING(codigo_ibge,crime,mes)
+        WHERE o.mes BETWEEN ? AND ?''', (inicio, fim)):
+        if r['fonte_id'] not in admitidas:
+            continue
+        chave = (r['codigo_ibge'], r['crime'], r['mes'])
+        selecionadas[chave] = {'codigo_ibge': r['codigo_ibge'], 'crime': r['crime'],
+                               'mes': r['mes'], 'ocorrencias': r['ocorrencias']}
+        fontes_usadas.add(r['fonte_id'])
+    df = pd.DataFrame(selecionadas.values(), columns=['codigo_ibge', 'crime', 'mes', 'ocorrencias'])
+    return df, sorted(fontes_usadas)
+
+
 def construir_contexto(con, config, fim, data_analise):
     """Uma linha municipal: denominadores IBGE e séries SINESP na mesma grade.
 
@@ -114,9 +145,7 @@ def construir_contexto(con, config, fim, data_analise):
     locais = locais.set_index('codigo_ibge')
     pesos = {crime_canonico(c): w for c, w in config['pesos_crimes'].items()}
     crimes = list(pesos)
-    observacoes = pd.DataFrame([dict(r) for r in con.execute(
-        'SELECT * FROM ocorrencias WHERE mes BETWEEN ? AND ?', (meses[0], meses[-1]))],
-        columns=['codigo_ibge', 'crime', 'mes', 'ocorrencias'])
+    observacoes, fontes_sinesp = observacoes_sinesp(con, meses[0], meses[-1])
     grade = pd.MultiIndex.from_product([locais.index, crimes], names=['codigo_ibge', 'crime'])
     agregado = observacoes[observacoes.crime.isin(crimes)].groupby(['codigo_ibge', 'crime']).agg(
         ocorrencias_12m=('ocorrencias', 'sum'), meses=('mes', 'nunique')).reindex(grade)
@@ -159,9 +188,12 @@ def construir_contexto(con, config, fim, data_analise):
             'completude_sinesp_0_1': float(contagem.loc[codigo].sum()/(12*len(crimes))),
             'detalhes_contexto': detalhes_municipais})
     diagnostico = {'inicio': meses[0][:7], 'fim': fim, 'coorte_municipal': len(coorte), 'priors': priors,
+                  'fontes_sinesp_utilizadas': fontes_sinesp,
                   'alertas': ['Contexto relativo aos municípios com dados completos; não mede probabilidade de roubo empresarial.']}
     if contexto.notna().sum() == 0:
         diagnostico['alertas'].append('Contexto indisponível: conferir coorte, meses, denominadores e dispersão de cada crime.')
+    if not fontes_sinesp:
+        diagnostico['alertas'].append('Sem ocorrências municipais com proveniência SINESP; fontes SSP no mesmo banco não são usadas como substitutas neste modelo.')
     return pd.DataFrame(linhas), diagnostico
 
 

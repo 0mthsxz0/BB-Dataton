@@ -27,7 +27,7 @@ def banco_mosler(tmp_path, cfg_mosler):
     with conectar(db) as con:
         inicializar(con)
         p = tmp_path/'fonte.txt'; p.write_text('fixture, não são dados oficiais')
-        fonte = registrar_fonte(con, p, 'fixture:mosler')
+        fonte = registrar_fonte(con, p, 'fixture:mosler', {'origem_dados': 'SINESP', 'sintetico': True})
         counts = [[10, 3, 80, 2, 40, 15], [7, 90, 2, 40, 10, 20],
                   [10, 40, 5, 2, 80, 30], [60, 3, 12, 70, 4, 10]]
         for i in range(6):
@@ -38,6 +38,8 @@ def banco_mosler(tmp_path, cfg_mosler):
                 for mes in range(1, 13):
                     con.execute('INSERT INTO ocorrencias VALUES(?,?,?,?)',
                                 (codigo, crime, f'2024-{mes:02d}-01', counts[j][i]))
+                    con.execute('INSERT INTO ocorrencia_fontes VALUES(?,?,?,?)',
+                                (codigo, crime, f'2024-{mes:02d}-01', fonte))
     return db
 
 
@@ -116,6 +118,7 @@ def test_sem_nota_ou_evidencia_csv_nao_gera_indice(banco_mosler, cfg_mosler, tmp
 
 def test_mes_ausente_nao_vira_zero_nem_renormaliza_pesos(banco_mosler, cfg_mosler, tmp_path):
     with conectar(banco_mosler) as con:
+        con.execute("DELETE FROM ocorrencia_fontes WHERE codigo_ibge='3550000' AND crime='roubo de carga' AND mes='2024-02-01'")
         con.execute("DELETE FROM ocorrencias WHERE codigo_ibge='3550000' AND crime='roubo de carga' AND mes='2024-02-01'")
     df, _ = cruzar(banco_mosler, escrever(tmp_path, [unidade()]), cfg_mosler)
     assert df.er_mosler.isna().all()
@@ -131,6 +134,7 @@ def test_municipio_desconhecido_permanece_com_pendencia(banco_mosler, cfg_mosler
 
 def test_somente_registro_ibge_sem_sinesp_e_pendente(banco_mosler, cfg_mosler, tmp_path):
     with conectar(banco_mosler) as con:
+        con.execute('DELETE FROM ocorrencia_fontes')
         con.execute('DELETE FROM ocorrencias')
     df, d = cruzar(banco_mosler, escrever(tmp_path, [unidade()]), cfg_mosler)
     assert d['calculados'] == 0 and df.contexto_roubo_0_100.isna().all()
@@ -193,3 +197,12 @@ def test_cli_exporta_todas_as_unidades_com_auditoria_e_pendencias(banco_mosler, 
     manifesto = json.loads((destino/'manifesto_mosler.json').read_text())
     assert len(manifesto['arquivos_sha256']['indice_estabelecimentos_mosler.csv']) == 64
     assert (destino/'cobertura_mosler.csv').exists()
+
+
+def test_ssp_no_mesmo_banco_nao_substitui_sinesp(banco_mosler, cfg_mosler, tmp_path):
+    with conectar(banco_mosler) as con:
+        con.execute('UPDATE fontes SET url=?,metadados=?', ('https://ssp.exemplo.gov.br/arquivo', json.dumps({'fornecedor': 'SSP'})))
+    df, d = cruzar(banco_mosler, escrever(tmp_path, [unidade()]), cfg_mosler)
+    assert d['calculados'] == 0 and df.er_mosler.isna().all()
+    assert d['fontes_sinesp_utilizadas'] == []
+    assert any('não são usadas' in a for a in d['alertas'])

@@ -92,14 +92,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
 </header>
 <h1 id="índice-integrado-de-segurança-ibge-sinesp-e-estabelecimentos">Índice
 integrado de segurança: IBGE, SINESP e estabelecimentos</h1>
-<p><strong>Projeto:</strong> BB-Dataton / Protege Empresa<br />
+<p><strong>Projeto:</strong> BB-Dataton / Protege Empresa<br>
 <strong>Método:</strong> Mosler com agressão contextual adaptada ao
-projeto<br />
-<strong>Versão:</strong> <code>mosler-integrado-1.0</code><br />
-<strong>Data do relatório:</strong> 28/10/2026<br />
-<strong>Situação:</strong> metodologia implementada e testada com dados
-sintéticos; pesos experimentais, ainda sem calibração por sinistros ou
-validação com a base completa.</p>
+projeto<br> <strong>Versão:</strong>
+<code>mosler-integrado-1.0</code><br> <strong>Data do
+relatório:</strong> 28/10/2026<br> <strong>Situação:</strong>
+metodologia implementada e testada com dados sintéticos; pesos
+experimentais, ainda sem calibração por sinistros ou validação com a
+base completa.</p>
 <h2 id="resumo-para-apresentação">1. Resumo para apresentação</h2>
 <p>Estruturamos uma análise que cruza três conjuntos de dados em cada
 estabelecimento: o IBGE caracteriza e identifica o município; o SINESP
@@ -186,6 +186,12 @@ uma única vez. A contagem de crimes é agregada por município/crime/mês
 novamente a cada estabelecimento. A coorte municipal usada para
 suavização e percentis não muda quando o CSV contém mais empresas de uma
 mesma cidade.</p>
+<p>O novo comando não executa o resolvedor hierárquico de fornecedores.
+Ele admite ocorrências com proveniência SINESP registrada, cruza essas
+observações com IBGE e CSV e mantém pendência se elas forem
+incompatíveis ou ausentes. Registros de SSPs presentes no mesmo SQLite
+continuam disponíveis para consulta separada, sem serem apresentados
+como se fossem observações SINESP.</p>
 <p>O identificador final é <code>(empresa_id, imovel_id)</code>,
 preservando <code>codigo_ibge_municipio</code>. Não apresentamos um
 índice individual como se fosse um novo indicador oficial do município.
@@ -579,24 +585,76 @@ temporal. Não basta a faixa ficar estável nos 12 cenários de pesos para
 considerar o modelo validado.</p>
 <h2 id="situação-dos-dados-e-o-que-ainda-não-foi-executado">9. Situação
 dos dados e o que ainda não foi executado</h2>
-<p>O esquema SQLite e os importadores já existem. Nesta etapa
-implementamos o cruzamento e a avaliação Mosler em código, mas não
-recuperamos o CSV integral dos 2.978 estabelecimentos nem completamos o
-banco oficial SINESP/IBGE. As tentativas anteriores de coleta sofreram
-bloqueio de rede e desconexão. Não calculamos um ranking real desses
-estabelecimentos neste relatório.</p>
+<p>Durante a integração desta alteração, recuperamos dois commits novos
+da branch remota, com relatórios de coleta e auditoria executadas em
+outro ambiente. Segundo essas evidências versionadas, o IBGE e o VDE
+2025 foram baixados e o pacote de 2.978 estabelecimentos foi conferido.
+A causa remanescente para a indisponibilidade do índice não é
+simplesmente a antiga falha de download.</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Evidência versionada da execução anterior</th>
+<th>Resultado documentado</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Cadastro IBGE</td>
+<td>5.571 localidades; população estimada 2025, área censitária 2022
+quando disponível.</td>
+</tr>
+<tr class="even">
+<td>Estabelecimentos do desafio</td>
+<td>2.978 unidades em dez municípios/UFs, todas com código IBGE
+correspondente.</td>
+</tr>
+<tr class="odd">
+<td>SINESP VDE 2025</td>
+<td>832.302 linhas; recorte de roubos com 69.510 registros
+preservados.</td>
+</tr>
+<tr class="even">
+<td>Ocorrências de carga, veículos e instituição financeira no VDE
+inspecionado</td>
+<td>Município não informado; contagens estaduais não podem ser rateadas
+artificialmente entre municípios.</td>
+</tr>
+<tr class="odd">
+<td>Latrocínio no VDE inspecionado</td>
+<td>Contagem de vítimas, sem a unidade de ocorrências exigida.</td>
+</tr>
+<tr class="even">
+<td>Fontes estaduais complementares da etapa anterior</td>
+<td>Algum indicador para 527 unidades e roubo em comércio para 302; não
+constituem observações SINESP.</td>
+</tr>
+</tbody>
+</table>
+<p>Esses números são os resultados dos relatórios incorporados ao Git,
+não uma nova execução da base real nesta instância. Os arquivos brutos e
+o pacote completo continuam fora do versionamento e não estavam
+disponíveis neste workspace. Nesta tarefa, implementamos e testamos o
+cruzamento Mosler; não recalculamos um ranking real dos 2.978
+estabelecimentos.</p>
 <p>O cadastro conhecido do projeto fornece informações
 financeiras/operacionais, mas não comprova que existam avaliações F, S,
 P, E, V, exposição da atividade, avaliador, data e evidências. Esses
 campos precisam ser preenchidos a partir de dados e declarações
 verificáveis. A implementação não os inventa.</p>
-<p>A auditoria versionada na branch
-<code>codex/guia-atualizado-personalizacao</code> registra um arquivo
-SINESP 2025 com 31 categorias, sem “roubo em comércio”. Essa informação
-foi consultada como registro de outra execução, não como nova inspeção
-do arquivo original nesta tarefa. Veículos, carga, bancos e latrocínio
-continuam sendo proxies contextuais; não equivalem à frequência de roubo
-empresarial de cada unidade.</p>
+<p>A <a href="VALIDACAO_SEGURANCA_2025.md">validação real
+incorporada</a> também registra 31 categorias no VDE, sem “roubo em
+comércio”. Além da distinção conceitual, a edição inspecionada não
+satisfaz a granularidade/unidade dos quatro critérios propostos.
+Atribuir pesos ou aplicar Mosler não corrige essa incompatibilidade. O
+novo modelo conserva a pendência e não usa a hierarquia antiga para
+preencher os critérios com outra definição. Veículos, carga, bancos e
+latrocínio, quando houver dados municipais admissíveis, serão proxies
+contextuais, não frequência individual de roubo empresarial.</p>
 <p>Também faltam avaliação especializada das escalas, calibração,
 análise de subnotificação e comparação com desfechos externos. Mais
 complexidade no cruzamento não elimina essas limitações.</p>
@@ -678,6 +736,9 @@ localidades</a> e <a href="https://sidra.ibge.gov.br/tabela/4714">agregado 4714 
 <li>Ministério da Justiça, <a href="https://www.gov.br/mj/pt-br/assuntos/sua-seguranca/seguranca-publica/estatistica/dados-nacionais-1/base-de-dados-e-notas-metodologicas-dos-gestores-estaduais-sinesp-vde-2022-e-2023">página
 oficial SINESP/VDE</a>.</li>
 <li>Auditoria do projeto em outra branch: <a href="https://github.com/0mthsxz0/BB-Dataton/blob/codex/guia-atualizado-personalizacao/CONFIABILIDADE_SEGURANCA.md">CONFIABILIDADE_SEGURANCA.md</a>.</li>
+<li>Evidências posteriores incorporadas nesta branch: <a href="VALIDACAO_SEGURANCA_2025.md">VALIDACAO_SEGURANCA_2025.md</a> e <a href="HIERARQUIA_FONTES.md">HIERARQUIA_FONTES.md</a>, esta última
+preservada como histórico da política anterior, sem aplicação automática
+no Mosler integrado.</li>
 <li>Implementações públicas consultadas para referência da formulação
 Mosler: <a href="https://github.com/DanielDS5/mosler">DanielDS5/mosler</a> e <a href="https://github.com/nestorPons/mosler">nestorPons/mosler</a>. São
 exemplos de software, não uma norma oficial ou validação científica dos

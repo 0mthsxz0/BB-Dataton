@@ -366,5 +366,5 @@ def importar_sinesp(con, arquivo, url, mapa=None):
     if contagem['observacoes'] == 0 and contagem['rejeicoes'] == 0:
         raise ValueError('Nenhuma observação municipal importável; confira o esquema e os dados.')
     contagem['folhas_ignoradas'] = sorted(set(folhas_arquivo)-{f['nome'] for f in contagem['folhas']})
-    con.execute('UPDATE fontes SET metadados=? WHERE id=?', (json.dumps(contagem, ensure_ascii=False), fonte))
+    con.execute('UPDATE fontes SET metadados=? WHERE id=?', (json.dumps({'origem_dados': 'SINESP', **contagem}, ensure_ascii=False), fonte))
     return contagem

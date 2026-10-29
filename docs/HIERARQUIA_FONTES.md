@@ -1,5 +1,11 @@
 # Hierarquia de fontes de segurança
 
+**Registro da abordagem anterior.** Para o novo cruzamento IBGE + SINESP + CSV
+por estabelecimento, consulte o [relatório Mosler](RELATORIO_INDICE_SEGURANCA_MOSLER.md).
+O comando `avaliar-mosler` não aciona esta ordem de fornecedores nem usa SSPs
+como substitutas automáticas do SINESP. A implementação abaixo permanece como
+histórico reproduzível e permite consultar indicadores estaduais separadamente.
+
 Implementada na branch `dados-de-seguranca`, com execução real para janeiro a
 dezembro de 2025. A configuração é [config/fontes_seguranca.json](../config/fontes_seguranca.json).
 O cadastro e os denominadores continuam vindo do IBGE; a hierarquia abaixo resolve
