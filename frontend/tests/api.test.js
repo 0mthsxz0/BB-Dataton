@@ -60,3 +60,24 @@ test('passive client identification never reveals company information without ve
   assert.equal(login.status,200);
   assert.match(await login.text(),/Acesso ao painel interno/);
 });
+
+
+test('demonstração pública por ID fica bloqueada até habilitação explícita',async()=>{
+  const prior=process.env.BB_DEMO_ID_LOOKUP;
+  try{
+    delete process.env.BB_DEMO_ID_LOOKUP;
+    const response=await post('/api/demo/empresa',{empresaId:'EMP_TESTE'});
+    assert.equal(response.status,403);
+    assert.match((await response.json()).error,/desativada/i);
+  }finally{
+    if(prior===undefined)delete process.env.BB_DEMO_ID_LOOKUP;
+    else process.env.BB_DEMO_ID_LOOKUP=prior;
+  }
+});
+test('interface pública mantém caminho de ID e não exibe campo CNAE para o cliente',async()=>{
+  const src=await readFile(new URL('../public/quote.js',import.meta.url),'utf8');
+  assert.match(src,/api\/demo\/empresa/);
+  assert.match(src,/CNPJ \(produção\) \/ ID da empresa \(MVP\)/);
+  assert.match(src,/cadastroRecommendationView\(demoResult\.relatorio\)/);
+  assert.match(src,/\$\{internal\?\`<section class="cnae-lookup">/);
+});
