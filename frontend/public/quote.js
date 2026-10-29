@@ -390,6 +390,7 @@ try{
   history.replaceState({quoteStep:step},'',journeyPath);
   document.body.classList.toggle('internal-journey',internal);
   $('.quote-header').innerHTML=internal?'<a class="brand" href="/interno">BB Seguros · Consultoria</a><span>Prospecção ativa · Ambiente local de demonstração</span>':'<a class="brand" href="/">BB Seguros</a><a href="/seguros/seguro-empresarial">← Conheça o seguro</a>';
+  if(!internal){LABELS[0]='Identificação';TITLES[0]='Identifique sua empresa para gerar uma recomendação.';}
   if(internal){TITLES[1]='Painel de prospecção ativa';LABELS[0]='Contato';$('.quote-visual-content').innerHTML='<p>Inteligência para sua consultoria</p><h2>Dados que apoiam boas conversas.</h2><span>Selecione uma empresa, confira os dados e fundamente sua recomendação.</span>';}
   render();
 }catch(error){$('#quote-root').innerHTML=`<div class="quote-load-error" role="alert"><h1>Não foi possível abrir o formulário.</h1><p>${esc(error.message)}</p><button class="btn" id="retry-catalog">Tentar novamente</button></div>`;$('#retry-catalog').addEventListener('click',()=>location.reload());}
