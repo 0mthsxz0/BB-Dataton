@@ -45,6 +45,8 @@ test('public visitor cannot read internal Datathon records',async()=>{
   assert.equal(internal.status,401);
   const publicLinked=await post('/api/recomendacao',{empresaId:'EMP_1',imovelId:'IMO_1'});
   assert.equal(publicLinked.status,403);
+  const byCnae=await post('/api/interno/relatorio-cnae',{cnae:'4771701'});
+  assert.equal(byCnae.status,401);
   const voice=await post('/api/interno/roteiros',{empresaId:'EMP_1',imovelId:'IMO_1'});
   assert.equal(voice.status,401);
 });
