@@ -449,7 +449,7 @@ def analisar_cnae(payload, base=None):
     perfil = perfil_cnae(payload, base)  # valida e normaliza o CNAE
     code = perfil['cnae']
     linhas = [r for r in base.estabelecimentos.to_dict('records')
-              if re.sub(r'\\D', '', str(r.get('cnae_principal', ''))) == code]
+              if re.sub(r'\D', '', str(r.get('cnae_principal', ''))) == code]
     if not linhas:
         raise ValueError('Nenhuma unidade cadastrada com esse CNAE. Confira o código ou utilize o formulário.')
     if len(linhas) == 1:
