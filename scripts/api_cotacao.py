@@ -4,7 +4,7 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from cotacao_service import analisar, analisar_cadastro, analisar_cnae, contexto, consultar_perfil_cnae
+from cotacao_service import analisar, analisar_cadastro, analisar_cnae, contexto, consultar_perfil_cnae, consultar_atividade_cnae
 
 
 def main():
