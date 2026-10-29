@@ -84,6 +84,7 @@ export const server = http.createServer(async (req, res) => {
         const found = searchActivities(index,data.description,{mode:'description',limit:3});
         json(res,200,{...found,engine:'local-rules-tfidf-v2',catalogCount:catalog.activities.length}); return;
       }
+      if (pathname === '/api/cnae/perfil') { json(res,200,await runMotor({action:'perfil_cnae',payload:data})); return; }
       if (pathname === '/api/recomendacao/cadastro') { json(res,200,await runMotor({action:'cadastro',payload:data})); return; }
       if (pathname === '/api/recomendacao') { json(res,200,await runMotor({action:'analisar',payload:data})); return; }
       json(res,404,{error:'API não encontrada.'}); return;

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {initializeProductState, productPayload} from '../public/product-ui.js';
+import {initializeProductState, productPayload, syncPackageState, packageCount} from '../public/product-ui.js';
 
 const rules=JSON.parse(await readFile(new URL('../public/product-rules.json',import.meta.url),'utf8'));
 
@@ -33,4 +33,11 @@ test('changing unit resets operational confirmations and package preferences',()
   initializeProductState(state,rules);
   assert.equal(state.op_delivery,'');assert.equal(state.extra_DELIVERY,false);
   assert.equal(state.adjust_QUEBRA_DE_VIDROS,'');assert.equal(state.priority,'equilibrada');
+});
+
+test('composição retornada inicializa todas as proteções e total unificado',()=>{
+ const state={};initializeProductState(state,rules);
+ const r={personalizacao:{pacote:{plano:'PRATICO',adicionais_condicionais:['DELIVERY','EQUIPAMENTOS_ELETRONICOS'],quantidade_coberturas:10}}};
+ syncPackageState(r,state,rules);assert.equal(state.planId,'893');assert.equal(state.extra_DELIVERY,true);assert.equal(packageCount(r),10);
+ state.excludeExtra_DELIVERY=true;assert.deepEqual(productPayload(state,rules,true).optionalExclusions,['DELIVERY']);
 });

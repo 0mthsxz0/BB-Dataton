@@ -15,6 +15,7 @@ from motor_pontuacao import MotorPontuacao, fator, carregar_config
 from processamento import carregar_base, localizar_dados, caminho_referencia, numero
 from recomendador import recomendar_plano
 from referencias import classe_cnae
+from perfil_cnae import perfil_cnae, CAMPOS as CAMPOS_PERFIL
 from produto import REGRAS, adaptar_catalogo, personalizar
 from rastreabilidade import anexar_evidencias
 
@@ -60,6 +61,10 @@ def contexto(base=None):
         for r in base.estabelecimentos.to_dict('records')]
     return {'baseDisponivel': base is not None, 'estabelecimentos': rows,
             'aviso': 'Base local do Datathon. Não é uma conexão com sistemas bancários de produção.'}
+
+
+def consultar_perfil_cnae(payload,base=None):
+    return perfil_cnae(payload,base if base is not None else base_opcional())
 
 
 def consultar_municipio(city, uf):
@@ -141,6 +146,9 @@ def validar(payload):
             raise ValueError('Informe uma quantidade inteira de itens de vidro ou deixe em branco.')
         if (value == 0) == answers['hasGlass']:
             raise ValueError('A quantidade de itens de vidro não combina com a resposta sobre ter vidros para proteger.')
+    profile_fields = payload.get('profileFields', [])
+    if not isinstance(profile_fields,list) or any(not isinstance(k,str) or k not in CAMPOS_PERFIL for k in profile_fields):
+        raise ValueError('Campos de referência da atividade inválidos.')
     cnae = payload.get('cnae')
     if cnae and (not isinstance(cnae, str) or not re.fullmatch(r'\d{4}-?\d/?\d{2}', cnae)):
         raise ValueError('Informe um CNAE de sete dígitos.')
@@ -172,7 +180,7 @@ def validar_personalizacao(payload):
     if plan == 'ESSENCIAL' and (adjustments.get('include') or adjustments.get('exclude')):
         raise ValueError('Nesta política do guia, ajustes das quatro coberturas são feitos no Prático ou Total.')
     for field, allowed in [('indispensable', list(REGRAS['mandatory']) + REGRAS['adjustable']),
-                           ('optionalCovers', [x['code'] for x in REGRAS['optional']])]:
+                           ('optionalCovers', [x['code'] for x in REGRAS['optional']]), ('optionalExclusions', [x['code'] for x in REGRAS['optional']])]:
         values = payload.get(field, [])
         if not isinstance(values, list) or any(not isinstance(v, str) or v not in allowed for v in values) or len(values) != len(set(values)):
             raise ValueError('Lista de preferências inválida: ' + field)
@@ -248,6 +256,18 @@ def analisar(payload, base=None, municipio_fn=consultar_municipio):
             if key == 'stockValue':
                 record['estoque_pico_estimado'] = float(value)
                 origins['estoque_pico_estimado'] = 'Informado no formulário'
+    profile_fields = payload.get('profileFields', [])
+    if profile_fields:
+        profile = perfil_cnae({'cnae':payload.get('cnae')},base)
+        for key in profile_fields:
+            if key not in profile['valores'] or numero(payload.get(key)) != profile['valores'][key]:
+                raise ValueError('O perfil da atividade mudou. Consulte a referência novamente ou revise os valores.')
+            origins[NUMBER_FIELDS[key]] = 'Estimativa do perfil agregado da atividade: ' + profile['cnae'] + '; mediana, não confirmação do cliente'
+        if 'contentsValue' in profile_fields:
+            record['confianca_bens'] = .35
+            origins['bens_total_referencia'] = origins['bens_ponderados']
+        if 'equipmentValue' in profile_fields:origins['equipamentos_total_referencia'] = origins['equipamentos_ponderados']
+        warnings.append('Foram usados valores estimados do perfil da atividade. Eles precisam de confirmação antes da cotação oficial.')
     if numero(record.get('equipamentos_ponderados')) is not None and numero(record.get('bens_ponderados')) is not None and record['equipamentos_ponderados'] > record['bens_ponderados']:
         raise ValueError('Equipamentos fazem parte dos bens: seu valor não pode superar o total dos bens sem estoque.')
     if numero(record.get('equipamentos_total_referencia')) is not None and numero(record.get('bens_total_referencia')) is not None and record['equipamentos_total_referencia'] > record['bens_total_referencia']:
@@ -318,11 +338,12 @@ def analisar(payload, base=None, municipio_fn=consultar_municipio):
                   prioridade_cliente=payload.get('priority', 'equilibrada'),
                   coberturas_indispensaveis=payload.get('indispensable', []),
                   plano_escolhido=payload.get('selectedPlan'), ajustes_coberturas=payload.get('coverageAdjustments', {}),
-                  adicionais_escolhidos=payload.get('optionalCovers', []))
+                  adicionais_escolhidos=payload.get('optionalCovers', []), adicionais_recusados=payload.get('optionalExclusions', []))
     for key, column in [('propertyStatus','situacao_imovel_cadastral'),('wallMaterial','material_parede_externa_cadastrado'),('propertyRelation','relacao_imovel_confirmada')]:
         if payload.get(key):
             record[column] = payload[key]
             origins[column] = 'Informado no formulário'
+    record['_campos_perfil'] = list(profile_fields)
     record['_origens'] = origins
     motor = MotorFormulario(config=cfg)
     return montar_resultado(record, motor, base.catalogo if base else None, activity, payload['subactivityId'], q, warnings, origins, has_link, base=base if has_link else None)
@@ -361,9 +382,10 @@ def montar_resultado(record, motor, catalog, activity, subactivity_id, q, warnin
             sources[-1]['qualidade'] = indices['ROUBO_FURTO_ARROMBAMENTO']['qualidade_seguranca']
     return clean({'versao': '0.4.0-formulario.2', 'modelo': 'Motor determinístico do MVP + guia item 10',
         'atividade': {'id': activity['id'], 'subactivityId': subactivity_id, 'cnaeUtilizado': record.get('cnae_principal')},
-        'planoId': PLAN_IDS[recommendation['plano_recomendado']], 'indices': indices,
+        'planoId': PLAN_IDS[personalization['pacote']['plano']], 'indices': indices,
         'recomendacao': recommendation, 'dimensionamento': dimensions, 'rastreabilidade': evidence,
         'personalizacao': personalization,
+        'perfilAtividade': {'usado':bool(record.get('_campos_perfil')), 'campos':record.get('_campos_perfil',[])},
         'vidrosDeclarados': {'quantidade': record.get('quantidade_vidros_declarada'),
             'valorReposicaoPendente': numero(record.get('valor_vidros_reposicao_brl')) is None,
             'observacao': 'Quantidade declarada não é convertida automaticamente em custo de reposição.'},
@@ -393,7 +415,12 @@ def analisar_cadastro(payload, base=None):
             warnings.append(f'Sem referência de {label} para esta unidade; componente desconhecido, com confiança reduzida.')
     result = montar_resultado(record, motor, base.catalogo, {'id':None}, None, None, warnings,
                              {k:'Cadastro BB/Datathon' for k in record}, True, base=base)
-    result.update(preliminar=True, modelo='Motor original do MVP aplicado ao cadastro, sem respostas presumidas',
+    fixed = {}
+    for key,column,allowed in [('propertyStatus','situacao_imovel_cadastral',('REGULAR','EM_OBRA','CONDENADO')),('wallMaterial','material_parede_externa_cadastrado',('ALVENARIA','CONCRETO','MADEIRA','MATERIAL_COMBUSTIVEL'))]:
+        if record.get(column) in allowed:fixed[key]=record[column]
+    if record.get('possui_vidros_confirmado') in ('SIM','NAO'):fixed['hasGlass']='yes' if record['possui_vidros_confirmado']=='SIM' else 'no'
+    if fixed.get('hasGlass') == 'no':fixed['glassExposed']='no'
+    result.update(confirmacoesDisponiveis=fixed,preenchimento={key:record[col] for key,col in NUMBER_FIELDS.items() if numero(record.get(col)) is not None},preliminar=True, modelo='Motor original do MVP aplicado ao cadastro, sem respostas presumidas',
                   cadastro={k:record.get(k) for k in ('empresa_id','imovel_id','grupo_atividade','descricao_cnae','porte')},
                   dadosCadastrais={k:record.get(k) for k in ('bens_quantidade','bens_total_referencia','bens_ponderados',
                     'confianca_bens','estoque_medio_estimado','estoque_pico_estimado','quantidade_unidades',

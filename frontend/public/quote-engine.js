@@ -1,3 +1,4 @@
+import { fullName, questionLabel } from './language.js';
 import { indexEvidence, assetEvidence } from './report-evidence.js';
 import { personalizationView } from './product-ui.js';
 /** UI adapter: sends only underwriting inputs, never contact or payment fields. */
@@ -20,7 +21,7 @@ const ORIGIN_LABELS = {bens_ponderados:'Bens no local',equipamentos_ponderados:'
   estoque_medio_estimado:'Estoque',valor_vidros_reposicao_brl:'Vidros',valor_predio_reposicao_brl:'Reconstrução',
   folha_pagamento_mensal:'Folha mensal',despesa_fixa_mensal_estimada:'Despesas fixas',faturamento_mensal:'Faturamento',
   funcionarios_unidade_confirmados:'Empregados na unidade',quantidade_unidades:'Unidades da empresa',valor_aluguel_recorrente:'Aluguel'};
-const esc = value => String(value ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const esc = value => fullName(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 export async function api(url, payload) {
   const response = await fetch(url, payload === undefined ? {cache:'no-store'} : {
@@ -44,7 +45,7 @@ export function syncEmployeeExposure(state,previousEmployees) {
 }
 export function riskPayload(state, questionnaire) {
   const [empresaId, imovelId] = (state.sourceKey || '').split('|');
-  const keys = ['activityId','subactivityId','otherSubactivity','protection','shopping','city','uf','cnae','glassCount',...NUMERIC_FIELDS.map(([key])=>key)];
+  const keys = ['activityId','subactivityId','otherSubactivity','protection','shopping','city','uf','cnae','glassCount','profileFields',...NUMERIC_FIELDS.map(([key])=>key)];
   return {...Object.fromEntries(keys.map(k=>[k,state[k]])), empresaId:empresaId || '', imovelId:imovelId || '',
     answers:Object.fromEntries(questionnaire.groups.flatMap(g=>g.questions.map(q=>[q.id,q.id==='hasEmployees'?employeePresence(state):q.id==='hazardousWork'&&employeePresence(state)===false?false:state[q.id] === 'yes' ? true : state[q.id] === 'no' ? false : null])))};
 }
@@ -62,12 +63,21 @@ const CUSTOMER_LABELS={
 export function glassFields(field) {
  return field('glassCount','Quantos itens de vidro precisam de proteção?',{type:'number',required:false,min:'0',max:'1000000',increment:'1',inputmode:'numeric',help:'Conte janelas, portas de vidro, vitrines e espelhos. Uma quantidade aproximada já ajuda. Deixe em branco se não souber.'})+`<p class="catalog-note span-two">O valor para trocar os vidros pode ser confirmado depois com um especialista. A quantidade, sozinha, não informa esse custo.</p>`;
 }
+export function reviewKnown(state,key,html){return (state.prefilledFields||[]).includes(key)?`<details class="prefill-values"><summary>Informação do cadastro preenchida · Revisar</summary>${html}</details>`:html;}
+export function financialFields(state,field,{internal=false}={}) {
+ const known=new Set([...(state.profileFields||[]),...(state.prefilledFields||[])]);
+ const fields=NUMERIC_FIELDS.filter(([key])=>key!=='employees'&&(internal||key!=='glassValue'));
+ const draw=([key,label])=>field(key,internal?label:(CUSTOMER_LABELS[key]||label),{type:'number',required:false,min:'0',max:'1000000000000',inputmode:'decimal'});
+ const remaining=fields.filter(([key])=>!known.has(key)).map(draw).join('');
+ const filled=fields.filter(([key])=>known.has(key));
+ return remaining+(filled.length?`<details class="prefill-values span-two"><summary>${filled.length} valores já preenchidos · Revisar e editar</summary><p>Confira os valores antes de concluir. Referências da atividade são estimativas, não dados confirmados da empresa.</p><div class="form-grid">${filled.map(draw).join('')}</div></details>`:'');
+}
 export function riskFields(state, questionnaire, field, {internal=false}={}) {
   return `<p class="quote-helper">${esc(questionnaire.notice)} Campos financeiros vazios aproveitam o cadastro vinculado; sem cadastro, ficam desconhecidos. Zero significa ausência confirmada.</p>
-    <section class="risk-questions"><h2>Oito perguntas sobre a proteção</h2>${questionnaire.groups.map(group=>`<section class="risk-group"><h3>${esc(!internal&&group.code==='RESPONSABILIDADE_CIVIL_EMPREGADOR'?'Proteção dos funcionários':group.name)}</h3>${group.questions.map(q=>q.id==='hasEmployees'?field('employees',internal?'Quantidade de empregados nesta unidade':'Quantas pessoas são empregadas neste local?',{type:'number',required:false,min:'0',max:'1000000',increment:'1',inputmode:'numeric',help:'Informe zero se não houver empregados. Deixe em branco se ainda não souber; isso não será considerado ausência.'}):`<fieldset class="risk-question" ${q.id==='hazardousWork'?'data-employee-exposure':''}><legend>${esc(q.text)}</legend>${[['yes','Sim'],['no','Não']].map(([value,label])=>`<label><input type="radio" name="${q.id}" value="${value}" ${q.id==='hazardousWork'&&employeePresence(state)===false?'disabled':'required'} ${(q.id==='hazardousWork'&&employeePresence(state)===false?value==='no':state[q.id]===value)?'checked':''}> ${label}</label>`).join('')}</fieldset>`).join('')}</section>`).join('')}</section>
+    <section class="risk-questions"><h2>Oito perguntas sobre a proteção</h2>${questionnaire.groups.map(group=>`<section class="risk-group"><h3>${esc(!internal&&group.code==='RESPONSABILIDADE_CIVIL_EMPREGADOR'?'Proteção dos funcionários':group.name)}</h3>${group.questions.map(q=>q.id==='hasEmployees'?reviewKnown(state,'employees',field('employees',internal?'Quantidade de empregados nesta unidade':'Quantas pessoas são empregadas neste local?',{type:'number',required:false,min:'0',max:'1000000',increment:'1',inputmode:'numeric',help:'Informe zero se não houver empregados. Deixe em branco se ainda não souber; isso não será considerado ausência.'})):reviewKnown(state,q.id,`<fieldset class="risk-question" ${q.id==='hazardousWork'?'data-employee-exposure':''}><legend>${questionLabel(q.text)}</legend>${[['yes','Sim'],['no','Não']].map(([value,label])=>`<label><input type="radio" name="${q.id}" value="${value}" ${q.id==='hazardousWork'&&employeePresence(state)===false?'disabled':'required'} ${(q.id==='hazardousWork'&&employeePresence(state)===false?value==='no':state[q.id]===value)?'checked':''}> ${label}</label>`).join('')}</fieldset>`)).join('')}</section>`).join('')}</section>
     <section class="risk-inventory"><h2>Valores do estabelecimento</h2><p>Equipamentos já fazem parte dos bens: informe apenas a parcela elétrica no segundo campo. Estoque fica separado. Os valores devem refletir reposição, sem somar os mesmos itens duas vezes.</p>
-    <div class="form-grid">${field('cnae',internal?'CNAE principal (sete dígitos)':'Código da atividade no CNPJ (CNAE), se souber',{required:false,full:true,maxlength:10,help:'Se vincular uma empresa, deixe vazio para usar o CNAE cadastrado. O código da lista de atividades não é um CNAE.'})}
-    ${NUMERIC_FIELDS.filter(([key])=>key!=='employees'&&(internal||key!=='glassValue')).map(([key,label])=>field(key,internal?label:(CUSTOMER_LABELS[key]||label),{type:'number',required:false,min:'0',max:key==='employees'?'1000000':'1000000000000',inputmode:'decimal'})).join('')}${glassFields(field)}</div></section>`;
+    <div class="form-grid">
+    ${financialFields(state,field,{internal})}${glassFields(field)}</div></section>`;
 }
 
 export function baseFields(context, state) {

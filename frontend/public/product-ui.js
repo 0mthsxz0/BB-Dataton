@@ -1,5 +1,6 @@
+import { fullName, questionLabel } from './language.js';
 import { dimensionEvidence } from './report-evidence.js';
-const esc = x => String(x ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const esc = x => fullName(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money = x => x == null ? 'A confirmar' : Number(x).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
 
 const names = {ROUBO_FURTO_ARROMBAMENTO:'Roubo ou furto de bens mediante arrombamento',VENDAVAL_EVENTOS_CORRELATOS:'Vendaval e eventos correlatos',RESPONSABILIDADE_CIVIL_EMPREGADOR:'Responsabilidade civil empregador',QUEBRA_DE_VIDROS:'Quebra de vidros'};
@@ -8,20 +9,21 @@ export function initializeProductState(state, rules) {
   Object.assign(state,{priority:'equilibrada',termYears:'1',propertyRelation:'',propertyStatus:'',wallMaterial:''});
   for(const key of Object.keys(rules.operations))state['op_'+key]='';
   for(const code of rules.adjustable){state['adjust_'+code]='';state['want_'+code]=false;}
-  for(const extra of rules.optional)state['extra_'+extra.code]=false;
+  for(const extra of rules.optional){state['extra_'+extra.code]=false;state['excludeExtra_'+extra.code]=false;}
 }
 
 export function productPayload(state, rules, withPlan=false) {
   return {operations:Object.fromEntries(Object.keys(rules.operations).map(k=>[k,state['op_'+k]==='yes'?true:state['op_'+k]==='no'?false:null])),
     termYears:Number(state.termYears||1),priority:state.priority||'equilibrada',propertyRelation:state.propertyRelation,
     propertyStatus:state.propertyStatus,wallMaterial:state.wallMaterial,
-    indispensable:rules.adjustable.filter(c=>state['want_'+c]),
+    indispensable:rules.adjustable.filter(c=>state['want_'+c]),optionalExclusions:rules.optional.filter(c=>state['excludeExtra_'+c.code]).map(c=>c.code),
     ...(withPlan ? {selectedPlan:{892:'ESSENCIAL',893:'PRATICO',894:'TOTAL'}[state.planId],
       coverageAdjustments:{include:rules.adjustable.filter(c=>state['adjust_'+c]==='include'),exclude:rules.adjustable.filter(c=>state['adjust_'+c]==='exclude')},
       optionalCovers:rules.optional.filter(c=>state['extra_'+c.code]).map(c=>c.code)} : {})};
 }
 
 export function productFields(state, select, rules) {
+  const originalSelect=select;select=(key,...args)=>{const html=originalSelect(key,...args);return (state.prefilledFields||[]).includes(key)?`<details class="prefill-values"><summary>Dado do cadastro preenchido · Revisar</summary>${html}</details>`:html;};
   return `<section class="risk-inventory"><h2>Seu imóvel e suas prioridades</h2><p>Campos sem confirmação preservam os sinais do cadastro. A triagem verifica condições do imóvel e o limite único básico de R$ 7,5 milhões.</p><div class="form-grid">
     ${select('propertyRelation','Sua relação com o imóvel',[['owner','Proprietário'],['tenant','Inquilino']],{required:false,placeholder:'A confirmar'})}
     ${select('propertyStatus','Situação atual do imóvel',[['REGULAR','Regular e em uso'],['EM_OBRA','Em construção, reforma ou reconstrução'],['CONDENADO','Condenado ou interditado']],{required:false,placeholder:'Usar cadastro / a confirmar'})}
@@ -37,7 +39,7 @@ export function packageFields(result, state, rules) {
   return `<section class="package-editor"><h2>Personalize o pacote escolhido</h2><p>As seis obrigatórias são mantidas. Ajustes das outras quatro e adicionais seguem a política do guia e dependem de aceitação oficial. Prático e Total permitem esses ajustes nesta simulação.</p>
     <div class="form-grid">${rules.adjustable.map(c=>`<div class="qfield"><label for="adjust_${c}">${esc(names[c])}</label><select id="adjust_${c}" name="adjust_${c}"><option value="" ${!state['adjust_'+c]?'selected':''}>Padrão do plano</option><option value="include" ${state['adjust_'+c]==='include'?'selected':''}>Incluir</option><option value="exclude" ${state['adjust_'+c]==='exclude'?'selected':''}>Excluir</option></select><label><input type="checkbox" aria-label="Considerar ${esc(names[c])} indispensável na recomendação" name="want_${c}" ${state['want_'+c]?'checked':''}> Considerar indispensável na recomendação</label></div>`).join('')}</div>
     ${optionalFields(result,state,{internal:true})}
-    <button class="btn btn-outline" id="apply-package" type="button">Aplicar ajustes e recalcular</button><p id="package-status" role="status">${pack.coberturas.length} coberturas no pacote calculado · Aderência ${pack.aderencia_percentual.toFixed(1)}% · Vigência ${pack.vigencia_anos} ano(s).</p>
+    <button class="btn btn-outline" id="apply-package" type="button">Aplicar ajustes e recalcular</button><p id="package-status" role="status">${pack.quantidade_coberturas??pack.coberturas.length} coberturas no pacote calculado · Aderência ${pack.aderencia_percentual.toFixed(1)}% · Vigência ${pack.vigencia_anos} ano(s).</p>
     <p>Recomendação automática: ${esc(rec.plano_recomendado)}. Pacote calculado: ${esc(pack.plano)}. Assistências permanecem fixas.</p></section>`;
 }
 
@@ -47,7 +49,7 @@ export function personalizationView(result) {
   return `<section class="personalization-result" aria-label="Pacote personalizado"><h2>${t.bloqueado?'Encaminhamento necessário':'Seu pacote e os próximos ajustes'}</h2>
     ${t.bloqueado?`<p class="quote-error">Indicação de contratação bloqueada na triagem. ${t.motivos.map(esc).join(' ')} A comparação abaixo serve apenas para análise técnica.</p>`:''}
     <p>Objeto básico estimado: <strong>${money(t.valor_objeto_basico_brl)}</strong>. ${t.objeto_completo?'Componentes informados.':'Há componentes sem confirmação; o valor pode estar incompleto.'} ${esc(t.observacao)}</p>
-    <p>${pack.coberturas.length} coberturas · Vigência ${pack.vigencia_anos} ano(s) · Aderência do pacote ${pack.aderencia_percentual.toFixed(1)}%.</p>
+    <p>${pack.quantidade_coberturas??pack.coberturas.length} coberturas · Vigência ${pack.vigencia_anos} ano(s) · Aderência do pacote ${pack.aderencia_percentual.toFixed(1)}%.</p>
     ${pack.lacunas_prioritarias.length?`<p class="quote-error">Lacunas prioritárias no pacote: ${pack.lacunas_prioritarias.map(esc).join(', ')}.</p>`:''}
     <details open><summary>Faixas para dimensionar a proteção</summary><p>Cenários experimentais, em reais. Não são limites aprovados. Coberturas para o mesmo bem não devem ser somadas como patrimônios independentes.</p><div class="audit-table-wrap"><table class="audit-table"><caption>Dimensionamento e evidência por cobertura</caption><thead><tr><th>Cobertura</th><th>Faixa mínima–máxima</th><th>Origem e confirmação</th></tr></thead><tbody>${Object.entries(result.dimensionamento).filter(([c])=>pack.coberturas.includes(c)).map(([,d])=>`<tr><th scope="row">${esc(d.nome)}</th><td>${money(d.faixa_valor_min)} – ${money(d.faixa_valor_max)}</td><td>${dimensionEvidence(d)}</td></tr>`).join('')}</tbody></table></div></details>
     ${optionalAnalysis(result)}${p.adicionais.some(x=>x.sugerida)?`<h3>Adicionais pertinentes para avaliar</h3><ul>${p.adicionais.filter(x=>x.sugerida).map(x=>`<li><strong>${esc(x.name)}</strong>: ${esc(x.motivo)} ${x.permitida_no_plano?'Plano compatível com a política do guia.':'Requer Prático ou Total na política do guia.'}</li>`).join('')}</ul>`:''}
@@ -56,15 +58,22 @@ export function personalizationView(result) {
 }
 
 export function optionalFields(result,state,{internal=false}={}) {
-  const selected={892:'ESSENCIAL',893:'PRATICO',894:'TOTAL'}[state.planId]||result.personalizacao.pacote.plano;
-  return `<section class="optional-editor"><h2>Proteções adicionais para avaliar</h2><p>Escolha somente após confirmar que essa situação existe na empresa. Os adicionais dependem de aceitação oficial. Para lucros, escolha apenas uma modalidade com orientação de um especialista.</p>${result.personalizacao.adicionais.map(x=>{
-    const confirmed=state['op_'+x.operation]==='yes', compatible=x.plans.includes(selected);
-    return `<details ${x.candidata||state['extra_'+x.code]?'open':''}><summary>${esc(x.name)}${x.candidata?' · Vale avaliar':''}</summary><p>${esc(internal?x.motivo:(x.confirmacao===false?'Você informou que essa situação não se aplica.':'Avalie esta opção se ela fizer sentido para a operação da sua empresa.'))}</p><p>${esc(x.pergunta)}</p><label for="confirm_${x.code}">Esta situação existe na empresa?</label><select id="confirm_${x.code}" name="op_${x.operation}"><option value="" ${!state['op_'+x.operation]?'selected':''}>Ainda não confirmado</option><option value="yes" ${confirmed?'selected':''}>Sim</option><option value="no" ${state['op_'+x.operation]==='no'?'selected':''}>Não</option></select><label class="optional-cover"><input type="checkbox" name="extra_${x.code}" ${state['extra_'+x.code]?'checked':''} ${!confirmed||!compatible?'disabled':''}> Solicitar avaliação de ${esc(x.name)}</label>${!compatible?'<p>Esta opção requer Prático ou Total.</p>':''}${!confirmed?'<p>Confirme a situação acima para solicitar esta opção.</p>':''}</details>`;
-  }).join('')}<p>Equipamentos eletrônicos: este adicional não inclui roubo. As seis coberturas obrigatórias são preservadas.</p></section>`;
+ const selected={892:'ESSENCIAL',893:'PRATICO',894:'TOTAL'}[state.planId]||result.personalizacao.pacote.plano;
+ return `<section class="package-customization"><div class="package-section-heading"><span class="result-eyebrow">Do seu jeito</span><h2>Ajuste sua proteção</h2><p>As proteções pertinentes às suas respostas já compõem seu pacote. Você pode revisar a composição abaixo. A contratação depende de confirmação das condições e aceitação oficial.</p></div><div class="protection-card-grid">${result.personalizacao.adicionais.map(x=>{
+ const confirmed=state['op_'+x.operation]==='yes',compatible=x.plans.includes(selected),included=state['extra_'+x.code];
+ return `<details class="protection-card ${included?'is-included':''}"><summary><span>${esc(x.name)}</span><span class="coverage-chip">${included?'No seu pacote':'Revisar proteção'}</span></summary><div class="protection-card-content"><p>${esc(internal?x.motivo:x.pergunta)}</p><div class="qfield"><label for="confirm_${x.code}">Esta situação existe na sua empresa?</label><select id="confirm_${x.code}" name="op_${x.operation}"><option value="" ${!state['op_'+x.operation]?'selected':''}>Ainda não sei</option><option value="yes" ${confirmed?'selected':''}>Sim</option><option value="no" ${state['op_'+x.operation]==='no'?'selected':''}>Não</option></select></div><label class="coverage-toggle"><input type="checkbox" name="extra_${x.code}" ${included?'checked':''} ${!confirmed||!compatible?'disabled':''}><span>Incluir no meu pacote</span></label>${!compatible?'<p class="catalog-note">Disponível nos planos Prático e Total.</p>':''}${x.operation==='interruption'?'<p class="catalog-note">Escolha somente uma modalidade de proteção do lucro, após confirmar as informações financeiras.</p>':''}</div></details>`;
+ }).join('')}</div><p class="catalog-note">Proteção de equipamentos eletrônicos não inclui roubo. Os limites e eventos cobertos seguem o contrato.</p></section>`;
 }
 
 export function optionalAnalysis(result) {
   const p=result.personalizacao;
   if(!p?.alternativas)return '';
-  return `<section class="optional-analysis"><h2>Opcionais: evidências e confirmações</h2><p>Sinais indiretos orientam perguntas. Não comprovam exposição nem são probabilidades de sinistro; nenhum adicional é incluído automaticamente.</p>${p.adicionais.map(x=>`<details><summary>${esc(x.name)} · ${esc(x.estado)}</summary><p>${esc(x.motivo)}</p><p>Qualidade: ${esc(x.confianca)}</p><ul>${x.evidencias.map(e=>`<li>${esc(e.arquivo||'Formulário')} · ${esc(e.campo)}: <strong>${esc(typeof e.valor==='object'?JSON.stringify(e.valor):e.valor)}</strong> · ${esc(e.origem)} ${esc(e.derivacao||'')}</li>`).join('')||'<li>Sem valor disponível nos dados consultados.</li>'}</ul><p>Confirmar: ${esc(x.pergunta)}</p></details>`).join('')}<h3>Alternativas de pacote com opcionais</h3>${p.alternativas.map(a=>`<article><h4>${esc(a.plano)} · ${a.adequado?'Alternativa para avaliar':'Requer revisão'}</h4><p>${esc(a.motivo)} Aderência dos dez itens: ${Number(a.aderencia_percentual).toFixed(1)}%.</p><p>Opcionais: ${a.opcionais_para_avaliar.map(c=>esc(p.adicionais.find(x=>x.code===c)?.name||c)).join(', ')||'Nenhum indicado pelos sinais atuais'}.</p>${a.lacunas.length?`<p>Lacunas: ${a.lacunas.map(c=>esc(result.recomendacao.necessidades[c]?.nome||c)).join(', ')}.</p>`:''}${a.opcionais_incompativeis.length?`<p>Incompatíveis: ${a.opcionais_incompativeis.map(esc).join(', ')}.</p>`:''}</article>`).join('')}<p>Sem preços disponíveis: não se afirma economia. O adicional de eletrônicos não substitui roubo, vendaval ou outras proteções prioritárias.</p></section>`;
+  return `<section class="optional-analysis"><h2>Opcionais: evidências e confirmações</h2><p>Sinais indiretos orientam perguntas. Não comprovam exposição nem são probabilidades de sinistro; proteções confirmadas e compatíveis são reunidas automaticamente no pacote.</p>${p.adicionais.map(x=>`<details><summary>${esc(x.name)} · ${esc(x.estado)}</summary><p>${esc(x.motivo)}</p><p>Qualidade: ${esc(x.confianca)}</p><ul>${x.evidencias.map(e=>`<li>${esc(e.arquivo||'Formulário')} · ${esc(e.campo)}: <strong>${esc(typeof e.valor==='object'?JSON.stringify(e.valor):e.valor)}</strong> · ${esc(e.origem)} ${esc(e.derivacao||'')}</li>`).join('')||'<li>Sem valor disponível nos dados consultados.</li>'}</ul><p>Confirmar: ${esc(x.pergunta)}</p></details>`).join('')}<h3>Alternativas de pacote com opcionais</h3>${p.alternativas.map(a=>`<article><h4>${esc(a.plano)} · ${a.adequado?'Alternativa para avaliar':'Requer revisão'}</h4><p>${esc(a.motivo)} Aderência dos dez itens: ${Number(a.aderencia_percentual).toFixed(1)}%.</p><p>Opcionais: ${a.opcionais_para_avaliar.map(c=>esc(p.adicionais.find(x=>x.code===c)?.name||c)).join(', ')||'Nenhum indicado pelos sinais atuais'}.</p>${a.lacunas.length?`<p>Lacunas: ${a.lacunas.map(c=>esc(result.recomendacao.necessidades[c]?.nome||c)).join(', ')}.</p>`:''}${a.opcionais_incompativeis.length?`<p>Incompatíveis: ${a.opcionais_incompativeis.map(esc).join(', ')}.</p>`:''}</article>`).join('')}<p>Sem preços disponíveis: não se afirma economia. O adicional de eletrônicos não substitui roubo, vendaval ou outras proteções prioritárias.</p></section>`;
 }
+
+export function syncPackageState(result,state,rules){
+ const included=new Set(result.personalizacao.pacote.adicionais_condicionais);
+ for(const x of rules.optional)state['extra_'+x.code]=included.has(x.code);
+ state.planId={ESSENCIAL:'892',PRATICO:'893',TOTAL:'894'}[result.personalizacao.pacote.plano];
+}
+export const packageCount=result=>result?.personalizacao?.pacote?.quantidade_coberturas??((result?.personalizacao?.pacote?.coberturas?.length||0)+(result?.personalizacao?.pacote?.adicionais_condicionais?.length||0));

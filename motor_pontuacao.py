@@ -427,7 +427,7 @@ class MotorPontuacao:
             if codigo==VIDROS and r.get('possui_vidros_confirmado')=='NAO':
                 justificativa+=' Ausência de vidros informada na confirmação da unidade; sem exposição identificada.'
             if codigo==EMPREGADOR and r.get('possui_empregados_confirmado')=='NAO':
-                justificativa+=' Ausência de empregados informada na unidade; sem exposição identificada para RC empregador.'
+                justificativa+=' Ausência de empregados informada na unidade; sem exposição identificada para responsabilidade civil do empregador.'
             if codigo==ROUBO and r.get('escopo_protecao')=='building':
                 justificativa+=' Conteúdo excluído pelo escopo de proteção somente do imóvel.'
             if codigo==ROUBO:

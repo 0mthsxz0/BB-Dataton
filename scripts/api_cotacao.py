@@ -4,7 +4,7 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from cotacao_service import analisar, analisar_cadastro, contexto
+from cotacao_service import analisar, analisar_cadastro, contexto, consultar_perfil_cnae
 
 
 def main():
@@ -12,6 +12,8 @@ def main():
         request = json.load(sys.stdin)
         if request.get('action') == 'contexto':
             result = contexto()
+        elif request.get('action') == 'perfil_cnae':
+            result = consultar_perfil_cnae(request.get('payload'))
         elif request.get('action') == 'cadastro':
             result = analisar_cadastro(request.get('payload'))
         else:

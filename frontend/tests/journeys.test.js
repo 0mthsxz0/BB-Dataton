@@ -6,8 +6,8 @@ test('relatório público conserva coberturas e remove dados internos',()=>{asse
 test('triagem bloqueada exige avaliação',()=>assert.match(customerRecommendationView({...r,recomendacao:{...r.recomendacao,indicacao_bloqueada:true}}),/precisam de avaliação/));
 test('relatório acompanha pacote recalculado',()=>assert.equal(customerReport({...r,personalizacao:{pacote:{plano:'TOTAL',coberturas:[]}}}).plano,'Empresarial Total'));
 
-test('resumo do cliente separa adicionais solicitados de sugestões sem expor evidências',()=>{
+test('resumo reúne proteções em lista única sem expor sugestões ou evidências',()=>{
  const p={...r,personalizacao:{adicionais:[{name:'Eletrônicos',solicitada:true,candidata:true,evidencias:[{valor:'SEGREDO'}]},{name:'Delivery',candidata:true,pergunta:'Confirme entregas'}]}};
  const report=customerReport(p);
- assert.deepEqual(report.adicionais,['Eletrônicos']);assert.equal(report.sugestoes[0].nome,'Delivery');assert.ok(!JSON.stringify(report).includes('SEGREDO'));
+ assert.ok(report.coberturas.includes('Eletrônicos'));assert.ok(!report.coberturas.includes('Delivery'));assert.ok(!('adicionais' in report));assert.ok(!('sugestoes' in report));assert.ok(!JSON.stringify(report).includes('SEGREDO'));
 });

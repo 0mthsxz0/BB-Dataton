@@ -152,7 +152,7 @@
       "papel": "dimensionamento"
     },
     "RESPONSABILIDADE_CIVIL_ESTABELECIMENTO": {
-      "nome": "RC estabelecimento",
+      "nome": "Responsabilidade civil estabelecimento",
       "referencia_financeira": 1000000,
       "pesos_evento": {},
       "exposicao": "terceiros",
@@ -200,7 +200,7 @@
       "papel": "decisao"
     },
     "RESPONSABILIDADE_CIVIL_EMPREGADOR": {
-      "nome": "RC empregador",
+      "nome": "Responsabilidade civil empregador",
       "referencia_financeira": 1000000,
       "pesos_evento": {
         "atividade_ocupacional": 1

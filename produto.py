@@ -44,7 +44,16 @@ def personalizar(registro, recomendacao, dimensoes):
     from opcionais import avaliar_opcionais, comparar_alternativas
     operacao = registro.get('operacao_confirmada', {})
     adicionais = avaliar_opcionais(registro, REGRAS)
-    selecionado = registro.get('plano_escolhido') or recomendacao['plano_recomendado']
+    # Confirmed relevant protections compose the proposal, never an issued contract.
+    automaticos = {x['code'] for x in adicionais if x['confirmacao'] is True and x['operation'] != 'interruption'}
+    recusados = set(registro.get('adicionais_recusados', []))
+    escolhido = registro.get('plano_escolhido')
+    selecionado = escolhido or recomendacao['plano_recomendado']
+    if not escolhido:
+        ordem = list(REGRAS['plans'])
+        selecionado = next(p for p in ordem[ordem.index(selecionado):]
+            if all(p in x['plans'] for x in adicionais if x['code'] in automaticos - recusados))
+
     padrao = set(REGRAS['plans'][selecionado])
     ajustes = registro.get('ajustes_coberturas', {})
     pacote = (padrao | set(ajustes.get('include', []))) - set(ajustes.get('exclude', []))
@@ -52,17 +61,21 @@ def personalizar(registro, recomendacao, dimensoes):
         raise ValueError('As seis coberturas obrigatórias não podem ser excluídas.')
     if set(registro.get('coberturas_indispensaveis', [])) - pacote:
         raise ValueError('O pacote escolhido não contém todas as coberturas que você considerou indispensáveis. Inclua a cobertura ou escolha outro plano.')
-    pedidos = set(registro.get('adicionais_escolhidos', []))
+    automaticos = {x['code'] for x in adicionais if x['code'] in automaticos and selecionado in x['plans']}
+    pedidos = (set(registro.get('adicionais_escolhidos', [])) | automaticos) - recusados
     validos = {x['code'] for x in adicionais}
-    if pedidos - validos:
+    if (pedidos | recusados) - validos:
         raise ValueError('Adicional desconhecido.')
     if len([c for c in pedidos if c.startswith('LUCRO_')]) > 1:
         raise ValueError('Escolha apenas uma modalidade de lucro; confirme a DRE e as condições com o especialista.')
     for extra in adicionais:
         extra['solicitada'] = extra['code'] in pedidos
+        extra['incluida_automaticamente'] = extra['code'] in automaticos and extra['code'] not in recusados
         extra['permitida_no_plano'] = selecionado in extra['plans']
         if extra['solicitada'] and (not extra['permitida_no_plano'] or extra.get('operation') and extra['confirmacao'] is not True):
             raise ValueError('Adicional exige plano compatível e confirmação da operação: ' + extra['name'])
+    protecoes = sorted(pacote | pedidos)
+    nomes = {**{c:n['nome'] for c,n in recomendacao['necessidades'].items()}, **{x['code']:x['name'] for x in adicionais}}
     necessidades = recomendacao['necessidades']
     total = sum(n['peso'] * n['prioridade'] for n in necessidades.values())
     pontos = sum(n['peso'] * n['prioridade'] for c, n in necessidades.items() if c in pacote)
@@ -70,7 +83,8 @@ def personalizar(registro, recomendacao, dimensoes):
     return {'versaoRegras': REGRAS['version'], 'fontesRegras': REGRAS['sources'], 'conciliacao': REGRAS['reconciliation'],
         'triagem': triagem(registro), 'adicionais': adicionais,
         'alternativas': comparar_alternativas(recomendacao, adicionais),
-        'pacote': {'plano': selecionado, 'coberturas': sorted(pacote), 'obrigatorias': REGRAS['mandatory'],
+        'pacote': {'plano': selecionado, 'coberturas_totais': protecoes,
+            'protecoes': [{'codigo':c,'nome':nomes[c]} for c in protecoes], 'quantidade_coberturas':len(protecoes), 'coberturas': sorted(pacote), 'obrigatorias': REGRAS['mandatory'],
             'adicionais_condicionais': sorted(pedidos), 'vigencia_anos': registro.get('vigencia_anos', 1),
             'aderencia_percentual': 100 * pontos / total, 'lacunas_prioritarias': lacunas,
             'alteracoes': {'incluidas': sorted(pacote - padrao), 'excluidas': sorted(padrao - pacote)},

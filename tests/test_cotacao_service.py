@@ -305,3 +305,16 @@ def test_predio_e_galeria_nao_recebem_regras_de_desconto_de_shopping(analyze,pay
     assert 'nenhum desconto presumido' in r['personalizacao']['shopping']['mensagem']
     with pytest.raises(ValueError,match='shopping'):
         analyze(dict(payload,shopping=tipo,operations={'shoppingControls':True}))
+
+def test_perfil_agregado_tem_origem_e_nao_confirma_respostas(monkeypatch,payload,analyze):
+    import copy
+    import cotacao_service as service
+    p=copy.deepcopy(payload);p.update(cnae='1234567',contentsValue=50000,profileFields=['contentsValue'])
+    monkeypatch.setattr(service,'perfil_cnae',lambda *args:{'cnae':'1234567','valores':{'contentsValue':50000}})
+    r=analyze(p)
+    assert r['perfilAtividade']['usado']
+    assert 'perfil agregado' in r['origens']['bens_ponderados']
+    assert r['respostas']==p['answers']
+    assert any('estimados do perfil' in x for x in r['avisos'])
+    with pytest.raises(ValueError,match='perfil da atividade mudou'):
+        analyze(dict(p,contentsValue=60000))

@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-28",
+  "checks": [
+    "Código 4711302 retornou perfil agregado de 102 empresas, sem identificar cliente.",
+    "Sete valores financeiros preenchidos e recolhidos em revisão editável.",
+    "Condições físicas e operacionais continuaram exigindo respostas próprias.",
+    "Palavras-chave em destaque nos rótulos e perguntas.",
+    "Cenário com seis operações confirmadas formou pacote de 14 coberturas e cinco anos.",
+    "Revisão exibiu o mesmo total unificado, sem classificar proteções como adicionais.",
+    "Consulta automática por digitação do código 4752100 retornou perfil de 86 empresas.",
+    "Nenhum erro de console observado no cenário público."
+  ],
+  "screenshots": [
+    "../screenshots/pacote-unificado-revisao.png",
+    "../screenshots/protecoes-identidade-visual.png"
+  ],
+  "limitations": [
+    "Valores agregados são estimativas de base fictícia; não são dados confirmados do cliente.",
+    "Modalidades de lucro são mutuamente exclusivas; exposição desconhecida não é confirmação.",
+    "Aceitação, preço, limites e franquias dependem de cotação oficial."
+  ],
+  "pythonTestsPassed": 222,
+  "nodeTestsPassed": 44
+}
