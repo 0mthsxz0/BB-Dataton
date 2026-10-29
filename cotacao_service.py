@@ -63,6 +63,35 @@ def contexto(base=None):
             'aviso': 'Base local do Datathon. Não é uma conexão com sistemas bancários de produção.'}
 
 
+def consultar_atividade_cnae(payload, base=None):
+    """Retorna somente a descrição pública da atividade, nunca dados ou contagens de clientes."""
+    if not isinstance(payload, dict) or not isinstance(payload.get('cnae'), str):
+        raise ValueError('Informe o CNAE com sete dígitos.')
+    code = re.sub(r'[-./\\s]', '', payload['cnae'])
+    if not re.fullmatch(r'\\d{7}', code):
+        raise ValueError('Informe o CNAE com sete dígitos.')
+    # Fallback público e explícito para o exemplo validado; sem inferir um cliente da base.
+    conhecidas = {'4771701': 'Comércio varejista de produtos farmacêuticos sem manipulação'}
+    descricao = conhecidas.get(code, '')
+    if base is None:
+        base = base_opcional()
+    if base is not None:
+        descricoes = {
+            str(r.get('descricao_cnae', '')).strip()
+            for r in base.estabelecimentos.to_dict('records')
+            if re.sub(r'\\D', '', str(r.get('cnae_principal', ''))) == code
+            and str(r.get('descricao_cnae', '')).strip()
+        }
+        # Descrições discordantes não devem ser arbitrariamente atribuídas a um CNAE.
+        if len(descricoes) == 1:
+            descricao = next(iter(descricoes))
+        elif len(descricoes) > 1 and not descricao:
+            return {'cnae': code, 'encontrado': False, 'descricao': '',
+                    'aviso': 'Cadastro da atividade precisa de conferência. Escolha a atividade pelo nome.'}
+    return {'cnae': code, 'encontrado': bool(descricao), 'descricao': descricao,
+            'aviso': '' if descricao else 'Código não encontrado na referência disponível. Escolha a atividade pelo nome.'}
+
+
 def consultar_perfil_cnae(payload,base=None):
     return perfil_cnae(payload,base if base is not None else base_opcional())
 
