@@ -1,5 +1,11 @@
 # Validação real da base de segurança — 28/10/2026
 
+Este relatório registra a auditoria inicial do VDE, anterior à integração das
+fontes estaduais. Para o estado atual, com ocorrências reais selecionadas no RJ e
+RS, consulte [a hierarquia de fontes](HIERARQUIA_FONTES.md). Os zeros de cobertura
+do índice combinado continuam válidos; a disponibilidade parcial de indicadores
+mudou após aquela auditoria.
+
 A coleta foi concluída e a base local foi alimentada. O índice municipal original
 **não é calculável com o VDE 2025 inspecionado**. Não se trata mais de bloqueio de
 download: faltam a granularidade e a unidade exigidas pelo método. CRITIC e ranking

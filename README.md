@@ -2,10 +2,17 @@
 
 ## Base de segurança: validação real
 
-Na branch `dados-de-seguranca`, a coleta oficial foi retomada e o banco local
+A [hierarquia de fontes](docs/HIERARQUIA_FONTES.md) já está ativa: produtor estadual
+oficial, consolidação oficial e republicação verificada. Ela selecionou 16.272
+observações mensais completas do RJ/RS, com algum indicador para 527 dos 2.978
+estabelecimentos; 302 têm roubo em comércio. Fontes incompatíveis ou incompletas
+cedem lugar à próxima, com motivos registrados. O índice combinado ainda tem
+critérios sem cobertura e permanece indisponível.
+
+Na auditoria inicial da branch `dados-de-seguranca`, a coleta oficial foi retomada e o banco local
 alimentado: 5.571 localidades IBGE, população estimada de 2025, área censitária de
 2022 e 69.510 registros de roubo do VDE 2025. Os 2.978 estabelecimentos têm código
-IBGE validado. A cobertura do índice municipal é **0%**: os três tipos de roubo
+IBGE validado. A cobertura do índice municipal é **0%**: no VDE, os três tipos de roubo
 com contagem de ocorrências estão sem município; latrocínio mede vítimas.
 Pesos CRITIC e ranking ficam indisponíveis, e o formulário declara esse limite.
 Veja [a auditoria, as saídas e a reprodução](docs/VALIDACAO_SEGURANCA_2025.md).

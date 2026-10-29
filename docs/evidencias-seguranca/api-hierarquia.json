@@ -1,0 +1,215 @@
+{
+  "status": "validado_com_indice_indisponivel",
+  "municipios_csv": 5571,
+  "estabelecimentos": 2978,
+  "vde_registros": 69510,
+  "pesos_critic": {},
+  "ranking": [],
+  "municipios_sem_correspondencia_vde": [
+    {
+      "uf": "MG",
+      "municipio_original": "BARÃO DE MONTE ALTO",
+      "linhas": 12
+    },
+    {
+      "uf": "MT",
+      "municipio_original": "SANTO ANTÔNIO DO LEVERGER",
+      "linhas": 12
+    },
+    {
+      "uf": "RN",
+      "municipio_original": "ARÊS",
+      "linhas": 12
+    },
+    {
+      "uf": "RN",
+      "municipio_original": "AÇU",
+      "linhas": 12
+    },
+    {
+      "uf": "RR",
+      "municipio_original": "SÃO LUIZ",
+      "linhas": 12
+    },
+    {
+      "uf": "SE",
+      "municipio_original": "GRACHO CARDOSO",
+      "linhas": 12
+    }
+  ],
+  "consultas_api": [
+    {
+      "codigo_ibge": "2304400",
+      "municipio": "Fortaleza",
+      "status": 200,
+      "indice": null,
+      "uso_empresarial_validado": false,
+      "series_disponiveis": []
+    },
+    {
+      "codigo_ibge": "2611606",
+      "municipio": "Recife",
+      "status": 200,
+      "indice": null,
+      "uso_empresarial_validado": false,
+      "series_disponiveis": []
+    },
+    {
+      "codigo_ibge": "2927408",
+      "municipio": "Salvador",
+      "status": 200,
+      "indice": null,
+      "uso_empresarial_validado": false,
+      "series_disponiveis": []
+    },
+    {
+      "codigo_ibge": "3106200",
+      "municipio": "Belo Horizonte",
+      "status": 200,
+      "indice": null,
+      "uso_empresarial_validado": false,
+      "series_disponiveis": []
+    },
+    {
+      "codigo_ibge": "3304557",
+      "municipio": "Rio de Janeiro",
+      "status": 200,
+      "indice": null,
+      "uso_empresarial_validado": false,
+      "series_disponiveis": [
+        {
+          "crime": "roubo a banco",
+          "fornecedor": "isp_rj_municipal",
+          "ocorrencias_12m": 0,
+          "url": "https://www.ispdados.rj.gov.br/Arquivos/BaseMunicipioMensal.csv",
+          "sha256": "168185ab701253875f6be183143aac77f6d3d8227379340d647b210fcac37b06"
+        },
+        {
+          "crime": "roubo de carga",
+          "fornecedor": "isp_rj_municipal",
+          "ocorrencias_12m": 1496,
+          "url": "https://www.ispdados.rj.gov.br/Arquivos/BaseMunicipioMensal.csv",
+          "sha256": "168185ab701253875f6be183143aac77f6d3d8227379340d647b210fcac37b06"
+        },
+        {
+          "crime": "roubo de veiculos",
+          "fornecedor": "isp_rj_municipal",
+          "ocorrencias_12m": 13713,
+          "url": "https://www.ispdados.rj.gov.br/Arquivos/BaseMunicipioMensal.csv",
+          "sha256": "168185ab701253875f6be183143aac77f6d3d8227379340d647b210fcac37b06"
+        },
+        {
+          "crime": "roubo em comercio",
+          "fornecedor": "isp_rj_municipal",
+          "ocorrencias_12m": 1113,
+          "url": "https://www.ispdados.rj.gov.br/Arquivos/BaseMunicipioMensal.csv",
+          "sha256": "168185ab701253875f6be183143aac77f6d3d8227379340d647b210fcac37b06"
+        }
+      ]
+    },
+    {
+      "codigo_ibge": "3550308",
+      "municipio": "São Paulo",
+      "status": 200,
+      "indice": null,
+      "uso_empresarial_validado": false,
+      "series_disponiveis": []
+    },
+    {
+      "codigo_ibge": "4106902",
+      "municipio": "Curitiba",
+      "status": 200,
+      "indice": null,
+      "uso_empresarial_validado": false,
+      "series_disponiveis": []
+    },
+    {
+      "codigo_ibge": "4314902",
+      "municipio": "Porto Alegre",
+      "status": 200,
+      "indice": null,
+      "uso_empresarial_validado": false,
+      "series_disponiveis": [
+        {
+          "crime": "roubo de veiculos",
+          "fornecedor": "ssp_rs_municipal",
+          "ocorrencias_12m": 628,
+          "url": "https://ssp.rs.gov.br/upload/arquivos/202610/08160105-site-geral-e-municipios-ano-2025-atualizado-em-06-out-2026-dados-cvli-atualizado-publicacao.xlsx",
+          "sha256": "4b82916d457f3371386f4c58e158ff769db0c9fae743cb1f5f8a627a3727b184"
+        },
+        {
+          "crime": "roubo seguido de morte latrocinio",
+          "fornecedor": "ssp_rs_municipal",
+          "ocorrencias_12m": 3,
+          "url": "https://ssp.rs.gov.br/upload/arquivos/202610/08160105-site-geral-e-municipios-ano-2025-atualizado-em-06-out-2026-dados-cvli-atualizado-publicacao.xlsx",
+          "sha256": "4b82916d457f3371386f4c58e158ff769db0c9fae743cb1f5f8a627a3727b184"
+        }
+      ]
+    },
+    {
+      "codigo_ibge": "5208707",
+      "municipio": "Goiânia",
+      "status": 200,
+      "indice": null,
+      "uso_empresarial_validado": false,
+      "series_disponiveis": []
+    },
+    {
+      "codigo_ibge": "5300108",
+      "municipio": "Brasília",
+      "status": 200,
+      "indice": null,
+      "uso_empresarial_validado": false,
+      "series_disponiveis": []
+    }
+  ],
+  "hashes_exportacao": "conferidos",
+  "hierarquia": {
+    "politica_versao": 1,
+    "inicio": "2025-01",
+    "fim": "2025-12",
+    "series_solicitadas": 33426,
+    "series_selecionadas": 1356,
+    "series_sem_fonte": 32070,
+    "observacoes_publicadas": 16272,
+    "fontes_utilizadas": {
+      "ssp_rs_municipal": 988,
+      "isp_rj_municipal": 368
+    },
+    "erros_fontes": {},
+    "divergencias": [],
+    "limite": "Hierarquia é política de preferência documentada, não probabilidade de acerto. Sem fonte compatível, mantém lacuna.",
+    "fontes_avaliadas": [
+      {
+        "id": "isp_rj_municipal",
+        "nivel": 1,
+        "ordem": 10,
+        "snapshot": {
+          "url": "https://www.ispdados.rj.gov.br/Arquivos/BaseMunicipioMensal.csv",
+          "sha256": "168185ab701253875f6be183143aac77f6d3d8227379340d647b210fcac37b06",
+          "coletado_em": "2026-10-29T00:12:35.730456+00:00"
+        }
+      },
+      {
+        "id": "ssp_rs_municipal",
+        "nivel": 1,
+        "ordem": 20,
+        "snapshot": {
+          "url": "https://ssp.rs.gov.br/upload/arquivos/202610/08160105-site-geral-e-municipios-ano-2025-atualizado-em-06-out-2026-dados-cvli-atualizado-publicacao.xlsx",
+          "sha256": "4b82916d457f3371386f4c58e158ff769db0c9fae743cb1f5f8a627a3727b184",
+          "coletado_em": "2026-10-29T00:14:51.753675+00:00"
+        }
+      },
+      {
+        "id": "sinesp_vde_2025",
+        "nivel": 2,
+        "ordem": 10,
+        "snapshot": {
+          "url": "https://www.gov.br/mj/pt-br/assuntos/sua-seguranca/seguranca-publica/estatistica/download/dnsp-base-de-dados/bancovde-2025.xlsx/@@download/file",
+          "sha256": "6b87609815afc534f44f3423bf8660a69c961130c187f759b9d3e38ee2a8a6e8",
+          "coletado_em": "2026-10-28T23:21:37.657668+00:00"
+        }
+      }
+    ]
+  }
+}

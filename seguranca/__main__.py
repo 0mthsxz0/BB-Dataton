@@ -13,6 +13,7 @@ from .fontes import coletar_ibge, coletar_sinesp, LOCALIDADES, INDICADORES
 from .indice import gerar_indice
 from .vde import importar_vde
 from .auditoria import auditar
+from .hierarquia import atualizar_hierarquia
 
 
 RAIZ = Path(__file__).resolve().parents[1]
@@ -61,6 +62,12 @@ def main():
     auditoria = sub.add_parser('auditar')
     auditoria.add_argument('--estabelecimentos', required=True, type=Path)
     auditoria.add_argument('--saida', required=True, type=Path)
+    hierarquia = sub.add_parser('resolver-fontes', help='Percorre fontes revisadas e seleciona séries municipais completas.')
+    hierarquia.add_argument('--politica', type=Path, default=RAIZ/'config/fontes_seguranca.json')
+    hierarquia.add_argument('--fontes', type=Path, default=RAIZ/'data/seguranca/fontes')
+    hierarquia.add_argument('--fim', required=True)
+    hierarquia.add_argument('--saida', type=Path, default=RAIZ/'data/seguranca/hierarquia')
+    hierarquia.add_argument('--atualizar', action='store_true')
     args = parser.parse_args()
     if args.comando == 'baixar':
         resultado = {}
@@ -109,6 +116,11 @@ def main():
             return 0
         elif args.comando == 'auditar':
             emitir(auditar(con, args.estabelecimentos, args.saida))
+        elif args.comando == 'resolver-fontes':
+            politica = json.loads(args.politica.read_text(encoding='utf-8'))
+            resultado = atualizar_hierarquia(con, politica, args.fontes, args.fim, args.saida, args.atualizar)
+            emitir(resultado)
+            return 2 if resultado['series_sem_fonte'] else 0
         elif args.comando == 'importar-sinesp':
             mapa = json.loads(args.mapa.read_text(encoding='utf-8')) if args.mapa else None
             resultado = importar_sinesp(con, args.arquivo, args.url, mapa)

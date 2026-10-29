@@ -79,7 +79,9 @@ def gerar_indice(con, crimes, fim=None, minimo_municipios=30):
         raise ValueError('Base sem observações municipais; informe a janela auditada com --fim para exportar indisponibilidade.')
     selecionados = valores[valores.crime.isin(crimes)].copy()
     faltantes = sorted(set(crimes)-set(selecionados.crime))
-    if faltantes and not valores.empty:
+    tem_hierarquia = con.execute('SELECT 1 FROM sqlite_master WHERE name=?', ('hierarquia_execucoes',)).fetchone()
+    exec_hierarquia = con.execute('SELECT diagnostico FROM hierarquia_execucoes ORDER BY id DESC LIMIT 1').fetchone() if tem_hierarquia else None
+    if faltantes and not valores.empty and not exec_hierarquia:
         raise ValueError(f'Crimes selecionados ausentes da fonte: {faltantes}')
     if fim is not None and not re.fullmatch(r'\d{4}-\d{2}', fim):
         raise ValueError('Informe fim no formato AAAA-MM.')
@@ -109,9 +111,27 @@ def gerar_indice(con, crimes, fim=None, minimo_municipios=30):
     diagnostico['escopo'] = 'contexto_municipal_de_roubos'
     diagnostico['uso_empresarial_validado'] = False
     diagnostico['crimes_ausentes'] = faltantes
+    fontes_por_codigo = {}
+    comparaveis = True
+    if exec_hierarquia:
+        diagnostico['hierarquia_fontes'] = json.loads(exec_hierarquia[0])
+        for r in con.execute('SELECT * FROM hierarquia_selecao WHERE status=?', ('selecionada',)):
+            if r['inicio'] != meses[0][:7] or r['fim'] != str(ultimo):
+                continue
+            fontes_por_codigo.setdefault(r['codigo_ibge'], {})[r['crime']] = {
+                'fornecedor': r['fornecedor'], 'fonte_id': r['fonte_id'], 'definicao': r['definicao']}
+        for crime in crimes:
+            definicoes = {fontes_por_codigo.get(c, {}).get(crime, {}).get('definicao') for c in coorte.index}
+            if len(definicoes) > 1 or (len(coorte) and None in definicoes):
+                comparaveis = False
+                diagnostico['alertas'].append(f'Definições ou proveniência sem equivalência aprovada para {crime}; não gerar ranking conjunto.')
+        if faltantes:
+            diagnostico['alertas'].append('Mesmo após a hierarquia, faltam critérios municipais de ocorrências: '+', '.join(faltantes))
     escores = pd.Series(dtype=float)
     detalhes_crimes = {}
-    if len(coorte) < minimo_municipios:
+    if not comparaveis:
+        diagnostico['alertas'].append('Coorte sem comparabilidade entre fontes; nenhum índice foi calculado.')
+    elif len(coorte) < minimo_municipios:
         diagnostico['alertas'].append('Coorte completa insuficiente; nenhum índice foi calculado.')
     else:
         percentis = {}
@@ -163,7 +183,8 @@ def gerar_indice(con, crimes, fim=None, minimo_municipios=30):
         densidade = float(local.populacao/local.area_km2) if pd.notna(local.populacao) and pd.notna(local.area_km2) and local.area_km2 > 0 else None
         detalhes = {'motivos': motivos, 'meses_por_crime': {c: int(contagem_meses.loc[codigo, c]) for c in crimes},
                     'crimes': detalhes_crimes.get(codigo, {}), 'idade_serie_meses': idade_meses,
-                    'aviso': 'Contexto dos tipos de roubo disponíveis, sem roubo em comércio. Não mede probabilidade de roubo de estabelecimento. Completude não mede subnotificação.'}
+                    'fontes_por_crime': fontes_por_codigo.get(codigo, {}),
+                    'aviso': 'Contexto dos indicadores selecionados; não mede probabilidade de roubo de estabelecimento. Completude não mede subnotificação.'}
         resultado.append({'codigo_ibge': codigo, 'municipio': local.municipio, 'uf': local.uf,
                           'populacao': None if pd.isna(local.populacao) else float(local.populacao),
                           'ano_populacao': ano_pop, 'area_km2': None if pd.isna(local.area_km2) else float(local.area_km2),

@@ -1,0 +1,116 @@
+{
+  "sha256_estabelecimentos": "a3d173691af21a1891e9445c4448449bac8c45d51ceb737ec40b662b2e86e381",
+  "estabelecimentos": 2978,
+  "linhas_em_chaves_duplicadas": 0,
+  "correspondencia_ibge": 2978,
+  "municipios_distintos": 10,
+  "com_indice": 0,
+  "com_algum_indicador": 527,
+  "com_roubo_comercio": 302,
+  "cobertura_indice_0_1": 0.0,
+  "motivos_revisao": {},
+  "integridade_sqlite": "ok",
+  "violacoes_fk": 0,
+  "chaves_mensais_duplicadas_banco": 0,
+  "pesos_critic": {},
+  "municipios_com_indice": 0,
+  "cobertura_uf": [
+    {
+      "uf": "BA",
+      "estabelecimentos": 213,
+      "correspondencia_ibge": 213,
+      "com_indice": 0,
+      "com_algum_indicador": 0,
+      "com_roubo_comercio": 0,
+      "cobertura_indice_0_1": 0.0
+    },
+    {
+      "uf": "CE",
+      "estabelecimentos": 188,
+      "correspondencia_ibge": 188,
+      "com_indice": 0,
+      "com_algum_indicador": 0,
+      "com_roubo_comercio": 0,
+      "cobertura_indice_0_1": 0.0
+    },
+    {
+      "uf": "DF",
+      "estabelecimentos": 425,
+      "correspondencia_ibge": 425,
+      "com_indice": 0,
+      "com_algum_indicador": 0,
+      "com_roubo_comercio": 0,
+      "cobertura_indice_0_1": 0.0
+    },
+    {
+      "uf": "GO",
+      "estabelecimentos": 268,
+      "correspondencia_ibge": 268,
+      "com_indice": 0,
+      "com_algum_indicador": 0,
+      "com_roubo_comercio": 0,
+      "cobertura_indice_0_1": 0.0
+    },
+    {
+      "uf": "MG",
+      "estabelecimentos": 304,
+      "correspondencia_ibge": 304,
+      "com_indice": 0,
+      "com_algum_indicador": 0,
+      "com_roubo_comercio": 0,
+      "cobertura_indice_0_1": 0.0
+    },
+    {
+      "uf": "PE",
+      "estabelecimentos": 207,
+      "correspondencia_ibge": 207,
+      "com_indice": 0,
+      "com_algum_indicador": 0,
+      "com_roubo_comercio": 0,
+      "cobertura_indice_0_1": 0.0
+    },
+    {
+      "uf": "PR",
+      "estabelecimentos": 275,
+      "correspondencia_ibge": 275,
+      "com_indice": 0,
+      "com_algum_indicador": 0,
+      "com_roubo_comercio": 0,
+      "cobertura_indice_0_1": 0.0
+    },
+    {
+      "uf": "RJ",
+      "estabelecimentos": 302,
+      "correspondencia_ibge": 302,
+      "com_indice": 0,
+      "com_algum_indicador": 302,
+      "com_roubo_comercio": 302,
+      "cobertura_indice_0_1": 0.0
+    },
+    {
+      "uf": "RS",
+      "estabelecimentos": 225,
+      "correspondencia_ibge": 225,
+      "com_indice": 0,
+      "com_algum_indicador": 225,
+      "com_roubo_comercio": 0,
+      "cobertura_indice_0_1": 0.0
+    },
+    {
+      "uf": "SP",
+      "estabelecimentos": 571,
+      "correspondencia_ibge": 571,
+      "com_indice": 0,
+      "com_algum_indicador": 0,
+      "com_roubo_comercio": 0,
+      "cobertura_indice_0_1": 0.0
+    }
+  ],
+  "limite": "Correspondência IBGE não é cobertura do índice. Universo de clientes é o pacote local do desafio.",
+  "arquivos_sha256": {
+    "cobertura_estabelecimentos_uf.csv": "a8ae678e38d07f9d27c05b09b53451034a68671bfccf6e7326805278f97295df",
+    "estabelecimentos_indice.csv": "468ffc9f9f23e43e1423ed2ab72c8dcf01f6c0c187d2d85be503e1c37250f694",
+    "estabelecimentos_revisar.csv": "b215911454c6d10f71549264612096db3d6e3170a6632422700ad3211848f237",
+    "lacunas_municipio_crime.csv": "284dee6c3ed94d8e4ac3eb50c87a076526bfebb4a87ec08d73c4866908560d80"
+  }
+}

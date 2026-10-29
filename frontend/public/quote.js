@@ -26,7 +26,8 @@ function securityMarkup() {
   const valid = typeof r?.indice_roubo_0_100 === 'number';
   const need = valid ? relativeNeed(r.indice_roubo_0_100, state.insuredValue, state.garage, state.goodsUse, r.uso_empresarial_validado === true) : null;
   const suggested = valid ? coverageSuggestion(r, plans.plans) : [];
-  return `<h2>Contexto municipal de roubos</h2><p>O SINESP 2025 não contém roubo em comércio. Este indicador não mede a probabilidade de roubo de um estabelecimento.</p>${securityMessage ? `<p role="status">${esc(securityMessage)}</p>` : ''}
+  const available = (r?.hierarquia_fontes || []).filter(f => f.status === 'selecionada');
+  return `<h2>Contexto municipal de roubos</h2><p>São consultadas fontes oficiais compatíveis com o município e o período. Esses dados não medem a probabilidade de roubo de um estabelecimento.</p>${securityMessage ? `<p role="status">${esc(securityMessage)}</p>` : ''}
     ${r ? `<p>Município consultado: <strong>${esc(r.municipio)} / ${esc(r.uf)}</strong>. Código IBGE: ${esc(r.codigo_ibge)}.</p>` : ''}
     ${valid ? `<p><strong>${r.indice_roubo_0_100.toFixed(1)} / 100 · ${esc(r.faixa)}</strong> — ${esc(r.municipio)} / ${esc(r.uf)}</p>
       <p>Período: ${esc(r.inicio)} a ${esc(r.fim)}. Situação do dado: ${esc({insuficiente:'insuficiente',revisar:'requer revisão',completo_na_fonte:'completo na fonte'}[r.confianca] || 'não avaliada')}. Completude: ${(100*r.completude_0_1).toFixed(0)}%.</p>
@@ -35,7 +36,8 @@ function securityMarkup() {
       <details><summary>Fontes e limites</summary><p>Índice relativo na coorte observada, não probabilidade de roubo. Completude não mede subnotificação. Não representa roubo a residência nem risco específico do seu imóvel.</p>
       ${(r.alertas || []).map(a => `<p>${esc(a)}</p>`).join('')}
       ${(r.fontes || []).filter(f => f.url.startsWith('https://')).map(f => `<p><a href="${esc(f.url)}" target="_blank" rel="noopener noreferrer">Fonte oficial</a></p>`).join('')}</details>`
-      : '<p>Índice indisponível: o recorte VDE 2025 não fornece as séries municipais de ocorrências exigidas. Dados estaduais sem município e vítimas de latrocínio não as substituem. Ausência de informação não significa risco baixo.</p>'}
+      : '<p>Índice combinado indisponível: ainda faltam séries municipais compatíveis para todos os critérios. Dados estaduais sem município e vítimas não as substituem. Ausência de informação não significa risco baixo.</p>'}
+    ${available.length ? `<details><summary>Dados municipais disponíveis (${available.length} indicadores)</summary><ul>${available.map(f => `<li>${esc(f.crime)}: <strong>${esc(f.ocorrencias_12m)} ocorrências</strong>, ${esc(f.inicio)} a ${esc(f.fim)}. <a href="${esc(f.url)}" target="_blank" rel="noopener noreferrer">Fonte oficial selecionada</a>.</li>`).join('')}</ul><p>Uma única fonte por indicador e período completo; contagens não são probabilidades ou previsão de sinistro.</p></details>` : ''}
     ${step === 2 ? '<button type="button" class="btn btn-outline" id="consult-security">Consultar município informado</button><p class="catalog-note">A consulta envia somente cidade/UF ao servidor local. Endereço completo e dados pessoais ficam na página.</p>' : ''}`;
 }
 

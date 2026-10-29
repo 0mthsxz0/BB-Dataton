@@ -22,14 +22,12 @@ EXTENSOES = {'.csv', '.xlsx', '.xls', '.zip', '.pdf', '.ods', '.doc', '.docx'}
 def oficial(url):
     p = urlsplit(url)
     return (p.scheme == 'https' and p.username is None and p.password is None
-            and (p.hostname in {'www.gov.br', 'gov.br', 'dados.gov.br'}
-                 or (p.hostname or '').endswith('.mj.gov.br')
-                 or (p.hostname or '').endswith('.ibge.gov.br')))
+            and (p.hostname == 'gov.br' or (p.hostname or '').endswith('.gov.br')))
 
 
 def download(url, arquivo, atualizar=False, limite_mb=250):
     if not oficial(url):
-        raise ValueError(f'Fonte precisa ser HTTPS em domínio oficial MJ/IBGE/gov.br: {url}')
+        raise ValueError(f'Fonte precisa ser HTTPS em domínio governamental .gov.br: {url}')
     arquivo = Path(arquivo)
     arquivo.parent.mkdir(parents=True, exist_ok=True)
     meta = arquivo.with_name(arquivo.name+'.fonte.json')

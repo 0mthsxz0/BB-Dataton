@@ -8,6 +8,10 @@ base operacional. Fixtures artificiais existem somente em testes temporários.
 
 ## Situação da coleta
 
+Atualização: [a hierarquia de fontes](HIERARQUIA_FONTES.md) já seleciona ocorrências
+municipais reais do ISP-RJ e da SSP-RS. O texto abaixo preserva o diagnóstico da
+coleta VDE/IBGE; os dados estaduais complementares têm proveniência separada.
+
 Coleta retomada em 28/10/2026 no ambiente local Windows. IBGE e o download direto
 do VDE 2025 responderam; o portal pode devolver 403 e o cliente Python apresentou
 falha TLS no MJ. O GET com `curl.exe`, mantendo validação TLS, concluiu os 26.644.100

@@ -1,0 +1,48 @@
+{
+  "politica_versao": 1,
+  "inicio": "2025-01",
+  "fim": "2025-12",
+  "series_solicitadas": 33426,
+  "series_selecionadas": 1356,
+  "series_sem_fonte": 32070,
+  "observacoes_publicadas": 16272,
+  "fontes_utilizadas": {
+    "ssp_rs_municipal": 988,
+    "isp_rj_municipal": 368
+  },
+  "erros_fontes": {},
+  "divergencias": [],
+  "limite": "Hierarquia é política de preferência documentada, não probabilidade de acerto. Sem fonte compatível, mantém lacuna.",
+  "fontes_avaliadas": [
+    {
+      "id": "isp_rj_municipal",
+      "nivel": 1,
+      "ordem": 10,
+      "snapshot": {
+        "url": "https://www.ispdados.rj.gov.br/Arquivos/BaseMunicipioMensal.csv",
+        "sha256": "168185ab701253875f6be183143aac77f6d3d8227379340d647b210fcac37b06",
+        "coletado_em": "2026-10-29T00:12:35.730456+00:00"
+      }
+    },
+    {
+      "id": "ssp_rs_municipal",
+      "nivel": 1,
+      "ordem": 20,
+      "snapshot": {
+        "url": "https://ssp.rs.gov.br/upload/arquivos/202610/08160105-site-geral-e-municipios-ano-2025-atualizado-em-06-out-2026-dados-cvli-atualizado-publicacao.xlsx",
+        "sha256": "4b82916d457f3371386f4c58e158ff769db0c9fae743cb1f5f8a627a3727b184",
+        "coletado_em": "2026-10-29T00:14:51.753675+00:00"
+      }
+    },
+    {
+      "id": "sinesp_vde_2025",
+      "nivel": 2,
+      "ordem": 10,
+      "snapshot": {
+        "url": "https://www.gov.br/mj/pt-br/assuntos/sua-seguranca/seguranca-publica/estatistica/download/dnsp-base-de-dados/bancovde-2025.xlsx/@@download/file",
+        "sha256": "6b87609815afc534f44f3423bf8660a69c961130c187f759b9d3e38ee2a8a6e8",
+        "coletado_em": "2026-10-28T23:21:37.657668+00:00"
+      }
+    }
+  ]
+}

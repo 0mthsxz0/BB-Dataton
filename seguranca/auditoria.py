@@ -20,6 +20,10 @@ def auditar(con, estabelecimentos, saida):
     dados = dados[obrigatorias].copy()
     duplicadas = dados.duplicated(['empresa_id', 'imovel_id'], keep=False)
     cadastro = {r['codigo_ibge']: dict(r) for r in con.execute('SELECT * FROM consulta_municipal')}
+    indicadores = {}
+    if con.execute('SELECT 1 FROM sqlite_master WHERE name=?', ('hierarquia_selecao',)).fetchone():
+        for r in con.execute('SELECT codigo_ibge,crime FROM hierarquia_selecao WHERE status=?', ('selecionada',)):
+            indicadores.setdefault(r['codigo_ibge'], set()).add(r['crime'])
     registros = []
     for pos, r in enumerate(dados.to_dict('records')):
         local = cadastro.get(r['codigo_ibge_municipio'])
@@ -29,14 +33,19 @@ def auditar(con, estabelecimentos, saida):
                   'uf_divergente' if r['uf_real'] != local['uf'] else
                   'municipio_divergente' if normalizar(r['municipio_real']) != normalizar(local['municipio']) else '')
         indice = local['indice_roubo_0_100'] if local and not motivo else None
+        disponiveis = indicadores.get(r['codigo_ibge_municipio'], set()) if not motivo else set()
         registros.append({'empresa_id': r['empresa_id'], 'imovel_id': r['imovel_id'],
                           'codigo_ibge': r['codigo_ibge_municipio'], 'uf': r['uf_real'],
                           'correspondencia_ibge': not bool(motivo), 'motivo': motivo,
-                          'com_indice': indice is not None, 'indice_contextual_0_100': indice})
+                          'com_indice': indice is not None, 'indice_contextual_0_100': indice,
+                          'com_algum_indicador': bool(disponiveis),
+                          'com_roubo_comercio': 'roubo em comercio' in disponiveis,
+                          'indicadores_disponiveis': '|'.join(sorted(disponiveis))})
     resultado = pd.DataFrame(registros)
     cobertura = resultado.groupby('uf', sort=True).agg(
         estabelecimentos=('imovel_id', 'size'),
-        correspondencia_ibge=('correspondencia_ibge', 'sum'), com_indice=('com_indice', 'sum')).reset_index()
+        correspondencia_ibge=('correspondencia_ibge', 'sum'), com_indice=('com_indice', 'sum'),
+        com_algum_indicador=('com_algum_indicador', 'sum'), com_roubo_comercio=('com_roubo_comercio', 'sum')).reset_index()
     cobertura['cobertura_indice_0_1'] = cobertura.com_indice / cobertura.estabelecimentos
     # Apenas identificadores necessários à associação; originais não são alterados.
     con.execute('''CREATE TABLE IF NOT EXISTS estabelecimentos (
@@ -72,6 +81,8 @@ def auditar(con, estabelecimentos, saida):
               'correspondencia_ibge': int(resultado.correspondencia_ibge.sum()),
               'municipios_distintos': int(resultado.codigo_ibge.nunique()),
               'com_indice': int(resultado.com_indice.sum()),
+              'com_algum_indicador': int(resultado.com_algum_indicador.sum()),
+              'com_roubo_comercio': int(resultado.com_roubo_comercio.sum()),
               'cobertura_indice_0_1': float(resultado.com_indice.mean()) if len(resultado) else None,
               'motivos_revisao': resultado.loc[resultado.motivo.ne(''), 'motivo'].value_counts().to_dict(),
               'integridade_sqlite': integridade, 'violacoes_fk': len(con.execute('PRAGMA foreign_key_check').fetchall()),

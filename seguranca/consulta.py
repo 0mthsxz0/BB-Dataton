@@ -26,7 +26,19 @@ def consultar(caminho, codigo=None, uf=None, busca='', limite=100):
             dados['uso_empresarial_validado'] = False
             dados['crimes_indice'] = metodo.get('crimes', [])
             dados['fontes'] = [dict(f) for f in con.execute('SELECT DISTINCT url,sha256,coletado_em FROM fontes ORDER BY id')]
-            dados['aviso'] = 'Contexto dos tipos de roubo disponíveis, sem roubo em comércio. Não mede probabilidade de roubo de estabelecimento nem previsão de sinistro.'
+            dados['hierarquia_fontes'] = []
+            if con.execute('SELECT 1 FROM sqlite_master WHERE name=?', ('hierarquia_selecao',)).fetchone():
+                for h in con.execute('''SELECT h.*,f.url,f.sha256 FROM hierarquia_selecao h
+                    LEFT JOIN fontes f ON f.id=h.fonte_id WHERE h.codigo_ibge=? ORDER BY h.crime''', (codigo,)):
+                    fonte = dict(h)
+                    fonte.pop('codigo_ibge')
+                    fonte['tentativas'] = json.loads(fonte['tentativas'])
+                    fonte['ocorrencias_12m'] = (con.execute('''SELECT sum(ocorrencias) FROM ocorrencias
+                        WHERE codigo_ibge=? AND crime=? AND mes BETWEEN ? AND ?''',
+                        (codigo, h['crime'], h['inicio']+'-01', h['fim']+'-01')).fetchone()[0]
+                        if h['status'] == 'selecionada' else None)
+                    dados['hierarquia_fontes'].append(fonte)
+            dados['aviso'] = 'Contexto dos indicadores municipais selecionados. Mesmo roubo em comércio observado não é probabilidade individual de roubo nem previsão de sinistro.'
             return {'status': 200, 'dados': dados}
         if uf is None or not re.fullmatch(r'[A-Z]{2}', uf):
             return {'status': 400, 'erro': 'Informe a sigla da UF.'}
