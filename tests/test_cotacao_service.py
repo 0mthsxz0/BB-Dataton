@@ -340,3 +340,34 @@ def test_valor_declarado_preserva_cadastro_so_como_comparacao(analyze,payload,pa
     # A mesma base pode gerar referência agregada, mas sem vínculo público não expõe células de empresas.
     publico=analyze(dict(payload,contentsValue=75000),base)
     assert all(not e['fontes_originais'] for d in publico['dimensionamento'].values() for e in d['evidencias'])
+
+
+def test_relatorio_direto_cnae_agrega_sem_escolher_empresa(pasta_csv):
+    b = carregar_base(pasta_csv)
+    r = service.analisar_cnae({'cnae': '0000-0/00'}, base=b)
+    assert r['tipo'] == 'setorial'
+    assert r['cnae'] == '0000000'
+    assert r['amostra']['estabelecimentos'] == 2
+    assert r['amostra']['empresas'] == 1
+    assert sum(x['quantidade'] for x in r['planos']) == 2
+    assert len(r['indices']) == 4
+    assert r['preliminar'] is True
+    assert 'relatorio' not in r
+    assert 'empresa_id' not in r
+
+
+def test_relatorio_direto_cnae_um_unico_estabelecimento(pasta_csv):
+    b = carregar_base(pasta_csv)
+    b.estabelecimentos = b.estabelecimentos.iloc[:1].copy()
+    r = service.analisar_cnae({'cnae': '0000000'}, base=b)
+    assert r['tipo'] == 'individual'
+    assert r['amostra']['estabelecimentos'] == 1
+    assert r['relatorio']['cadastro']['empresa_id'] == 'EMP_TESTE'
+    assert r['relatorio']['respostas'] is None
+
+
+@pytest.mark.parametrize('codigo',['123','9999999'])
+def test_relatorio_direto_cnae_invalido_ou_sem_unidade(pasta_csv,codigo):
+    b = carregar_base(pasta_csv)
+    with pytest.raises(ValueError):
+        service.analisar_cnae({'cnae': codigo}, base=b)
