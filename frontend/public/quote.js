@@ -110,7 +110,7 @@ function render(){
       completed=Math.max(completed,step+1);go(step+1);});
     $('#quote-back')?.addEventListener('click',()=>go(step-1));
   }
-  if(step===0){$('[name=personType]').forEach(r=>r.addEventListener('change',e=>{state.personType=e.target.value;state.cnpj='';state.birthDate='';state.maritalStatus='';render();}));$('#verify-client')?.addEventListener('click',verifyClient);}
+  if(step===0){$$('[name=personType]').forEach(r=>r.addEventListener('change',e=>{state.personType=e.target.value;state.cnpj='';state.birthDate='';state.maritalStatus='';render();}));$('#verify-client')?.addEventListener('click',verifyClient);}
   if(step===1){
     picker=new ActivityPicker($('#activity-picker'),(activity,sub,requireSubactivityConfirmation=false)=>{
       invalidate();
