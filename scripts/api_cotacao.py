@@ -16,6 +16,8 @@ def main():
             result = consultar_perfil_cnae(request.get('payload'))
         elif request.get('action') == 'cadastro':
             result = analisar_cadastro(request.get('payload'))
+        elif request.get('action') == 'relatorio_cnae':
+            result = analisar_cnae(request.get('payload'))
         else:
             result = analisar(request.get('payload'))
         print(json.dumps({'ok': True, 'data': result}, ensure_ascii=True, allow_nan=False))
