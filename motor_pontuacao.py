@@ -8,6 +8,8 @@ import json
 import math
 from datetime import date
 from seguranca import avaliar_seguranca
+from contexto_seguranca import IntegracaoSeguranca
+from avaliacao_mosler import avaliar_mosler
 
 from processamento import BaseDados, NULOS, carregar_base, numero
 
@@ -142,10 +144,15 @@ def soma_observada(*valores):
 
 
 class MotorPontuacao:
-    def __init__(self, base: BaseDados | None = None, config=None, data_analise=None):
+    def __init__(self, base: BaseDados | None = None, config=None, data_analise=None,
+                 banco_seguranca=None, modo_seguranca=None):
         self.base = base
         self.config = carregar_config(config)
         self.data_analise = date.fromisoformat(data_analise) if isinstance(data_analise,str) else (data_analise or date.today())
+        self.integracao_seguranca = IntegracaoSeguranca(banco_seguranca, modo_seguranca)
+
+    def preparar_registro(self, registro):
+        return self.integracao_seguranca.preparar(registro, self.data_analise)
 
     def fatores(self, r):
         cfg = self.config
@@ -328,6 +335,7 @@ class MotorPontuacao:
         return impacto, valor, minimo, maximo
 
     def analisar_registro(self, r):
+        r = self.preparar_registro(r)
         cfg = self.config
         f = self.fatores(r)
         v = self.vulnerabilidade(r)
@@ -467,6 +475,8 @@ class MotorPontuacao:
             }
             if codigo == ROUBO:
                 saida[codigo]['qualidade_seguranca'] = avaliar_seguranca(r, self.data_analise)
+                saida[codigo]['contexto_seguranca'] = r['contexto_seguranca']
+                saida[codigo]['avaliacao_mosler'] = avaliar_mosler(r.get('avaliacao_mosler'), self.data_analise)
                 saida[codigo]['risco_territorial_observado'] = saida[codigo]['qualidade_seguranca']['status'] == 'EXPERIMENTAL'
         return saida
 

@@ -353,6 +353,7 @@ def analisar(payload, base=None, municipio_fn=consultar_municipio):
 
 def montar_resultado(record, motor, catalog, activity, subactivity_id, q, warnings, origins, has_link, base=None):
     cfg = motor.config
+    record = motor.preparar_registro(record)
     indices = motor.analisar_registro(record)
     common = [c for c in cfg['coberturas'] if c not in indices]
     # Use the supplied Datathon contract, when available; otherwise the effective 6/8/10 guide catalog.
@@ -386,6 +387,8 @@ def montar_resultado(record, motor, catalog, activity, subactivity_id, q, warnin
         'atividade': {'id': activity['id'], 'subactivityId': subactivity_id, 'cnaeUtilizado': record.get('cnae_principal')},
         'planoId': PLAN_IDS[personalization['pacote']['plano']], 'indices': indices,
         'recomendacao': recommendation, 'dimensionamento': dimensions, 'rastreabilidade': evidence,
+        'contextoSeguranca': indices['ROUBO_FURTO_ARROMBAMENTO']['contexto_seguranca'],
+        'avaliacaoMosler': indices['ROUBO_FURTO_ARROMBAMENTO']['avaliacao_mosler'],
         'personalizacao': personalization,
         'perfilAtividade': {'usado':bool(record.get('_campos_perfil')), 'campos':record.get('_campos_perfil',[])},
         'vidrosDeclarados': {'quantidade': record.get('quantidade_vidros_declarada'),

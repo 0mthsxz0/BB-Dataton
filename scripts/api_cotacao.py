@@ -5,6 +5,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from cotacao_service import analisar, analisar_cadastro, analisar_cnae, demonstrar_empresa_por_id, contexto, consultar_perfil_cnae
+from contexto_seguranca import consultar_contexto, estado_base
 
 
 def main():
@@ -20,6 +21,11 @@ def main():
             result = demonstrar_empresa_por_id(request.get('payload'))
         elif request.get('action') == 'relatorio_cnae':
             result = analisar_cnae(request.get('payload'))
+        elif request.get('action') == 'seguranca':
+            payload=request.get('payload') or {}
+            result=consultar_contexto(payload.get('codigoIBGE'),payload.get('uf'))
+        elif request.get('action') == 'estado_seguranca':
+            result=estado_base()
         else:
             result = analisar(request.get('payload'))
         print(json.dumps({'ok': True, 'data': result}, ensure_ascii=True, allow_nan=False))
