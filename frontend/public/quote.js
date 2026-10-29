@@ -1,8 +1,10 @@
+import { recordActivityMetric } from './activity-metrics.js';
 import { fullName, questionLabel } from './language.js';
+import { startIdRefinement, recommendationEndpoint } from './id-journey.js';
 import { installConfidenceEditor } from './confidence-ui.js';
 import { voiceMarkup, bindVoice } from './voice-ui.js';
 import { cnaeReportView } from './cnae-report-ui.js';
-import { customerRecommendationView, customerReport } from './journeys.js';
+import { customerRecommendationView, customerReport, customerOptionalSuggestions } from './journeys.js';
 import { initializeProductState, productPayload, productFields, packageFields, optionalFields, syncPackageState, packageCount } from './product-ui.js';
 import { api, riskFields, riskPayload, employeePresence, syncEmployeeExposure, recommendationView, baseFields, cadastroRecommendationView } from './quote-engine.js';
 import { createActivityIndex, searchActivities, normalize, isValidSelection } from './activity-search.js';
@@ -35,7 +37,22 @@ let profileRevision=0,profileLoading=false,profileTimer;
 const state={personType:'pf',name:'',cnpj:'',birthDate:'',maritalStatus:'',phone:'',email:'',activityId:'',subactivityId:'',otherSubactivity:'',protection:'',shopping:'',cep:'',street:'',number:'',complement:'',district:'',city:'',uf:'',planId:new URLSearchParams(location.search).get('plano')||'',payment:'',installments:'1',paymentDay:'5',reviewed:false,description:'',sourceKey:'',profileFields:[],prefilledFields:[],cnaeProfile:null,units:'',cnae:'',contentsValue:'',equipmentValue:'',stockValue:'',buildingValue:'',glassValue:'',glassCount:'',employees:'',payroll:'',monthlyExpenses:'',monthlyRevenue:'',rentValue:'',securityControls:'',portableGoods:'',roofMaintained:'',exposedAssets:'',hasEmployees:'',hazardousWork:'',hasGlass:'',glassExposed:''};
 
 function selectedActivity(){return catalog.activities.find(a=>a.id===state.activityId);}
+function refineDemoResponse() {
+  const result = demoResult;
+  resetUnitInputs();
+  for (const key of ['cep','street','number','complement','district','otherSubactivity','protection','shopping']) state[key] = '';
+  startIdRefinement(state, result, catalog);
+  syncEmployeeExposure(state, null);
+  cadastroRevision++;cadastroLoading=false;cadastroError='';
+  cadastroRecommendation=result.relatorio;
+  recommendation=null;demoResult=null;completed=1;go(1);
+}
 installConfidenceEditor({
+  onRefine(context) {
+    if (context.kind !== 'demo') return false;
+    refineDemoResponse();
+    return true;
+  },
   getContext(empresaId, imovelId) {
     const matches = report => report?.confiancaDados?.empresaId === empresaId && report.confiancaDados.imovelId === imovelId;
     if (!internal && step === 0 && matches(demoResult?.relatorio)) return {kind:'demo',report:demoResult.relatorio,empresaId,imovelId};
@@ -64,10 +81,10 @@ function selectField(key,label,choices,{required=true,full=false,placeholder='Se
 }
 
 class ActivityPicker {
-  constructor(root,onChoose){this.root=root;this.onChoose=onChoose;this.open=false;this.mode='name';this.query='';this.active=-1;this.rows=[];this.render();}
+  constructor(root,onChoose){this.root=root;this.onChoose=onChoose;this.open=false;this.mode='name';this.query='';this.active=-1;this.rows=[];this.refinements={};this.searchRevision=0;this.render();}
   render(){
     const selection=selectedActivity();
-    this.root.innerHTML=`<div class="qfield activity-picker"><label id="activity-label" for="activity-search">Qual é a atividade econômica?</label><div class="activity-input-wrap"><input id="activity-search" type="search" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="activity-options" aria-labelledby="activity-label" aria-describedby="activity-help" placeholder="Escolha, busque ou descreva sua empresa"><button class="activity-toggle" type="button" aria-label="Abrir lista de atividades" aria-expanded="false">⌄</button></div><small id="activity-help">Role a lista, digite o nome ou use a busca inteligente para contar como sua empresa funciona.</small><button type="button" class="text-link smart-shortcut" style="align-self:flex-start;border:0;background:none;color:var(--deep);padding:6px 0;font-size:11px">✦ Descrever minha empresa</button><div id="activity-panel" class="activity-panel hidden"><div class="activity-modes" role="group" aria-label="Modo de busca de atividade"><button type="button" data-mode="name" aria-pressed="true">Lista e nome</button><button type="button" data-mode="description" aria-pressed="false">✦ Busca inteligente</button></div><div id="activity-list-area"><ul id="activity-options" class="activity-options" role="listbox" aria-label="Atividades econômicas"></ul><p class="activity-count" aria-live="polite"></p></div><div class="intelligent-panel hidden" id="intelligent-panel"><div class="qfield"><label for="business-description">Como a sua empresa funciona?</label><textarea id="business-description" maxlength="2000" placeholder="Ex.: Preparo pizzas e refeições para vender aos clientes. Atendo no salão e também faço entregas.">${esc(state.description)}</textarea><small>Conte o que vende, produz ou faz, quem atende e como trabalha. Não inclua dados pessoais.</small></div><button class="btn" type="button" id="find-activity">Encontrar minha atividade</button><div id="intelligent-results" aria-live="polite"></div><p class="smart-status">Sugestões para você conferir. A busca não decide aceitação nem enquadramento contratual.</p></div></div>${selection?`<div class="selected-activity"><strong>Atividade escolhida</strong>${esc(selection.label)}</div>`:''}</div>`;
+    this.root.innerHTML=`<div class="qfield activity-picker"><label id="activity-label" for="activity-search">Qual é a atividade econômica?</label><div class="activity-input-wrap"><input id="activity-search" type="search" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="activity-options" aria-labelledby="activity-label" aria-describedby="activity-help" placeholder="Escolha, busque ou descreva sua empresa"><button class="activity-toggle" type="button" aria-label="Abrir lista de atividades" aria-expanded="false">⌄</button></div><small id="activity-help">Role a lista, digite o nome ou use a busca inteligente para contar como sua empresa funciona.</small><button type="button" class="text-link smart-shortcut" style="align-self:flex-start;border:0;background:none;color:var(--deep);padding:6px 0;font-size:11px">✦ Descrever minha empresa</button><div id="activity-panel" class="activity-panel hidden"><div class="activity-modes" role="group" aria-label="Modo de busca de atividade"><button type="button" data-mode="name" aria-pressed="true">Lista e nome</button><button type="button" data-mode="description" aria-pressed="false">✦ Busca inteligente</button></div><div id="activity-list-area"><ul id="activity-options" class="activity-options" role="listbox" aria-label="Atividades econômicas"></ul><p class="activity-count" aria-live="polite"></p></div><div class="intelligent-panel hidden" id="intelligent-panel"><div class="qfield"><label for="business-description">Como a sua empresa funciona?</label><textarea id="business-description" maxlength="2000" placeholder="Ex.: Preparo pizzas e refeições para vender aos clientes. Atendo no salão e também faço entregas.">${esc(state.description)}</textarea><small>Exemplos: vendo remédios; conserto celulares; faço bolos por encomenda.</small><small>Conte o que vende, produz ou faz, quem atende e como trabalha. Não inclua dados pessoais.</small></div><button class="btn" type="button" id="find-activity">Encontrar minha atividade</button><div id="intelligent-results" aria-live="polite"></div><p class="smart-status">Sugestões para você conferir. A busca não decide aceitação nem enquadramento contratual.</p></div></div>${selection?`<div class="selected-activity"><strong>Atividade escolhida</strong>${esc(selection.label)}</div>`:''}</div>`;
     this.input=$('#activity-search',this.root);
     this.list=$('#activity-options',this.root);
     this.input.value='';
@@ -77,7 +94,7 @@ class ActivityPicker {
     $('.activity-toggle',this.root).addEventListener('click',()=>{this.mode='name';this.setOpen(!this.open);this.updateMode();if(this.open)this.input.focus();});
     $('.smart-shortcut',this.root).addEventListener('click',()=>this.setMode('description'));
     $$('[data-mode]',this.root).forEach(b=>b.addEventListener('click',()=>this.setMode(b.dataset.mode)));
-    $('#business-description',this.root).addEventListener('input',e=>{state.description=e.target.value;});
+    $('#business-description',this.root).addEventListener('input',e=>{state.description=e.target.value;this.refinements={};this.searchRevision++;$('#intelligent-results',this.root).innerHTML='<p class="smart-status">Descrição alterada. Busque novamente para atualizar as sugestões.</p>';});
     $('#find-activity',this.root).addEventListener('click',()=>this.suggest());
     this.updateList();
   }
@@ -100,16 +117,26 @@ class ActivityPicker {
     if(e.key==='Tab')this.setOpen(false);
   }
   highlight(){$$('.activity-option',this.list).forEach((e,i)=>e.classList.toggle('active',i===this.active));const row=$(`#activity-option-${this.active}`,this.root);if(row){this.input.setAttribute('aria-activedescendant',row.id);row.scrollIntoView({block:'nearest'});}}
-  async suggest(){
+  async suggest(offline=false){
+    recordActivityMetric('searches');if(offline)recordActivityMetric('offline');
     state.description=$('#business-description',this.root).value;
     const button=$('#find-activity',this.root);button.disabled=true;button.textContent='Buscando no catálogo…';
+    const revision=++this.searchRevision;
+    const description=state.description;
+    $('#intelligent-results',this.root).setAttribute('aria-busy','true');
     let found;
-    try { found=await api('/api/atividades/buscar',{description:state.description}); }
-    catch(error){$('#intelligent-results',this.root).innerHTML=`<p class="quote-error">${esc(error.message)}</p>`;return;}
-    finally {button.disabled=false;button.textContent='Encontrar minha atividade';}
-    if(!this.root.isConnected)return;
-    $('#intelligent-results',this.root).innerHTML=`${found.question?`<p class="suggestion-question">${esc(found.question)}</p>`:''}${found.results.map((r,i)=>`<article class="suggestion"><h3>${esc(r.activity.label)}</h3><p>${esc(r.reason)}.</p>${r.subactivity?`<p><strong>Subatividade sugerida:</strong> ${esc(r.subactivity.label)}</p><p>${esc(r.subactivityReason)}.</p>`:'<p>Escolha a subatividade após confirmar a atividade.</p>'}<button class="btn btn-outline" type="button" data-suggestion="${i}">${r.subactivity?'Usar atividade e subatividade':'Usar esta atividade'}</button></article>`).join('')}`;
-    $$('[data-suggestion]',this.root).forEach(b=>b.addEventListener('click',()=>{const result=found.results[Number(b.dataset.suggestion)];this.onChoose(result.activity,result.subactivity,result.requiresSubactivityConfirmation);}));
+    try { found=offline?{...searchActivities(index,description,{mode:'description',limit:3,refinements:this.refinements}),offline:true}:await api('/api/atividades/buscar',{description,refinements:this.refinements}); }
+    catch(error){recordActivityMetric('errors');if(revision!==this.searchRevision||!this.root.isConnected)return;$('#intelligent-results',this.root).innerHTML=`<p class="quote-error">${esc(error.message)}</p><button type="button" class="btn btn-outline" id="retry-activity">Tentar novamente</button><button type="button" class="btn btn-outline" id="offline-activity">Buscar no catálogo deste dispositivo</button>`;$('#retry-activity',this.root).addEventListener('click',()=>this.suggest());$('#offline-activity',this.root).addEventListener('click',()=>this.suggest(true));return;}
+    finally {button.disabled=false;button.textContent='Encontrar minha atividade';$('#intelligent-results',this.root)?.setAttribute('aria-busy','false');}
+    if(!this.root.isConnected||revision!==this.searchRevision)return;
+    if(!found.results.length)recordActivityMetric('empty');if(found.clarification)recordActivityMetric('clarifications');
+    $('#intelligent-results',this.root).innerHTML=`${found.offline?'<p class="smart-status">Busca local no catálogo carregado neste dispositivo.</p>':''}${Object.keys(this.refinements).length?'<button type="button" class="text-link" id="reset-refinements">Rever minhas respostas</button>':''}${found.question?`<p class="suggestion-question">${esc(found.question)}</p>`:''}${found.clarification?`<div class="clarification-options" role="group" aria-label="Refinar atividade">${found.clarification.options.map(o=>`<button type="button" class="btn btn-outline" data-refinement="${esc(o.value)}">${esc(o.label)}</button>`).join('')}</div>`:''}${found.results.length?`<p class="smart-status">${found.confidence==='ambiguous'?'Confira as possibilidades e responda à pergunta para refinar.':'Atividades relacionadas à sua descrição. Confira antes de escolher.'}</p>`:`<button type="button" class="text-link" id="smart-browse">Procurar pelo nome na lista</button>`}${found.results.map((r,i)=>`<article class="suggestion"><h3>${esc(r.activity.label)}</h3><p>${esc(r.reason)}.</p>${r.subactivity?`<p><strong>Subatividade sugerida:</strong> ${esc(r.subactivity.label)}</p><p>${esc(r.subactivityReason)}.</p>`:'<p>Escolha a subatividade após confirmar a atividade.</p>'}<button class="btn btn-outline" type="button" data-suggestion="${i}">${r.subactivity?'Usar atividade e subatividade':'Usar esta atividade'}</button></article>`).join('')}`;
+    $('#reset-refinements',this.root)?.addEventListener('click',()=>{this.refinements={};this.suggest(offline);});
+    $('#smart-browse',this.root)?.addEventListener('click',()=>this.setMode('name'));
+    $$('[data-refinement]',this.root).forEach(b=>b.addEventListener('click',()=>{recordActivityMetric('answers');this.refinements[found.clarification.type]=b.dataset.refinement;this.suggest(offline);}));
+    $('#intelligent-results',this.root).setAttribute('tabindex','-1');
+    $('#intelligent-results',this.root).focus({preventScroll:true});
+    $$('[data-suggestion]',this.root).forEach(b=>b.addEventListener('click',()=>{const result=found.results[Number(b.dataset.suggestion)];if(revision!==this.searchRevision)return;recordActivityMetric('selections');this.onChoose(result.activity,result.subactivity,result.requiresSubactivityConfirmation);}));
   }
 }
 
@@ -124,11 +151,12 @@ function render(){
   const content=demoView?demoReportView():direct?cnaeReportView(cnaeReport):[personal,business,address,protectionStep,planStep,review,success][step]();
   $('#step-content').innerHTML=content;
   if(demoView){
-    $('#form-title').textContent='Seu relatório empresarial está pronto';
+    $('#form-title').textContent='Sua recomendação está pronta';
     document.title='Relatório empresarial demonstrativo · BB-Datathon';
+    $('#demo-refine').addEventListener('click',refineDemoResponse);
     $('#demo-reset').addEventListener('click',()=>{demoResult=null;demoUnits=[];demoCompanyId='';render();});
     $('#demo-download').addEventListener('click',()=>{
-      const blob=new Blob([JSON.stringify(demoResult,null,2)],{type:'application/json'});
+      const blob=new Blob([JSON.stringify(customerReport(demoResult.relatorio),null,2)],{type:'application/json'});
       const url=URL.createObjectURL(blob),a=document.createElement('a');
       a.href=url;a.download='relatorio-demonstrativo-'+demoCompanyId+'.json';
       document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
@@ -160,7 +188,7 @@ function render(){
     form.addEventListener('change',remember);
     form.addEventListener('submit',async e=>{e.preventDefault();if(busy||profileLoading||!form.reportValidity()||!validateStep())return;
       if(step===3){busy=true;const submit=form.querySelector('[type=submit]');submit.textContent=internal?'Calculando os índices…':'Preparando sua recomendação…';form.setAttribute('aria-busy','true');const controls=[...document.querySelectorAll('#quote-root button,#quote-form input,#quote-form select')];controls.forEach(c=>{c.dataset.wasDisabled=String(c.disabled);c.disabled=true;});
-        try{recommendation=await api('/api/recomendacao',{...riskPayload(state,questionnaire),...productPayload(state,productRules)});syncPackageState(recommendation,state,productRules);}catch(error){fail(error.message);return;}finally{busy=false;controls.forEach(c=>{c.disabled=c.dataset.wasDisabled==='true';});submit.textContent='Calcular recomendação →';form.removeAttribute('aria-busy');}
+        try{recommendation=await api(recommendationEndpoint(state),{...riskPayload(state,questionnaire),...productPayload(state,productRules)});syncPackageState(recommendation,state,productRules);}catch(error){fail(error.message);return;}finally{busy=false;controls.forEach(c=>{c.disabled=c.dataset.wasDisabled==='true';});submit.textContent='Calcular recomendação →';form.removeAttribute('aria-busy');}
       }
       if(step===4 && !await applyPackage())return;
       completed=Math.max(completed,step+1);go(step+1);});
@@ -215,11 +243,11 @@ function demoIdSection(){
 }
 function demoReportView(){
  return '<section class="demo-direct-report">'+
- '<p class="result-eyebrow">Relatório individual · Base anonimizada do Datathon</p>'+
- '<h2>Empresa '+esc(demoCompanyId)+' · Unidade '+esc(demoResult.imovelId)+'</h2>'+
- '<p>Relatório preliminar gerado pelo mesmo motor do painel interno com os dados disponíveis para esta unidade. Este ID não é um CNPJ nem comprova que o visitante é seu titular.</p>'+
- cadastroRecommendationView(demoResult.relatorio)+
- '<div class="cnae-report-actions"><button type="button" class="btn btn-outline" id="demo-reset">Consultar outra empresa</button><button type="button" class="btn btn-outline" id="demo-download">Baixar relatório JSON</button></div>'+
+ '<p class="result-eyebrow">Sua empresa · '+esc(demoCompanyId)+' · '+esc(demoResult.imovelId)+'</p>'+
+ customerRecommendationView(demoResult.relatorio,{preliminary:true})+
+ customerOptionalSuggestions(demoResult.relatorio)+
+ '<div class="customer-refinement"><h2>Quer uma resposta mais adequada à sua empresa?</h2><p>Revise os dados já preenchidos e responda ao formulário para confirmar as proteções que fazem sentido para você.</p><button type="button" class="btn" id="demo-refine">Refinar a resposta</button></div>'+
+ '<div class="cnae-report-actions"><button type="button" class="btn btn-outline" id="demo-reset">Consultar outra empresa</button><button type="button" class="btn btn-outline" id="demo-download">Baixar meu resumo</button></div>'+
  '</section>';
 }
 async function demoLookup(imovelId){
@@ -266,7 +294,7 @@ async function applyPackage(){
   controls.forEach(c=>{c.dataset.wasDisabled=String(c.disabled);c.disabled=true;});
   try{
     const before=recommendation?.personalizacao.pacote.aderencia_percentual;
-    recommendation=await api('/api/recomendacao',{...riskPayload(state,questionnaire),...productPayload(state,productRules,true)});
+    recommendation=await api(recommendationEndpoint(state),{...riskPayload(state,questionnaire),...productPayload(state,productRules,true)});
     if(recommendation.recomendacao.indicacao_bloqueada){fail('A triagem exige análise oficial antes de prosseguir. Revise a situação do imóvel e o limite básico.');return false;}
     syncPackageState(recommendation,state,productRules);
     const after=recommendation.personalizacao.pacote.aderencia_percentual;
@@ -302,6 +330,7 @@ async function requestProfile(){
  finally{if(revision===profileRevision)profileLoading=false;}
 }
 function resetUnitInputs(){
+  state.idJourney=false;
   clearProfile();state.prefilledFields=[];
   for(const k of ['contentsValue','equipmentValue','stockValue','buildingValue','glassValue','glassCount','employees','payroll','monthlyExpenses','monthlyRevenue','rentValue','units','securityControls','portableGoods','roofMaintained','exposedAssets','hasEmployees','hazardousWork','hasGlass','glassExposed'])state[k]='';
   initializeProductState(state,productRules);
@@ -323,7 +352,7 @@ function updateCadastroView(){
   updateReportLayout();
   const root=$('#cadastro-result');if(!root)return;
   root.setAttribute('aria-busy',String(cadastroLoading));
-  root.innerHTML=cadastroLoading?'<p class="quote-helper" role="status">Analisando os dados do estabelecimento e comparando os planos…</p>':cadastroError?`<p class="quote-error" role="alert">${esc(cadastroError)}</p><button type="button" class="btn btn-outline" id="retry-cadastro">Tentar análise do cadastro novamente</button>`:cadastroRecommendation?(internal?cadastroRecommendationView(cadastroRecommendation)+voiceMarkup(state.sourceKey):'<div class="recommendation"><h2>Prévia do cadastro verificado</h2><p>Confira sua indicação inicial. Os dados ausentes ou estimados serão solicitados no formulário.</p>'+customerRecommendationView(cadastroRecommendation)+'</div>'):'';
+  root.innerHTML=cadastroLoading?'<p class="quote-helper" role="status">Analisando os dados do estabelecimento e comparando os planos…</p>':cadastroError?`<p class="quote-error" role="alert">${esc(cadastroError)}</p><button type="button" class="btn btn-outline" id="retry-cadastro">Tentar análise do cadastro novamente</button>`:cadastroRecommendation?(internal?cadastroRecommendationView(cadastroRecommendation)+voiceMarkup(state.sourceKey):'<div class="recommendation"><h2>Prévia da recomendação</h2><p>Confira sua indicação inicial. Os dados ausentes ou estimados serão solicitados no formulário.</p>'+customerRecommendationView(cadastroRecommendation)+'</div>'):'';
   if(internal&&cadastroRecommendation)bindVoice(state.sourceKey);
   $('#retry-cadastro')?.addEventListener('click',requestCadastro);
 }
@@ -374,7 +403,7 @@ async function verifyClient(){
      .every(k=>state[k]==='yes'||state[k]==='no');
    const complete=!!(state.activityId&&state.subactivityId&&state.protection&&state.shopping&&state.city&&state.uf&&answered);
    if(complete){
-     const report=await api('/api/recomendacao',{...riskPayload(state,questionnaire),...productPayload(state,productRules)});
+     const report=await api(recommendationEndpoint(state),{...riskPayload(state,questionnaire),...productPayload(state,productRules)});
      recommendation=report;syncPackageState(report,state,productRules);completed=4;step=4;
    }else{completed=Math.max(completed,1);step=1;}
    history.replaceState({quoteStep:step},'',journeyPath+'?etapa='+(step+1));
@@ -383,7 +412,7 @@ async function verifyClient(){
  }catch(e){status.textContent=e.message;button.disabled=false;}
 }
 function invalidate(){recommendation=null;state.planId='';state.reviewed=false;completed=Math.min(completed,3);$$('[data-step]').forEach(b=>{b.disabled=Number(b.dataset.step)>completed;});}
-function remember(e){const t=e.target;if(!t.name||!(t.name in state))return;if(t.name.startsWith('extra_'))state['excludeExtra_'+t.name.slice(6)]=!t.checked;if(Array.isArray(state.profileFields)&&state.profileFields.includes(t.name))state.profileFields=state.profileFields.filter(k=>k!==t.name);if(t.name==='cnae'&&e.type==='input'){clearProfile();cnaeReport=null;state.sourceKey='';cadastroRecommendation=null;}const previousEmployees=state.employees;state[t.name]=t.type==='checkbox'?t.checked:t.value;if(t.name==='cnae'&&e.type==='input'&&state.cnae.replace(/\D/g,'').length===7)profileTimer=setTimeout(requestProfile,350);if(t.name==='employees'&&employeePresence(state)===false){state.payroll='0';const payrollInput=$('#payroll');if(payrollInput)payrollInput.value='0';state.profileFields=(state.profileFields||[]).filter(k=>k!=='payroll');}if(t.name==='employees'){const presence=syncEmployeeExposure(state,previousEmployees);$$('[data-employee-exposure] input').forEach(r=>{r.disabled=presence===false;r.required=presence!==false;r.checked=r.value===state.hazardousWork;});}if(t.name==='shopping'&&t.value!=='yes')state.op_shoppingControls='';if(step===4){if(t.name.startsWith('op_')||t.name==='planId'){for(const x of productRules.optional){const plan={892:'ESSENCIAL',893:'PRATICO',894:'TOTAL'}[state.planId];if(state['op_'+x.operation]!=='yes'||!x.plans.includes(plan))state['extra_'+x.code]=false;else if(x.operation!=='interruption'&&!state['excludeExtra_'+x.code])state['extra_'+x.code]=true;}if(e.type==='change')render();}if(t.name.startsWith('extra_LUCRO_')&&t.checked){for(const x of productRules.optional.filter(x=>x.code.startsWith('LUCRO_'))){if('extra_'+x.code!==t.name){state['extra_'+x.code]=false;state['excludeExtra_'+x.code]=true;}}if(e.type==='change')render();}const status=$('#package-status');if(status)status.textContent='Há alterações pendentes. Aplique os ajustes para atualizar o pacote.';return;}if(!['name','cnpj','birthDate','maritalStatus','phone','email','personType','planId','payment','installments','paymentDay','reviewed','description'].includes(t.name))invalidate();if(t.name==='phone'){let v=t.value.replace(/\D/g,'').slice(0,11);if(v.length>2)v=`(${v.slice(0,2)}) ${v.slice(2)}`;if(v.replace(/\D/g,'').length>7)v=v.slice(0,-4)+'-'+v.slice(-4);t.value=v;state.phone=v;}if(t.name==='cep'){const v=t.value.replace(/\D/g,'').slice(0,8);t.value=v.length>5?v.slice(0,5)+'-'+v.slice(5):v;state.cep=t.value;}}
+function remember(e){const t=e.target;if(!t.name||!(t.name in state))return;if(t.name.startsWith('extra_'))state['excludeExtra_'+t.name.slice(6)]=!t.checked;if(Array.isArray(state.profileFields)&&state.profileFields.includes(t.name))state.profileFields=state.profileFields.filter(k=>k!==t.name);if(t.name==='cnae'&&e.type==='input'){clearProfile();cnaeReport=null;if(!state.idJourney)state.sourceKey='';cadastroRecommendation=null;}const previousEmployees=state.employees;state[t.name]=t.type==='checkbox'?t.checked:t.value;if(t.name==='cnae'&&e.type==='input'&&state.cnae.replace(/\D/g,'').length===7)profileTimer=setTimeout(requestProfile,350);if(t.name==='employees'&&employeePresence(state)===false){state.payroll='0';const payrollInput=$('#payroll');if(payrollInput)payrollInput.value='0';state.profileFields=(state.profileFields||[]).filter(k=>k!=='payroll');}if(t.name==='employees'){const presence=syncEmployeeExposure(state,previousEmployees);$$('[data-employee-exposure] input').forEach(r=>{r.disabled=presence===false;r.required=presence!==false;r.checked=r.value===state.hazardousWork;});}if(t.name==='shopping'&&t.value!=='yes')state.op_shoppingControls='';if(step===4){if(t.name.startsWith('op_')||t.name==='planId'){for(const x of productRules.optional){const plan={892:'ESSENCIAL',893:'PRATICO',894:'TOTAL'}[state.planId];if(state['op_'+x.operation]!=='yes'||!x.plans.includes(plan))state['extra_'+x.code]=false;else if(x.operation!=='interruption'&&!state['excludeExtra_'+x.code])state['extra_'+x.code]=true;}if(e.type==='change')render();}if(t.name.startsWith('extra_LUCRO_')&&t.checked){for(const x of productRules.optional.filter(x=>x.code.startsWith('LUCRO_'))){if('extra_'+x.code!==t.name){state['extra_'+x.code]=false;state['excludeExtra_'+x.code]=true;}}if(e.type==='change')render();}const status=$('#package-status');if(status)status.textContent='Há alterações pendentes. Aplique os ajustes para atualizar o pacote.';return;}if(!['name','cnpj','birthDate','maritalStatus','phone','email','personType','planId','payment','installments','paymentDay','reviewed','description'].includes(t.name))invalidate();if(t.name==='phone'){let v=t.value.replace(/\D/g,'').slice(0,11);if(v.length>2)v=`(${v.slice(0,2)}) ${v.slice(2)}`;if(v.replace(/\D/g,'').length>7)v=v.slice(0,-4)+'-'+v.slice(-4);t.value=v;state.phone=v;}if(t.name==='cep'){const v=t.value.replace(/\D/g,'').slice(0,8);t.value=v.length>5?v.slice(0,5)+'-'+v.slice(5):v;state.cep=t.value;}}
 function fail(message){$('#form-errors').innerHTML=`<p class="quote-error">${esc(message)}</p>`;$('#form-errors').scrollIntoView({block:'nearest'});return false;}
 function validCnpj(value){const digits=value.replace(/\D/g,'');if(digits.length!==14||/^(\d)\1+$/.test(digits))return false;function digit(base){let weight=base.length-7;let sum=0;for(const c of base){sum+=Number(c)*weight--;if(weight===1)weight=9;}const rest=sum%11;return rest<2?'0':String(11-rest);}return digit(digits.slice(0,12))===digits[12]&&digit(digits.slice(0,13))===digits[13];}
 function validateStep(){

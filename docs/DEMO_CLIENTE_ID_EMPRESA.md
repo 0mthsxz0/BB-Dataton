@@ -31,6 +31,10 @@ Import-Csv .\data\desenvolvimento\empresas.csv | Select-Object -First 10 empresa
 
 A experiência alternativa de preencher a proposta manualmente continua disponível, sem necessidade de cadastrar um ID.
 
+Após a resposta rápida por ID, **Refinar a resposta** abre o mesmo formulário da jornada manual, na etapa de dados da empresa. A unidade consultada permanece vinculada; atividade, município, valores e confirmações disponíveis já aparecem preenchidos para revisão. As perguntas sem informação continuam em aberto. O recálculo usa `/api/demo/recomendacao`, com as mesmas restrições locais da consulta por ID. O editor “Adicionar dados” continua reservado aos relatórios do painel interno.
+
+A resposta inicial do cliente apresenta uma lista simples das coberturas incluídas e, separadamente, proteções que podem fazer sentido conforme os sinais disponíveis. O download contém o resumo do cliente, sem tabelas internas de fontes e cálculos. Depois de refinar, as operações confirmadas compõem o pacote conforme o plano, respeitando exclusões e a escolha de uma única modalidade de lucro. O relatório técnico e a ferramenta de contato permanecem no painel do colaborador. A origem das melhorias está documentada em [RECUPERACAO_JORNADAS.md](RECUPERACAO_JORNADAS.md).
+
 ## Proteção e limites
 
 **Essa rota demonstrativa permanece DESLIGADA por padrão**. O comando `demo:local` habilita explicitamente a demonstração. O servidor rejeita a consulta a menos que `BB_DEMO_ID_LOOKUP=1` e a conexão venha da interface loopback (`127.0.0.1`); a aplicação continua vinculada exclusivamente a `127.0.0.1`. O navegador deve enviar solicitações da mesma origem. Não use `ngrok`, proxy reverso ou redirecionamento para expor a porta do servidor de dados (**4176** na demonstração ou **4174** no início comum).

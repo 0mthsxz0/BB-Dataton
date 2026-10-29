@@ -1,0 +1,12 @@
+{
+  "date": "2026-10-29",
+  "checks": {
+    "consultaPorId": true,
+    "preenchimentoMantemUnidade": true,
+    "opcionaisConfirmadosIncluidos": 3,
+    "planoCompativel": true,
+    "relatorioClienteSimplificado": true,
+    "relatorioColaboradorTecnico": true,
+    "resumoSemRastreabilidade": true
+  }
+}

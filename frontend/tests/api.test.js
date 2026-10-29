@@ -69,6 +69,7 @@ test('demonstração pública por ID fica bloqueada até habilitação explícit
     const response=await post('/api/demo/empresa',{empresaId:'EMP_TESTE'});
     assert.equal(response.status,403);
     assert.match((await response.json()).error,/desativada/i);
+    assert.equal((await post('/api/demo/recomendacao',{empresaId:'EMP_TESTE',imovelId:'IMO_TESTE'})).status,403);
   }finally{
     if(prior===undefined)delete process.env.BB_DEMO_ID_LOOKUP;
     else process.env.BB_DEMO_ID_LOOKUP=prior;
@@ -78,7 +79,11 @@ test('interface pública mantém caminho de ID e não exibe campo CNAE para o cl
   const src=await readFile(new URL('../public/quote.js',import.meta.url),'utf8');
   assert.match(src,/api\/demo\/empresa/);
   assert.match(src,/CNPJ \(produção\) \/ ID da empresa \(MVP\)/);
-  assert.match(src,/cadastroRecommendationView\(demoResult\.relatorio\)/);
+  assert.match(src,/customerRecommendationView\(demoResult\.relatorio,\{preliminary:true\}\)/);
+  const direct=src.split('function demoReportView(){')[1].split('async function demoLookup')[0];
+  assert.doesNotMatch(direct,/cadastroRecommendationView|recommendationView\(/);
+  assert.match(direct,/Refinar a resposta/);
+  assert.match(direct,/customerOptionalSuggestions/);
   const business=src.split('function business(){')[1].split('function address(){')[0];
   assert.match(business,/baseFields\(baseContext,state\)/);
   assert.doesNotMatch(business,/cnae-lookup|load-cnae-profile|cnae-profile-status/);
@@ -91,4 +96,28 @@ test('consulta pública de segurança valida município e preserva bloqueio de o
  assert.equal(response.status,200);
  const data=await response.json();assert.equal(data.contrato,'contexto-seguranca-1.0');
  assert.ok(!('empresa_id' in data));assert.ok(!('arquivo' in data));
+});
+
+test('car sales API distinguishes dealerships from independent agencies',async()=>{
+  const initial=await (await post('/api/atividades/buscar',{description:'Vendo carros'})).json();
+  assert.deepEqual(new Set(initial.results.map(x=>x.activity.id)),new Set(['905','906']));
+  assert.equal(initial.clarification.type,'vehicleBusiness');
+  for(const [value,id] of [['agency','906'],['dealer','905']]){
+    const response=await post('/api/atividades/buscar',{description:'Vendo carros',refinements:{vehicleBusiness:value}});
+    assert.equal(response.status,200);
+    const data=await response.json();
+    assert.deepEqual(data.results.map(x=>x.activity.id),[id]);
+  }
+});
+
+test('search API validates and applies structured refinements',async()=>{
+  const response=await post('/api/atividades/buscar',{description:'Vendo remédios',refinements:{audience:'animal'}});
+  assert.equal(response.status,200);
+  const data=await response.json();
+  assert.equal(data.results[0].activity.id,'478');
+  assert.equal(data.engine,'local-rules-tfidf-v3');
+  assert.ok(data.vocabularyVersion);
+  for(const refinements of [{audience:'unknown'},{operation:'__proto__'},[],null]){
+    assert.equal((await post('/api/atividades/buscar',{description:'Vendo remédios',refinements})).status,422);
+  }
 });

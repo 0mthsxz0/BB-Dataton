@@ -2,7 +2,7 @@ const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;',
 const percent = value => Number(value).toLocaleString('pt-BR', {maximumFractionDigits:1}) + '%';
 const known = value => value !== null && value !== undefined && value !== '';
 
-export function confidenceView(result) {
+export function confidenceView(result, {refine = false} = {}) {
   const detail = result.confiancaDados;
   const score = result.recomendacao.confianca_geral * 100;
   const missing = detail?.campos.filter(f => f.pendente && !known(f.valorCadastro)) || [];
@@ -18,7 +18,7 @@ export function confidenceView(result) {
     <div class="confidence-guidance"><h4>Converse com o cliente</h4><p>Confirme as condições do imóvel, a proteção existente, a equipe desta unidade e os valores de reposição. Registre apenas o que o cliente souber informar.</p>
     ${detail ? `<p><strong>${detail.pendentes} informações a confirmar</strong> · ${detail.confirmados} respostas registradas nesta análise.</p>` : ''}</div></div>
     ${detail ? `<details class="confidence-limitations"><summary>Limitações que as respostas não resolvem</summary><ul>${detail.limitacoes.map(text => `<li>${esc(text)}</li>`).join('')}</ul></details>` : '<p>Percentual interno do MVP, sem calibração de precisão estatística.</p>'}
-    ${detail ? `<div class="confidence-actions"><button class="btn" type="button" data-confidence-open data-company="${esc(detail.empresaId)}" data-unit="${esc(detail.imovelId)}">Adicionar dados</button><p>O colaborador pode perguntar ao cliente, preencher as respostas e recalcular este relatório.</p></div>` : ''}
+    ${detail ? `<div class="confidence-actions"><button class="btn" type="button" data-confidence-open data-company="${esc(detail.empresaId)}" data-unit="${esc(detail.imovelId)}">${refine ? 'Refinar a resposta' : 'Adicionar dados'}</button><p>${refine ? 'Responda ao formulário para refinar sua recomendação. Os dados disponíveis para esta unidade já estarão preenchidos e poderão ser revisados.' : 'O colaborador pode perguntar ao cliente, preencher as respostas e recalcular este relatório.'}</p></div>` : ''}
   </section>`;
 }
 
@@ -50,12 +50,13 @@ export function collectConfidenceAnswers(form, fields) {
   return answers;
 }
 
-export function installConfidenceEditor({getContext, save, onUpdated}) {
+export function installConfidenceEditor({getContext, save, onUpdated, onRefine}) {
   document.addEventListener('click', event => {
     const button = event.target.closest('[data-confidence-open]');
     if (!button) return;
     const context = getContext(button.dataset.company, button.dataset.unit);
     if (!context?.report?.confiancaDados) return;
+    if (onRefine?.(context)) return;
     document.querySelector('#confidence-dialog')?.remove();
     const detail = context.report.confiancaDados;
     const dialog = document.createElement('dialog');

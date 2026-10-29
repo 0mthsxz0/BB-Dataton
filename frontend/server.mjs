@@ -6,6 +6,7 @@ import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { createActivityIndex, searchActivities } from './public/activity-search.js';
+import { validRefinements } from './public/activity-vocabulary.js';
 import { internalLogin, clientLogin, authorized, getSession, logout } from './auth.mjs';
 import { newDraft, approve, makeCall, status as draftStatus } from './voice-service.mjs';
 
@@ -128,17 +129,21 @@ export const server = http.createServer(async (req, res) => {
       }
       if (pathname === '/api/atividades/buscar') {
         if (typeof data.description !== 'string' || data.description.length > 2000) { json(res,422,{error:'Descreva a empresa em até 2.000 caracteres.'}); return; }
-        const found = searchActivities(index,data.description,{mode:'description',limit:3});
-        json(res,200,{...found,engine:'local-rules-tfidf-v2',catalogCount:catalog.activities.length}); return;
+        if (data.refinements !== undefined && !validRefinements(data.refinements)) { json(res,422,{error:'Respostas de refinamento inválidas.'}); return; }
+        const found = searchActivities(index,data.description,{mode:'description',limit:3,refinements:data.refinements||{}});
+        json(res,200,{...found,engine:'local-rules-tfidf-v3',catalogVersion:catalog.capturedAt,catalogCount:catalog.activities.length}); return;
       }
-      if (pathname === '/api/demo/empresa') {
+      if (pathname === '/api/demo/empresa' || pathname === '/api/demo/recomendacao') {
         // Atalho de ID sem autenticação é EXCLUSIVO da demonstração local, nunca produção.
         if (process.env.BB_DEMO_ID_LOOKUP !== '1' ||
             req.headers.forwarded || req.headers['x-forwarded-for'] || req.headers['x-forwarded-host'] ||
             !['127.0.0.1','::1','::ffff:127.0.0.1'].includes(req.socket.remoteAddress)) {
           json(res,403,{error:'Demonstração por ID desativada. Configure BB_DEMO_ID_LOOKUP=1 apenas no computador local.'}); return;
         }
-        json(res,200,await runMotor({action:'demo_empresa',payload:data})); return;
+        if (pathname === '/api/demo/recomendacao' && (!data.empresaId || !data.imovelId)) {
+          json(res,422,{error:'Selecione a empresa e a unidade para refinar a resposta.'}); return;
+        }
+        json(res,200,await runMotor({action:pathname === '/api/demo/empresa' ? 'demo_empresa' : 'analisar',payload:data})); return;
       }
       if (pathname === '/api/cnae/perfil') { json(res,200,await runMotor({action:'perfil_cnae',payload:data})); return; }
       if (pathname === '/api/interno/relatorio-cnae') { json(res,200,await runMotor({action:'relatorio_cnae',payload:data})); return; }

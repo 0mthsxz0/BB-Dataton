@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-10-29T14:30:18.661Z",
+  "methodology": "200 variações sintéticas de 20 famílias conhecidas. Conjunto de regressão e desenvolvimento; não é avaliação independente nem amostra de usuários reais.",
+  "engine": "local-rules-tfidf-v3",
+  "runtime": "v26.8.2",
+  "catalogVersion": "2026-10-28",
+  "count": 200,
+  "families": 20,
+  "top1": 200,
+  "top3": 200,
+  "invalid": 0,
+  "p95Milliseconds": 18.26,
+  "failures": []
+}

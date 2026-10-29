@@ -1,3 +1,4 @@
+import { ALIASES, REFINEMENTS, VOCABULARY_VERSION, CONCEPTS } from './activity-vocabulary.js';
 /** Offline relevance search over insurer-owned categories; no insurance decisions. */
 export function normalize(text) {
   return String(text ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR').replace(/[^a-z0-9]+/g,' ').trim();
@@ -10,28 +11,7 @@ function root(word) {
   return word;
 }
 export function tokens(text){return normalize(text).split(' ').filter(w=>w.length>1&&!STOP.has(w)).map(root);}
-const CONCEPTS = [
-  {pattern:/\b(pizza\w*|restaurante\w*|churrasc\w*|cantina\w*|marmit\w*|refeic\w*|comida pronta|almoco|jantar)\b/, terms:'restaurantes churrascarias pizzarias cantinas alimentacao', ids:['625'], reason:'preparo e venda de refeições'},
-  {pattern:/\b(padaria\w*|pao|paes|confeitar\w*|bolos?|doces?|bomboni\w*|panifica\w*)\b/,terms:'padarias bombonieres confeitarias',ids:['470'],reason:'panificação ou confeitaria'},
-  {pattern:/\b(barbear\w*|barbeir\w*|cabel\w*|manicure|pedicure|unhas?|salao de beleza)\b/,terms:'cabeleireiros barbeiros saloes beleza manicure pedicure',ids:['641'],reason:'serviços de beleza e cuidados pessoais'},
-  {pattern:/\b(roupas?|vestuari\w*|camisetas?|vestidos?|brecho|boutique|moda)\b/,terms:'vestuario roupas',reason:'vestuário'},
-  {pattern:/\b(costur\w*|ajust\w* de roupas?|conserto de roupas?|bainhas?)\b/,terms:'reparacao artigos acessorios vestuario tecidos',ids:['636'],reason:'conserto e ajuste de roupas'},
-  {pattern:/\b(mercadinho|merceari\w*|supermercad\w*|minimercad\w*|alimentos e limpeza)\b/,terms:'mercearias supermercados comercio varejista mercadorias geral',ids:['909'],reason:'comércio de mercadorias de consumo diário'},
-  {pattern:/\b(advoga\w*|juridic\w*|contabil\w*|contador\w*|contabilidade|auditoria)\b/,terms:'servicos escritorio juridicos contabeis auditoria',ids:['674'],reason:'serviços jurídicos, contábeis ou de escritório'},
-  {pattern:/\b(dentist\w*|odont\w*|consultorio dentario)\b/,terms:'servicos odontologicos',ids:['690'],reason:'atendimento odontológico'},
-  {pattern:/\b(program\w*|software|aplicativo\w*|sistemas? web|sites?|desenvolvedor\w*)\b/,terms:'desenvolvimento programas computador',ids:['1006','1008'],reason:'desenvolvimento de programas de computador'},
-  {pattern:/\b(computador\w*|notebook\w*|informatica|celular\w*|smartphone\w*|impressor\w*)\b/,terms:'computadores equipamentos informatica perifericos',reason:'equipamentos de informática'},
-  {pattern:/\b(consert\w*|repar\w*|manutenc\w*|assistencia tecnica)\b/,terms:'manutencao reparacao',reason:'reparação ou manutenção'},
-  {pattern:/\b(farmaci\w*|drogari\w*|medicament\w*)\b/,terms:'farmacias drogarias',ids:['476'],reason:'farmácia ou drogaria'},
-  {pattern:/\b(lavander\w*|lavo roupas|lavamos roupas|lavagem de roupas|tinturari\w*)\b/,terms:'lavanderias tinturarias',ids:['640'],reason:'lavagem e tratamento de roupas'},
-  {pattern:/\b(imobiliari\w*|alugo imoveis|locacao de imoveis|corretor de imoveis)\b/,terms:'servicos locacao arrendamento intermediacao bens imoveis',ids:['694'],reason:'intermediação ou locação de imóveis'},
-  {pattern:/\b(creche\w*|escola\w*|educacao infantil|ensino fundamental)\b/,terms:'ensino pre escolar fundamental medio',ids:['728'],reason:'ensino ou educação infantil'},
-  {pattern:/\b(bar|bares|boteco\w*|cafeteria\w*|cafe)\b/,terms:'bares botequins cafes',ids:['626'],reason:'bar ou cafeteria'},
-  {pattern:/\b(academia\w*|musculacao|personal trainer|fitness|pilates)\b/,terms:'academia ginastica esporte',reason:'atividade física e ginástica'},
-  {pattern:/\b(pet ?shop|banho e tosa|racao|animais de estimacao)\b/,terms:'animais estimacao pet veterinarios',reason:'produtos ou serviços para animais de estimação'},
-  {pattern:/\b(oficina mecanica|consert\w* carros?|mecanico|funilaria|automotiv\w*)\b/,terms:'reparacao manutencao veiculos automotores mecanica funilaria',reason:'reparação de veículos'},
-  {pattern:/\b(marcenari\w*|moveis|mobiliario|armarios? planejados?)\b/,terms:'moveis madeira',reason:'móveis e mobiliário'},
-];
+
 
 export function createActivityIndex(catalog) {
   const entries=catalog.activities.map(activity=>{
@@ -48,20 +28,29 @@ export function createActivityIndex(catalog) {
 function grams(text){const t=' '+normalize(text)+' ';const g=new Set();for(let i=0;i<t.length-2;i++)g.add(t.slice(i,i+3));return g;}
 function similarity(a,b){const aa=grams(a),bb=grams(b);let n=0;for(const g of aa)if(bb.has(g))n++;return 2*n/(aa.size+bb.size||1);}
 function idf(index,word){return Math.log(1+(index.size+1)/((index.frequency.get(word)||0)+1));}
-function negatedText(text){return text.replace(/\b(?:nao|nunca)\s+(?:fabrico|fabricamos|produzo|produzimos|vendo|vendemos|conserto|consertamos|somos|somos uma)\b(?:\s+\w+){0,2}/g,' ');}
+// Keep clause boundaries until negative assertions have been removed.
+export function positiveDescription(text) {
+  return String(text).split(/[,;.!?\n]+|\bmas\b|\bporem\b|\be sim\b|\be\s+(?=(?:vendo|vendemos|fabrico|fabricamos|produzo|produzimos|conserto|reparo|presto)\b)/iu)
+    .map(clause=>normalize(clause).replace(/\b(?:nao|nunca|nem)\b.*$/g,''))
+    .filter(Boolean).join(' ');
+}
+function negatedText(text){return positiveDescription(text);}
+function interpreted(text){let value=positiveDescription(text);for(const [pattern,replacement] of ALIASES)value=value.replace(pattern,replacement);return value;}
 function operation(text){
   const cleaned=negatedText(normalize(text));
   if(/\b(conserto|consertamos|reparo|reparamos|manutencao|assistencia tecnica)\b/.test(cleaned))return 'repair';
   if(/\b(fabrico|fabricamos|produzo|produzimos|fabricacao|fabrica|industria)\b/.test(cleaned))return 'manufacture';
   if(/\b(atacado|atacadista|distribuidora|distribuimos)\b/.test(cleaned))return 'wholesale';
-  if(/\b(vendo|vendemos|revendo|revendemos|loja|varejo|varejista|comercializo|comercializamos|comercio)\b/.test(cleaned))return 'retail';
+  if(/\b(vendo|vende|vendem|venda|vendemos|revendo|revendemos|loja|varejo|varejista|comercializo|comercializamos|comercio)\b/.test(cleaned))return 'retail';
   return null;
 }
-function candidateOperation(label){if(label.startsWith('fabricacao')||label.startsWith('confeccao'))return 'manufacture';if(label.includes('atacadista'))return 'wholesale';if(label.includes('varejista'))return 'retail';if(/reparacao|manutencao/.test(label))return 'repair';return null;}
+const GENERIC_INTENT = new Set('vendo vende vendem venda vendemos revendo revendemos loja lojas varejo varejista atacado atacadista comercio comercializo comercializamos fabrico fabricamos produzo produzimos fabricacao fabrica industria conserto consertamos reparo reparamos manutencao reparacao assistencia tecnica presto prestamo servico servicos produto produtos consumidor consumidore cliente cliente principal atividade pessoa coisa diverso diversa geral'.split(' ').map(root));
+function candidateOperation(label){if(label.startsWith('fabricacao')||label.startsWith('confeccao'))return 'manufacture';if(label.includes('atacadista'))return 'wholesale';if(label.includes('varejista'))return 'retail';if(/reparacao|manutencao/.test(label))return 'repair';if(label.startsWith('servicos'))return 'service';return null;}
 
 // A place of work ("prédio comercial") does not identify a consulting specialty.
 function consultancyIntent(text) {
   if(!/\b(consultoria\w*|consultor|consultores|consultora\w*|assessoria\w*)\b/.test(text))return null;
+  if(/\b(gestao|administrativa)\b/.test(text))return {ids:['721'],reason:'consultoria de gestão administrativa'};
   if(/\b(software|programa\w*|sistemas?|aplicativo\w*)\b/.test(text))return {ids:['1008'],reason:'consultoria em programas de computador'};
   if(/\b(informatica|hardware|computador\w*|equipamentos? de informatica)\b/.test(text))return {ids:['1005'],reason:'consultoria em equipamentos de informática'};
   if(/\b(engenhari\w*|arquitet\w*|tecnica especializada)\b/.test(text))return {ids:['669'],reason:'assessoria técnica de engenharia ou arquitetura'};
@@ -71,22 +60,47 @@ function consultancyIntent(text) {
 }
 
 /** Returns only identifiers belonging to the supplied parent/subactivity catalog. */
-export function searchActivities(index, query, {mode='name',limit=12}={}) {
+export function searchActivities(index, query, {mode='name',limit=12,refinements={}}={}) {
+  const original=query;
+  query=mode==='description'?interpreted(query):query;
+  const refinementText=Object.entries(refinements).map(([key,value])=>REFINEMENTS[key]?.[value]||'').join('. ');
+  if(mode==='description'&&refinementText)query+=' '+interpreted(refinementText);
   const q=normalize(query);
   if(!q)return {results:mode==='name'?index.entries.slice(0,limit).map(x=>({activity:x.activity,score:0,reason:'Lista de atividades'})):[],confidence:'none',question:mode==='description'?'Conte o que você vende, produz ou faz e quem são seus clientes.':null};
   // Ignore negated operations/products before ranking, not just when detecting intent.
-  const rawTokens=tokens(mode==='description'?negatedText(q):query);
-  if(mode==='description'&&rawTokens.length<2)return {results:[],confidence:'none',question:'Conte o que você vende, produz ou faz e quem são seus clientes.'};
+  let rawTokens=tokens(mode==='description'?negatedText(q):query);
+  if(mode==='description')rawTokens=rawTokens.map(token=>{
+    if(token.length<5||index.frequency.has(token))return token;
+    const candidates=[...index.frequency.keys()].filter(w=>Math.abs(w.length-token.length)<=1&&w[0]===token[0]&&similarity(token,w)>.73);
+    return candidates.length===1?candidates[0]:token;
+  });
+  if(mode==='description'&&rawTokens.length<1)return {results:[],confidence:'none',question:'Conte o que você vende, produz ou faz e quem são seus clientes.'};
   const clean=negatedText(q);
   const consultancy=mode==='description'?consultancyIntent(clean):null;
   const concepts=mode==='description'?CONCEPTS.filter(c=>c.pattern.test(clean)):[];
   const additions=concepts.flatMap(c=>tokens(c.terms));
   const qtokens=[...new Set([...rawTokens,...additions])];
-  const op=operation(query);
+  const op=refinements.operation||operation(query);
+  const productTokens=rawTokens.filter(t=>!GENERIC_INTENT.has(t));
+  const wholeVehicle=/\b(veiculos?|automoveis)\b/.test(clean)&&!/\b(pecas?|acessorios?|pneumaticos?|ferroviari\w*|biciclet\w*|motociclet\w*)\b/.test(clean);
+  const vehicleRental=wholeVehicle&&/\b(alugo|aluguel|locacao|arrendamento)\b/.test(clean);
+  const vehicleWash=wholeVehicle&&/\b(lavo|lavamos|lavagem|lava rapido|lava jato|lubrificacao)\b/.test(clean);
+  const vehicleSales=wholeVehicle&&!vehicleRental&&!vehicleWash&&(!op||op==='retail');
+  const vehicleIds=wholeVehicle?(vehicleRental?['697','954']:vehicleWash?['683']:op==='repair'?['633']:op==='manufacture'?['821']:vehicleSales?(refinements.vehicleBusiness==='dealer'||/\bconcessionaria\w*\b/.test(clean)?['905']:refinements.vehicleBusiness==='agency'||/\b(agencia|revenda independente)\b/.test(clean)?['906']:['905','906']):[]):null;
+  const medicine=/\b(medicament\w*|farmaci\w*|drogari\w*)\b/.test(clean);
+  const animal=refinements.audience?refinements.audience==='animal':/\b(animais|animal|veterin\w*|pets?|cachorros?|gatos?)\b/.test(clean);
+  const cosmetics=/\b(cosmetic\w*|perfum\w*)\b/.test(clean)&&!medicine;
+  const cosmeticId=op==='manufacture'?'288':op==='wholesale'?'554':'477';
+  const medicineIds=medicine?(op==='manufacture'?[animal?'292':'291']:op==='wholesale'?[animal?'555':'553']:[animal?'478':'476']):[];
   const ranked=[];
   for(const row of index.entries){
     if(consultancy&&!consultancy.ids.includes(row.activity.id))continue;
-    let score=consultancy?24:0;const matches=[];
+    if(vehicleIds&&!vehicleIds.includes(row.activity.id))continue;
+    let score=consultancy?24:0;
+    if(vehicleIds?.includes(row.activity.id))score+=24;
+    if(cosmetics)score+=row.activity.id===cosmeticId?28:-22;
+    if(medicine&&medicineIds.includes(row.activity.id))score+=28;
+    if(medicine&&!medicineIds.includes(row.activity.id))score-=22;const matches=[];
     for(const token of qtokens){
       const exact=row.bag.has(token);
       const prefix=!exact&&token.length>=4&&[...row.bag].some(w=>w.startsWith(token)||token.startsWith(w)&&w.length>=4);
@@ -107,6 +121,8 @@ export function searchActivities(index, query, {mode='name',limit=12}={}) {
       if(op==='retail'&&row.activity.id==='489')score+=24;
       if(op==='wholesale'&&row.activity.id==='567')score+=24;
     }
+    const productMatches=productTokens.filter(t=>row.bag.has(t));
+    if(mode==='description'&&!consultancy&&!medicine&&!cosmetics&&!vehicleIds&&!matches.length&&!concepts.some(c=>c.ids?.includes(row.activity.id)))continue;
     const cop=candidateOperation(row.normalized);
     if(op&&cop)score+=op===cop?8:-18;
     // Common-language descriptions disambiguate software product vs custom work.
@@ -122,25 +138,42 @@ export function searchActivities(index, query, {mode='name',limit=12}={}) {
       return {subactivity:s,score:subScore};
     }).sort((a,b)=>b.score-a.score||a.subactivity.label.localeCompare(b.subactivity.label,'pt-BR'));
     let sub= subCandidates.length===1 ? subCandidates[0].subactivity : subCandidates[0]?.score>0&&(subCandidates[0].score-(subCandidates[1]?.score||0))>=2 ? subCandidates[0].subactivity : null;
-    const requiresSubactivityConfirmation=Boolean(consultancy&&sub&&/terreo|sobrado/.test(normalize(sub.label))&&!/\b(terreo|sobrado)\b/.test(clean));
+    const requiresSubactivityConfirmation=Boolean(sub&&/terreo|sobrado/.test(normalize(sub.label))&&!/\b(terreo|sobrado)\b/.test(clean));
     if(requiresSubactivityConfirmation)sub=null;
-    const reason=consultancy?.reason||concepts.filter(c=>c.ids?.includes(row.activity.id)).map(c=>c.reason).join('; ')|| (matches.length?`Termos relacionados: ${[...new Set(matches)].slice(0,4).join(', ')}`:'Nome aproximado');
-    ranked.push({activity:row.activity,subactivity:sub,score,reason,requiresSubactivityConfirmation,subactivityReason:subCandidates.length===1?'Única subatividade vinculada a esta atividade no catálogo':sub?'Descrição compatível com a subatividade':'Escolha a subatividade para confirmar'});
+    const reason=(vehicleIds?.includes(row.activity.id)?`Você descreveu ${vehicleRental?'locação':vehicleWash?'lavagem':op==='repair'?'reparação':op==='manufacture'?'fabricação':'venda'} de veículos; confira o tipo de estabelecimento`:null)||(medicineIds.includes(row.activity.id)?`Você informou ${animal?'medicamentos para animais':'medicamentos ou farmácia'}; esta opção corresponde a ${op==='manufacture'?'fabricação':op==='wholesale'?'venda no atacado':'venda ao consumidor'}`:null)||consultancy?.reason||concepts.filter(c=>c.ids?.includes(row.activity.id)).map(c=>c.reason).join('; ')|| (matches.length?`Termos relacionados: ${[...new Set(matches)].slice(0,4).join(', ')}`:'Nome aproximado');
+    ranked.push({productMatches,activity:row.activity,subactivity:sub,score,reason,requiresSubactivityConfirmation,subactivityReason:subCandidates.length===1?'Única subatividade vinculada a esta atividade no catálogo':sub?'Descrição compatível com a subatividade':'Escolha a subatividade para confirmar'});
   }
+  if(mode==='description'&&!consultancy&&!concepts.length&&!medicine&&!cosmetics&&!vehicleIds&&ranked.some(r=>r.productMatches.length)){for(let i=ranked.length-1;i>=0;i--)if(!ranked[i].productMatches.length)ranked.splice(i,1);}
   ranked.sort((a,b)=>b.score-a.score||a.activity.label.localeCompare(b.activity.label,'pt-BR'));
   const top=ranked[0],margin=top?(top.score-(ranked[1]?.score||0)):0;
-  const sufficient=mode==='name'||(top&&top.score>=12&&(consultancy||concepts.length>0||rawTokens.filter(t=>tokens(top.activity.label+' '+(top.subactivity?.label||'')).includes(t)).length>=2));
+  const sufficient=mode==='name'||(top&&top.score>=12&&(consultancy||concepts.length>0||medicine||cosmetics||vehicleIds||top.productMatches.some(t=>idf(index,t)>=2.5)||productTokens.filter(t=>tokens(top.activity.label+' '+(top.subactivity?.label||'')).includes(t)).length>=2));
   const results=sufficient?(mode==='description'?ranked.filter(r=>r.score>=Math.max(8,(top?.score||0)*.4)):ranked).slice(0,limit):[];
   let confidence=!results.length?'none':mode==='name'?'match':top.score>=22&&margin>=7?'strong':margin<4?'ambiguous':'suggestion';
   let question=null;
   if(mode==='description'){
     if(!results.length)question='Explique qual produto ou serviço oferece e como atende seus clientes. Você também pode procurar pelo nome na lista.';
-    else if(!op&&results.length>1&&confidence==='ambiguous')question='Você fabrica os produtos, vende para o consumidor, vende no atacado ou presta um serviço?';
+    else if(!op&&!vehicleRental&&!vehicleWash&&results.length>1&&confidence==='ambiguous')question='Você fabrica os produtos, vende para o consumidor, vende no atacado ou presta um serviço?';
     else if(confidence==='ambiguous')question='Encontrei mais de uma possibilidade. Confira as diferenças e escolha a que descreve sua atividade principal.';
   }
   if(consultancy?.question&&results.length){confidence='ambiguous';question=consultancy.question;}
   if(results.some(r=>r.requiresSubactivityConfirmation))question=[question,'Confirme também o tipo de imóvel: estar em prédio comercial não informa se o escritório fica no térreo ou em sobrado.'].filter(Boolean).join(' ');
-  return {results,confidence,question};
+  let clarification=null;
+  const operations=[! /\b(atacado|atacadista)\b/.test(clean)&&/\b(vendo|vendemos|loja|varejo)\b/.test(clean)&&'retail',/\b(fabrico|fabricamos|produzo|produzimos)\b/.test(clean)&&'manufacture',/\b(conserto|reparo|manutencao)\b/.test(clean)&&'repair',/\b(atacado|atacadista)\b/.test(clean)&&'wholesale'].filter(Boolean);
+  if(mode==='description'&&!consultancy&&!refinements.operation&&(new Set(operations).size>1||(!op&&!vehicleRental&&!vehicleWash&&results.length>1&&confidence==='ambiguous'))){
+    clarification={type:'operation',options:Object.entries(REFINEMENTS.operation).map(([value,label])=>({value,label}))};
+    question='Qual é a atividade principal deste negócio?';confidence='ambiguous';
+  }
+  if(mode==='description'&&medicine&&!/farmaci|drogari/.test(clean)&&!animal&&!/\b(pessoas|humanos?|humano)\b/.test(clean)&&!refinements.audience){
+    clarification={type:'audience',options:Object.entries(REFINEMENTS.audience).map(([value,label])=>({value,label}))};
+    question='Os medicamentos são para pessoas ou animais?';confidence='ambiguous';
+  }
+  if(vehicleSales&&results.length>1&&!refinements.vehicleBusiness){
+    clarification={type:'vehicleBusiness',options:Object.entries(REFINEMENTS.vehicleBusiness).map(([value,label])=>({value,label}))};
+    question='Você vende em uma agência/revenda independente ou em uma concessionária autorizada?';confidence='ambiguous';
+  }
+  if(consultancy?.question&&results.length){clarification={type:'specialty',options:Object.entries(REFINEMENTS.specialty).map(([value,label])=>({value,label}))};}
+  else if(results.some(r=>r.requiresSubactivityConfirmation)&&!clarification){clarification={type:'premises',options:Object.entries(REFINEMENTS.premises).map(([value,label])=>({value,label}))};}
+  return {results,confidence,question,clarification,evidence:{description:positiveDescription(original),operation:op,refinements},engine:'local-rules-tfidf-v3',vocabularyVersion:VOCABULARY_VERSION};
 }
 
 export function isValidSelection(catalog,activityId,subactivityId) {

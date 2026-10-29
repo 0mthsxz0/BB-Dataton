@@ -166,3 +166,12 @@ body.report-mode .recommendation{background:#f7f8ff;padding:clamp(16px,2.5vw,36p
 .confidence-dialog-footer>div{display:flex;justify-content:flex-end;gap:12px}
 .confidence-dialog :focus-visible,.confidence-panel :focus-visible{outline:3px solid #4161d9;outline-offset:3px}
 @media(max-width:650px){.confidence-panel{padding:20px}.confidence-heading{align-items:flex-start;flex-direction:column;gap:10px}.confidence-content{grid-template-columns:1fr;gap:16px}.confidence-dialog{width:calc(100% - 16px);max-height:96dvh}.confidence-form{max-height:96dvh}.confidence-dialog-heading,.confidence-dialog-footer{padding:16px}.confidence-dialog-heading h2{font-size:21px}.confidence-form-body{padding:16px}.confidence-field-group{padding:14px}.confidence-field-group .form-grid{grid-template-columns:1fr}.confidence-dialog-footer>div{flex-wrap:wrap}.confidence-actions .btn{width:100%}}
+
+.clarification-options{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.clarification-options .btn{margin-top:0;white-space:normal;text-align:left}.clarification-options button:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+
+.intelligent-panel .text-link{border:0;background:transparent;color:var(--deep);padding:10px 0;font-size:12px;text-decoration:underline;cursor:pointer}
+
+.customer-optional-suggestions,.customer-refinement{border:1px solid #d5dcfa;border-radius:16px;padding:clamp(18px,3vw,28px);background:#f7f8ff}
+.customer-optional-suggestions h2,.customer-refinement h2{font-size:clamp(20px,2.4vw,26px);color:var(--deep);margin-top:0}
+.customer-optional-suggestions p,.customer-refinement p,.customer-optional-suggestions li{line-height:1.65}
+.customer-optional-suggestions ul{display:grid;gap:9px;padding-left:22px}

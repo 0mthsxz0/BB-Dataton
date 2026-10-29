@@ -1,0 +1,1005 @@
+{
+  "methodology": "200 variações sintéticas de 20 famílias conhecidas. Conjunto de regressão e desenvolvimento; não é avaliação independente nem amostra de usuários reais.",
+  "cases": [
+    {
+      "family": "medicamentos populares",
+      "description": "Vendo remédios",
+      "expectedId": "476"
+    },
+    {
+      "family": "medicamentos populares",
+      "description": "Minha empresa: Vendo remédios",
+      "expectedId": "476"
+    },
+    {
+      "family": "medicamentos populares",
+      "description": "Meu negócio funciona assim: Vendo remédios",
+      "expectedId": "476"
+    },
+    {
+      "family": "medicamentos populares",
+      "description": "Atividade principal: Vendo remédios",
+      "expectedId": "476"
+    },
+    {
+      "family": "medicamentos populares",
+      "description": "Olá! Vendo remédios",
+      "expectedId": "476"
+    },
+    {
+      "family": "medicamentos populares",
+      "description": "Sobre o meu trabalho: Vendo remédios",
+      "expectedId": "476"
+    },
+    {
+      "family": "medicamentos populares",
+      "description": "Descrição da empresa: Vendo remédios",
+      "expectedId": "476"
+    },
+    {
+      "family": "medicamentos populares",
+      "description": "Vendo remédios.",
+      "expectedId": "476"
+    },
+    {
+      "family": "medicamentos populares",
+      "description": "Vendo remédios. Essa é minha atividade principal.",
+      "expectedId": "476"
+    },
+    {
+      "family": "medicamentos populares",
+      "description": "Vendo remédios. Gostaria de encontrar minha atividade.",
+      "expectedId": "476"
+    },
+    {
+      "family": "farmácia curta",
+      "description": "Tenho uma farmácia",
+      "expectedId": "476"
+    },
+    {
+      "family": "farmácia curta",
+      "description": "Minha empresa: Tenho uma farmácia",
+      "expectedId": "476"
+    },
+    {
+      "family": "farmácia curta",
+      "description": "Meu negócio funciona assim: Tenho uma farmácia",
+      "expectedId": "476"
+    },
+    {
+      "family": "farmácia curta",
+      "description": "Atividade principal: Tenho uma farmácia",
+      "expectedId": "476"
+    },
+    {
+      "family": "farmácia curta",
+      "description": "Olá! Tenho uma farmácia",
+      "expectedId": "476"
+    },
+    {
+      "family": "farmácia curta",
+      "description": "Sobre o meu trabalho: Tenho uma farmácia",
+      "expectedId": "476"
+    },
+    {
+      "family": "farmácia curta",
+      "description": "Descrição da empresa: Tenho uma farmácia",
+      "expectedId": "476"
+    },
+    {
+      "family": "farmácia curta",
+      "description": "Tenho uma farmácia.",
+      "expectedId": "476"
+    },
+    {
+      "family": "farmácia curta",
+      "description": "Tenho uma farmácia. Essa é minha atividade principal.",
+      "expectedId": "476"
+    },
+    {
+      "family": "farmácia curta",
+      "description": "Tenho uma farmácia. Gostaria de encontrar minha atividade.",
+      "expectedId": "476"
+    },
+    {
+      "family": "veterinário varejo",
+      "description": "Vendo medicamentos veterinários para animais",
+      "expectedId": "478"
+    },
+    {
+      "family": "veterinário varejo",
+      "description": "Minha empresa: Vendo medicamentos veterinários para animais",
+      "expectedId": "478"
+    },
+    {
+      "family": "veterinário varejo",
+      "description": "Meu negócio funciona assim: Vendo medicamentos veterinários para animais",
+      "expectedId": "478"
+    },
+    {
+      "family": "veterinário varejo",
+      "description": "Atividade principal: Vendo medicamentos veterinários para animais",
+      "expectedId": "478"
+    },
+    {
+      "family": "veterinário varejo",
+      "description": "Olá! Vendo medicamentos veterinários para animais",
+      "expectedId": "478"
+    },
+    {
+      "family": "veterinário varejo",
+      "description": "Sobre o meu trabalho: Vendo medicamentos veterinários para animais",
+      "expectedId": "478"
+    },
+    {
+      "family": "veterinário varejo",
+      "description": "Descrição da empresa: Vendo medicamentos veterinários para animais",
+      "expectedId": "478"
+    },
+    {
+      "family": "veterinário varejo",
+      "description": "Vendo medicamentos veterinários para animais.",
+      "expectedId": "478"
+    },
+    {
+      "family": "veterinário varejo",
+      "description": "Vendo medicamentos veterinários para animais. Essa é minha atividade principal.",
+      "expectedId": "478"
+    },
+    {
+      "family": "veterinário varejo",
+      "description": "Vendo medicamentos veterinários para animais. Gostaria de encontrar minha atividade.",
+      "expectedId": "478"
+    },
+    {
+      "family": "medicamentos atacado",
+      "description": "Vendo medicamentos no atacado",
+      "expectedId": "553"
+    },
+    {
+      "family": "medicamentos atacado",
+      "description": "Minha empresa: Vendo medicamentos no atacado",
+      "expectedId": "553"
+    },
+    {
+      "family": "medicamentos atacado",
+      "description": "Meu negócio funciona assim: Vendo medicamentos no atacado",
+      "expectedId": "553"
+    },
+    {
+      "family": "medicamentos atacado",
+      "description": "Atividade principal: Vendo medicamentos no atacado",
+      "expectedId": "553"
+    },
+    {
+      "family": "medicamentos atacado",
+      "description": "Olá! Vendo medicamentos no atacado",
+      "expectedId": "553"
+    },
+    {
+      "family": "medicamentos atacado",
+      "description": "Sobre o meu trabalho: Vendo medicamentos no atacado",
+      "expectedId": "553"
+    },
+    {
+      "family": "medicamentos atacado",
+      "description": "Descrição da empresa: Vendo medicamentos no atacado",
+      "expectedId": "553"
+    },
+    {
+      "family": "medicamentos atacado",
+      "description": "Vendo medicamentos no atacado.",
+      "expectedId": "553"
+    },
+    {
+      "family": "medicamentos atacado",
+      "description": "Vendo medicamentos no atacado. Essa é minha atividade principal.",
+      "expectedId": "553"
+    },
+    {
+      "family": "medicamentos atacado",
+      "description": "Vendo medicamentos no atacado. Gostaria de encontrar minha atividade.",
+      "expectedId": "553"
+    },
+    {
+      "family": "veterinário atacado",
+      "description": "Vendo medicamentos veterinários no atacado",
+      "expectedId": "555"
+    },
+    {
+      "family": "veterinário atacado",
+      "description": "Minha empresa: Vendo medicamentos veterinários no atacado",
+      "expectedId": "555"
+    },
+    {
+      "family": "veterinário atacado",
+      "description": "Meu negócio funciona assim: Vendo medicamentos veterinários no atacado",
+      "expectedId": "555"
+    },
+    {
+      "family": "veterinário atacado",
+      "description": "Atividade principal: Vendo medicamentos veterinários no atacado",
+      "expectedId": "555"
+    },
+    {
+      "family": "veterinário atacado",
+      "description": "Olá! Vendo medicamentos veterinários no atacado",
+      "expectedId": "555"
+    },
+    {
+      "family": "veterinário atacado",
+      "description": "Sobre o meu trabalho: Vendo medicamentos veterinários no atacado",
+      "expectedId": "555"
+    },
+    {
+      "family": "veterinário atacado",
+      "description": "Descrição da empresa: Vendo medicamentos veterinários no atacado",
+      "expectedId": "555"
+    },
+    {
+      "family": "veterinário atacado",
+      "description": "Vendo medicamentos veterinários no atacado.",
+      "expectedId": "555"
+    },
+    {
+      "family": "veterinário atacado",
+      "description": "Vendo medicamentos veterinários no atacado. Essa é minha atividade principal.",
+      "expectedId": "555"
+    },
+    {
+      "family": "veterinário atacado",
+      "description": "Vendo medicamentos veterinários no atacado. Gostaria de encontrar minha atividade.",
+      "expectedId": "555"
+    },
+    {
+      "family": "fabricação farmacêutica",
+      "description": "Fabrico medicamentos",
+      "expectedId": "291"
+    },
+    {
+      "family": "fabricação farmacêutica",
+      "description": "Minha empresa: Fabrico medicamentos",
+      "expectedId": "291"
+    },
+    {
+      "family": "fabricação farmacêutica",
+      "description": "Meu negócio funciona assim: Fabrico medicamentos",
+      "expectedId": "291"
+    },
+    {
+      "family": "fabricação farmacêutica",
+      "description": "Atividade principal: Fabrico medicamentos",
+      "expectedId": "291"
+    },
+    {
+      "family": "fabricação farmacêutica",
+      "description": "Olá! Fabrico medicamentos",
+      "expectedId": "291"
+    },
+    {
+      "family": "fabricação farmacêutica",
+      "description": "Sobre o meu trabalho: Fabrico medicamentos",
+      "expectedId": "291"
+    },
+    {
+      "family": "fabricação farmacêutica",
+      "description": "Descrição da empresa: Fabrico medicamentos",
+      "expectedId": "291"
+    },
+    {
+      "family": "fabricação farmacêutica",
+      "description": "Fabrico medicamentos.",
+      "expectedId": "291"
+    },
+    {
+      "family": "fabricação farmacêutica",
+      "description": "Fabrico medicamentos. Essa é minha atividade principal.",
+      "expectedId": "291"
+    },
+    {
+      "family": "fabricação farmacêutica",
+      "description": "Fabrico medicamentos. Gostaria de encontrar minha atividade.",
+      "expectedId": "291"
+    },
+    {
+      "family": "cosméticos varejo",
+      "description": "Vendo cosméticos",
+      "expectedId": "477"
+    },
+    {
+      "family": "cosméticos varejo",
+      "description": "Minha empresa: Vendo cosméticos",
+      "expectedId": "477"
+    },
+    {
+      "family": "cosméticos varejo",
+      "description": "Meu negócio funciona assim: Vendo cosméticos",
+      "expectedId": "477"
+    },
+    {
+      "family": "cosméticos varejo",
+      "description": "Atividade principal: Vendo cosméticos",
+      "expectedId": "477"
+    },
+    {
+      "family": "cosméticos varejo",
+      "description": "Olá! Vendo cosméticos",
+      "expectedId": "477"
+    },
+    {
+      "family": "cosméticos varejo",
+      "description": "Sobre o meu trabalho: Vendo cosméticos",
+      "expectedId": "477"
+    },
+    {
+      "family": "cosméticos varejo",
+      "description": "Descrição da empresa: Vendo cosméticos",
+      "expectedId": "477"
+    },
+    {
+      "family": "cosméticos varejo",
+      "description": "Vendo cosméticos.",
+      "expectedId": "477"
+    },
+    {
+      "family": "cosméticos varejo",
+      "description": "Vendo cosméticos. Essa é minha atividade principal.",
+      "expectedId": "477"
+    },
+    {
+      "family": "cosméticos varejo",
+      "description": "Vendo cosméticos. Gostaria de encontrar minha atividade.",
+      "expectedId": "477"
+    },
+    {
+      "family": "cosméticos atacado",
+      "description": "Vendo cosméticos no atacado",
+      "expectedId": "554"
+    },
+    {
+      "family": "cosméticos atacado",
+      "description": "Minha empresa: Vendo cosméticos no atacado",
+      "expectedId": "554"
+    },
+    {
+      "family": "cosméticos atacado",
+      "description": "Meu negócio funciona assim: Vendo cosméticos no atacado",
+      "expectedId": "554"
+    },
+    {
+      "family": "cosméticos atacado",
+      "description": "Atividade principal: Vendo cosméticos no atacado",
+      "expectedId": "554"
+    },
+    {
+      "family": "cosméticos atacado",
+      "description": "Olá! Vendo cosméticos no atacado",
+      "expectedId": "554"
+    },
+    {
+      "family": "cosméticos atacado",
+      "description": "Sobre o meu trabalho: Vendo cosméticos no atacado",
+      "expectedId": "554"
+    },
+    {
+      "family": "cosméticos atacado",
+      "description": "Descrição da empresa: Vendo cosméticos no atacado",
+      "expectedId": "554"
+    },
+    {
+      "family": "cosméticos atacado",
+      "description": "Vendo cosméticos no atacado.",
+      "expectedId": "554"
+    },
+    {
+      "family": "cosméticos atacado",
+      "description": "Vendo cosméticos no atacado. Essa é minha atividade principal.",
+      "expectedId": "554"
+    },
+    {
+      "family": "cosméticos atacado",
+      "description": "Vendo cosméticos no atacado. Gostaria de encontrar minha atividade.",
+      "expectedId": "554"
+    },
+    {
+      "family": "cosméticos fabricação",
+      "description": "Fabrico cosméticos",
+      "expectedId": "288"
+    },
+    {
+      "family": "cosméticos fabricação",
+      "description": "Minha empresa: Fabrico cosméticos",
+      "expectedId": "288"
+    },
+    {
+      "family": "cosméticos fabricação",
+      "description": "Meu negócio funciona assim: Fabrico cosméticos",
+      "expectedId": "288"
+    },
+    {
+      "family": "cosméticos fabricação",
+      "description": "Atividade principal: Fabrico cosméticos",
+      "expectedId": "288"
+    },
+    {
+      "family": "cosméticos fabricação",
+      "description": "Olá! Fabrico cosméticos",
+      "expectedId": "288"
+    },
+    {
+      "family": "cosméticos fabricação",
+      "description": "Sobre o meu trabalho: Fabrico cosméticos",
+      "expectedId": "288"
+    },
+    {
+      "family": "cosméticos fabricação",
+      "description": "Descrição da empresa: Fabrico cosméticos",
+      "expectedId": "288"
+    },
+    {
+      "family": "cosméticos fabricação",
+      "description": "Fabrico cosméticos.",
+      "expectedId": "288"
+    },
+    {
+      "family": "cosméticos fabricação",
+      "description": "Fabrico cosméticos. Essa é minha atividade principal.",
+      "expectedId": "288"
+    },
+    {
+      "family": "cosméticos fabricação",
+      "description": "Fabrico cosméticos. Gostaria de encontrar minha atividade.",
+      "expectedId": "288"
+    },
+    {
+      "family": "negação",
+      "description": "Não vendo medicamentos, vendo cosméticos",
+      "expectedId": "477"
+    },
+    {
+      "family": "negação",
+      "description": "Minha empresa: Não vendo medicamentos, vendo cosméticos",
+      "expectedId": "477"
+    },
+    {
+      "family": "negação",
+      "description": "Meu negócio funciona assim: Não vendo medicamentos, vendo cosméticos",
+      "expectedId": "477"
+    },
+    {
+      "family": "negação",
+      "description": "Atividade principal: Não vendo medicamentos, vendo cosméticos",
+      "expectedId": "477"
+    },
+    {
+      "family": "negação",
+      "description": "Olá! Não vendo medicamentos, vendo cosméticos",
+      "expectedId": "477"
+    },
+    {
+      "family": "negação",
+      "description": "Sobre o meu trabalho: Não vendo medicamentos, vendo cosméticos",
+      "expectedId": "477"
+    },
+    {
+      "family": "negação",
+      "description": "Descrição da empresa: Não vendo medicamentos, vendo cosméticos",
+      "expectedId": "477"
+    },
+    {
+      "family": "negação",
+      "description": "Não vendo medicamentos, vendo cosméticos.",
+      "expectedId": "477"
+    },
+    {
+      "family": "negação",
+      "description": "Não vendo medicamentos, vendo cosméticos. Essa é minha atividade principal.",
+      "expectedId": "477"
+    },
+    {
+      "family": "negação",
+      "description": "Não vendo medicamentos, vendo cosméticos. Gostaria de encontrar minha atividade.",
+      "expectedId": "477"
+    },
+    {
+      "family": "pizzaria",
+      "description": "Tenho uma pizzaria e preparo pizzas para entrega",
+      "expectedId": "625"
+    },
+    {
+      "family": "pizzaria",
+      "description": "Minha empresa: Tenho uma pizzaria e preparo pizzas para entrega",
+      "expectedId": "625"
+    },
+    {
+      "family": "pizzaria",
+      "description": "Meu negócio funciona assim: Tenho uma pizzaria e preparo pizzas para entrega",
+      "expectedId": "625"
+    },
+    {
+      "family": "pizzaria",
+      "description": "Atividade principal: Tenho uma pizzaria e preparo pizzas para entrega",
+      "expectedId": "625"
+    },
+    {
+      "family": "pizzaria",
+      "description": "Olá! Tenho uma pizzaria e preparo pizzas para entrega",
+      "expectedId": "625"
+    },
+    {
+      "family": "pizzaria",
+      "description": "Sobre o meu trabalho: Tenho uma pizzaria e preparo pizzas para entrega",
+      "expectedId": "625"
+    },
+    {
+      "family": "pizzaria",
+      "description": "Descrição da empresa: Tenho uma pizzaria e preparo pizzas para entrega",
+      "expectedId": "625"
+    },
+    {
+      "family": "pizzaria",
+      "description": "Tenho uma pizzaria e preparo pizzas para entrega.",
+      "expectedId": "625"
+    },
+    {
+      "family": "pizzaria",
+      "description": "Tenho uma pizzaria e preparo pizzas para entrega. Essa é minha atividade principal.",
+      "expectedId": "625"
+    },
+    {
+      "family": "pizzaria",
+      "description": "Tenho uma pizzaria e preparo pizzas para entrega. Gostaria de encontrar minha atividade.",
+      "expectedId": "625"
+    },
+    {
+      "family": "beleza",
+      "description": "Corto cabelo e faço barba e manicure",
+      "expectedId": "641"
+    },
+    {
+      "family": "beleza",
+      "description": "Minha empresa: Corto cabelo e faço barba e manicure",
+      "expectedId": "641"
+    },
+    {
+      "family": "beleza",
+      "description": "Meu negócio funciona assim: Corto cabelo e faço barba e manicure",
+      "expectedId": "641"
+    },
+    {
+      "family": "beleza",
+      "description": "Atividade principal: Corto cabelo e faço barba e manicure",
+      "expectedId": "641"
+    },
+    {
+      "family": "beleza",
+      "description": "Olá! Corto cabelo e faço barba e manicure",
+      "expectedId": "641"
+    },
+    {
+      "family": "beleza",
+      "description": "Sobre o meu trabalho: Corto cabelo e faço barba e manicure",
+      "expectedId": "641"
+    },
+    {
+      "family": "beleza",
+      "description": "Descrição da empresa: Corto cabelo e faço barba e manicure",
+      "expectedId": "641"
+    },
+    {
+      "family": "beleza",
+      "description": "Corto cabelo e faço barba e manicure.",
+      "expectedId": "641"
+    },
+    {
+      "family": "beleza",
+      "description": "Corto cabelo e faço barba e manicure. Essa é minha atividade principal.",
+      "expectedId": "641"
+    },
+    {
+      "family": "beleza",
+      "description": "Corto cabelo e faço barba e manicure. Gostaria de encontrar minha atividade.",
+      "expectedId": "641"
+    },
+    {
+      "family": "roupas",
+      "description": "Vendo roupas para consumidores",
+      "expectedId": "484"
+    },
+    {
+      "family": "roupas",
+      "description": "Minha empresa: Vendo roupas para consumidores",
+      "expectedId": "484"
+    },
+    {
+      "family": "roupas",
+      "description": "Meu negócio funciona assim: Vendo roupas para consumidores",
+      "expectedId": "484"
+    },
+    {
+      "family": "roupas",
+      "description": "Atividade principal: Vendo roupas para consumidores",
+      "expectedId": "484"
+    },
+    {
+      "family": "roupas",
+      "description": "Olá! Vendo roupas para consumidores",
+      "expectedId": "484"
+    },
+    {
+      "family": "roupas",
+      "description": "Sobre o meu trabalho: Vendo roupas para consumidores",
+      "expectedId": "484"
+    },
+    {
+      "family": "roupas",
+      "description": "Descrição da empresa: Vendo roupas para consumidores",
+      "expectedId": "484"
+    },
+    {
+      "family": "roupas",
+      "description": "Vendo roupas para consumidores.",
+      "expectedId": "484"
+    },
+    {
+      "family": "roupas",
+      "description": "Vendo roupas para consumidores. Essa é minha atividade principal.",
+      "expectedId": "484"
+    },
+    {
+      "family": "roupas",
+      "description": "Vendo roupas para consumidores. Gostaria de encontrar minha atividade.",
+      "expectedId": "484"
+    },
+    {
+      "family": "móveis",
+      "description": "Fabrico móveis de madeira sob medida",
+      "expectedId": "226"
+    },
+    {
+      "family": "móveis",
+      "description": "Minha empresa: Fabrico móveis de madeira sob medida",
+      "expectedId": "226"
+    },
+    {
+      "family": "móveis",
+      "description": "Meu negócio funciona assim: Fabrico móveis de madeira sob medida",
+      "expectedId": "226"
+    },
+    {
+      "family": "móveis",
+      "description": "Atividade principal: Fabrico móveis de madeira sob medida",
+      "expectedId": "226"
+    },
+    {
+      "family": "móveis",
+      "description": "Olá! Fabrico móveis de madeira sob medida",
+      "expectedId": "226"
+    },
+    {
+      "family": "móveis",
+      "description": "Sobre o meu trabalho: Fabrico móveis de madeira sob medida",
+      "expectedId": "226"
+    },
+    {
+      "family": "móveis",
+      "description": "Descrição da empresa: Fabrico móveis de madeira sob medida",
+      "expectedId": "226"
+    },
+    {
+      "family": "móveis",
+      "description": "Fabrico móveis de madeira sob medida.",
+      "expectedId": "226"
+    },
+    {
+      "family": "móveis",
+      "description": "Fabrico móveis de madeira sob medida. Essa é minha atividade principal.",
+      "expectedId": "226"
+    },
+    {
+      "family": "móveis",
+      "description": "Fabrico móveis de madeira sob medida. Gostaria de encontrar minha atividade.",
+      "expectedId": "226"
+    },
+    {
+      "family": "informática reparação",
+      "description": "Faço conserto de computadores e notebooks",
+      "expectedId": "1007"
+    },
+    {
+      "family": "informática reparação",
+      "description": "Minha empresa: Faço conserto de computadores e notebooks",
+      "expectedId": "1007"
+    },
+    {
+      "family": "informática reparação",
+      "description": "Meu negócio funciona assim: Faço conserto de computadores e notebooks",
+      "expectedId": "1007"
+    },
+    {
+      "family": "informática reparação",
+      "description": "Atividade principal: Faço conserto de computadores e notebooks",
+      "expectedId": "1007"
+    },
+    {
+      "family": "informática reparação",
+      "description": "Olá! Faço conserto de computadores e notebooks",
+      "expectedId": "1007"
+    },
+    {
+      "family": "informática reparação",
+      "description": "Sobre o meu trabalho: Faço conserto de computadores e notebooks",
+      "expectedId": "1007"
+    },
+    {
+      "family": "informática reparação",
+      "description": "Descrição da empresa: Faço conserto de computadores e notebooks",
+      "expectedId": "1007"
+    },
+    {
+      "family": "informática reparação",
+      "description": "Faço conserto de computadores e notebooks.",
+      "expectedId": "1007"
+    },
+    {
+      "family": "informática reparação",
+      "description": "Faço conserto de computadores e notebooks. Essa é minha atividade principal.",
+      "expectedId": "1007"
+    },
+    {
+      "family": "informática reparação",
+      "description": "Faço conserto de computadores e notebooks. Gostaria de encontrar minha atividade.",
+      "expectedId": "1007"
+    },
+    {
+      "family": "software",
+      "description": "Desenvolvemos software sob encomenda para clientes",
+      "expectedId": "1008"
+    },
+    {
+      "family": "software",
+      "description": "Minha empresa: Desenvolvemos software sob encomenda para clientes",
+      "expectedId": "1008"
+    },
+    {
+      "family": "software",
+      "description": "Meu negócio funciona assim: Desenvolvemos software sob encomenda para clientes",
+      "expectedId": "1008"
+    },
+    {
+      "family": "software",
+      "description": "Atividade principal: Desenvolvemos software sob encomenda para clientes",
+      "expectedId": "1008"
+    },
+    {
+      "family": "software",
+      "description": "Olá! Desenvolvemos software sob encomenda para clientes",
+      "expectedId": "1008"
+    },
+    {
+      "family": "software",
+      "description": "Sobre o meu trabalho: Desenvolvemos software sob encomenda para clientes",
+      "expectedId": "1008"
+    },
+    {
+      "family": "software",
+      "description": "Descrição da empresa: Desenvolvemos software sob encomenda para clientes",
+      "expectedId": "1008"
+    },
+    {
+      "family": "software",
+      "description": "Desenvolvemos software sob encomenda para clientes.",
+      "expectedId": "1008"
+    },
+    {
+      "family": "software",
+      "description": "Desenvolvemos software sob encomenda para clientes. Essa é minha atividade principal.",
+      "expectedId": "1008"
+    },
+    {
+      "family": "software",
+      "description": "Desenvolvemos software sob encomenda para clientes. Gostaria de encontrar minha atividade.",
+      "expectedId": "1008"
+    },
+    {
+      "family": "mercadinho",
+      "description": "Tenho um mercadinho com produtos de limpeza e alimentos",
+      "expectedId": "909"
+    },
+    {
+      "family": "mercadinho",
+      "description": "Minha empresa: Tenho um mercadinho com produtos de limpeza e alimentos",
+      "expectedId": "909"
+    },
+    {
+      "family": "mercadinho",
+      "description": "Meu negócio funciona assim: Tenho um mercadinho com produtos de limpeza e alimentos",
+      "expectedId": "909"
+    },
+    {
+      "family": "mercadinho",
+      "description": "Atividade principal: Tenho um mercadinho com produtos de limpeza e alimentos",
+      "expectedId": "909"
+    },
+    {
+      "family": "mercadinho",
+      "description": "Olá! Tenho um mercadinho com produtos de limpeza e alimentos",
+      "expectedId": "909"
+    },
+    {
+      "family": "mercadinho",
+      "description": "Sobre o meu trabalho: Tenho um mercadinho com produtos de limpeza e alimentos",
+      "expectedId": "909"
+    },
+    {
+      "family": "mercadinho",
+      "description": "Descrição da empresa: Tenho um mercadinho com produtos de limpeza e alimentos",
+      "expectedId": "909"
+    },
+    {
+      "family": "mercadinho",
+      "description": "Tenho um mercadinho com produtos de limpeza e alimentos.",
+      "expectedId": "909"
+    },
+    {
+      "family": "mercadinho",
+      "description": "Tenho um mercadinho com produtos de limpeza e alimentos. Essa é minha atividade principal.",
+      "expectedId": "909"
+    },
+    {
+      "family": "mercadinho",
+      "description": "Tenho um mercadinho com produtos de limpeza e alimentos. Gostaria de encontrar minha atividade.",
+      "expectedId": "909"
+    },
+    {
+      "family": "odontologia",
+      "description": "Trabalho com odontologia e atendo pacientes",
+      "expectedId": "690"
+    },
+    {
+      "family": "odontologia",
+      "description": "Minha empresa: Trabalho com odontologia e atendo pacientes",
+      "expectedId": "690"
+    },
+    {
+      "family": "odontologia",
+      "description": "Meu negócio funciona assim: Trabalho com odontologia e atendo pacientes",
+      "expectedId": "690"
+    },
+    {
+      "family": "odontologia",
+      "description": "Atividade principal: Trabalho com odontologia e atendo pacientes",
+      "expectedId": "690"
+    },
+    {
+      "family": "odontologia",
+      "description": "Olá! Trabalho com odontologia e atendo pacientes",
+      "expectedId": "690"
+    },
+    {
+      "family": "odontologia",
+      "description": "Sobre o meu trabalho: Trabalho com odontologia e atendo pacientes",
+      "expectedId": "690"
+    },
+    {
+      "family": "odontologia",
+      "description": "Descrição da empresa: Trabalho com odontologia e atendo pacientes",
+      "expectedId": "690"
+    },
+    {
+      "family": "odontologia",
+      "description": "Trabalho com odontologia e atendo pacientes.",
+      "expectedId": "690"
+    },
+    {
+      "family": "odontologia",
+      "description": "Trabalho com odontologia e atendo pacientes. Essa é minha atividade principal.",
+      "expectedId": "690"
+    },
+    {
+      "family": "odontologia",
+      "description": "Trabalho com odontologia e atendo pacientes. Gostaria de encontrar minha atividade.",
+      "expectedId": "690"
+    },
+    {
+      "family": "contabilidade",
+      "description": "Sou contador e presto serviços de contabilidade para empresas",
+      "expectedId": "674"
+    },
+    {
+      "family": "contabilidade",
+      "description": "Minha empresa: Sou contador e presto serviços de contabilidade para empresas",
+      "expectedId": "674"
+    },
+    {
+      "family": "contabilidade",
+      "description": "Meu negócio funciona assim: Sou contador e presto serviços de contabilidade para empresas",
+      "expectedId": "674"
+    },
+    {
+      "family": "contabilidade",
+      "description": "Atividade principal: Sou contador e presto serviços de contabilidade para empresas",
+      "expectedId": "674"
+    },
+    {
+      "family": "contabilidade",
+      "description": "Olá! Sou contador e presto serviços de contabilidade para empresas",
+      "expectedId": "674"
+    },
+    {
+      "family": "contabilidade",
+      "description": "Sobre o meu trabalho: Sou contador e presto serviços de contabilidade para empresas",
+      "expectedId": "674"
+    },
+    {
+      "family": "contabilidade",
+      "description": "Descrição da empresa: Sou contador e presto serviços de contabilidade para empresas",
+      "expectedId": "674"
+    },
+    {
+      "family": "contabilidade",
+      "description": "Sou contador e presto serviços de contabilidade para empresas.",
+      "expectedId": "674"
+    },
+    {
+      "family": "contabilidade",
+      "description": "Sou contador e presto serviços de contabilidade para empresas. Essa é minha atividade principal.",
+      "expectedId": "674"
+    },
+    {
+      "family": "contabilidade",
+      "description": "Sou contador e presto serviços de contabilidade para empresas. Gostaria de encontrar minha atividade.",
+      "expectedId": "674"
+    },
+    {
+      "family": "lavanderia",
+      "description": "Tenho uma lavanderia e lavamos roupas de clientes",
+      "expectedId": "640"
+    },
+    {
+      "family": "lavanderia",
+      "description": "Minha empresa: Tenho uma lavanderia e lavamos roupas de clientes",
+      "expectedId": "640"
+    },
+    {
+      "family": "lavanderia",
+      "description": "Meu negócio funciona assim: Tenho uma lavanderia e lavamos roupas de clientes",
+      "expectedId": "640"
+    },
+    {
+      "family": "lavanderia",
+      "description": "Atividade principal: Tenho uma lavanderia e lavamos roupas de clientes",
+      "expectedId": "640"
+    },
+    {
+      "family": "lavanderia",
+      "description": "Olá! Tenho uma lavanderia e lavamos roupas de clientes",
+      "expectedId": "640"
+    },
+    {
+      "family": "lavanderia",
+      "description": "Sobre o meu trabalho: Tenho uma lavanderia e lavamos roupas de clientes",
+      "expectedId": "640"
+    },
+    {
+      "family": "lavanderia",
+      "description": "Descrição da empresa: Tenho uma lavanderia e lavamos roupas de clientes",
+      "expectedId": "640"
+    },
+    {
+      "family": "lavanderia",
+      "description": "Tenho uma lavanderia e lavamos roupas de clientes.",
+      "expectedId": "640"
+    },
+    {
+      "family": "lavanderia",
+      "description": "Tenho uma lavanderia e lavamos roupas de clientes. Essa é minha atividade principal.",
+      "expectedId": "640"
+    },
+    {
+      "family": "lavanderia",
+      "description": "Tenho uma lavanderia e lavamos roupas de clientes. Gostaria de encontrar minha atividade.",
+      "expectedId": "640"
+    }
+  ]
+}
