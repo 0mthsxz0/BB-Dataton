@@ -97,6 +97,15 @@ def verificar_snapshot(caminho, conteudo=None):
     if not isinstance(dados, dict) or not isinstance(dados.get('arquivos'), dict):
         raise ValueError('Manifesto de segurança sem mapa de arquivos e hashes.')
     esperado = dados.get('arquivos', {}).get(caminho.name)
-    if not esperado or hashlib.sha256(caminho.read_bytes() if conteudo is None else conteudo).hexdigest() != esperado:
+    bruto = caminho.read_bytes() if conteudo is None else conteudo
+    hashes = {hashlib.sha256(bruto).hexdigest()}
+    # Os snapshots CSV/JSON foram preparados no Windows com CRLF, mas o Git
+    # normaliza os arquivos de texto para LF. Admitir apenas essa diferença
+    # de terminador preserva a integridade do conteúdo em ambos os sistemas.
+    if caminho.suffix.lower() in {'.csv', '.json'}:
+        lf = bruto.replace(b'\r\n', b'\n')
+        hashes.add(hashlib.sha256(lf).hexdigest())
+        hashes.add(hashlib.sha256(lf.replace(b'\n', b'\r\n')).hexdigest())
+    if not esperado or esperado not in hashes:
         raise ValueError(f'Integridade da referência de segurança divergente: {caminho.name}.')
     return 'VERIFICADA'
