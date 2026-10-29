@@ -10,6 +10,18 @@ explicitamente para o evento de roubo. Mosler permanece em avaliação complemen
 Consulte [instalação, atualização, modos e limitações](docs/INTEGRACAO_SEGURANCA.md).
 Os CSVs do Datathon não entram no banco público.
 =======
+## Informação
+
+Todos os dados externos estão indicados nesse arquivo:
+ - Fonte
+ - Data de acesso
+ - Método de obtenção
+ - Transformação e Limitações 
+-----------------------------------------------------
+ Codex para fazer codigo.
+ Clound para revisar.
+ Gemini para pesquisas na internet.
+
 ## Templates preenchidos por API
 
 O fluxo de teste pode fazer uma chamada HTTP por empresa-estabelecimento, reutilizando o mesmo motor do lote e retornando a linha consolidada e suas coberturas. Consulte [contrato, execução e equivalência verificada](docs/API_TEMPLATES.md). Os resultados da base comum estão em `entregas/templates-teste-api/`.
