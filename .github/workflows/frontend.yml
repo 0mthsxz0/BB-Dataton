@@ -18,6 +18,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      # Os testes de API do frontend executam o motor Python real via subprocesso.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pandas numpy requests
       - run: npm run check
         working-directory: frontend
       - run: npm test
