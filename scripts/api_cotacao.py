@@ -16,6 +16,8 @@ def main():
             result = consultar_perfil_cnae(request.get('payload'))
         elif request.get('action') == 'cadastro':
             result = analisar_cadastro(request.get('payload'))
+        elif request.get('action') == 'demo_empresa':
+            result = demonstrar_empresa_por_id(request.get('payload'))
         elif request.get('action') == 'relatorio_cnae':
             result = analisar_cnae(request.get('payload'))
         else:
