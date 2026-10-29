@@ -1,0 +1,21 @@
+﻿motivo,unidades,percentual,denominador,parametro,observacao
+Identificação legal: nome/razão social e CPF/CNPJ,2978,100.0,2978,Identificação legal válida; IDs anônimos não substituem CPF/CNPJ,"Ausência estrutural do pacote anonimizado, não falha do cliente real."
+Relação com o imóvel,2978,100.0,2978,Confirmar proprietário ou inquilino,Pagamento de aluguel ou sua ausência não comprova a relação jurídica.
+"Escopo: prédio, conteúdo ou ambos",2978,100.0,2978,Escolha explícita do cliente,Define quais valores são aplicáveis. Não consta nos CSVs.
+Condições do local e aceitação da atividade,2978,100.0,2978,Confirmar restrições e atividade aceita no produto,CNAE preenchido não comprova aceitação; o pacote não confirma toda a lista do guia.
+CEP completo e validado,2978,100.0,2978,CEP completo de oito dígitos,"cep_agregado não é CEP completo. Logradouro, número, bairro, cidade e UF estão preenchidos."
+Empregados confirmados nesta unidade,2978,100.0,2978,Quantidade local confirmada ou ausência declarada,Há estimativa empresarial e folha local; sem confirmação por unidade.
+Reconstrução ou dispensa explícita pelo escopo,2978,100.0,2978,Reconstrução sem terreno para prédio/ambos; dispensável se conteúdo apenas,Pendência de aplicabilidade: o escopo ainda é desconhecido em todos os registros.
+"Bens, equipamentos e estoque confirmados",2978,100.0,2978,"Inventário atual, vínculo e valor de reposição na unidade","Há estimativas agregadas, sem validação atual para cotação."
+Plano e adicionais com aceitação da atividade,2978,100.0,2978,Sugestão do motor e validação de compatibilidade/aceitação,Plano pode ser calculado; não equivale a cotação concluída ou aceitação.
+Refrigeração confirmada,2978,100.0,2978,"Sim/Não; se Sim, mercadorias e valores",Probabilidade estimada não substitui resposta.
+Delivery confirmado,2978,100.0,2978,"Sim/Não; se Sim, detalhar operação",Receita/probabilidade estimadas não substituem resposta.
+Home office confirmado,2978,100.0,2978,"Sim/Não; se Sim, bens e locais de uso",Vendas online não comprovam trabalho remoto.
+Dinheiro/valores em caixa confirmados,2978,100.0,2978,"Sim/Não; se Sim, quantia e controles",Recebimentos não digitais não equivalem a dinheiro em caixa.
+Eletrônicos: exposição e inventário confirmados,2978,100.0,2978,Confirmar uso e reposição na unidade,"Bens cadastrados são sinais, não confirmação atual."
+Segurança física e controles digitais confirmados,2978,100.0,2978,Confirmar controles efetivos; verificar requisitos de shopping quando aplicáveis,Bem SISTEMA_SEGURANCA e maturidade digital não comprovam controles. Condições para desconto não são exclusões gerais.
+Material das paredes ausente,2524,84.75,2978,Ausente ou NAO_DISPONIVEL,Impede verificação de combustível; não classificar ausência como material combustível.
+Padrão construtivo ausente,2437,81.83,2978,Ausente ou NAO_DISPONIVEL,"Parâmetro de apoio ao dimensionamento, não exclusão autônoma do guia."
+Ao menos um bem com vínculo de baixa confiança,1827,61.35,2978,bens_baixa_confianca > 0,Prioridade de revisão de inventário; não taxa de inelegibilidade.
+Endereço incompatível com cadastro,656,22.03,2978,endereco_cnpj_compativel != SIM,Conferir vínculo/endereço; divergência não é proibição automática.
+Situação cadastral irregular,52,1.75,2978,situação = IRREGULAR,Apurar; não equiparar automaticamente a condenado ou em obra.

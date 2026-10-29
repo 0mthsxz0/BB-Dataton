@@ -1,0 +1,11 @@
+﻿motivo,unidades,percentual,denominador,parametro,observacao
+CNAE,0,0.0,2978,cnae_principal,Ausência literal. Presença não comprova confirmação contratual. Zero válido é preservado.
+Atividade descrita,0,0.0,2978,descricao_cnae,Ausência literal. Presença não comprova confirmação contratual. Zero válido é preservado.
+Faturamento empresarial,0,0.0,2978,faturamento_mensal,Ausência literal. Presença não comprova confirmação contratual. Zero válido é preservado.
+Empregados estimados da empresa,0,0.0,2978,quantidade_funcionarios_estimada,Ausência literal. Presença não comprova confirmação contratual. Zero válido é preservado.
+Folha local,0,0.0,2978,folha_pagamento_mensal,Ausência literal. Presença não comprova confirmação contratual. Zero válido é preservado.
+Bens agregados,0,0.0,2978,bens_ponderados,Ausência literal. Presença não comprova confirmação contratual. Zero válido é preservado.
+Equipamentos agregados,0,0.0,2978,equipamentos_ponderados,Ausência literal. Presença não comprova confirmação contratual. Zero válido é preservado.
+Estoque estimado,0,0.0,2978,estoque_medio_estimado,Ausência literal. Presença não comprova confirmação contratual. Zero válido é preservado.
+Despesas fixas estimadas,0,0.0,2978,despesa_fixa_mensal_estimada,Ausência literal. Presença não comprova confirmação contratual. Zero válido é preservado.
+Aluguel identificado,0,0.0,2978,valor_aluguel_recorrente,Ausência literal. Presença não comprova confirmação contratual. Zero válido é preservado.
