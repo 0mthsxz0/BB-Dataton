@@ -5,6 +5,8 @@ import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { createActivityIndex, searchActivities } from './public/activity-search.js';
+import { internalLogin, clientLogin, authorized, getSession, logout } from './auth.mjs';
+import { newDraft, approve, makeCall, status as draftStatus } from './voice-service.mjs';
 
 const root = path.resolve(fileURLToPath(new URL('./public/', import.meta.url)));
 const project = path.resolve(root, '../..');
@@ -65,7 +67,7 @@ async function body(req) {
 }
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8', '.png': 'image/png', '.svg': 'image/svg+xml' };
 const routes = new Set(['/', '/seguros', '/seguros/seguro-empresarial', '/seguros/seguro-empresarial/']);
-const quoteRoutes = new Set(['/cotacao', '/cotacao/', '/cotacao/home', '/home', '/interno', '/interno/']);
+const quoteRoutes = new Set(['/cotacao', '/cotacao/', '/cotacao/home', '/home']);
 export const server = http.createServer(async (req, res) => {
   try {
     const host = req.headers.host || '';
@@ -74,7 +76,41 @@ export const server = http.createServer(async (req, res) => {
     const pathname = decodeURIComponent(url.pathname);
     if (pathname.startsWith('/api/')) {
       if (req.headers.origin && req.headers.origin !== url.origin) { json(res,403,{error:'Origem não permitida.'}); return; }
+      if (pathname === '/api/interno/session' && req.method === 'GET') {
+        json(res,200,{autorizado:!!authorized(req,'internal')?.role,role:getSession(req)?.role||null}); return;
+      }
+      if (pathname === '/api/interno/login' && req.method === 'POST') {
+        const response=internalLogin(res,await body(req));json(res,response.status||200,response);return;
+      }
+      if (pathname === '/api/cliente/vincular' && req.method === 'POST') {
+        const response=await clientLogin(res,await body(req));json(res,response.status||200,response);return;
+      }
+      if (pathname === '/api/logout' && req.method === 'POST') {
+        logout(res,req);json(res,200,{ok:true});return;
+      }
+      if (pathname === '/api/cliente/cadastro' && req.method === 'POST') {
+        const s=getSession(req);if(s?.role!=='client') {json(res,401,{error:'Vínculo empresarial verificado obrigatório.'});return;}
+        json(res,200,await runMotor({action:'cadastro',payload:{empresaId:s.empresaId,imovelId:s.imovelId}}));return;
+      }
+      if (pathname.startsWith('/api/interno/') && !authorized(req,'internal')) {
+        json(res,401,{error:'Faça login no painel interno para acessar dados do Datathon.'});return;
+      }
+      if (pathname === '/api/interno/roteiros' && req.method === 'POST') {
+        const data=await body(req);
+        const report=await runMotor({action:'cadastro',payload:{empresaId:data.empresaId,imovelId:data.imovelId}});
+        json(res,200,await newDraft(report,data));return;
+      }
+      if (pathname === '/api/interno/roteiros/aprovar' && req.method === 'POST') {
+        json(res,200,approve(await body(req)));return;
+      }
+      if (pathname === '/api/interno/ligacoes' && req.method === 'POST') {
+        json(res,200,await makeCall(await body(req),project));return;
+      }
+      if (pathname === '/api/interno/roteiros/status' && req.method === 'POST') {
+        json(res,200,draftStatus((await body(req)).id));return;
+      }
       if (pathname === '/api/contexto' && req.method === 'GET') {
+        if (!authorized(req,'internal')) {json(res,401,{error:'Acesso interno necessário.'});return;}
         json(res,200,await runMotor({action:'contexto'})); return;
       }
       if (req.method !== 'POST') { json(res,405,{error:'Método não permitido.'}); return; }
@@ -85,12 +121,21 @@ export const server = http.createServer(async (req, res) => {
         json(res,200,{...found,engine:'local-rules-tfidf-v2',catalogCount:catalog.activities.length}); return;
       }
       if (pathname === '/api/cnae/perfil') { json(res,200,await runMotor({action:'perfil_cnae',payload:data})); return; }
-      if (pathname === '/api/recomendacao/cadastro') { json(res,200,await runMotor({action:'cadastro',payload:data})); return; }
-      if (pathname === '/api/recomendacao') { json(res,200,await runMotor({action:'analisar',payload:data})); return; }
+      if (pathname === '/api/recomendacao/cadastro') { if(!authorized(req,'internal')){json(res,401,{error:'Acesso interno necessário.'});return;} json(res,200,await runMotor({action:'cadastro',payload:data})); return; }
+      if (pathname === '/api/recomendacao') {
+        const session=getSession(req);
+        if(session?.role==='client'){data.empresaId=session.empresaId;data.imovelId=session.imovelId;}
+        else if((data.empresaId||data.imovelId)&&session?.role!=='internal'){
+          json(res,403,{error:'É necessário confirmar a identidade para reutilizar dados empresariais.'});return;
+        }
+        json(res,200,await runMotor({action:'analisar',payload:data}));return;
+      }
       json(res,404,{error:'API não encontrada.'}); return;
     }
     if (!['GET', 'HEAD'].includes(req.method)) { res.writeHead(405).end(); return; }
-    const file = quoteRoutes.has(pathname) ? 'quote.html' : routes.has(pathname) ? 'index.html' : pathname.replace(/^\/+/, '');
+    const file = ['/interno','/interno/'].includes(pathname) ?
+      (getSession(req)?.role==='internal' ? 'quote.html' : 'internal-login.html') :
+      quoteRoutes.has(pathname) ? 'quote.html' : routes.has(pathname) ? 'index.html' : pathname.replace(/^\/+/, '');
     const resolved = path.resolve(root, file);
     if (!resolved.startsWith(root + path.sep) && resolved !== path.join(root, 'index.html')) { res.writeHead(403).end(); return; }
     const data = await readFile(resolved);
