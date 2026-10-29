@@ -1,5 +1,10 @@
 # Integração do motor principal com o banco público de segurança
 
+O coletor e seus comandos agora estão disponíveis neste checkout. Consulte
+[preparação, arquivos e execução](COLETOR_BANCO_SEGURANCA.md). O contrato do motor
+antes localizado em `seguranca.py` fica em `seguranca/politica_motor.py`, com os
+imports públicos preservados.
+
 ## Comportamento entregue
 
 O motor da main consulta o SQLite público por código IBGE, em leitura somente. Empresas, estabelecimentos, bens e confirmações continuam no consumidor; não são gravados nesse banco. Não há download durante uma recomendação.
@@ -23,7 +28,9 @@ contexto_seguranca.py
 Cadastro/respostas → avaliação Mosler técnica → relatório complementar
 ```
 
-Não copiar o pacote Python `seguranca/` da outra branch sobre `seguranca.py` da main. A conexão usa um módulo próprio e o contrato do SQLite; as interfaces das branches não precisam ser mescladas.
+O pacote Python `seguranca/` reúne os coletores e o contrato de validação já usado
+pelo motor. A conexão continua em `contexto_seguranca.py`, pelo contrato do SQLite;
+a interface da branch produtora não substitui a interface atual.
 
 ## Publicar uma versão dos dados
 

@@ -1,0 +1,62 @@
+{
+  "versao": 1,
+  "criterio": "Compatibilidade obrigatória antes da prioridade. Preferir produtor oficial municipal com dicionário e consolidação; depois consolidação oficial; depois cópia idêntica de original oficial previamente verificado. Nenhum nível mede probabilidade de acerto.",
+  "unidade_selecao": "Um fornecedor e uma definição por município/indicador nos doze meses. Não remendar meses, não somar fontes e não substituir crime ou granularidade.",
+  "dominios": {
+    "cadastro_populacao_area": "IBGE produtor oficial; estimativa 2025 e área censitária 2022 registradas separadamente. Sem projeção nem área inventada.",
+    "ocorrencias": "Hierarquia descrita em fontes; fontes diferentes exigem revisão de equivalência antes de ranking conjunto."
+  },
+  "indicadores": {
+    "Roubo de veículo": {"definicoes": ["isp_rj:roubo_veiculo:casos:v1", "ssp_rs:roubo de veiculo:ocorrencias:v1", "sinesp:roubo de veiculos:ocorrencias:v1"]},
+    "Roubo de carga": {"definicoes": ["isp_rj:roubo_carga:casos:v1", "sinesp:roubo de carga:ocorrencias:v1"]},
+    "Roubo a instituição financeira": {"definicoes": ["sinesp:roubo a instituicao financeira:ocorrencias:v1"]},
+    "Roubo seguido de morte (latrocínio)": {"definicoes": ["ssp_rs:latrocinio:ocorrencias:v1", "sinesp:roubo seguido de morte latrocinio:ocorrencias:v1"]},
+    "Roubo em comércio": {"definicoes": ["isp_rj:roubo_comercio:casos:v1"]},
+    "Roubo a banco": {"definicoes": ["isp_rj:roubo_banco:casos:v1"]}
+  },
+  "fontes": [
+    {
+      "id": "isp_rj_municipal",
+      "nome": "Instituto de Segurança Pública do Rio de Janeiro",
+      "nivel": 1,
+      "ordem": 10,
+      "ufs": ["RJ"],
+      "validada": true,
+      "adaptador": "isp_rj",
+      "url": "https://www.ispdados.rj.gov.br/Arquivos/BaseMunicipioMensal.csv",
+      "arquivo": "isp_rj/BaseMunicipioMensal.csv",
+      "dicionario_url": "https://www.ispdados.rj.gov.br/Arquivos/BaseMunic%C3%ADpioMensalDicionarioDeVariaveis.xlsx",
+      "dicionario_arquivo": "isp_rj/dicionario.xlsx",
+      "metodologia_url": "https://www.ispdados.rj.gov.br/metodDivulDados.html",
+      "limites": "Roubo a banco é separado de instituição financeira. Latrocínio é vítima e não é adaptado como ocorrência. A definição local de carga difere da enviada ao SINESP; não aprovar equivalência nacional automaticamente."
+    },
+    {
+      "id": "ssp_rs_municipal",
+      "nome": "Secretaria da Segurança Pública do Rio Grande do Sul",
+      "nivel": 1,
+      "ordem": 20,
+      "ufs": ["RS"],
+      "validada": true,
+      "adaptador": "ssp_rs",
+      "url": "https://ssp.rs.gov.br/upload/arquivos/202610/08160105-site-geral-e-municipios-ano-2025-atualizado-em-06-out-2026-dados-cvli-atualizado-publicacao.xlsx",
+      "arquivo": "ssp_rs/municipios_2025.xlsx",
+      "metodologia_url": "https://ssp.rs.gov.br/indicadores-criminais",
+      "limites": "Ocorrências de fato consumado, com colunas distintas de vítimas. Não equivale automaticamente ao critério temporal/data de comunicação do ISP-RJ. Sem códigos IBGE; correspondência exata nome/UF, divergências auditadas."
+    },
+    {
+      "id": "sinesp_vde_2025",
+      "nome": "MJSP/SINESP VDE 2025 auditado",
+      "nivel": 2,
+      "ordem": 10,
+      "validada": true,
+      "adaptador": "vde_auditado",
+      "url": "https://www.gov.br/mj/pt-br/assuntos/sua-seguranca/seguranca-publica/estatistica/download/dnsp-base-de-dados/bancovde-2025.xlsx/@@download/file",
+      "arquivo": "sinesp/bancovde-2025.xlsx",
+      "metodologia_url": "https://www.gov.br/mj/pt-br/assuntos/sua-seguranca/seguranca-publica/estatistica/dados-nacionais-1/base-de-dados-e-notas-metodologicas-dos-gestores-estaduais-sinesp-vde-2022-e-2023",
+      "limites": "Veículo/carga/instituição financeira estão sem município e latrocínio é vítima neste arquivo. O nível 2 não supera as incompatibilidades."
+    }
+  ],
+  "nivel_3": "Nenhuma republicação ativada sem arquivo original, hash igual e revisão de definição. O motor aceita csv_normalizado revisado; não usa notícias ou estimativas para completar lacunas.",
+  "equivalencias_definicoes": [],
+  "pendencias": ["Validar adaptadores das demais SSPs", "Não há garantia de que todos os indicadores existam para todos os municípios"]
+}

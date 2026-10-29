@@ -1,0 +1,13 @@
+{
+  "versao": 1,
+  "crimes_indice": [
+    "Roubo de veículo",
+    "Roubo de carga",
+    "Roubo a instituição financeira",
+    "Roubo seguido de morte (latrocínio)"
+  ],
+  "minimo_municipios": 30,
+  "selecao": "Recorte original preservado para auditoria de cobertura. No VDE 2025, veículo/carga/instituição financeira não têm município e latrocínio mede vítimas. Nenhum dos quatro oferece a série municipal de ocorrências exigida. Não calcular pesos ou ranking sem outra fonte municipal compatível.",
+  "faixas": "Convenção de comunicação: baixo [0,25), moderado [25,50), alto [50,75), muito alto [75,100]. Não são limiares atuariais.",
+  "populacao": "Estimativas IBGE 2025, agregado 6579/9324; área censitária 2022, agregado 4714/6318, apenas contextual. Anos e códigos explicitados."
+}
