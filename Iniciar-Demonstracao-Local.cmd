@@ -1,5 +1,5 @@
 @echo off
 setlocal
-call npm.cmd --prefix "%~dp0frontend" run demo:local
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\iniciar-local.ps1"
 if errorlevel 1 pause
 endlocal

@@ -1,3 +1,4 @@
+import './local-config.mjs';
 import http from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
