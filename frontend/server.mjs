@@ -123,6 +123,7 @@ export const server = http.createServer(async (req, res) => {
         const found = searchActivities(index,data.description,{mode:'description',limit:3});
         json(res,200,{...found,engine:'local-rules-tfidf-v2',catalogCount:catalog.activities.length}); return;
       }
+      if (pathname === '/api/cnae/atividade') { json(res,200,await runMotor({action:'atividade_cnae',payload:data})); return; }
       if (pathname === '/api/cnae/perfil') { json(res,200,await runMotor({action:'perfil_cnae',payload:data})); return; }
       if (pathname === '/api/interno/relatorio-cnae') { json(res,200,await runMotor({action:'relatorio_cnae',payload:data})); return; }
       if (pathname === '/api/recomendacao/cadastro') { if(!authorized(req,'internal')){json(res,401,{error:'Acesso interno necessário.'});return;} json(res,200,await runMotor({action:'cadastro',payload:data})); return; }
