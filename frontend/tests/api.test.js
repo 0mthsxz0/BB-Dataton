@@ -83,7 +83,7 @@ test('interface pública mantém caminho de ID e não exibe campo CNAE para o cl
   const direct=src.split('function demoReportView(){')[1].split('async function demoLookup')[0];
   assert.doesNotMatch(direct,/cadastroRecommendationView|recommendationView\(/);
   assert.match(direct,/Refinar a resposta/);
-  assert.match(direct,/customerOptionalSuggestions/);
+  assert.doesNotMatch(direct,/customerOptionalSuggestions|Outras proteções/);
   const business=src.split('function business(){')[1].split('function address(){')[0];
   assert.match(business,/baseFields\(baseContext,state\)/);
   assert.doesNotMatch(business,/cnae-lookup|load-cnae-profile|cnae-profile-status/);

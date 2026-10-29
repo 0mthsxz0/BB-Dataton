@@ -4,7 +4,7 @@ import { startIdRefinement, recommendationEndpoint } from './id-journey.js';
 import { installConfidenceEditor } from './confidence-ui.js';
 import { voiceMarkup, bindVoice } from './voice-ui.js';
 import { cnaeReportView } from './cnae-report-ui.js';
-import { customerRecommendationView, customerReport, customerOptionalSuggestions } from './journeys.js';
+import { customerRecommendationView, customerReport } from './journeys.js';
 import { initializeProductState, productPayload, productFields, packageFields, optionalFields, syncPackageState, packageCount } from './product-ui.js';
 import { api, riskFields, riskPayload, employeePresence, syncEmployeeExposure, recommendationView, baseFields, cadastroRecommendationView } from './quote-engine.js';
 import { createActivityIndex, searchActivities, normalize, isValidSelection } from './activity-search.js';
@@ -156,7 +156,7 @@ function render(){
     $('#demo-refine').addEventListener('click',refineDemoResponse);
     $('#demo-reset').addEventListener('click',()=>{demoResult=null;demoUnits=[];demoCompanyId='';render();});
     $('#demo-download').addEventListener('click',()=>{
-      const blob=new Blob([JSON.stringify(customerReport(demoResult.relatorio),null,2)],{type:'application/json'});
+      const blob=new Blob([JSON.stringify(customerReport(demoResult.relatorio,{preliminary:true}),null,2)],{type:'application/json'});
       const url=URL.createObjectURL(blob),a=document.createElement('a');
       a.href=url;a.download='relatorio-demonstrativo-'+demoCompanyId+'.json';
       document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
@@ -245,7 +245,6 @@ function demoReportView(){
  return '<section class="demo-direct-report">'+
  '<p class="result-eyebrow">Sua empresa · '+esc(demoCompanyId)+' · '+esc(demoResult.imovelId)+'</p>'+
  customerRecommendationView(demoResult.relatorio,{preliminary:true})+
- customerOptionalSuggestions(demoResult.relatorio)+
  '<div class="customer-refinement"><h2>Quer uma resposta mais adequada à sua empresa?</h2><p>Revise os dados já preenchidos e responda ao formulário para confirmar as proteções que fazem sentido para você.</p><button type="button" class="btn" id="demo-refine">Refinar a resposta</button></div>'+
  '<div class="cnae-report-actions"><button type="button" class="btn btn-outline" id="demo-reset">Consultar outra empresa</button><button type="button" class="btn btn-outline" id="demo-download">Baixar meu resumo</button></div>'+
  '</section>';
@@ -352,7 +351,7 @@ function updateCadastroView(){
   updateReportLayout();
   const root=$('#cadastro-result');if(!root)return;
   root.setAttribute('aria-busy',String(cadastroLoading));
-  root.innerHTML=cadastroLoading?'<p class="quote-helper" role="status">Analisando os dados do estabelecimento e comparando os planos…</p>':cadastroError?`<p class="quote-error" role="alert">${esc(cadastroError)}</p><button type="button" class="btn btn-outline" id="retry-cadastro">Tentar análise do cadastro novamente</button>`:cadastroRecommendation?(internal?cadastroRecommendationView(cadastroRecommendation)+voiceMarkup(state.sourceKey):'<div class="recommendation"><h2>Prévia da recomendação</h2><p>Confira sua indicação inicial. Os dados ausentes ou estimados serão solicitados no formulário.</p>'+customerRecommendationView(cadastroRecommendation)+'</div>'):'';
+  root.innerHTML=cadastroLoading?'<p class="quote-helper" role="status">Analisando os dados do estabelecimento e comparando os planos…</p>':cadastroError?`<p class="quote-error" role="alert">${esc(cadastroError)}</p><button type="button" class="btn btn-outline" id="retry-cadastro">Tentar análise do cadastro novamente</button>`:cadastroRecommendation?(internal?cadastroRecommendationView(cadastroRecommendation)+voiceMarkup(state.sourceKey):'<div class="recommendation"><h2>Prévia da recomendação</h2><p>Confira sua indicação inicial. Os dados ausentes ou estimados serão solicitados no formulário.</p>'+customerRecommendationView(cadastroRecommendation,{preliminary:true})+'</div>'):'';
   if(internal&&cadastroRecommendation)bindVoice(state.sourceKey);
   $('#retry-cadastro')?.addEventListener('click',requestCadastro);
 }
