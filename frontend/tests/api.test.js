@@ -79,5 +79,8 @@ test('interface pública mantém caminho de ID e não exibe campo CNAE para o cl
   assert.match(src,/api\/demo\/empresa/);
   assert.match(src,/CNPJ \(produção\) \/ ID da empresa \(MVP\)/);
   assert.match(src,/cadastroRecommendationView\(demoResult\.relatorio\)/);
-  assert.match(src,/\$\{internal\?\`<section class="cnae-lookup">/);
+  const business=src.split('function business(){')[1].split('function address(){')[0];
+  assert.match(business,/baseFields\(baseContext,state\)/);
+  assert.doesNotMatch(business,/cnae-lookup|load-cnae-profile|cnae-profile-status/);
+  assert.doesNotMatch(business,/Código da atividade econômica da empresa/);
 });
