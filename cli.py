@@ -1,0 +1,36 @@
+"""Execução em lote sem abrir a interface: python cli.py --dados PASTA."""
+import argparse
+import json
+from exportacao import exportar
+from processamento import carregar_base
+from motor_pontuacao import carregar_config
+
+
+def main():
+    parser = argparse.ArgumentParser(description='Recomendação de seguros empresariais')
+    parser.add_argument('--dados', help='Pasta contendo os nove CSVs originais')
+    parser.add_argument('--config', help='Configuração JSON; padrão config_regras.json')
+    parser.add_argument('--territorio', help='CSV externo municipal com indicadores documentados')
+    parser.add_argument('--referencias', help='Pasta das referências públicas preparadas')
+    parser.add_argument('--confirmacoes', help='CSV de confirmações por estabelecimento')
+    parser.add_argument('--meta',type=float,help='Meta de aderência de 0 a 100; padrão 80')
+    parser.add_argument('--indispensavel',action='append',default=[],help='Código de cobertura da qual não abrir mão; pode repetir')
+    parser.add_argument('--saida', default='output', help='Pasta de resultados')
+    parser.add_argument('--data-analise', help='Data ISO AAAA-MM-DD para reproduzir a validade das referências; padrão hoje')
+    args = parser.parse_args()
+    try:
+        base = carregar_base(args.dados, args.territorio, args.referencias, args.confirmacoes, data_analise=args.data_analise)
+        config = carregar_config(args.config)
+        if args.meta is not None:
+            config['planos']['meta_aderencia'] = args.meta
+        config['planos']['indispensaveis'] = sorted(set(config['planos']['indispensaveis']+args.indispensavel))
+        r, c = exportar(base, config, args.saida, data_analise=args.data_analise)
+    except (ValueError, KeyError, OSError) as erro:
+        parser.exit(1, f'Erro de processamento: {erro}\n')
+    print(json.dumps({'estabelecimentos': len(r), 'coberturas': len(c),
+                      'planos': r.plano_recomendado.value_counts().to_dict(),
+                      'saida': args.saida}, ensure_ascii=False))
+
+
+if __name__ == '__main__':
+    main()

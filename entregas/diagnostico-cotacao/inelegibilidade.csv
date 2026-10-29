@@ -1,0 +1,9 @@
+﻿motivo,unidades,percentual,denominador,parametro,observacao
+Atividade rural: sinal pelo CNAE,0,0.0,2978,"Divisões CNAE 01, 02 ou 03",Nenhum sinal rural nos CNAEs fornecidos; confirmar atividade efetiva e aceitação.
+Localização rural ou nas áreas restritas do guia,0,0.0,2978,Confirmação específica da localização,"Não verificável em 100%: sem campo próprio. Não inferir de renda, bairro, CEP ou coordenadas perturbadas. Zero identificado não prova ausência."
+Imóvel tombado ou desapropriado,0,0.0,2978,Confirmação documental específica,Não verificável em 100%: sem campos próprios.
+Imóvel condenado,0,0.0,2978,situacao_imovel_cadastral = CONDENADO,Nenhum registro com esse valor. IRREGULAR não equivale a condenado.
+"Construção, reforma ou reconstrução",78,2.62,2978,Situação em obra/construção/reforma/reconstrução,EM_OBRA é o único impedimento explícito encontrado. Confirmar situação atual antes de decisão oficial.
+Paredes externas combustíveis,0,0.0,2978,Material = MADEIRA ou MATERIAL_COMBUSTIVEL,Nenhum positivo informado; em 2.524 unidades o material é desconhecido.
+Mesmo objeto em outra proposta BB Seguros,0,0.0,2978,"Checar objeto, proposta/apólice existente",Não verificável em 100%: sem histórico de propostas por objeto.
+"Objeto básico acima de R$ 7,5 milhões",0,0.0,2978,"Prédio e conteúdo, limite único > 7.500.000","Encaminhar ao Personalizado; não é recusa geral. Nenhum subtotal disponível supera o corte, mas falta reconstrução em 100%. Não comprova valor total abaixo do limite."

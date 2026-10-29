@@ -1,0 +1,5960 @@
+{
+  "10": [
+    {
+      "nmDescritivo": "EXTRACAO DE PETROLEO E/OU GAS NATURAL",
+      "nrCodigo": " M10.10"
+    },
+    {
+      "nmDescritivo": "EXTRACAO DE PETROLEO E/OU GAS NATURAL",
+      "nrCodigo": "M10.10"
+    }
+  ],
+  "100": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "1000": [
+    {
+      "nmDescritivo": "ELETRICIDADE - LOJAS (ARTIGOS) - COM OFICINAS DE CONSERTO",
+      "nrCodigo": "E1.40"
+    }
+  ],
+  "1001": [
+    {
+      "nmDescritivo": "POSTOS DE GASOLINA/SERVIÇOS - SEM E COM LOJAS DE CONVENIENCIA",
+      "nrCodigo": "P9.20"
+    }
+  ],
+  "1002": [
+    {
+      "nmDescritivo": "ELETRICIDADE - LOJAS (ARTIGOS) - COM OFICINAS DE CONSERTO",
+      "nrCodigo": "E1.40"
+    }
+  ],
+  "1003": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1004": [
+    {
+      "nmDescritivo": "ELETRICIDADE - LOJAS (ARTIGOS) - COM OFICINAS DE CONSERTO",
+      "nrCodigo": "E1.40"
+    }
+  ],
+  "1005": [
+    {
+      "nmDescritivo": "ELETRICIDADE - LOJAS (ARTIGOS) - COM OFICINAS DE CONSERTO",
+      "nrCodigo": "E1.40"
+    }
+  ],
+  "1006": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1007": [
+    {
+      "nmDescritivo": "ELETRICIDADE - LOJAS (ARTIGOS) - COM OFICINAS DE CONSERTO",
+      "nrCodigo": "E1.40"
+    }
+  ],
+  "1008": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1009": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "101": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "1010": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1011": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1012": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1013": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1014": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1015": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1016": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1017": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1018": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1019": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "102": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "1020": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1021": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1022": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1023": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1024": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1025": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1026": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1027": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1028": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1029": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "103": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "1030": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1031": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1032": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1033": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1034": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1035": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1036": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1037": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1038": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1039": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "104": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "1040": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1041": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1042": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1043": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1044": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1045": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1046": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1047": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "1048": [
+    {
+      "nmDescritivo": "ELETRICIDADE - LOJAS (ARTIGOS) - COM OFICINAS DE CONSERTO",
+      "nrCodigo": "E1.40"
+    }
+  ],
+  "1049": [
+    {
+      "nmDescritivo": "MARMORARIA - OFICINAS DE LAPIDACAO/CORTES",
+      "nrCodigo": "M2.10"
+    }
+  ],
+  "105": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "1050": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1051": [
+    {
+      "nmDescritivo": "TRANSPORTADORAS/ARMAZENS GERAIS COM SUBSTANCIAS INFLAMAVEIS/TOXICAS/CORROSIVAS",
+      "nrCodigo": "T6.20"
+    }
+  ],
+  "1052": [
+    {
+      "nmDescritivo": "TRANSPORTADORAS, TRANSP MARITIMOS, FERROVIARIOS, FLUVIAIS, HIDROVIARIAS, AEREOS, CABEAIS  DE CARGAS EM GERAL",
+      "nrCodigo": "T6.30"
+    }
+  ],
+  "1053": [
+    {
+      "nmDescritivo": "TRANSPORTADORAS, TRANSP MARITIMOS, FERROVIARIOS, FLUVIAIS, HIDROVIARIAS, AEREOS, CABEAIS  DE CARGAS EM GERAL",
+      "nrCodigo": "T6.30"
+    }
+  ],
+  "1054": [
+    {
+      "nmDescritivo": "TRANSPORTADORAS/ARMAZENS GERAIS SEM SUBSTANCIAS INFLAMAVEIS/TOXICAS/CORROSIVAS",
+      "nrCodigo": "T6.10"
+    }
+  ],
+  "1055": [
+    {
+      "nmDescritivo": "ESTACOES AEROVIARIAS/RODOVIARIAS/PORTUARIAS - LOCAL PARA EMBARQUE DE PASSAGEIROS",
+      "nrCodigo": "E12.10"
+    }
+  ],
+  "1056": [
+    {
+      "nmDescritivo": "ESTACOES AEROVIARIAS/RODOVIARIAS/PORTUARIAS - LOCAL PARA EMBARQUE DE PASSAGEIROS",
+      "nrCodigo": "E12.10"
+    }
+  ],
+  "1057": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1058": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "1059": [
+    {
+      "nmDescritivo": "TRANSPORTADORAS, TRANSP MARITIMOS, FERROVIARIOS, FLUVIAIS, HIDROVIARIAS, AEREOS, CABEAIS  DE CARGAS EM GERAL",
+      "nrCodigo": "T6.30"
+    }
+  ],
+  "106": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "1060": [
+    {
+      "nmDescritivo": "ESTACOES AEROVIARIAS/RODOVIARIAS/PORTUARIAS - LOCAL PARA EMBARQUE DE PASSAGEIROS",
+      "nrCodigo": "E12.10"
+    },
+    {
+      "nmDescritivo": "ESTACOES AEROVIARIAS/RODOVIARIAS/PORTUARIAS - LOCAL PARA EMBARQUE DE PASSAGEIROS",
+      "nrCodigo": "E12.20"
+    }
+  ],
+  "1061": [
+    {
+      "nmDescritivo": "USINA HIDRELETRICA, USINA TERMOELETRICA, ELETRICA",
+      "nrCodigo": "U10.50"
+    }
+  ],
+  "1062": [
+    {
+      "nmDescritivo": "RECICLAGEM DE QUALQUER TIPO E DE QUALQUER PROCESSO",
+      "nrCodigo": "R5.10"
+    }
+  ],
+  "1064": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE DE MADEIRAS E ARVORES",
+      "nrCodigo": "P14.30"
+    }
+  ],
+  "107": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "108": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "11": [
+    {
+      "nmDescritivo": "CARVAO",
+      "nrCodigo": "C26.0"
+    }
+  ],
+  "110": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "111": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "112": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "113": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "114": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "115": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "116": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "117": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "118": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "119": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "12": [
+    {
+      "nmDescritivo": "MINERAÇAO A FLOR DA TERRA - SEM USO DE EXPLOSIVO",
+      "nrCodigo": "M9.10"
+    }
+  ],
+  "120": [
+    {
+      "nmDescritivo": "RECICLAGEM DE QUALQUER TIPO E DE QUALQUER PROCESSO",
+      "nrCodigo": "R5.10"
+    }
+  ],
+  "121": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "122": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "123": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "124": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "125": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "126": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "127": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "128": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "129": [
+    {
+      "nmDescritivo": "AGUA MINERAL/SUCO/REFRIGERANTE - PREPARACAO/ENGARRAFAMENTO",
+      "nrCodigo": "A10.20"
+    },
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "130": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "131": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "132": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "133": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "134": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "135": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "136": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "137": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "138": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "139": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "140": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "141": [
+    {
+      "nmDescritivo": "CIMENTO/GESSO/FIBROCIMENTO - FABRICAS",
+      "nrCodigo": "C10.10"
+    },
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "142": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "143": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "144": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "145": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "146": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "147": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "148": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "149": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "15": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "150": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "152": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "153": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "154": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "155": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "156": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "157": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "158": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "159": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "16": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "160": [
+    {
+      "nmDescritivo": "ARMAS E MUNIÇÕES",
+      "nrCodigo": "A25.0"
+    }
+  ],
+  "161": [
+    {
+      "nmDescritivo": "ARMAS E MUNIÇÕES",
+      "nrCodigo": "A25.0"
+    }
+  ],
+  "162": [
+    {
+      "nmDescritivo": "ARMAS E MUNIÇÕES",
+      "nrCodigo": "A25.0"
+    }
+  ],
+  "163": [
+    {
+      "nmDescritivo": "ARMAS E MUNIÇÕES",
+      "nrCodigo": "A25.0"
+    }
+  ],
+  "164": [
+    {
+      "nmDescritivo": "ARMAS E MUNIÇÕES",
+      "nrCodigo": "A25.0"
+    }
+  ],
+  "165": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "166": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "167": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "168": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "169": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "17": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "170": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "171": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "174": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "175": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "176": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "177": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "178": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "179": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "18": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "180": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "181": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "182": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "183": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "184": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "185": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "187": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "188": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    },
+    {
+      "nmDescritivo": "INSTRUMENTOS MUSICAIS - FABRICAS",
+      "nrCodigo": "I2.20"
+    }
+  ],
+  "189": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "19": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "190": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "191": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "192": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "193": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "194": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "195": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "196": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "198": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "2": [
+    {
+      "nmDescritivo": "MINERAÇAO A FLOR DA TERRA - SEM USO DE EXPLOSIVO",
+      "nrCodigo": "M9.10"
+    }
+  ],
+  "20": [
+    {
+      "nmDescritivo": "FUMOS/CHARUTOS/CIGARROS - FABRICAS/ BENEFICIAMENTO/ PLANTAÇÃO",
+      "nrCodigo": "F11.50"
+    }
+  ],
+  "200": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "202": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "203": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "205": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "206": [
+    {
+      "nmDescritivo": "MADEIRA - SERRARIAS",
+      "nrCodigo": "M1.20"
+    }
+  ],
+  "207": [
+    {
+      "nmDescritivo": "MADEIRA - MARCENARIA",
+      "nrCodigo": "M1.30"
+    }
+  ],
+  "208": [
+    {
+      "nmDescritivo": "MADEIRA - MARCENARIA",
+      "nrCodigo": "M1.30"
+    }
+  ],
+  "209": [
+    {
+      "nmDescritivo": "MADEIRA - MARCENARIA",
+      "nrCodigo": "M1.30"
+    }
+  ],
+  "21": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "210": [
+    {
+      "nmDescritivo": "MADEIRA - MARCENARIA",
+      "nrCodigo": "M1.30"
+    }
+  ],
+  "211": [
+    {
+      "nmDescritivo": "MADEIRA - MARCENARIA",
+      "nrCodigo": "M1.30"
+    }
+  ],
+  "212": [
+    {
+      "nmDescritivo": "MADEIRA - MARCENARIA",
+      "nrCodigo": "M1.30"
+    }
+  ],
+  "213": [
+    {
+      "nmDescritivo": "MADEIRA - MARCENARIA",
+      "nrCodigo": "M1.30"
+    }
+  ],
+  "214": [
+    {
+      "nmDescritivo": "MADEIRA - MARCENARIA",
+      "nrCodigo": "M1.30"
+    }
+  ],
+  "215": [
+    {
+      "nmDescritivo": "MADEIRA - MARCENARIA",
+      "nrCodigo": "M1.30"
+    }
+  ],
+  "216": [
+    {
+      "nmDescritivo": "MADEIRA - TANOARIA",
+      "nrCodigo": "M1.40"
+    }
+  ],
+  "217": [
+    {
+      "nmDescritivo": "MADEIRA - MARCENARIA",
+      "nrCodigo": "M1.30"
+    }
+  ],
+  "218": [
+    {
+      "nmDescritivo": "MADEIRA - MARCENARIA",
+      "nrCodigo": "M1.30"
+    }
+  ],
+  "219": [
+    {
+      "nmDescritivo": "MADEIRA - MARCENARIA",
+      "nrCodigo": "M1.30"
+    }
+  ],
+  "220": [
+    {
+      "nmDescritivo": "MADEIRA - MARCENARIA",
+      "nrCodigo": "M1.30"
+    }
+  ],
+  "221": [
+    {
+      "nmDescritivo": "MADEIRA - MARCENARIA",
+      "nrCodigo": "M1.30"
+    }
+  ],
+  "222": [
+    {
+      "nmDescritivo": "VIME/JUNCO E SIMILARES - FABRICAS",
+      "nrCodigo": "V3.10"
+    }
+  ],
+  "223": [
+    {
+      "nmDescritivo": "CORTIÇA - FABRICAS",
+      "nrCodigo": "C21.10"
+    }
+  ],
+  "224": [
+    {
+      "nmDescritivo": "MADEIRA - MARCENARIA",
+      "nrCodigo": "M1.30"
+    }
+  ],
+  "225": [
+    {
+      "nmDescritivo": "CARVAO",
+      "nrCodigo": "C26.0"
+    }
+  ],
+  "226": [
+    {
+      "nmDescritivo": "MOVEIS COM MADEIRA - FABRICAS",
+      "nrCodigo": "M13.10"
+    }
+  ],
+  "227": [
+    {
+      "nmDescritivo": "MADEIRA - MARCENARIA",
+      "nrCodigo": "M1.30"
+    }
+  ],
+  "228": [
+    {
+      "nmDescritivo": "VIME/JUNCO E SIMILARES - FABRICAS",
+      "nrCodigo": "V3.10"
+    }
+  ],
+  "229": [
+    {
+      "nmDescritivo": "MOVEIS FABRICAS - COM USO DE OUTROS MATERIAIS",
+      "nrCodigo": "M13.20"
+    }
+  ],
+  "23": [
+    {
+      "nmDescritivo": "FLORES NATURAIS LOJAS",
+      "nrCodigo": "F5.20"
+    }
+  ],
+  "230": [
+    {
+      "nmDescritivo": "MOVEIS FABRICAS - COM USO DE OUTROS MATERIAIS",
+      "nrCodigo": "M13.20"
+    }
+  ],
+  "231": [
+    {
+      "nmDescritivo": "COLCHOES, ESPUMAS  - FABRICA",
+      "nrCodigo": "C13.30"
+    }
+  ],
+  "232": [
+    {
+      "nmDescritivo": "PLASTICOS SEM PROCESSOS DE POLIMERIZAÇAO - FABRICAS",
+      "nrCodigo": "P6.10"
+    }
+  ],
+  "233": [
+    {
+      "nmDescritivo": "MOVEIS COM MADEIRA - FABRICAS",
+      "nrCodigo": "M13.10"
+    }
+  ],
+  "234": [
+    {
+      "nmDescritivo": "CELULOSE",
+      "nrCodigo": "C28.0"
+    }
+  ],
+  "236": [
+    {
+      "nmDescritivo": "PAPEL/PAPELAO - FABRICAS",
+      "nrCodigo": "P2.40"
+    }
+  ],
+  "237": [
+    {
+      "nmDescritivo": "PAPEL/PAPELAO - FABRICAS",
+      "nrCodigo": "P2.40"
+    }
+  ],
+  "239": [
+    {
+      "nmDescritivo": "PAPEL/PAPELAO COM PREPARAÇAO DE FRIBRAS - FABRICAS",
+      "nrCodigo": "P2.30"
+    }
+  ],
+  "24": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "242": [
+    {
+      "nmDescritivo": "PAPEL/PAPELAO COM PREPARAÇAO DE FRIBRAS - FABRICAS",
+      "nrCodigo": "P2.30"
+    }
+  ],
+  "243": [
+    {
+      "nmDescritivo": "PAPEL/PAPELAO COM PREPARAÇAO DE FRIBRAS - FABRICAS",
+      "nrCodigo": "P2.30"
+    }
+  ],
+  "244": [
+    {
+      "nmDescritivo": "BORRACHA (ARTIGOS/EXCETO PNEUS) SEM INFLAMAVEL - FABRICAS",
+      "nrCodigo": "B8.10"
+    }
+  ],
+  "246": [
+    {
+      "nmDescritivo": "BORRACHA (ARTIGOS/EXCETO PNEUS) SEM INFLAMAVEL - FABRICAS",
+      "nrCodigo": "B8.10"
+    }
+  ],
+  "247": [
+    {
+      "nmDescritivo": "BORRACHA (ARTIGOS/EXCETO PNEUS) SEM INFLAMAVEL - FABRICAS",
+      "nrCodigo": "B8.10"
+    }
+  ],
+  "248": [
+    {
+      "nmDescritivo": "BORRACHA (ARTIGOS/EXCETO PNEUS) SEM INFLAMAVEL - FABRICAS",
+      "nrCodigo": "B8.10"
+    }
+  ],
+  "25": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "250": [
+    {
+      "nmDescritivo": "BORRACHA (ARTIGOS/EXCETO PNEUS) SEM INFLAMAVEL - FABRICAS",
+      "nrCodigo": "B8.10"
+    }
+  ],
+  "251": [
+    {
+      "nmDescritivo": "BORRACHA (ARTIGOS/EXCETO PNEUS) SEM INFLAMAVEL - FABRICAS",
+      "nrCodigo": "B8.10"
+    }
+  ],
+  "252": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "253": [
+    {
+      "nmDescritivo": "COUROS/PELES - CURTUMES ",
+      "nrCodigo": "C22.10"
+    }
+  ],
+  "254": [
+    {
+      "nmDescritivo": "COUROS/PELES - CURTUMES ",
+      "nrCodigo": "C22.10"
+    }
+  ],
+  "255": [
+    {
+      "nmDescritivo": "COUROS/PELES - CURTUMES ",
+      "nrCodigo": "C22.10"
+    }
+  ],
+  "256": [
+    {
+      "nmDescritivo": "COUROS/PELES - CURTUMES ",
+      "nrCodigo": "C22.10"
+    }
+  ],
+  "257": [
+    {
+      "nmDescritivo": "COUROS/PELES - CURTUMES ",
+      "nrCodigo": "C22.10"
+    }
+  ],
+  "26": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "260": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "261": [
+    {
+      "nmDescritivo": "EXTRACAO OU PRODUCAO DE GAS NATURAL/INDUSTRIAL",
+      "nrCodigo": "E20.20"
+    }
+  ],
+  "262": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "263": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "264": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "265": [
+    {
+      "nmDescritivo": "FABR DE PROD DERIVADOS DO ASFALTO",
+      "nrCodigo": "C10.20"
+    }
+  ],
+  "266": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "268": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "269": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "27": [
+    {
+      "nmDescritivo": "ABATE E/OU FRIGORIFICACAO DE SUINOS, BOVINOS, OVINOS CONSERV E PROD DERIV",
+      "nrCodigo": "M5.20"
+    }
+  ],
+  "270": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "271": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "272": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "273": [
+    {
+      "nmDescritivo": "ADUBOS FABRICA COM MATERIA INORGANICA/NITROGENADOS",
+      "nrCodigo": "A6.10"
+    }
+  ],
+  "274": [
+    {
+      "nmDescritivo": "EXPLOSIVOS - MANIPULAÇÃO / FABRICAÇÃO / ARMAZENAMENTO EM GERAL",
+      "nrCodigo": "E30.10"
+    }
+  ],
+  "275": [],
+  "276": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "278": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "279": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "28": [
+    {
+      "nmDescritivo": "CRIACAO DE ANIMAIS VIVOS EM GERAL",
+      "nrCodigo": "C60.10"
+    }
+  ],
+  "280": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "281": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "282": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "283": [
+    {
+      "nmDescritivo": "CONSERVAS ALIMENTICIAS DE ORIGEM VEGETAL - FABRICAS - COM PROCESSO A QUENTE",
+      "nrCodigo": "C15.20"
+    }
+  ],
+  "284": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "285": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "286": [],
+  "287": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "288": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "289": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "29": [
+    {
+      "nmDescritivo": "CRIACAO DE ANIMAIS VIVOS EM GERAL",
+      "nrCodigo": "C60.10"
+    }
+  ],
+  "290": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "291": [
+    {
+      "nmDescritivo": "PRODUTOS FARMACEUTICOS PROCESSO A FRIO - FABRICAS",
+      "nrCodigo": "P10.10"
+    }
+  ],
+  "292": [
+    {
+      "nmDescritivo": "PRODUTOS FARMACEUTICOS PROCESSO A FRIO - FABRICAS",
+      "nrCodigo": "P10.10"
+    }
+  ],
+  "293": [
+    {
+      "nmDescritivo": "EXTRACAO DE PETROLEO E/OU GAS NATURAL",
+      "nrCodigo": "E20.30"
+    }
+  ],
+  "295": [
+    {
+      "nmDescritivo": "PLASTICOS COM PROCESSOS DE POLIMERIZAÇAO - FABRICAS",
+      "nrCodigo": "P6.20"
+    }
+  ],
+  "296": [
+    {
+      "nmDescritivo": "PLASTICOS COM PROCESSOS DE POLIMERIZAÇAO - FABRICAS",
+      "nrCodigo": "P6.20"
+    }
+  ],
+  "297": [
+    {
+      "nmDescritivo": "PLASTICOS COM PROCESSOS DE POLIMERIZAÇAO - FABRICAS",
+      "nrCodigo": "P6.20"
+    }
+  ],
+  "298": [
+    {
+      "nmDescritivo": "PLASTICOS COM PROCESSOS DE POLIMERIZAÇAO - FABRICAS",
+      "nrCodigo": "P6.20"
+    }
+  ],
+  "299": [
+    {
+      "nmDescritivo": "PLASTICOS COM PROCESSOS DE POLIMERIZAÇAO - FABRICAS",
+      "nrCodigo": "P6.20"
+    }
+  ],
+  "3": [
+    {
+      "nmDescritivo": "MINERAÇAO A FLOR DA TERRA - SEM USO DE EXPLOSIVO",
+      "nrCodigo": "M9.10"
+    }
+  ],
+  "30": [
+    {
+      "nmDescritivo": "ABATE E/OU FRIGORIFICACAO DE SUINOS, BOVINOS, OVINOS CONSERV E PROD DERIV",
+      "nrCodigo": "M5.20"
+    }
+  ],
+  "301": [
+    {
+      "nmDescritivo": "PLASTICOS COM PROCESSOS DE POLIMERIZAÇAO - FABRICAS",
+      "nrCodigo": "P6.20"
+    }
+  ],
+  "302": [],
+  "303": [
+    {
+      "nmDescritivo": "PLASTICOS COM PROCESSOS DE POLIMERIZAÇAO - FABRICAS",
+      "nrCodigo": "P6.20"
+    }
+  ],
+  "304": [
+    {
+      "nmDescritivo": "PLASTICOS COM PROCESSOS DE POLIMERIZAÇAO - FABRICAS",
+      "nrCodigo": "P6.20"
+    }
+  ],
+  "306": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS COM FIBRAS ARTIFICIAIS - FIACAO/TECELAGEM",
+      "nrCodigo": "T2.10"
+    }
+  ],
+  "307": [
+    {
+      "nmDescritivo": "ESTOPAS",
+      "nrCodigo": "E19.0"
+    }
+  ],
+  "308": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS COM FIBRAS NATURAIS - FIACAO/TECELAGEM",
+      "nrCodigo": "T2.20"
+    }
+  ],
+  "309": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS COM FIBRAS NATURAIS - FIACAO/TECELAGEM",
+      "nrCodigo": "T2.20"
+    }
+  ],
+  "31": [
+    {
+      "nmDescritivo": "ABATE E/OU FRIGORIFICACAO DE SUINOS, BOVINOS, OVINOS CONSERV E PROD DERIV",
+      "nrCodigo": "M5.20"
+    }
+  ],
+  "310": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS COM FIBRAS NATURAIS - FIACAO/TECELAGEM",
+      "nrCodigo": "T2.20"
+    }
+  ],
+  "311": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS COM FIBRAS ARTIFICIAIS - FIACAO/TECELAGEM",
+      "nrCodigo": "T2.10"
+    }
+  ],
+  "312": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS COM FIBRAS ARTIFICIAIS - FIACAO/TECELAGEM",
+      "nrCodigo": "T2.10"
+    }
+  ],
+  "313": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS COM FIBRAS ARTIFICIAIS - FIACAO/TECELAGEM",
+      "nrCodigo": "T2.10"
+    }
+  ],
+  "314": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS COM FIBRAS ARTIFICIAIS - FIACAO/TECELAGEM",
+      "nrCodigo": "T2.10"
+    }
+  ],
+  "315": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS COM FIBRAS NATURAIS - FIACAO/TECELAGEM",
+      "nrCodigo": "T2.20"
+    }
+  ],
+  "316": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS COM FIBRAS ARTIFICIAIS - FIACAO/TECELAGEM",
+      "nrCodigo": "T2.10"
+    }
+  ],
+  "317": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS COM FIBRAS ARTIFICIAIS - FIACAO/TECELAGEM",
+      "nrCodigo": "T2.10"
+    }
+  ],
+  "318": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS COM FIBRAS ARTIFICIAIS - FIACAO/TECELAGEM",
+      "nrCodigo": "T2.10"
+    }
+  ],
+  "319": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS COM FIBRAS ARTIFICIAIS - FIACAO/TECELAGEM",
+      "nrCodigo": "T2.10"
+    }
+  ],
+  "32": [
+    {
+      "nmDescritivo": "CRIACAO DE ANIMAIS VIVOS EM GERAL",
+      "nrCodigo": "C60.10"
+    }
+  ],
+  "320": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS COM FIBRAS NATURAIS - FIACAO/TECELAGEM",
+      "nrCodigo": "T2.20"
+    }
+  ],
+  "321": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS COM FIBRAS ARTIFICIAIS - FIACAO/TECELAGEM",
+      "nrCodigo": "T2.10"
+    }
+  ],
+  "322": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS COM FIBRAS ARTIFICIAIS - FIACAO/TECELAGEM",
+      "nrCodigo": "T2.10"
+    }
+  ],
+  "323": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS COM FIBRAS ARTIFICIAIS - FIACAO/TECELAGEM",
+      "nrCodigo": "T2.10"
+    },
+    {
+      "nmDescritivo": "TECIDOS/FIOS COM FIBRAS NATURAIS - FIACAO/TECELAGEM",
+      "nrCodigo": "T2.20"
+    }
+  ],
+  "325": [
+    {
+      "nmDescritivo": "ROUPAS - FABRICAS/OFICINAS",
+      "nrCodigo": "R4.10"
+    }
+  ],
+  "326": [
+    {
+      "nmDescritivo": "ROUPAS - FABRICAS/OFICINAS",
+      "nrCodigo": "R4.10"
+    }
+  ],
+  "329": [
+    {
+      "nmDescritivo": "ROUPAS - FABRICAS/OFICINAS",
+      "nrCodigo": "R4.10"
+    }
+  ],
+  "33": [
+    {
+      "nmDescritivo": "CRIACAO DE ANIMAIS VIVOS EM GERAL",
+      "nrCodigo": "C60.10"
+    }
+  ],
+  "330": [
+    {
+      "nmDescritivo": "ROUPAS - FABRICAS/OFICINAS",
+      "nrCodigo": "R4.10"
+    }
+  ],
+  "331": [
+    {
+      "nmDescritivo": "FITAS/RENDAS/BORDADOS/LINHAS - FABRICAS",
+      "nrCodigo": "F4.20"
+    }
+  ],
+  "332": [
+    {
+      "nmDescritivo": "MEIAS E LINGERIE - FABRICAS",
+      "nrCodigo": "M7.10"
+    }
+  ],
+  "333": [
+    {
+      "nmDescritivo": "ROUPAS - FABRICAS/OFICINAS",
+      "nrCodigo": "R4.10"
+    }
+  ],
+  "334": [
+    {
+      "nmDescritivo": "ROUPAS - FABRICAS/OFICINAS",
+      "nrCodigo": "R4.10"
+    }
+  ],
+  "335": [
+    {
+      "nmDescritivo": "ROUPAS - FABRICAS/OFICINAS",
+      "nrCodigo": "R4.10"
+    }
+  ],
+  "336": [
+    {
+      "nmDescritivo": "ROUPAS - FABRICAS/OFICINAS",
+      "nrCodigo": "R4.10"
+    }
+  ],
+  "337": [
+    {
+      "nmDescritivo": "LONA - FABRICAS",
+      "nrCodigo": "L7.20"
+    }
+  ],
+  "338": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS COM FIBRAS ARTIFICIAIS - FIACAO/TECELAGEM",
+      "nrCodigo": "T2.10"
+    }
+  ],
+  "339": [
+    {
+      "nmDescritivo": "GUARDA-CHUVAS/GUARDA-SOL/BENGALAS - FABRICAS",
+      "nrCodigo": "G4.10"
+    }
+  ],
+  "34": [
+    {
+      "nmDescritivo": "CRIACAO DE ANIMAIS VIVOS EM GERAL",
+      "nrCodigo": "C60.10"
+    }
+  ],
+  "340": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS COM FIBRAS ARTIFICIAIS - FIACAO/TECELAGEM",
+      "nrCodigo": "T2.10"
+    }
+  ],
+  "341": [
+    {
+      "nmDescritivo": "COUROS/PELES - CURTUMES ",
+      "nrCodigo": "C22.10"
+    }
+  ],
+  "342": [
+    {
+      "nmDescritivo": "COUROS/PELES - CURTUMES ",
+      "nrCodigo": "C22.10"
+    }
+  ],
+  "344": [
+    {
+      "nmDescritivo": "ARROZ - ENGENHOS DE DESCASCAR E BENEFICIAR",
+      "nrCodigo": "A17.10"
+    }
+  ],
+  "345": [
+    {
+      "nmDescritivo": "CAFE - SOLUVEL/TORREFAÇÃO E MOAGEM",
+      "nrCodigo": "C2.30"
+    }
+  ],
+  "346": [
+    {
+      "nmDescritivo": "CAFE - SOLUVEL/TORREFAÇÃO E MOAGEM",
+      "nrCodigo": "C2.30"
+    }
+  ],
+  "347": [
+    {
+      "nmDescritivo": "CEREAIS E GRÃOS - DEPÓSITO COM SECADORES",
+      "nrCodigo": "C7.50"
+    }
+  ],
+  "348": [
+    {
+      "nmDescritivo": "CEREAIS E GRÃOS - DEPÓSITO COM SECADORES",
+      "nrCodigo": "C7.50"
+    }
+  ],
+  "350": [
+    {
+      "nmDescritivo": "ERVA MATE",
+      "nrCodigo": "E16.0"
+    }
+  ],
+  "351": [
+    {
+      "nmDescritivo": "USINA DE AÇUCAR OU CANA DE AÇUCAR",
+      "nrCodigo": "U10.10"
+    }
+  ],
+  "352": [
+    {
+      "nmDescritivo": "USINA DE AÇUCAR OU CANA DE AÇUCAR",
+      "nrCodigo": "U10.10"
+    }
+  ],
+  "353": [
+    {
+      "nmDescritivo": "USINA DE AÇUCAR OU CANA DE AÇUCAR",
+      "nrCodigo": "U10.10"
+    }
+  ],
+  "355": [
+    {
+      "nmDescritivo": "BALAS/BOMBONS/CARAMELOS/CHOCOLATES/DOCES PROCESSO A FRIO - FABRICAS",
+      "nrCodigo": "B1.10"
+    }
+  ],
+  "356": [
+    {
+      "nmDescritivo": "BALAS/BOMBONS/CARAMELOS/CHOCOLATES/DOCES PROCESSO A FRIO - FABRICAS",
+      "nrCodigo": "B1.10"
+    }
+  ],
+  "357": [
+    {
+      "nmDescritivo": "CONSERVAS ALIMENTICIAS DE ORIGEM VEGETAL - FABRICAS - COM PROCESSO A QUENTE",
+      "nrCodigo": "C15.20"
+    }
+  ],
+  "359": [
+    {
+      "nmDescritivo": "CONSERVAS ALIMENTICIAS DE ORIGEM VEGETAL - FABRICAS - COM PROCESSO A QUENTE",
+      "nrCodigo": "C15.20"
+    }
+  ],
+  "36": [
+    {
+      "nmDescritivo": "CRIACAO DE ANIMAIS VIVOS EM GERAL",
+      "nrCodigo": "C60.10"
+    }
+  ],
+  "360": [
+    {
+      "nmDescritivo": "CONSERVAS ALIMENTICIAS DE ORIGEM VEGETAL - FABRICAS - COM PROCESSO A QUENTE",
+      "nrCodigo": "C15.20"
+    }
+  ],
+  "361": [
+    {
+      "nmDescritivo": "CONSERVAS ALIMENTICIAS DE ORIGEM VEGETAL - FABRICAS - COM PROCESSO A QUENTE",
+      "nrCodigo": "C15.20"
+    }
+  ],
+  "362": [
+    {
+      "nmDescritivo": "SAL - EXTRAÇAO E BENEFICIAMENTO",
+      "nrCodigo": "S2.10"
+    }
+  ],
+  "363": [
+    {
+      "nmDescritivo": "ÓLEOS VEGETAIS E SEMENTES OLEAGINOSAS /FABRICA.",
+      "nrCodigo": "O2.11"
+    }
+  ],
+  "364": [
+    {
+      "nmDescritivo": "VINAGRE - FABRICAS",
+      "nrCodigo": "V4.10"
+    }
+  ],
+  "365": [
+    {
+      "nmDescritivo": "ABATE E/OU FRIGORIFICACAO DE SUINOS, BOVINOS, OVINOS CONSERV E PROD DERIV",
+      "nrCodigo": "M5.20"
+    }
+  ],
+  "366": [
+    {
+      "nmDescritivo": "ABATE E/OU FRIGORIFICACAO DE SUINOS, BOVINOS, OVINOS CONSERV E PROD DERIV",
+      "nrCodigo": "M5.20"
+    }
+  ],
+  "367": [
+    {
+      "nmDescritivo": "ABATE E/OU FRIGORIFICACAO DE SUINOS, BOVINOS, OVINOS CONSERV E PROD DERIV",
+      "nrCodigo": "M5.20"
+    }
+  ],
+  "37": [
+    {
+      "nmDescritivo": "CRIACAO DE ANIMAIS VIVOS EM GERAL",
+      "nrCodigo": "C60.10"
+    }
+  ],
+  "370": [
+    {
+      "nmDescritivo": "ABATE E/OU FRIGORIFICACAO DE SUINOS, BOVINOS, OVINOS CONSERV E PROD DERIV",
+      "nrCodigo": "M5.20"
+    }
+  ],
+  "371": [
+    {
+      "nmDescritivo": "ACOUGUES/PEIXARIAS/AVICOLAS - PERMITIDO ABATE DE PEQUENOS ANIMAIS",
+      "nrCodigo": "A4.10"
+    }
+  ],
+  "372": [
+    {
+      "nmDescritivo": "ACOUGUES/PEIXARIAS/AVICOLAS - PERMITIDO ABATE DE PEQUENOS ANIMAIS",
+      "nrCodigo": "A4.10"
+    }
+  ],
+  "374": [
+    {
+      "nmDescritivo": "MASSAS ALIMENTÍCIAS (INCLUSIVE ROTISSERIE) - FÁBRICAS COM SECAGEM ARTIFICIAL",
+      "nrCodigo": "M4.20"
+    }
+  ],
+  "375": [
+    {
+      "nmDescritivo": "MASSAS ALIMENTÍCIAS (INCLUSIVE ROTISSERIE) - FÁBRICAS COM SECAGEM ARTIFICIAL",
+      "nrCodigo": "M4.20"
+    }
+  ],
+  "377": [
+    {
+      "nmDescritivo": "MASSAS ALIMENTÍCIAS (INCLUSIVE ROTISSERIE) - FÁBRICAS COM SECAGEM ARTIFICIAL",
+      "nrCodigo": "M4.20"
+    }
+  ],
+  "378": [
+    {
+      "nmDescritivo": "MASSAS ALIMENTÍCIAS (INCLUSIVE ROTISSERIE) - FÁBRICAS COM SECAGEM ARTIFICIAL",
+      "nrCodigo": "M4.20"
+    }
+  ],
+  "379": [
+    {
+      "nmDescritivo": "GELO - FABRICAS",
+      "nrCodigo": "G2.10"
+    }
+  ],
+  "38": [
+    {
+      "nmDescritivo": "CRIACAO DE ANIMAIS VIVOS EM GERAL",
+      "nrCodigo": "C60.10"
+    }
+  ],
+  "381": [
+    {
+      "nmDescritivo": "CONSERVAS ALIMENTICIAS DE ORIGEM VEGETAL - FABRICAS - COM PROCESSO A QUENTE",
+      "nrCodigo": "C15.20"
+    }
+  ],
+  "382": [
+    {
+      "nmDescritivo": "CONSERVAS ALIMENTICIAS DE ORIGEM VEGETAL - FABRICAS - COM PROCESSO A QUENTE",
+      "nrCodigo": "C15.20"
+    }
+  ],
+  "383": [
+    {
+      "nmDescritivo": "VINHOS COM DESTILARIA - FABRICAS",
+      "nrCodigo": "V5.20"
+    }
+  ],
+  "384": [
+    {
+      "nmDescritivo": "VINHOS COM DESTILARIA - FABRICAS",
+      "nrCodigo": "V5.20"
+    }
+  ],
+  "385": [],
+  "386": [
+    {
+      "nmDescritivo": "AGUA MINERAL/SUCO/REFRIGERANTE - PREPARACAO/ENGARRAFAMENTO",
+      "nrCodigo": "A10.20"
+    },
+    {
+      "nmDescritivo": "BEBIDAS ALCOOLICAS - FABRICA",
+      "nrCodigo": "B4.30"
+    }
+  ],
+  "387": [
+    {
+      "nmDescritivo": "BEBIDAS ALCOOLICAS - FABRICA",
+      "nrCodigo": "B4.30"
+    }
+  ],
+  "388": [
+    {
+      "nmDescritivo": "CERVEJA - FABRICAS",
+      "nrCodigo": "C8.10"
+    }
+  ],
+  "389": [
+    {
+      "nmDescritivo": "CERVEJA - FABRICAS",
+      "nrCodigo": "C8.10"
+    }
+  ],
+  "39": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE DE MADEIRAS E ARVORES",
+      "nrCodigo": "P14.30"
+    }
+  ],
+  "390": [
+    {
+      "nmDescritivo": "AGUA MINERAL/SUCO/REFRIGERANTE - PREPARACAO/ENGARRAFAMENTO",
+      "nrCodigo": "A10.20"
+    }
+  ],
+  "391": [
+    {
+      "nmDescritivo": "AGUA MINERAL/SUCO/REFRIGERANTE - PREPARACAO/ENGARRAFAMENTO",
+      "nrCodigo": "A10.20"
+    },
+    {
+      "nmDescritivo": "AGUA MINERAL/SUCO/REFRIGERANTE SEM VENDAS - DEPOSITOS",
+      "nrCodigo": "A10.30"
+    }
+  ],
+  "393": [
+    {
+      "nmDescritivo": "FUMOS/CHARUTOS/CIGARROS - FABRICAS",
+      "nrCodigo": "F11.20"
+    }
+  ],
+  "394": [
+    {
+      "nmDescritivo": "FUMOS/CHARUTOS/CIGARROS - FABRICAS",
+      "nrCodigo": "F11.20"
+    }
+  ],
+  "395": [
+    {
+      "nmDescritivo": "FUMOS/CHARUTOS/CIGARROS - FABRICAS",
+      "nrCodigo": "F11.20"
+    }
+  ],
+  "396": [
+    {
+      "nmDescritivo": "FUMOS/CHARUTOS/CIGARROS - FABRICAS",
+      "nrCodigo": "F11.20"
+    }
+  ],
+  "397": [
+    {
+      "nmDescritivo": "GRÁFICAS/TIPOGRAFIAS - SEM INFLAMAVEIS",
+      "nrCodigo": "G3.10"
+    }
+  ],
+  "399": [
+    {
+      "nmDescritivo": "GRÁFICAS/TIPOGRAFIAS - SEM INFLAMAVEIS",
+      "nrCodigo": "G3.10"
+    }
+  ],
+  "4": [
+    {
+      "nmDescritivo": "MINERAÇAO A FLOR DA TERRA - SEM USO DE EXPLOSIVO",
+      "nrCodigo": "M9.10"
+    }
+  ],
+  "40": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE DE MADEIRAS E ARVORES",
+      "nrCodigo": "P14.30"
+    }
+  ],
+  "400": [
+    {
+      "nmDescritivo": "GRÁFICAS/TIPOGRAFIAS - SEM INFLAMAVEIS",
+      "nrCodigo": "G3.10"
+    }
+  ],
+  "401": [
+    {
+      "nmDescritivo": "GRÁFICAS/TIPOGRAFIAS - COM ROTOGRAVURA",
+      "nrCodigo": "G3.20"
+    }
+  ],
+  "402": [
+    {
+      "nmDescritivo": "GRÁFICAS/TIPOGRAFIAS - SEM INFLAMAVEIS",
+      "nrCodigo": "G3.10"
+    }
+  ],
+  "403": [
+    {
+      "nmDescritivo": "GRÁFICAS/TIPOGRAFIAS - COM ROTOGRAVURA",
+      "nrCodigo": "G3.20"
+    }
+  ],
+  "405": [
+    {
+      "nmDescritivo": "GRÁFICAS/TIPOGRAFIAS - COM ROTOGRAVURA",
+      "nrCodigo": "G3.20"
+    }
+  ],
+  "406": [
+    {
+      "nmDescritivo": "GRÁFICAS/TIPOGRAFIAS - SEM INFLAMAVEIS",
+      "nrCodigo": "G3.10"
+    }
+  ],
+  "407": [
+    {
+      "nmDescritivo": "GRÁFICAS/TIPOGRAFIAS - SEM INFLAMAVEIS",
+      "nrCodigo": "G3.10"
+    }
+  ],
+  "408": [
+    {
+      "nmDescritivo": "GRÁFICAS/TIPOGRAFIAS - COM ROTOGRAVURA",
+      "nrCodigo": "G3.20"
+    }
+  ],
+  "409": [],
+  "41": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE DE MADEIRAS E ARVORES",
+      "nrCodigo": "P14.30"
+    }
+  ],
+  "410": [
+    {
+      "nmDescritivo": "CIRURGICOS/HOSPITALARES/DENTARIOS - FABRICAS",
+      "nrCodigo": "C11.10"
+    }
+  ],
+  "411": [
+    {
+      "nmDescritivo": "CIRURGICOS/HOSPITALARES/DENTARIOS - FABRICAS",
+      "nrCodigo": "C11.10"
+    }
+  ],
+  "412": [
+    {
+      "nmDescritivo": "CIRURGICOS/HOSPITALARES/DENTARIOS - FABRICAS",
+      "nrCodigo": "C11.10"
+    }
+  ],
+  "413": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "414": [],
+  "415": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "416": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    },
+    {
+      "nmDescritivo": "ELETRICIDADE COM PINTURA/INFLAMAVEL - FABRICAS",
+      "nrCodigo": "E1.20"
+    }
+  ],
+  "417": [
+    {
+      "nmDescritivo": "PEDRAS E METAIS PRECIOSOS E SEMI PRECIOSOS - OFICINAS DE LAPIDAÇAO/CORTES",
+      "nrCodigo": "P4.10"
+    }
+  ],
+  "418": [
+    {
+      "nmDescritivo": "JOIAS - LOJAS/OFICINAS",
+      "nrCodigo": "J1.20"
+    }
+  ],
+  "419": [
+    {
+      "nmDescritivo": "BIJOUTERIAS - FABRICAS",
+      "nrCodigo": "B5.10"
+    }
+  ],
+  "42": [
+    {
+      "nmDescritivo": "EXTRACAO DE MINERIOS EM GERAL",
+      "nrCodigo": "E20.10"
+    }
+  ],
+  "420": [
+    {
+      "nmDescritivo": "JOIAS - LOJAS/OFICINAS",
+      "nrCodigo": "J1.20"
+    }
+  ],
+  "421": [],
+  "422": [],
+  "423": [
+    {
+      "nmDescritivo": "INSTRUMENTOS MUSICAIS - FABRICAS",
+      "nrCodigo": "I2.20"
+    }
+  ],
+  "424": [
+    {
+      "nmDescritivo": "MADEIRA - MARCENARIA",
+      "nrCodigo": "M1.30"
+    }
+  ],
+  "425": [
+    {
+      "nmDescritivo": "BRINQUEDOS - FABRICAS",
+      "nrCodigo": "B9.10"
+    }
+  ],
+  "426": [
+    {
+      "nmDescritivo": "BRINQUEDOS - FABRICAS",
+      "nrCodigo": "B9.10"
+    }
+  ],
+  "427": [
+    {
+      "nmDescritivo": "PLASTICOS COM PROCESSOS DE POLIMERIZAÇAO - FABRICAS",
+      "nrCodigo": "P6.20"
+    }
+  ],
+  "428": [
+    {
+      "nmDescritivo": "MADEIRA - MARCENARIA",
+      "nrCodigo": "M1.30"
+    }
+  ],
+  "429": [
+    {
+      "nmDescritivo": "MADEIRA - MARCENARIA",
+      "nrCodigo": "M1.30"
+    }
+  ],
+  "43": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "430": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS COM FIBRAS NATURAIS - FIACAO/TECELAGEM",
+      "nrCodigo": "T2.20"
+    }
+  ],
+  "431": [
+    {
+      "nmDescritivo": "PLASTICOS COM PROCESSOS DE POLIMERIZAÇAO - FABRICAS",
+      "nrCodigo": "P6.20"
+    }
+  ],
+  "432": [
+    {
+      "nmDescritivo": "PAPEL/PAPELAO - FABRICAS",
+      "nrCodigo": "P2.40"
+    }
+  ],
+  "433": [
+    {
+      "nmDescritivo": "PAPEL/PAPELAO - FABRICAS",
+      "nrCodigo": "P2.40"
+    }
+  ],
+  "434": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    }
+  ],
+  "435": [
+    {
+      "nmDescritivo": "FUMOS/CHARUTOS/CIGARROS - FABRICAS",
+      "nrCodigo": "F11.20"
+    }
+  ],
+  "436": [
+    {
+      "nmDescritivo": "PLASTICOS COM PROCESSOS DE POLIMERIZAÇAO - FABRICAS",
+      "nrCodigo": "P6.20"
+    }
+  ],
+  "437": [
+    {
+      "nmDescritivo": "PERFUMARIAS/COSMÉTICOS - FABRICAS - SEM USO DE INFLAMAVEIS",
+      "nrCodigo": "P5.10"
+    }
+  ],
+  "438": [
+    {
+      "nmDescritivo": "USINA NÃO ESPECIFICADA",
+      "nrCodigo": "U10.20"
+    }
+  ],
+  "439": [
+    {
+      "nmDescritivo": "CALÇADOS - FÁBRICAS E OFICINAS",
+      "nrCodigo": "C3.10"
+    }
+  ],
+  "44": [
+    {
+      "nmDescritivo": "CRIACAO DE PEIXES, ANFIBIOS E FRUTOS DO MAR EM GERAL",
+      "nrCodigo": "C60.20"
+    }
+  ],
+  "440": [
+    {
+      "nmDescritivo": "CALÇADOS - FÁBRICAS E OFICINAS",
+      "nrCodigo": "C3.10"
+    }
+  ],
+  "441": [
+    {
+      "nmDescritivo": "CALÇADOS - FÁBRICAS E OFICINAS",
+      "nrCodigo": "C3.10"
+    }
+  ],
+  "442": [
+    {
+      "nmDescritivo": "CALÇADOS - FÁBRICAS E OFICINAS",
+      "nrCodigo": "C3.10"
+    }
+  ],
+  "443": [
+    {
+      "nmDescritivo": "CALÇADOS - FÁBRICAS E OFICINAS",
+      "nrCodigo": "C3.10"
+    }
+  ],
+  "444": [
+    {
+      "nmDescritivo": "CALÇADOS - FÁBRICAS E OFICINAS",
+      "nrCodigo": "C3.10"
+    }
+  ],
+  "445": [
+    {
+      "nmDescritivo": "CALÇADOS - FÁBRICAS E OFICINAS",
+      "nrCodigo": "C3.10"
+    }
+  ],
+  "446": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "447": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "448": [
+    {
+      "nmDescritivo": "CONSTRUÇÃO DE TÚNEIS E ESCAVAÇOES EM GERAIS",
+      "nrCodigo": "C30.10"
+    }
+  ],
+  "449": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "45": [
+    {
+      "nmDescritivo": "CRIACAO DE PEIXES, ANFIBIOS E FRUTOS DO MAR EM GERAL",
+      "nrCodigo": "C60.20"
+    }
+  ],
+  "450": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "451": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "452": [
+    {
+      "nmDescritivo": "CONSTRUÇÃO DE TÚNEIS E ESCAVAÇOES EM GERAIS",
+      "nrCodigo": "C30.10"
+    }
+  ],
+  "453": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "454": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "455": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "456": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "457": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "458": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "459": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "460": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "461": [
+    {
+      "nmDescritivo": "CONSTRUÇÃO DE TÚNEIS E ESCAVAÇOES EM GERAIS",
+      "nrCodigo": "C30.10"
+    }
+  ],
+  "462": [
+    {
+      "nmDescritivo": "CONSTRUÇÃO DE TÚNEIS E ESCAVAÇOES EM GERAIS",
+      "nrCodigo": "C30.10"
+    }
+  ],
+  "463": [
+    {
+      "nmDescritivo": "CONSTRUÇÃO DE TÚNEIS E ESCAVAÇOES EM GERAIS",
+      "nrCodigo": "C30.10"
+    }
+  ],
+  "465": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "466": [
+    {
+      "nmDescritivo": "ESTAÇOES TRATAMENTO DE AGUA/ESGOTO - ELEVATORIAS/RESERVATORIOS AO NIVEL DO SOLO",
+      "nrCodigo": "E10.10"
+    }
+  ],
+  "467": [
+    {
+      "nmDescritivo": "ESTAÇOES TRATAMENTO DE AGUA/ESGOTO - ELEVATORIAS/RESERVATORIOS AO NIVEL DO SOLO",
+      "nrCodigo": "E10.10"
+    }
+  ],
+  "468": [
+    {
+      "nmDescritivo": "QUITANDAS/SACOLÕES - LOJAS",
+      "nrCodigo": "Q1.10"
+    }
+  ],
+  "469": [
+    {
+      "nmDescritivo": "LATICÍNIOS/LEITE - LOJAS",
+      "nrCodigo": "L3.50"
+    }
+  ],
+  "47": [
+    {
+      "nmDescritivo": "CRIACAO DE PEIXES, ANFIBIOS E FRUTOS DO MAR EM GERAL",
+      "nrCodigo": "C60.20"
+    }
+  ],
+  "470": [
+    {
+      "nmDescritivo": "PADARIA",
+      "nrCodigo": "P1.10"
+    }
+  ],
+  "471": [
+    {
+      "nmDescritivo": "ACOUGUES/PEIXARIAS/AVICOLAS - PERMITIDO ABATE DE PEQUENOS ANIMAIS",
+      "nrCodigo": "A4.10"
+    }
+  ],
+  "472": [
+    {
+      "nmDescritivo": "ACOUGUES/PEIXARIAS/AVICOLAS - PERMITIDO ABATE DE PEQUENOS ANIMAIS",
+      "nrCodigo": "A4.10"
+    }
+  ],
+  "473": [
+    {
+      "nmDescritivo": "AGUA MINERAL/SUCO/REFRIGERANTE SEM VENDAS - DEPOSITOS",
+      "nrCodigo": "A10.30"
+    },
+    {
+      "nmDescritivo": "BEBIDAS ALCOOLICAS - LOJAS",
+      "nrCodigo": "B4.60"
+    }
+  ],
+  "474": [
+    {
+      "nmDescritivo": "FUMOS/CHARUTOS/CIGARROS - LOJAS",
+      "nrCodigo": "F11.40"
+    }
+  ],
+  "475": [
+    {
+      "nmDescritivo": "SUPERMERCADOS (SECOS E MOLHADOS) LOJAS CONVENCIONAIS",
+      "nrCodigo": "S5.30"
+    }
+  ],
+  "476": [
+    {
+      "nmDescritivo": "FARMACIAS/DROGARIAS LOJAS",
+      "nrCodigo": "F2.20"
+    }
+  ],
+  "477": [
+    {
+      "nmDescritivo": "PERFUMARIAS/COSMÉTICOS - LOJAS",
+      "nrCodigo": "P5.30"
+    }
+  ],
+  "478": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - LOJAS",
+      "nrCodigo": "P12.60"
+    }
+  ],
+  "479": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - LOJAS",
+      "nrCodigo": "P12.60"
+    }
+  ],
+  "48": [
+    {
+      "nmDescritivo": "CRIACAO DE PEIXES, ANFIBIOS E FRUTOS DO MAR EM GERAL",
+      "nrCodigo": "C60.20"
+    }
+  ],
+  "480": [
+    {
+      "nmDescritivo": "CIRÚRGICOS/HOSPITALARES/DENTÁRIOS (ARTIGOS) - LOJAS",
+      "nrCodigo": "C11.20"
+    }
+  ],
+  "481": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - LOJAS",
+      "nrCodigo": "P12.60"
+    }
+  ],
+  "482": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS (INCLUSIVE ARTIGOS DE CAMA/MESA/BANHO - LOJAS",
+      "nrCodigo": "T2.40"
+    }
+  ],
+  "483": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS (INCLUSIVE ARTIGOS DE CAMA/MESA/BANHO - LOJAS",
+      "nrCodigo": "T2.40"
+    }
+  ],
+  "484": [
+    {
+      "nmDescritivo": "ROUPAS - LOJAS",
+      "nrCodigo": "R4.20"
+    }
+  ],
+  "485": [
+    {
+      "nmDescritivo": "ROUPAS - LOJAS",
+      "nrCodigo": "R4.20"
+    }
+  ],
+  "486": [
+    {
+      "nmDescritivo": "CALÇADOS - LOJAS",
+      "nrCodigo": "C3.20"
+    }
+  ],
+  "487": [
+    {
+      "nmDescritivo": "ROUPAS - LOJAS",
+      "nrCodigo": "R4.20"
+    }
+  ],
+  "488": [
+    {
+      "nmDescritivo": "ARMARINHOS/AVIAMENTOS - LOJAS",
+      "nrCodigo": "A14.20"
+    }
+  ],
+  "489": [
+    {
+      "nmDescritivo": "MOVEIS LOJAS - COM COLCHOES",
+      "nrCodigo": "M13.40"
+    }
+  ],
+  "49": [
+    {
+      "nmDescritivo": "CRIACAO DE PEIXES, ANFIBIOS E FRUTOS DO MAR EM GERAL",
+      "nrCodigo": "C60.20"
+    }
+  ],
+  "490": [
+    {
+      "nmDescritivo": "COLCHÕES - LOJAS - SEM OFICINA",
+      "nrCodigo": "C13.20"
+    }
+  ],
+  "491": [
+    {
+      "nmDescritivo": "TAPETES/CARPETES/FORRAÇÕES/CORTINAS - LOJAS (PERMITINDO-SE OFICINAS)",
+      "nrCodigo": "T1.50"
+    }
+  ],
+  "492": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS (INCLUSIVE ARTIGOS DE CAMA/MESA/BANHO - LOJAS",
+      "nrCodigo": "T2.40"
+    }
+  ],
+  "493": [
+    {
+      "nmDescritivo": "FERRAGENS/FERRAMENTAS - LOJAS (PERMITIDO OFICINAS DE CONSERTOS)",
+      "nrCodigo": "F3.20"
+    }
+  ],
+  "494": [
+    {
+      "nmDescritivo": "FERRAGENS/FERRAMENTAS - LOJAS (PERMITIDO OFICINAS DE CONSERTOS)",
+      "nrCodigo": "F3.20"
+    }
+  ],
+  "495": [
+    {
+      "nmDescritivo": "VIDROS LOJAS (PERMITIDO OFICINAS DE VIDRACEIROS)",
+      "nrCodigo": "V2.50"
+    }
+  ],
+  "496": [
+    {
+      "nmDescritivo": "MADEIRA - LOJAS - ARTEFATOS",
+      "nrCodigo": "M1.50"
+    }
+  ],
+  "497": [
+    {
+      "nmDescritivo": "MATERIAIS PARA CONSTRUÇÃO - LOJAS - COM TRABALHOS DE SERRA",
+      "nrCodigo": "M6.20"
+    }
+  ],
+  "498": [
+    {
+      "nmDescritivo": "MATERIAIS PARA CONSTRUCAO LOJAS - SEM TRABALHOS DE SERRA",
+      "nrCodigo": "M6.10"
+    }
+  ],
+  "499": [
+    {
+      "nmDescritivo": "ELETRICIDADE - LOJAS (ARTIGOS) - COM OFICINAS DE CONSERTO",
+      "nrCodigo": "E1.40"
+    }
+  ],
+  "5": [
+    {
+      "nmDescritivo": "MINERAÇAO A FLOR DA TERRA - SEM USO DE EXPLOSIVO",
+      "nrCodigo": "M9.10"
+    }
+  ],
+  "50": [
+    {
+      "nmDescritivo": "CRIACAO DE PEIXES, ANFIBIOS E FRUTOS DO MAR EM GERAL",
+      "nrCodigo": "C60.20"
+    }
+  ],
+  "501": [
+    {
+      "nmDescritivo": "AUTOMÓVEIS - LOJAS (COMPONENTES/ACESSORIOS)",
+      "nrCodigo": "A19.90"
+    }
+  ],
+  "505": [
+    {
+      "nmDescritivo": "PLASTICOS LOJAS (DEMAIS ARTIGOS)",
+      "nrCodigo": "P6.40"
+    }
+  ],
+  "506": [
+    {
+      "nmDescritivo": "METAL - LOJAS  - ARTIGOS SEM OFICINA",
+      "nrCodigo": "M8.80"
+    }
+  ],
+  "507": [
+    {
+      "nmDescritivo": "METAL - LOJAS  - ARTIGOS SEM OFICINA",
+      "nrCodigo": "M8.80"
+    }
+  ],
+  "508": [
+    {
+      "nmDescritivo": "ELETRICIDADE - LOJAS (ARTIGOS) - COM OFICINAS DE CONSERTO",
+      "nrCodigo": "E1.40"
+    }
+  ],
+  "509": [
+    {
+      "nmDescritivo": "METAL - LOJAS  - ARTIGOS SEM OFICINA",
+      "nrCodigo": "M8.80"
+    }
+  ],
+  "51": [
+    {
+      "nmDescritivo": "CRIACAO DE PEIXES, ANFIBIOS E FRUTOS DO MAR EM GERAL",
+      "nrCodigo": "C60.20"
+    }
+  ],
+  "510": [
+    {
+      "nmDescritivo": "METAL - LOJAS  - ARTIGOS SEM OFICINA",
+      "nrCodigo": "M8.80"
+    }
+  ],
+  "511": [
+    {
+      "nmDescritivo": "CIRÚRGICOS/HOSPITALARES/DENTÁRIOS (ARTIGOS) - LOJAS",
+      "nrCodigo": "C11.20"
+    }
+  ],
+  "512": [
+    {
+      "nmDescritivo": "POSTOS DE GASOLINA/SERVIÇOS - SEM E COM LOJAS DE CONVENIENCIA",
+      "nrCodigo": "P9.20"
+    }
+  ],
+  "513": [
+    {
+      "nmDescritivo": "POSTOS DE GASOLINA/SERVIÇOS - SEM E COM LOJAS DE CONVENIENCIA",
+      "nrCodigo": "P9.20"
+    }
+  ],
+  "514": [
+    {
+      "nmDescritivo": "POSTOS DE GASOLINA/SERVIÇOS - SEM E COM LOJAS DE CONVENIENCIA",
+      "nrCodigo": "P9.20"
+    }
+  ],
+  "515": [
+    {
+      "nmDescritivo": "POSTOS DE GASOLINA/SERVIÇOS - SEM E COM LOJAS DE CONVENIENCIA",
+      "nrCodigo": "P9.20"
+    }
+  ],
+  "516": [
+    {
+      "nmDescritivo": "PAPELARIA/ARTIGOS PARA FESTAS - LOJAS",
+      "nrCodigo": "P3.10"
+    }
+  ],
+  "518": [
+    {
+      "nmDescritivo": "INSTRUMENTOS MUSICAIS - LOJAS (PERMITIDO OFICINAS)",
+      "nrCodigo": "I2.30"
+    }
+  ],
+  "52": [
+    {
+      "nmDescritivo": "CRIACAO DE PEIXES, ANFIBIOS E FRUTOS DO MAR EM GERAL",
+      "nrCodigo": "C60.20"
+    }
+  ],
+  "520": [
+    {
+      "nmDescritivo": "ÓTICA (ARTIGOS) - SEM VENDA DE JOIAS - LOJAS (PERMITIDO OFICINAS)",
+      "nrCodigo": "O3.10"
+    }
+  ],
+  "521": [
+    {
+      "nmDescritivo": "FOTOGRAFIAS LOJAS - ARTIGOS FOTOGRAFICOS",
+      "nrCodigo": "F8.20"
+    }
+  ],
+  "522": [
+    {
+      "nmDescritivo": "BRINQUEDOS COM OFICINA DE CONSERTO - DEPOSITOS OU LOJAS",
+      "nrCodigo": "B9.30"
+    }
+  ],
+  "523": [
+    {
+      "nmDescritivo": "ARTIGOS ESPORTIVOS - LOJAS",
+      "nrCodigo": "A16.20"
+    }
+  ],
+  "524": [
+    {
+      "nmDescritivo": "ARTIGOS RELIGIOSOS - LOJAS",
+      "nrCodigo": "A18.10"
+    }
+  ],
+  "525": [
+    {
+      "nmDescritivo": "COUROS/PELES - LOJAS - ARTIGOS",
+      "nrCodigo": "C22.50"
+    }
+  ],
+  "526": [
+    {
+      "nmDescritivo": "BORRACHA (ARTIGOS) - LOJAS (EXCETO PNEUS)",
+      "nrCodigo": "B8.50"
+    }
+  ],
+  "527": [
+    {
+      "nmDescritivo": "FLORES ARTIFICIAIS – LOJAS",
+      "nrCodigo": "F6.20"
+    },
+    {
+      "nmDescritivo": "FLORES NATURAIS LOJAS",
+      "nrCodigo": "F5.20"
+    }
+  ],
+  "528": [
+    {
+      "nmDescritivo": "PET SHOP PERMITIDO HOSPEDAGEM DE ANIMAL",
+      "nrCodigo": "P8.10"
+    }
+  ],
+  "529": [
+    {
+      "nmDescritivo": "LOTÉRICAS - AGENCIAS DE LOTERIAS",
+      "nrCodigo": "L8.10"
+    }
+  ],
+  "53": [
+    {
+      "nmDescritivo": "MARMORARIA - OFICINAS DE LAPIDACAO/CORTES",
+      "nrCodigo": "M2.10"
+    }
+  ],
+  "530": [
+    {
+      "nmDescritivo": "MOVEIS LOJAS - COM COLCHOES",
+      "nrCodigo": "M13.40"
+    }
+  ],
+  "531": [
+    {
+      "nmDescritivo": "LOUÇAS/PORCELANAS/CRISTAIS (UTILIDADES DOMÉSTICAS) - LOJAS",
+      "nrCodigo": "L9.30"
+    }
+  ],
+  "532": [
+    {
+      "nmDescritivo": "LOUÇAS/PORCELANAS/CRISTAIS (UTILIDADES DOMÉSTICAS) - LOJAS",
+      "nrCodigo": "L9.30"
+    }
+  ],
+  "533": [
+    {
+      "nmDescritivo": "FOGOS ARTIFICIOS",
+      "nrCodigo": "F16.0"
+    }
+  ],
+  "534": [
+    {
+      "nmDescritivo": "LOUÇAS/PORCELANAS/CRISTAIS (UTILIDADES DOMÉSTICAS) - LOJAS",
+      "nrCodigo": "L9.30"
+    }
+  ],
+  "535": [
+    {
+      "nmDescritivo": "PLASTICOS LOJAS (DEMAIS ARTIGOS)",
+      "nrCodigo": "P6.40"
+    }
+  ],
+  "536": [
+    {
+      "nmDescritivo": "PEDRAS E METAIS PRECIOSOS E SEMI PRECIOSOS - OFICINAS DE LAPIDAÇAO/CORTES",
+      "nrCodigo": "P4.10"
+    }
+  ],
+  "537": [
+    {
+      "nmDescritivo": "PEDRAS E METAIS PRECIOSOS E SEMI PRECIOSOS - OFICINAS DE LAPIDAÇAO/CORTES",
+      "nrCodigo": "P4.10"
+    }
+  ],
+  "538": [
+    {
+      "nmDescritivo": "CARVAO",
+      "nrCodigo": "C26.0"
+    }
+  ],
+  "539": [
+    {
+      "nmDescritivo": "RECICLAGEM DE QUALQUER TIPO E DE QUALQUER PROCESSO",
+      "nrCodigo": "R5.10"
+    }
+  ],
+  "54": [
+    {
+      "nmDescritivo": "MINERAÇAO A FLOR DA TERRA - SEM USO DE EXPLOSIVO",
+      "nrCodigo": "M9.10"
+    }
+  ],
+  "541": [
+    {
+      "nmDescritivo": "MADEIRA - LOJAS - ARTEFATOS",
+      "nrCodigo": "M1.50"
+    }
+  ],
+  "542": [
+    {
+      "nmDescritivo": "PET SHOP PERMITIDO HOSPEDAGEM DE ANIMAL",
+      "nrCodigo": "P8.10"
+    }
+  ],
+  "543": [
+    {
+      "nmDescritivo": "PRODUTOS VETERINARIOS/DEFENSIVOS AGRIC. - EXCETO EM CEASA LOJAS",
+      "nrCodigo": "P13.10"
+    }
+  ],
+  "544": [
+    {
+      "nmDescritivo": "QUITANDAS/SACOLÕES - LOJAS",
+      "nrCodigo": "Q1.10"
+    }
+  ],
+  "545": [
+    {
+      "nmDescritivo": "LATICÍNIOS/LEITE - LOJAS",
+      "nrCodigo": "L3.50"
+    }
+  ],
+  "546": [
+    {
+      "nmDescritivo": "BALAS/BOMBONS/CARAMELOS/CHOCOLATES/DOCES LOJAS",
+      "nrCodigo": "B1.40"
+    }
+  ],
+  "547": [
+    {
+      "nmDescritivo": "ACOUGUES/PEIXARIAS/AVICOLAS - PERMITIDO ABATE DE PEQUENOS ANIMAIS",
+      "nrCodigo": "A4.10"
+    }
+  ],
+  "548": [
+    {
+      "nmDescritivo": "ACOUGUES/PEIXARIAS/AVICOLAS - PERMITIDO ABATE DE PEQUENOS ANIMAIS",
+      "nrCodigo": "A4.10"
+    }
+  ],
+  "549": [
+    {
+      "nmDescritivo": "AGUA MINERAL/SUCO/REFRIGERANTE SEM VENDAS - DEPOSITOS",
+      "nrCodigo": "A10.30"
+    },
+    {
+      "nmDescritivo": "BEBIDAS ALCOOLICAS - LOJAS",
+      "nrCodigo": "B4.60"
+    }
+  ],
+  "55": [
+    {
+      "nmDescritivo": "MARMORARIA - OFICINAS DE LAPIDACAO/CORTES",
+      "nrCodigo": "M2.10"
+    }
+  ],
+  "550": [
+    {
+      "nmDescritivo": "CEREAIS E GRÃOS - DEPÓSITO COM SECADORES",
+      "nrCodigo": "C7.50"
+    }
+  ],
+  "551": [
+    {
+      "nmDescritivo": "SUPERMERCADOS (SECOS E MOLHADOS) LOJAS CONVENCIONAIS",
+      "nrCodigo": "S5.30"
+    }
+  ],
+  "552": [
+    {
+      "nmDescritivo": "SUPERMERCADOS (SECOS E MOLHADOS) LOJAS CONVENCIONAIS",
+      "nrCodigo": "S5.30"
+    }
+  ],
+  "553": [
+    {
+      "nmDescritivo": "FARMACIAS/DROGARIAS LOJAS",
+      "nrCodigo": "F2.20"
+    }
+  ],
+  "554": [
+    {
+      "nmDescritivo": "PERFUMARIAS/COSMÉTICOS - LOJAS",
+      "nrCodigo": "P5.30"
+    }
+  ],
+  "555": [
+    {
+      "nmDescritivo": "PRODUTOS VETERINARIOS/DEFENSIVOS AGRIC. - EXCETO EM CEASA LOJAS",
+      "nrCodigo": "P13.10"
+    }
+  ],
+  "556": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - LOJAS",
+      "nrCodigo": "P12.60"
+    }
+  ],
+  "557": [
+    {
+      "nmDescritivo": "CIRÚRGICOS/HOSPITALARES/DENTÁRIOS (ARTIGOS) - LOJAS",
+      "nrCodigo": "C11.20"
+    }
+  ],
+  "558": [
+    {
+      "nmDescritivo": "PRODUTOS VETERINARIOS/DEFENSIVOS AGRIC. - EXCETO EM CEASA LOJAS",
+      "nrCodigo": "P13.10"
+    }
+  ],
+  "559": [
+    {
+      "nmDescritivo": "PRODUTOS VETERINARIOS/DEFENSIVOS AGRIC. - EXCETO EM CEASA LOJAS",
+      "nrCodigo": "P13.10"
+    }
+  ],
+  "560": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS (INCLUSIVE ARTIGOS DE CAMA/MESA/BANHO - LOJAS",
+      "nrCodigo": "T2.40"
+    }
+  ],
+  "561": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS (INCLUSIVE ARTIGOS DE CAMA/MESA/BANHO - LOJAS",
+      "nrCodigo": "T2.40"
+    }
+  ],
+  "562": [
+    {
+      "nmDescritivo": "ROUPAS - LOJAS",
+      "nrCodigo": "R4.20"
+    }
+  ],
+  "563": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS (INCLUSIVE ARTIGOS DE CAMA/MESA/BANHO - LOJAS",
+      "nrCodigo": "T2.40"
+    }
+  ],
+  "564": [
+    {
+      "nmDescritivo": "CALÇADOS - LOJAS",
+      "nrCodigo": "C3.20"
+    }
+  ],
+  "565": [
+    {
+      "nmDescritivo": "ROUPAS - LOJAS",
+      "nrCodigo": "R4.20"
+    }
+  ],
+  "566": [
+    {
+      "nmDescritivo": "ARMARINHOS/AVIAMENTOS - LOJAS",
+      "nrCodigo": "A14.20"
+    }
+  ],
+  "567": [
+    {
+      "nmDescritivo": "MOVEIS LOJAS - COM COLCHOES",
+      "nrCodigo": "M13.40"
+    }
+  ],
+  "568": [
+    {
+      "nmDescritivo": "COLCHÕES - LOJAS - SEM OFICINA",
+      "nrCodigo": "C13.20"
+    }
+  ],
+  "569": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS (INCLUSIVE ARTIGOS DE CAMA/MESA/BANHO - LOJAS",
+      "nrCodigo": "T2.40"
+    }
+  ],
+  "57": [
+    {
+      "nmDescritivo": "CIMENTO/GESSO/FIBROCIMENTO - FABRICAS",
+      "nrCodigo": "C10.10"
+    }
+  ],
+  "570": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS (INCLUSIVE ARTIGOS DE CAMA/MESA/BANHO - LOJAS",
+      "nrCodigo": "T2.40"
+    }
+  ],
+  "571": [
+    {
+      "nmDescritivo": "FERRAGENS/FERRAMENTAS - LOJAS (PERMITIDO OFICINAS DE CONSERTOS)",
+      "nrCodigo": "F3.20"
+    }
+  ],
+  "572": [
+    {
+      "nmDescritivo": "METAL - LOJAS  - ARTIGOS SEM OFICINA",
+      "nrCodigo": "M8.80"
+    }
+  ],
+  "573": [
+    {
+      "nmDescritivo": "VIDROS LOJAS (PERMITIDO OFICINAS DE VIDRACEIROS)",
+      "nrCodigo": "V2.50"
+    }
+  ],
+  "574": [
+    {
+      "nmDescritivo": "MADEIRA - LOJAS - ARTEFATOS",
+      "nrCodigo": "M1.50"
+    }
+  ],
+  "575": [
+    {
+      "nmDescritivo": "MATERIAIS PARA CONSTRUÇÃO - LOJAS - COM TRABALHOS DE SERRA",
+      "nrCodigo": "M6.20"
+    }
+  ],
+  "576": [
+    {
+      "nmDescritivo": "TINTAS/VERNIZES - LOJAS (PERMITIDO SELF-COLOR)",
+      "nrCodigo": "T4.60"
+    }
+  ],
+  "579": [
+    {
+      "nmDescritivo": "AUTOMÓVEIS - LOJAS (COMPONENTES/ACESSORIOS)",
+      "nrCodigo": "A19.90"
+    }
+  ],
+  "58": [
+    {
+      "nmDescritivo": "CIMENTO/GESSO/FIBROCIMENTO - FABRICAS",
+      "nrCodigo": "C10.10"
+    }
+  ],
+  "580": [
+    {
+      "nmDescritivo": "MOTOS/MOTOCICLETAS/BICICLETAS - LOJAS (COMPONENTES/ACESSORIOS)",
+      "nrCodigo": "M11.40"
+    }
+  ],
+  "581": [
+    {
+      "nmDescritivo": "SUPERMERCADOS (SECOS E MOLHADOS) LOJAS CONVENCIONAIS",
+      "nrCodigo": "S5.30"
+    }
+  ],
+  "582": [
+    {
+      "nmDescritivo": "ELETRICIDADE - LOJAS (ARTIGOS) - COM OFICINAS DE CONSERTO",
+      "nrCodigo": "E1.40"
+    }
+  ],
+  "583": [
+    {
+      "nmDescritivo": "ELETRICIDADE - LOJAS (ARTIGOS) - COM OFICINAS DE CONSERTO",
+      "nrCodigo": "E1.40"
+    }
+  ],
+  "584": [
+    {
+      "nmDescritivo": "ELETRICIDADE - LOJAS (ARTIGOS) - COM OFICINAS DE CONSERTO",
+      "nrCodigo": "E1.40"
+    }
+  ],
+  "585": [
+    {
+      "nmDescritivo": "ELETRICIDADE - LOJAS (ARTIGOS) - COM OFICINAS DE CONSERTO",
+      "nrCodigo": "E1.40"
+    }
+  ],
+  "586": [
+    {
+      "nmDescritivo": "ELETRICIDADE - LOJAS (ARTIGOS) - COM OFICINAS DE CONSERTO",
+      "nrCodigo": "E1.40"
+    }
+  ],
+  "587": [
+    {
+      "nmDescritivo": "CIRÚRGICOS/HOSPITALARES/DENTÁRIOS (ARTIGOS) - LOJAS",
+      "nrCodigo": "C11.20"
+    }
+  ],
+  "588": [
+    {
+      "nmDescritivo": "ELETRICIDADE - LOJAS (ARTIGOS) - COM OFICINAS DE CONSERTO",
+      "nrCodigo": "E1.40"
+    }
+  ],
+  "589": [
+    {
+      "nmDescritivo": "CARVAO",
+      "nrCodigo": "C26.0"
+    }
+  ],
+  "59": [
+    {
+      "nmDescritivo": "LOUÇAS/PORCELANAS/CRISTAIS (UTILIDADES DOMÉSTICAS) - FABRICAS",
+      "nrCodigo": "L9.10"
+    }
+  ],
+  "590": [
+    {
+      "nmDescritivo": "POSTOS DE GASOLINA/SERVIÇOS - SEM E COM LOJAS DE CONVENIENCIA",
+      "nrCodigo": "P9.20"
+    }
+  ],
+  "591": [
+    {
+      "nmDescritivo": "POSTOS DE GASOLINA/SERVIÇOS - SEM E COM LOJAS DE CONVENIENCIA",
+      "nrCodigo": "P9.20"
+    }
+  ],
+  "592": [
+    {
+      "nmDescritivo": "PAPELARIA/ARTIGOS PARA FESTAS - LOJAS",
+      "nrCodigo": "P3.10"
+    }
+  ],
+  "593": [
+    {
+      "nmDescritivo": "PAPELARIA/ARTIGOS PARA FESTAS - LOJAS",
+      "nrCodigo": "P3.10"
+    }
+  ],
+  "594": [
+    {
+      "nmDescritivo": "INSTRUMENTOS MUSICAIS - LOJAS (PERMITIDO OFICINAS)",
+      "nrCodigo": "I2.30"
+    }
+  ],
+  "595": [
+    {
+      "nmDescritivo": "PEDRAS E METAIS PRECIOSOS E SEMI PRECIOSOS - OFICINAS DE LAPIDAÇAO/CORTES",
+      "nrCodigo": "P4.20"
+    }
+  ],
+  "596": [
+    {
+      "nmDescritivo": "ÓTICA (ARTIGOS) - SEM VENDA DE JOIAS - LOJAS (PERMITIDO OFICINAS)",
+      "nrCodigo": "O3.10"
+    }
+  ],
+  "597": [
+    {
+      "nmDescritivo": "FOTOGRAFIAS LOJAS - ARTIGOS FOTOGRAFICOS",
+      "nrCodigo": "F8.20"
+    }
+  ],
+  "598": [
+    {
+      "nmDescritivo": "BRINQUEDOS COM OFICINA DE CONSERTO - DEPOSITOS OU LOJAS",
+      "nrCodigo": "B9.30"
+    }
+  ],
+  "599": [
+    {
+      "nmDescritivo": "ARTIGOS ESPORTIVOS - LOJAS",
+      "nrCodigo": "A16.20"
+    }
+  ],
+  "6": [
+    {
+      "nmDescritivo": "MARMORARIA - OFICINAS DE LAPIDACAO/CORTES",
+      "nrCodigo": "M2.10"
+    }
+  ],
+  "60": [
+    {
+      "nmDescritivo": "LOUÇAS/PORCELANAS/CRISTAIS (UTILIDADES DOMÉSTICAS) - FABRICAS",
+      "nrCodigo": "L9.10"
+    }
+  ],
+  "600": [
+    {
+      "nmDescritivo": "ARTIGOS RELIGIOSOS - LOJAS",
+      "nrCodigo": "A18.10"
+    }
+  ],
+  "601": [
+    {
+      "nmDescritivo": "COUROS/PELES - LOJAS - ARTIGOS",
+      "nrCodigo": "C22.50"
+    }
+  ],
+  "602": [
+    {
+      "nmDescritivo": "BORRACHA (ARTIGOS) - LOJAS (EXCETO PNEUS)",
+      "nrCodigo": "B8.50"
+    }
+  ],
+  "603": [
+    {
+      "nmDescritivo": "FLORES NATURAIS LOJAS",
+      "nrCodigo": "F5.20"
+    }
+  ],
+  "604": [
+    {
+      "nmDescritivo": "PET SHOP PERMITIDO HOSPEDAGEM DE ANIMAL",
+      "nrCodigo": "P8.10"
+    }
+  ],
+  "605": [
+    {
+      "nmDescritivo": "FUMOS/CHARUTOS/CIGARROS - LOJAS",
+      "nrCodigo": "F11.40"
+    }
+  ],
+  "606": [
+    {
+      "nmDescritivo": "SUPERMERCADOS (SECOS E MOLHADOS) - DEPOSITOS SEM VENDAS - DISTRIBUIDORAS",
+      "nrCodigo": "S5.10"
+    }
+  ],
+  "607": [
+    {
+      "nmDescritivo": "SUPERMERCADOS (SECOS E MOLHADOS) LOJAS CONVENCIONAIS",
+      "nrCodigo": "S5.30"
+    }
+  ],
+  "61": [
+    {
+      "nmDescritivo": "LOUÇAS/PORCELANAS/CRISTAIS (UTILIDADES DOMÉSTICAS) - FABRICAS",
+      "nrCodigo": "L9.10"
+    }
+  ],
+  "610": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "611": [
+    {
+      "nmDescritivo": "TRANSPORTADORAS/ARMAZENS GERAIS SEM SUBSTANCIAS INFLAMAVEIS/TOXICAS/CORROSIVAS",
+      "nrCodigo": "T6.10"
+    }
+  ],
+  "612": [
+    {
+      "nmDescritivo": "TRANSPORTADORAS/ARMAZENS GERAIS COM SUBSTANCIAS INFLAMAVEIS/TOXICAS/CORROSIVAS",
+      "nrCodigo": "T6.20"
+    }
+  ],
+  "614": [
+    {
+      "nmDescritivo": "TRANSPORTADORAS, TRANSP MARITIMOS, FERROVIARIOS, FLUVIAIS, HIDROVIARIAS, AEREOS, CABEAIS  DE CARGAS EM GERAL",
+      "nrCodigo": "T6.30"
+    }
+  ],
+  "615": [
+    {
+      "nmDescritivo": "TRANSPORTADORAS, TRANSP MARITIMOS, FERROVIARIOS, FLUVIAIS, HIDROVIARIAS, AEREOS, CABEAIS  DE CARGAS EM GERAL",
+      "nrCodigo": "T6.30"
+    }
+  ],
+  "617": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "618": [
+    {
+      "nmDescritivo": "TRANSPORTADORAS, TRANSP MARITIMOS, FERROVIARIOS, FLUVIAIS, HIDROVIARIAS, AEREOS, CABEAIS  DE CARGAS EM GERAL",
+      "nrCodigo": "T6.30"
+    }
+  ],
+  "619": [
+    {
+      "nmDescritivo": "TRANSPORTADORAS, TRANSP MARITIMOS, FERROVIARIOS, FLUVIAIS, HIDROVIARIAS, AEREOS, CABEAIS  DE CARGAS EM GERAL",
+      "nrCodigo": "T6.30"
+    }
+  ],
+  "62": [
+    {
+      "nmDescritivo": "LOUÇAS/PORCELANAS/CRISTAIS (UTILIDADES DOMÉSTICAS) - FABRICAS",
+      "nrCodigo": "L9.10"
+    }
+  ],
+  "620": [
+    {
+      "nmDescritivo": "CORREIOS AGENCIAS",
+      "nrCodigo": "C20.10"
+    }
+  ],
+  "623": [
+    {
+      "nmDescritivo": "HOTÉIS/POUSADAS",
+      "nrCodigo": "H2.10"
+    }
+  ],
+  "624": [
+    {
+      "nmDescritivo": "HOTÉIS/POUSADAS",
+      "nrCodigo": "H2.10"
+    }
+  ],
+  "625": [
+    {
+      "nmDescritivo": "RESTAURANTES/PIZZARIAS",
+      "nrCodigo": "R3.10"
+    }
+  ],
+  "626": [
+    {
+      "nmDescritivo": "BARES/LANCHONETES - LANCHONETES/PASTELARIAS",
+      "nrCodigo": "B3.10"
+    }
+  ],
+  "627": [
+    {
+      "nmDescritivo": "BARES/LANCHONETES - LANCHONETES/PASTELARIAS",
+      "nrCodigo": "B3.10"
+    }
+  ],
+  "628": [
+    {
+      "nmDescritivo": "RESTAURANTES/PIZZARIAS",
+      "nrCodigo": "R3.10"
+    }
+  ],
+  "629": [
+    {
+      "nmDescritivo": "QUIOSQUES, TRAILLERS",
+      "nrCodigo": "Q2.10"
+    }
+  ],
+  "63": [
+    {
+      "nmDescritivo": "LOUÇAS/PORCELANAS/CRISTAIS (UTILIDADES DOMÉSTICAS) - FABRICAS",
+      "nrCodigo": "L9.10"
+    }
+  ],
+  "630": [
+    {
+      "nmDescritivo": "RESTAURANTES/PIZZARIAS",
+      "nrCodigo": "R3.10"
+    }
+  ],
+  "631": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "632": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "633": [
+    {
+      "nmDescritivo": "AUTOMÓVEIS - MECANICA/FUNILARIA/PINTURA - COM VENDA DE PECAS",
+      "nrCodigo": "A19.60"
+    }
+  ],
+  "634": [
+    {
+      "nmDescritivo": "MADEIRA - MARCENARIA",
+      "nrCodigo": "M1.30"
+    }
+  ],
+  "635": [
+    {
+      "nmDescritivo": "CALÇADOS - FÁBRICAS E OFICINAS",
+      "nrCodigo": "C3.10"
+    }
+  ],
+  "636": [
+    {
+      "nmDescritivo": "ROUPAS - FABRICAS/OFICINAS",
+      "nrCodigo": "R4.10"
+    }
+  ],
+  "637": [
+    {
+      "nmDescritivo": "CALÇADOS - FÁBRICAS E OFICINAS",
+      "nrCodigo": "C3.10"
+    }
+  ],
+  "638": [
+    {
+      "nmDescritivo": "JOIAS - FABRICAs",
+      "nrCodigo": "J1.10"
+    }
+  ],
+  "639": [
+    {
+      "nmDescritivo": "ELETRICIDADE - LOJAS (ARTIGOS) - COM OFICINAS DE CONSERTO",
+      "nrCodigo": "E1.40"
+    }
+  ],
+  "64": [
+    {
+      "nmDescritivo": "LOUÇAS/PORCELANAS/CRISTAIS (UTILIDADES DOMÉSTICAS) - FABRICAS",
+      "nrCodigo": "L9.10"
+    }
+  ],
+  "640": [
+    {
+      "nmDescritivo": "LAVANDERIAS/TINTURARIAS NAO INDUSTRIAL - EXCLUSIVAMENTE ROUPAS/ARTIGOS DE CAMA/MESA/BANHO",
+      "nrCodigo": "L4.10"
+    }
+  ],
+  "641": [
+    {
+      "nmDescritivo": "CABELEREIROS/SALÃO DE BELEZA/ESTÉTICA - COM VENDAS DE ARTIGOS - PERFUMARIAS",
+      "nrCodigo": "C1.10"
+    }
+  ],
+  "642": [
+    {
+      "nmDescritivo": "CABELEREIROS/SALÃO DE BELEZA/ESTÉTICA - COM VENDAS DE ARTIGOS - PERFUMARIAS",
+      "nrCodigo": "C1.10"
+    },
+    {
+      "nmDescritivo": "CASAS DE BANHO (SAUNAS) - SAUNAS/CLINICAS DE ESTETICA",
+      "nrCodigo": "C6.10"
+    }
+  ],
+  "643": [
+    {
+      "nmDescritivo": "CERAS EM GERAL",
+      "nrCodigo": "C29.0"
+    }
+  ],
+  "644": [
+    {
+      "nmDescritivo": "FUNEBRES COM OFICINAS - LOJAS",
+      "nrCodigo": "F12.20"
+    }
+  ],
+  "645": [
+    {
+      "nmDescritivo": "SERV PESSOAIS NAO ESPECIFICADOS OU NAO CLASSIFICADOS",
+      "nrCodigo": "S5.40"
+    }
+  ],
+  "646": [
+    {
+      "nmDescritivo": "RADIO/TELEVISAO - ESTUDIOS/AUDITORIOS DE GRAVACAO DE IMAGEM",
+      "nrCodigo": "R1.10"
+    }
+  ],
+  "647": [
+    {
+      "nmDescritivo": "RADIO/TELEVISAO - ESTUDIOS/AUDITORIOS DE GRAVACAO DE IMAGEM",
+      "nrCodigo": "R1.10"
+    }
+  ],
+  "648": [
+    {
+      "nmDescritivo": "CINEMAS",
+      "nrCodigo": "C30.0"
+    }
+  ],
+  "649": [
+    {
+      "nmDescritivo": "CASAS DE SHOWS, BOATES E DANCETERIAS",
+      "nrCodigo": "C40.10"
+    }
+  ],
+  "65": [
+    {
+      "nmDescritivo": "LOUÇAS/PORCELANAS/CRISTAIS (UTILIDADES DOMÉSTICAS) - FABRICAS",
+      "nrCodigo": "L9.10"
+    }
+  ],
+  "650": [
+    {
+      "nmDescritivo": "CINEMAS, TEATROS E CASA DE SHOWS",
+      "nrCodigo": "C40.20"
+    }
+  ],
+  "651": [
+    {
+      "nmDescritivo": "PARQUES DE DIVERSAO",
+      "nrCodigo": "P14.10"
+    }
+  ],
+  "652": [
+    {
+      "nmDescritivo": "PARQUES DE DIVERSAO",
+      "nrCodigo": "P14.10"
+    }
+  ],
+  "653": [
+    {
+      "nmDescritivo": "PARQUES DE DIVERSAO",
+      "nrCodigo": "P14.10"
+    }
+  ],
+  "654": [
+    {
+      "nmDescritivo": "PARQUES DE DIVERSAO",
+      "nrCodigo": "P14.10"
+    }
+  ],
+  "655": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "656": [
+    {
+      "nmDescritivo": "CRIACAO DE ANIMAIS VIVOS EM GERAL",
+      "nrCodigo": "C60.10"
+    }
+  ],
+  "657": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "658": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "66": [
+    {
+      "nmDescritivo": "LOUÇAS/PORCELANAS/CRISTAIS (UTILIDADES DOMÉSTICAS) - FABRICAS",
+      "nrCodigo": "L9.10"
+    }
+  ],
+  "660": [
+    {
+      "nmDescritivo": "AGÊNCIAS BANCÁRIAS - BANCOS/FINANCIADORAS",
+      "nrCodigo": "A7.10"
+    }
+  ],
+  "661": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "662": [
+    {
+      "nmDescritivo": "AGÊNCIAS BANCÁRIAS - BANCOS/FINANCIADORAS",
+      "nrCodigo": "A7.10"
+    }
+  ],
+  "663": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "664": [
+    {
+      "nmDescritivo": "TRANSPORTADORAS, TRANSP MARITIMOS, FERROVIARIOS, FLUVIAIS, HIDROVIARIAS, AEREOS, CABEAIS  DE CARGAS EM GERAL",
+      "nrCodigo": "T6.30"
+    }
+  ],
+  "665": [
+    {
+      "nmDescritivo": "ESTACIONAMENTO E GARAGEM",
+      "nrCodigo": "E20.0"
+    }
+  ],
+  "666": [
+    {
+      "nmDescritivo": "TRANSPORTADORAS, TRANSP MARITIMOS, FERROVIARIOS, FLUVIAIS, HIDROVIARIAS, AEREOS, CABEAIS  DE CARGAS EM GERAL",
+      "nrCodigo": "T6.30"
+    }
+  ],
+  "667": [
+    {
+      "nmDescritivo": "TRANSPORTADORAS/ARMAZENS GERAIS SEM SUBSTANCIAS INFLAMAVEIS/TOXICAS/CORROSIVAS",
+      "nrCodigo": "T6.10"
+    }
+  ],
+  "668": [
+    {
+      "nmDescritivo": "AGENCIAS – TURISMO",
+      "nrCodigo": "A8.10"
+    },
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "669": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "67": [
+    {
+      "nmDescritivo": "CIMENTO/GESSO/FIBROCIMENTO - FABRICAS",
+      "nrCodigo": "C10.10"
+    },
+    {
+      "nmDescritivo": "FABR DE PROD DERIVADOS DO ASFALTO",
+      "nrCodigo": "C10.20"
+    }
+  ],
+  "670": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "671": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "672": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "673": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "674": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "675": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "676": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "677": [
+    {
+      "nmDescritivo": "RADIO/TELEVISAO - ESTUDIOS/AUDITORIOS DE GRAVACAO DE IMAGEM",
+      "nrCodigo": "R1.10"
+    }
+  ],
+  "678": [
+    {
+      "nmDescritivo": "FOTOGRAFIAS - ESTUDIOS FOTOGRAFICOS/LABORATORIOS/FOTOLITOS",
+      "nrCodigo": "F8.10"
+    },
+    {
+      "nmDescritivo": "FOTOGRAFIAS LOJAS - ARTIGOS FOTOGRAFICOS",
+      "nrCodigo": "F8.20"
+    }
+  ],
+  "679": [
+    {
+      "nmDescritivo": "LOTÉRICAS - AGENCIAS DE LOTERIAS",
+      "nrCodigo": "L8.10"
+    }
+  ],
+  "68": [
+    {
+      "nmDescritivo": "CIMENTO/GESSO/FIBROCIMENTO - FABRICAS",
+      "nrCodigo": "C10.10"
+    },
+    {
+      "nmDescritivo": "FABR DE PROD DERIVADOS DO ASFALTO",
+      "nrCodigo": "C10.20"
+    }
+  ],
+  "680": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "681": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "682": [
+    {
+      "nmDescritivo": "PAPEL/PAPELAO - FABRICAS",
+      "nrCodigo": "P2.40"
+    }
+  ],
+  "683": [
+    {
+      "nmDescritivo": "POSTOS DE GASOLINA/SERVIÇOS - SEM E COM LOJAS DE CONVENIENCIA",
+      "nrCodigo": "P9.20"
+    }
+  ],
+  "684": [
+    {
+      "nmDescritivo": "ESTAMPARIAS (INCLUSIVE SILK SCREEM) DE ROUPAS",
+      "nrCodigo": "E13.20"
+    }
+  ],
+  "685": [
+    {
+      "nmDescritivo": "ROUPAS - FABRICAS/OFICINAS",
+      "nrCodigo": "R4.10"
+    }
+  ],
+  "686": [
+    {
+      "nmDescritivo": "CONSULTÓRIO/CLÍNICA (TÉRREO/SOBRADO) - TODOS OS TIPOS",
+      "nrCodigo": "C16.10"
+    }
+  ],
+  "687": [
+    {
+      "nmDescritivo": "CONSULTÓRIO/CLÍNICA (TÉRREO/SOBRADO) - TODOS OS TIPOS",
+      "nrCodigo": "C16.10"
+    }
+  ],
+  "688": [
+    {
+      "nmDescritivo": "LABORATÓRIOS DE ENSAIOS/TESTES CLÍNICOS - COM USO DE INFLAMAVEIS",
+      "nrCodigo": "L1.20"
+    }
+  ],
+  "689": [
+    {
+      "nmDescritivo": "CONSULTÓRIO/CLÍNICA (TÉRREO/SOBRADO) - TODOS OS TIPOS",
+      "nrCodigo": "C16.10"
+    }
+  ],
+  "69": [
+    {
+      "nmDescritivo": "FABR DE PROD DERIVADOS DO ASFALTO",
+      "nrCodigo": "C10.20"
+    }
+  ],
+  "690": [
+    {
+      "nmDescritivo": "CONSULTÓRIO/CLÍNICA (TÉRREO/SOBRADO) - TODOS OS TIPOS",
+      "nrCodigo": "C16.10"
+    }
+  ],
+  "691": [
+    {
+      "nmDescritivo": "PET SHOP PERMITIDO HOSPEDAGEM DE ANIMAL",
+      "nrCodigo": "P8.10"
+    }
+  ],
+  "692": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "693": [
+    {
+      "nmDescritivo": "CONSULTÓRIO/CLÍNICA (TÉRREO/SOBRADO) - TODOS OS TIPOS",
+      "nrCodigo": "C16.10"
+    }
+  ],
+  "694": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "695": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "696": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "697": [
+    {
+      "nmDescritivo": "AUTOMÓVEIS - LOCADORAS DE AUTO",
+      "nrCodigo": "A19.30"
+    }
+  ],
+  "698": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "699": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "7": [
+    {
+      "nmDescritivo": "SAL - EXTRAÇAO E BENEFICIAMENTO",
+      "nrCodigo": "S2.10"
+    }
+  ],
+  "70": [
+    {
+      "nmDescritivo": "FABR DE PROD DERIVADOS DO ASFALTO",
+      "nrCodigo": "C10.20"
+    }
+  ],
+  "700": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "702": [
+    {
+      "nmDescritivo": "AGÊNCIAS BANCÁRIAS - BANCOS/FINANCIADORAS",
+      "nrCodigo": "A7.10"
+    }
+  ],
+  "703": [
+    {
+      "nmDescritivo": "AGÊNCIAS BANCÁRIAS - BANCOS/FINANCIADORAS",
+      "nrCodigo": "A7.10"
+    }
+  ],
+  "704": [
+    {
+      "nmDescritivo": "AGÊNCIAS BANCÁRIAS - BANCOS/FINANCIADORAS",
+      "nrCodigo": "A7.10"
+    }
+  ],
+  "705": [
+    {
+      "nmDescritivo": "AGÊNCIAS BANCÁRIAS - BANCOS/FINANCIADORAS",
+      "nrCodigo": "A7.10"
+    }
+  ],
+  "706": [
+    {
+      "nmDescritivo": "AGÊNCIAS BANCÁRIAS - BANCOS/FINANCIADORAS",
+      "nrCodigo": "A7.10"
+    }
+  ],
+  "708": [
+    {
+      "nmDescritivo": "AGÊNCIAS BANCÁRIAS - BANCOS/FINANCIADORAS",
+      "nrCodigo": "A7.10"
+    }
+  ],
+  "709": [
+    {
+      "nmDescritivo": "AGÊNCIAS BANCÁRIAS - BANCOS/FINANCIADORAS",
+      "nrCodigo": "A7.10"
+    }
+  ],
+  "71": [
+    {
+      "nmDescritivo": "FABR DE PROD DERIVADOS DO ASFALTO",
+      "nrCodigo": "C10.20"
+    }
+  ],
+  "710": [
+    {
+      "nmDescritivo": "AGÊNCIAS BANCÁRIAS - BANCOS/FINANCIADORAS",
+      "nrCodigo": "A7.10"
+    }
+  ],
+  "711": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "712": [
+    {
+      "nmDescritivo": "AGÊNCIAS BANCÁRIAS - BANCOS/FINANCIADORAS",
+      "nrCodigo": "A7.10"
+    }
+  ],
+  "718": [
+    {
+      "nmDescritivo": "HOSPITAIS/PRONTO SOCORRO/C.T.I TODOS OS TIPOS",
+      "nrCodigo": "H1.10"
+    }
+  ],
+  "719": [
+    {
+      "nmDescritivo": "HOSPITAIS/PRONTO SOCORRO/C.T.I TODOS OS TIPOS",
+      "nrCodigo": "H1.10"
+    }
+  ],
+  "72": [
+    {
+      "nmDescritivo": "CIMENTO/GESSO/FIBROCIMENTO - FABRICAS",
+      "nrCodigo": "C10.10"
+    },
+    {
+      "nmDescritivo": "FABR DE PROD DERIVADOS DO ASFALTO",
+      "nrCodigo": "C10.20"
+    }
+  ],
+  "720": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "721": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "722": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "723": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "724": [
+    {
+      "nmDescritivo": "IGREJAS - TEMPLOS/SALOES DE FESTAS",
+      "nrCodigo": "I1.10"
+    }
+  ],
+  "725": [
+    {
+      "nmDescritivo": "CLUBES/GINASIOS/ESTADIOS DE ESPORTES INTALACOES COBERTAS E AO AR LIVRE",
+      "nrCodigo": "C12.20"
+    }
+  ],
+  "726": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "727": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "728": [
+    {
+      "nmDescritivo": "ESCOLAS - PUBLICAS/PARTICULARES",
+      "nrCodigo": "E4.10"
+    }
+  ],
+  "729": [
+    {
+      "nmDescritivo": "ESCOLAS - PUBLICAS/PARTICULARES",
+      "nrCodigo": "E4.10"
+    }
+  ],
+  "730": [
+    {
+      "nmDescritivo": "ESCOLAS - PUBLICAS/PARTICULARES",
+      "nrCodigo": "E4.10"
+    }
+  ],
+  "731": [
+    {
+      "nmDescritivo": "ESCOLAS - PUBLICAS/PARTICULARES",
+      "nrCodigo": "E4.10"
+    }
+  ],
+  "732": [
+    {
+      "nmDescritivo": "ESCOLAS - ESCOLAS DEMAIS",
+      "nrCodigo": "E5.10"
+    }
+  ],
+  "733": [
+    {
+      "nmDescritivo": "ESCOLAS - PUBLICAS/PARTICULARES",
+      "nrCodigo": "E4.10"
+    }
+  ],
+  "734": [
+    {
+      "nmDescritivo": "ESCOLAS - ESCOLAS DEMAIS",
+      "nrCodigo": "E5.10"
+    }
+  ],
+  "735": [
+    {
+      "nmDescritivo": "ESCOLAS - PUBLICAS/PARTICULARES",
+      "nrCodigo": "E4.10"
+    }
+  ],
+  "736": [
+    {
+      "nmDescritivo": "ESCOLAS - ESCOLAS DEMAIS",
+      "nrCodigo": "E5.10"
+    }
+  ],
+  "737": [
+    {
+      "nmDescritivo": "ESCOLAS - ESCOLAS DEMAIS",
+      "nrCodigo": "E5.10"
+    }
+  ],
+  "739": [
+    {
+      "nmDescritivo": "ESCOLAS - ESCOLAS DEMAIS",
+      "nrCodigo": "E5.10"
+    }
+  ],
+  "74": [
+    {
+      "nmDescritivo": "VIDROS - ARTIGOS - C/FABRIC. DE VIDROS - SEM PROCESSOS AUTO",
+      "nrCodigo": "V2.30"
+    }
+  ],
+  "749": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "75": [
+    {
+      "nmDescritivo": "VIDROS - ARTIGOS - C/FABRIC. DE VIDROS - SEM PROCESSOS AUTO",
+      "nrCodigo": "V2.30"
+    }
+  ],
+  "750": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "751": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "752": [
+    {
+      "nmDescritivo": "CARTÓRIOS - DE OFICIOS/NOTAS",
+      "nrCodigo": "C5.10"
+    }
+  ],
+  "753": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "754": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "755": [
+    {
+      "nmDescritivo": "AUTOMÓVEIS - MECANICA/FUNILARIA/PINTURA - COM VENDA DE PECAS",
+      "nrCodigo": "A19.60"
+    }
+  ],
+  "756": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "757": [
+    {
+      "nmDescritivo": "CRIACAO DE ANIMAIS VIVOS EM GERAL",
+      "nrCodigo": "C60.10"
+    }
+  ],
+  "76": [
+    {
+      "nmDescritivo": "VIDROS - ARTIGOS - C/FABRIC. DE VIDROS - SEM PROCESSOS AUTO",
+      "nrCodigo": "V2.30"
+    }
+  ],
+  "762": [
+    {
+      "nmDescritivo": "CRIACAO DE ANIMAIS VIVOS EM GERAL",
+      "nrCodigo": "C60.10"
+    }
+  ],
+  "763": [
+    {
+      "nmDescritivo": "PRODUTOS FARMACEUTICOS PROCESSO A QUENTE - FABRICAS",
+      "nrCodigo": "P10.40"
+    }
+  ],
+  "764": [
+    {
+      "nmDescritivo": "AGÊNCIAS BANCÁRIAS - BANCOS/FINANCIADORAS",
+      "nrCodigo": "A7.10"
+    }
+  ],
+  "765": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "766": [
+    {
+      "nmDescritivo": "MINERAÇAO A FLOR DA TERRA - SEM USO DE EXPLOSIVO",
+      "nrCodigo": "M9.10"
+    }
+  ],
+  "767": [
+    {
+      "nmDescritivo": "MINERAÇAO A FLOR DA TERRA - SEM USO DE EXPLOSIVO",
+      "nrCodigo": "M9.10"
+    }
+  ],
+  "768": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "769": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "77": [
+    {
+      "nmDescritivo": "VIDROS - ARTIGOS - C/FABRIC. DE VIDROS - SEM PROCESSOS AUTO",
+      "nrCodigo": "V2.30"
+    }
+  ],
+  "770": [
+    {
+      "nmDescritivo": "AGÊNCIAS BANCÁRIAS - BANCOS/FINANCIADORAS",
+      "nrCodigo": "A7.10"
+    }
+  ],
+  "771": [
+    {
+      "nmDescritivo": "AGÊNCIAS BANCÁRIAS - BANCOS/FINANCIADORAS",
+      "nrCodigo": "A7.10"
+    }
+  ],
+  "772": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "773": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "774": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "775": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "776": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "777": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "778": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "779": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "78": [
+    {
+      "nmDescritivo": "VIDROS - ARTIGOS - C/FABRIC. DE VIDROS - SEM PROCESSOS AUTO",
+      "nrCodigo": "V2.30"
+    }
+  ],
+  "780": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "781": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "782": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "783": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "784": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "785": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "786": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "787": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "788": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "789": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "79": [
+    {
+      "nmDescritivo": "VIDROS - ARTIGOS - C/FABRIC. DE VIDROS - SEM PROCESSOS AUTO",
+      "nrCodigo": "V2.30"
+    }
+  ],
+  "790": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "791": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "792": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "793": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "794": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "795": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "796": [
+    {
+      "nmDescritivo": "PLANTACAO, BENEFICIAMENTO, CORTE",
+      "nrCodigo": "P14.20"
+    }
+  ],
+  "797": [
+    {
+      "nmDescritivo": "CRIACAO DE ANIMAIS VIVOS EM GERAL",
+      "nrCodigo": "C60.10"
+    }
+  ],
+  "798": [
+    {
+      "nmDescritivo": "CRIACAO DE ANIMAIS VIVOS EM GERAL",
+      "nrCodigo": "C60.10"
+    }
+  ],
+  "799": [
+    {
+      "nmDescritivo": "CRIACAO DE ANIMAIS VIVOS EM GERAL",
+      "nrCodigo": "C60.10"
+    }
+  ],
+  "8": [
+    {
+      "nmDescritivo": "MINERAÇAO A FLOR DA TERRA - SEM USO DE EXPLOSIVO",
+      "nrCodigo": "M9.10"
+    }
+  ],
+  "80": [
+    {
+      "nmDescritivo": "VIDROS - ARTIGOS - C/FABRIC. DE VIDROS - SEM PROCESSOS AUTO",
+      "nrCodigo": "V2.30"
+    }
+  ],
+  "800": [
+    {
+      "nmDescritivo": "CRIACAO DE ANIMAIS VIVOS EM GERAL",
+      "nrCodigo": "C60.10"
+    }
+  ],
+  "801": [
+    {
+      "nmDescritivo": "CRIACAO DE ANIMAIS VIVOS EM GERAL",
+      "nrCodigo": "C60.10"
+    }
+  ],
+  "802": [
+    {
+      "nmDescritivo": "MARMORARIA - OFICINAS DE LAPIDACAO/CORTES",
+      "nrCodigo": "M2.10"
+    }
+  ],
+  "803": [
+    {
+      "nmDescritivo": "MARMORARIA - OFICINAS DE LAPIDACAO/CORTES",
+      "nrCodigo": "M2.10"
+    }
+  ],
+  "804": [
+    {
+      "nmDescritivo": "VIDROS - ARTIGOS - C/FABRIC. DE VIDROS - SEM PROCESSOS AUTO",
+      "nrCodigo": "V2.30"
+    }
+  ],
+  "805": [
+    {
+      "nmDescritivo": "VIDROS - ARTIGOS - C/FABRIC. DE VIDROS - SEM PROCESSOS AUTO",
+      "nrCodigo": "V2.30"
+    }
+  ],
+  "806": [
+    {
+      "nmDescritivo": "MINERAÇAO A FLOR DA TERRA - SEM USO DE EXPLOSIVO",
+      "nrCodigo": "M9.10"
+    }
+  ],
+  "807": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "808": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "809": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "81": [
+    {
+      "nmDescritivo": "ABRASIVOS -  FABRICAS",
+      "nrCodigo": "A1.10"
+    }
+  ],
+  "810": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "811": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "812": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "813": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "814": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "815": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "816": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    }
+  ],
+  "817": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    }
+  ],
+  "818": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    }
+  ],
+  "819": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    }
+  ],
+  "82": [
+    {
+      "nmDescritivo": "ABRASIVOS -  FABRICAS",
+      "nrCodigo": "A1.10"
+    }
+  ],
+  "820": [],
+  "821": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "822": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "823": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "824": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "825": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "826": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "827": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "828": [
+    {
+      "nmDescritivo": "PAPEL/PAPELAO COM PREPARAÇAO DE FRIBRAS - FABRICAS",
+      "nrCodigo": "P2.30"
+    }
+  ],
+  "829": [
+    {
+      "nmDescritivo": "PAPEL/PAPELAO - FABRICAS",
+      "nrCodigo": "P2.40"
+    }
+  ],
+  "83": [
+    {
+      "nmDescritivo": "BIJOUTERIAS - FABRICAS",
+      "nrCodigo": "B5.10"
+    }
+  ],
+  "830": [
+    {
+      "nmDescritivo": "PAPEL/PAPELAO COM PREPARAÇAO DE FRIBRAS - FABRICAS",
+      "nrCodigo": "P2.30"
+    }
+  ],
+  "831": [
+    {
+      "nmDescritivo": "PAPEL/PAPELAO COM PREPARAÇAO DE FRIBRAS - FABRICAS",
+      "nrCodigo": "P2.30"
+    }
+  ],
+  "832": [
+    {
+      "nmDescritivo": "PAPEL/PAPELAO - FABRICAS",
+      "nrCodigo": "P2.40"
+    }
+  ],
+  "833": [
+    {
+      "nmDescritivo": "PAPEL/PAPELAO - FABRICAS",
+      "nrCodigo": "P2.40"
+    }
+  ],
+  "834": [
+    {
+      "nmDescritivo": "BORRACHA (ARTIGOS/EXCETO PNEUS) SEM INFLAMAVEL - FABRICAS",
+      "nrCodigo": "B8.10"
+    }
+  ],
+  "835": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "836": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "837": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "838": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "839": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "84": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "840": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "841": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "842": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "843": [
+    {
+      "nmDescritivo": "TINTAS/VERNIZES PROCESSO A QUENTE - FABRICAS",
+      "nrCodigo": "T4.40"
+    }
+  ],
+  "844": [
+    {
+      "nmDescritivo": "TINTAS/VERNIZES PROCESSO A FRIO - FABRICAS",
+      "nrCodigo": "T4.10"
+    }
+  ],
+  "845": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "846": [
+    {
+      "nmDescritivo": "PRODUTOS QUIMICOS - FABRICAS",
+      "nrCodigo": "P12.40"
+    }
+  ],
+  "847": [
+    {
+      "nmDescritivo": "BORRACHA (ARTIGOS/EXCETO PNEUS) SEM INFLAMAVEL - FABRICAS",
+      "nrCodigo": "B8.10"
+    }
+  ],
+  "848": [
+    {
+      "nmDescritivo": "BORRACHA (ARTIGOS/EXCETO PNEUS) SEM INFLAMAVEL - FABRICAS",
+      "nrCodigo": "B8.10"
+    }
+  ],
+  "849": [
+    {
+      "nmDescritivo": "USINA DE AÇUCAR OU CANA DE AÇUCAR",
+      "nrCodigo": "U10.10"
+    }
+  ],
+  "85": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "850": [
+    {
+      "nmDescritivo": "USINA DE ALCOOL",
+      "nrCodigo": "U10.30"
+    }
+  ],
+  "851": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS COM FIBRAS ARTIFICIAIS - FIACAO/TECELAGEM",
+      "nrCodigo": "T2.10"
+    }
+  ],
+  "852": [
+    {
+      "nmDescritivo": "TECIDOS/FIOS COM FIBRAS NATURAIS - FIACAO/TECELAGEM",
+      "nrCodigo": "T2.20"
+    }
+  ],
+  "853": [
+    {
+      "nmDescritivo": "ROUPAS - FABRICAS/OFICINAS",
+      "nrCodigo": "R4.10"
+    }
+  ],
+  "854": [
+    {
+      "nmDescritivo": "ROUPAS - FABRICAS/OFICINAS",
+      "nrCodigo": "R4.10"
+    }
+  ],
+  "855": [
+    {
+      "nmDescritivo": "ROUPAS - FABRICAS/OFICINAS",
+      "nrCodigo": "R4.10"
+    }
+  ],
+  "856": [],
+  "857": [
+    {
+      "nmDescritivo": "ARROZ - ENGENHOS DE DESCASCAR E BENEFICIAR",
+      "nrCodigo": "A17.10"
+    }
+  ],
+  "858": [
+    {
+      "nmDescritivo": "CONSERVAS ALIMENTICIAS DE ORIGEM VEGETAL - FABRICAS - COM PROCESSO A QUENTE",
+      "nrCodigo": "C15.20"
+    }
+  ],
+  "859": [
+    {
+      "nmDescritivo": "CEREAIS E GRÃOS - DEPÓSITO COM SECADORES",
+      "nrCodigo": "C7.50"
+    }
+  ],
+  "86": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "860": [
+    {
+      "nmDescritivo": "CEREAIS/GRAOS - EXCETO EM CEASA ENGENHOS BENEFICIAR - COM SECADORES - CALOR DIRETO",
+      "nrCodigo": "C7.30"
+    }
+  ],
+  "861": [
+    {
+      "nmDescritivo": "BALAS/BOMBONS/CARAMELOS/CHOCOLATES/DOCES PROCESSO A QUENTE - FABRICAS",
+      "nrCodigo": "B1.20"
+    }
+  ],
+  "862": [
+    {
+      "nmDescritivo": "BALAS/BOMBONS/CARAMELOS/CHOCOLATES/DOCES PROCESSO A QUENTE - FABRICAS",
+      "nrCodigo": "B1.20"
+    }
+  ],
+  "863": [
+    {
+      "nmDescritivo": "CONSERVAS ALIMENTICIAS DE ORIGEM VEGETAL - FABRICAS - COM PROCESSO A QUENTE",
+      "nrCodigo": "C15.20"
+    }
+  ],
+  "864": [
+    {
+      "nmDescritivo": "CONSERVAS ALIMENTICIAS DE ORIGEM VEGETAL - FABRICAS - COM PROCESSO A QUENTE",
+      "nrCodigo": "C15.20"
+    }
+  ],
+  "865": [
+    {
+      "nmDescritivo": "ÓLEOS VEGETAIS E SEMENTES OLEAGINOSAS /FABRICA.",
+      "nrCodigo": "O2.11"
+    }
+  ],
+  "866": [
+    {
+      "nmDescritivo": "ABATE E/OU FRIGORIFICACAO DE SUINOS, BOVINOS, OVINOS CONSERV E PROD DERIV",
+      "nrCodigo": "M5.20"
+    }
+  ],
+  "867": [
+    {
+      "nmDescritivo": "ABATE E/OU FRIGORIFICACAO DE SUINOS, BOVINOS, OVINOS CONSERV E PROD DERIV",
+      "nrCodigo": "M5.20"
+    }
+  ],
+  "868": [
+    {
+      "nmDescritivo": "ABATE E/OU FRIGORIFICACAO DE SUINOS, BOVINOS, OVINOS CONSERV E PROD DERIV",
+      "nrCodigo": "M5.20"
+    }
+  ],
+  "869": [
+    {
+      "nmDescritivo": "ABATE E/OU FRIGORIFICACAO DE SUINOS, BOVINOS, OVINOS CONSERV E PROD DERIV",
+      "nrCodigo": "M5.20"
+    }
+  ],
+  "870": [
+    {
+      "nmDescritivo": "ACOUGUES/PEIXARIAS/AVICOLAS - PERMITIDO ABATE DE PEQUENOS ANIMAIS",
+      "nrCodigo": "A4.10"
+    }
+  ],
+  "871": [
+    {
+      "nmDescritivo": "LATICINIOS/LEITE - USINAS DE PASTEURIZACAO",
+      "nrCodigo": "L3.10"
+    }
+  ],
+  "872": [
+    {
+      "nmDescritivo": "LATICINIOS/LEITE - FABRICAS",
+      "nrCodigo": "L3.20"
+    }
+  ],
+  "873": [
+    {
+      "nmDescritivo": "MASSAS ALIMENTÍCIAS (INCLUSIVE ROTISSERIE) - FÁBRICAS COM SECAGEM ARTIFICIAL",
+      "nrCodigo": "M4.20"
+    }
+  ],
+  "874": [
+    {
+      "nmDescritivo": "MASSAS ALIMENTÍCIAS (INCLUSIVE ROTISSERIE) - FÁBRICAS COM SECAGEM ARTIFICIAL",
+      "nrCodigo": "M4.20"
+    }
+  ],
+  "875": [
+    {
+      "nmDescritivo": "RAÇÕES BALANCEADAS/FORRAGENS - FABRICAS",
+      "nrCodigo": "R2.10"
+    }
+  ],
+  "876": [
+    {
+      "nmDescritivo": "RAÇÕES BALANCEADAS/FORRAGENS - FABRICAS",
+      "nrCodigo": "R2.10"
+    }
+  ],
+  "877": [
+    {
+      "nmDescritivo": "AGUA MINERAL/SUCO/REFRIGERANTE - PREPARACAO/ENGARRAFAMENTO",
+      "nrCodigo": "A10.20"
+    }
+  ],
+  "878": [
+    {
+      "nmDescritivo": "AGUA MINERAL/SUCO/REFRIGERANTE - PREPARACAO/ENGARRAFAMENTO",
+      "nrCodigo": "A10.20"
+    }
+  ],
+  "879": [
+    {
+      "nmDescritivo": "AGUA MINERAL/SUCO/REFRIGERANTE - PREPARACAO/ENGARRAFAMENTO",
+      "nrCodigo": "A10.20"
+    }
+  ],
+  "88": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "880": [
+    {
+      "nmDescritivo": "AGUA MINERAL/SUCO/REFRIGERANTE - PREPARACAO/ENGARRAFAMENTO",
+      "nrCodigo": "A10.20"
+    }
+  ],
+  "881": [
+    {
+      "nmDescritivo": "ERVA MATE",
+      "nrCodigo": "E16.0"
+    }
+  ],
+  "882": [
+    {
+      "nmDescritivo": "AGUA MINERAL/SUCO/REFRIGERANTE - PREPARACAO/ENGARRAFAMENTO",
+      "nrCodigo": "A10.20"
+    }
+  ],
+  "883": [
+    {
+      "nmDescritivo": "GRÁFICAS/TIPOGRAFIAS - SEM INFLAMAVEIS",
+      "nrCodigo": "G3.10"
+    }
+  ],
+  "884": [
+    {
+      "nmDescritivo": "GRÁFICAS/TIPOGRAFIAS - SEM INFLAMAVEIS",
+      "nrCodigo": "G3.10"
+    }
+  ],
+  "885": [
+    {
+      "nmDescritivo": "GRÁFICAS/TIPOGRAFIAS - SEM INFLAMAVEIS",
+      "nrCodigo": "G3.10"
+    }
+  ],
+  "886": [
+    {
+      "nmDescritivo": "GRÁFICAS/TIPOGRAFIAS - SEM INFLAMAVEIS",
+      "nrCodigo": "G3.10"
+    }
+  ],
+  "887": [
+    {
+      "nmDescritivo": "GRÁFICAS/TIPOGRAFIAS - SEM INFLAMAVEIS",
+      "nrCodigo": "G3.10"
+    }
+  ],
+  "888": [
+    {
+      "nmDescritivo": "GRÁFICAS/TIPOGRAFIAS - SEM INFLAMAVEIS",
+      "nrCodigo": "G3.10"
+    }
+  ],
+  "889": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "89": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "890": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "891": [
+    {
+      "nmDescritivo": "PAPEL/PAPELAO - FABRICAS",
+      "nrCodigo": "P2.40"
+    }
+  ],
+  "892": [
+    {
+      "nmDescritivo": "PAPEL/PAPELAO - FABRICAS",
+      "nrCodigo": "P2.40"
+    }
+  ],
+  "893": [
+    {
+      "nmDescritivo": "MADEIRA - MARCENARIA",
+      "nrCodigo": "M1.30"
+    }
+  ],
+  "894": [
+    {
+      "nmDescritivo": "PLASTICOS COM PROCESSOS DE POLIMERIZAÇAO - FABRICAS",
+      "nrCodigo": "P6.20"
+    }
+  ],
+  "895": [
+    {
+      "nmDescritivo": "PLASTICOS COM PROCESSOS DE POLIMERIZAÇAO - FABRICAS",
+      "nrCodigo": "P6.20"
+    }
+  ],
+  "896": [
+    {
+      "nmDescritivo": "USINA HIDRELETRICA, USINA TERMOELETRICA, ELETRICA",
+      "nrCodigo": "U10.50"
+    }
+  ],
+  "897": [
+    {
+      "nmDescritivo": "USINA HIDRELETRICA, USINA TERMOELETRICA, ELETRICA",
+      "nrCodigo": "U10.50"
+    }
+  ],
+  "898": [
+    {
+      "nmDescritivo": "USINA HIDRELETRICA, USINA TERMOELETRICA, ELETRICA",
+      "nrCodigo": "U10.50"
+    }
+  ],
+  "899": [
+    {
+      "nmDescritivo": "USINA HIDRELETRICA, USINA TERMOELETRICA, ELETRICA",
+      "nrCodigo": "U10.50"
+    }
+  ],
+  "9": [
+    {
+      "nmDescritivo": "MINERAÇAO A FLOR DA TERRA - SEM USO DE EXPLOSIVO",
+      "nrCodigo": "M9.10"
+    }
+  ],
+  "90": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "900": [
+    {
+      "nmDescritivo": "USINA HIDRELETRICA, USINA TERMOELETRICA, ELETRICA",
+      "nrCodigo": "U10.50"
+    }
+  ],
+  "901": [
+    {
+      "nmDescritivo": "LIVRARIAS - LOJAS",
+      "nrCodigo": "L6.10"
+    }
+  ],
+  "902": [
+    {
+      "nmDescritivo": "BANCAS DE JORNAIS/REVISTAS - LOJAS (SITUADAS EM SHOPPING/HIPERMERCADOS)",
+      "nrCodigo": "B2.10"
+    }
+  ],
+  "903": [
+    {
+      "nmDescritivo": "ELETRICIDADE - LOJAS (ARTIGOS) - COM OFICINAS DE CONSERTO",
+      "nrCodigo": "E1.40"
+    }
+  ],
+  "904": [
+    {
+      "nmDescritivo": "ELETRICIDADE - LOJAS (ARTIGOS) - COM OFICINAS DE CONSERTO",
+      "nrCodigo": "E1.40"
+    }
+  ],
+  "905": [
+    {
+      "nmDescritivo": "AUTOMOVEIS CONCESSIONARIAS DE AUTOMOVEIS",
+      "nrCodigo": "A19.40"
+    }
+  ],
+  "906": [
+    {
+      "nmDescritivo": "AUTOMOVEIS LOJAS DE AUTOMOVEIS",
+      "nrCodigo": "A19.41"
+    }
+  ],
+  "907": [
+    {
+      "nmDescritivo": "MOTOS/MOTOCICLETAS/BICICLETAS - LOJAS (COMPONENTES/ACESSORIOS)",
+      "nrCodigo": "M11.40"
+    }
+  ],
+  "908": [
+    {
+      "nmDescritivo": "MOTOS/MOTOCICLETAS/BICICLETAS - LOJAS (COMPONENTES/ACESSORIOS)",
+      "nrCodigo": "M11.40"
+    }
+  ],
+  "909": [
+    {
+      "nmDescritivo": "SUPERMERCADOS (SECOS E MOLHADOS) LOJAS CONVENCIONAIS",
+      "nrCodigo": "S5.30"
+    }
+  ],
+  "91": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "910": [
+    {
+      "nmDescritivo": "SUPERMERCADOS (SECOS E MOLHADOS) LOJAS CONVENCIONAIS",
+      "nrCodigo": "S5.30"
+    }
+  ],
+  "911": [
+    {
+      "nmDescritivo": "SUPERMERCADOS (SECOS E MOLHADOS) LOJAS CONVENCIONAIS",
+      "nrCodigo": "S5.30"
+    }
+  ],
+  "912": [
+    {
+      "nmDescritivo": "SUPERMERCADOS (SECOS E MOLHADOS) LOJAS CONVENCIONAIS",
+      "nrCodigo": "S5.30"
+    }
+  ],
+  "913": [
+    {
+      "nmDescritivo": "SUPERMERCADOS (SECOS E MOLHADOS) LOJAS CONVENCIONAIS",
+      "nrCodigo": "S5.30"
+    }
+  ],
+  "914": [
+    {
+      "nmDescritivo": "JOIAS - LOJAS/OFICINAS",
+      "nrCodigo": "J1.20"
+    }
+  ],
+  "915": [
+    {
+      "nmDescritivo": "BIJOUTERIAS - LOJAS",
+      "nrCodigo": "B5.30"
+    }
+  ],
+  "916": [
+    {
+      "nmDescritivo": "FUMOS/CHARUTOS/CIGARROS - LOJAS",
+      "nrCodigo": "F11.40"
+    }
+  ],
+  "917": [
+    {
+      "nmDescritivo": "ELETRICIDADE - LOJAS (ARTIGOS) - COM OFICINAS DE CONSERTO",
+      "nrCodigo": "E1.40"
+    }
+  ],
+  "918": [
+    {
+      "nmDescritivo": "ELETRICIDADE - LOJAS (ARTIGOS) - COM OFICINAS DE CONSERTO",
+      "nrCodigo": "E1.40"
+    }
+  ],
+  "919": [
+    {
+      "nmDescritivo": "ESTACOES AEROVIARIAS/RODOVIARIAS/PORTUARIAS - LOCAL PARA EMBARQUE DE PASSAGEIROS",
+      "nrCodigo": "E12.10"
+    },
+    {
+      "nmDescritivo": "ESTACOES AEROVIARIAS/RODOVIARIAS/PORTUARIAS - LOCAL PARA EMBARQUE DE PASSAGEIROS",
+      "nrCodigo": "E12.20"
+    }
+  ],
+  "920": [
+    {
+      "nmDescritivo": "ESTACOES AEROVIARIAS/RODOVIARIAS/PORTUARIAS - LOCAL PARA EMBARQUE DE PASSAGEIROS",
+      "nrCodigo": "E12.10"
+    }
+  ],
+  "921": [
+    {
+      "nmDescritivo": "TRANSPORTADORAS/ARMAZENS GERAIS COM SUBSTANCIAS INFLAMAVEIS/TOXICAS/CORROSIVAS",
+      "nrCodigo": "T6.20"
+    }
+  ],
+  "922": [
+    {
+      "nmDescritivo": "TRANSPORTADORAS, TRANSP MARITIMOS, FERROVIARIOS, FLUVIAIS, HIDROVIARIAS, AEREOS, CABEAIS  DE CARGAS EM GERAL",
+      "nrCodigo": "T6.30"
+    }
+  ],
+  "923": [
+    {
+      "nmDescritivo": "ESTACOES AEROVIARIAS/RODOVIARIAS/PORTUARIAS - LOCAL PARA EMBARQUE DE PASSAGEIROS",
+      "nrCodigo": "E12.10"
+    },
+    {
+      "nmDescritivo": "ESTACOES AEROVIARIAS/RODOVIARIAS/PORTUARIAS - LOCAL PARA EMBARQUE DE PASSAGEIROS",
+      "nrCodigo": "E12.20"
+    }
+  ],
+  "924": [
+    {
+      "nmDescritivo": "ESTACOES AEROVIARIAS/RODOVIARIAS/PORTUARIAS - LOCAL PARA EMBARQUE DE PASSAGEIROS",
+      "nrCodigo": "E12.10"
+    }
+  ],
+  "925": [
+    {
+      "nmDescritivo": "TRANSPORTADORAS, TRANSP MARITIMOS, FERROVIARIOS, FLUVIAIS, HIDROVIARIAS, AEREOS, CABEAIS  DE CARGAS EM GERAL",
+      "nrCodigo": "T6.30"
+    }
+  ],
+  "926": [
+    {
+      "nmDescritivo": "TRANSPORTADORAS, TRANSP MARITIMOS, FERROVIARIOS, FLUVIAIS, HIDROVIARIAS, AEREOS, CABEAIS  DE CARGAS EM GERAL",
+      "nrCodigo": "T6.30"
+    }
+  ],
+  "927": [
+    {
+      "nmDescritivo": "TELEFONES SEM VENDA - DEPOSITOS",
+      "nrCodigo": "T3.10"
+    }
+  ],
+  "928": [
+    {
+      "nmDescritivo": "TELEFONES SEM VENDA - DEPOSITOS",
+      "nrCodigo": "T3.10"
+    }
+  ],
+  "929": [
+    {
+      "nmDescritivo": "TELEFONES SEM VENDA - DEPOSITOS",
+      "nrCodigo": "T3.10"
+    }
+  ],
+  "930": [
+    {
+      "nmDescritivo": "TELEFONES SEM VENDA - DEPOSITOS",
+      "nrCodigo": "T3.10"
+    }
+  ],
+  "931": [
+    {
+      "nmDescritivo": "USINA HIDRELETRICA, USINA TERMOELETRICA, ELETRICA",
+      "nrCodigo": "U10.50"
+    }
+  ],
+  "932": [
+    {
+      "nmDescritivo": "TELEFONES SEM VENDA - DEPOSITOS",
+      "nrCodigo": "T3.10"
+    }
+  ],
+  "933": [
+    {
+      "nmDescritivo": "TELEFONES SEM VENDA - DEPOSITOS",
+      "nrCodigo": "T3.10"
+    }
+  ],
+  "934": [
+    {
+      "nmDescritivo": "TELEFONES SEM VENDA - DEPOSITOS",
+      "nrCodigo": "T3.10"
+    }
+  ],
+  "935": [
+    {
+      "nmDescritivo": "TELEFONES SEM VENDA - DEPOSITOS",
+      "nrCodigo": "T3.10"
+    }
+  ],
+  "936": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "937": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "938": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "939": [
+    {
+      "nmDescritivo": "HOTÉIS/POUSADAS",
+      "nrCodigo": "H2.10"
+    }
+  ],
+  "940": [
+    {
+      "nmDescritivo": "MOTEIS",
+      "nrCodigo": "M12.10"
+    }
+  ],
+  "941": [
+    {
+      "nmDescritivo": "RESTAURANTES/PIZZARIAS",
+      "nrCodigo": "R3.10"
+    }
+  ],
+  "942": [
+    {
+      "nmDescritivo": "ACADEMIAS DE GINASTICA/ESPORTE DANCA/LUTA/FITNESS",
+      "nrCodigo": "A2.10"
+    },
+    {
+      "nmDescritivo": "ARTIGOS ESPORTIVOS - LOJAS",
+      "nrCodigo": "A16.20"
+    }
+  ],
+  "943": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "944": [
+    {
+      "nmDescritivo": "CLUBES/GINASIOS/ESTADIOS DE ESPORTES INTALACOES COBERTAS E AO AR LIVRE",
+      "nrCodigo": "C12.20"
+    }
+  ],
+  "945": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "946": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "947": [
+    {
+      "nmDescritivo": "CONSULTÓRIO/CLÍNICA (TÉRREO/SOBRADO) - TODOS OS TIPOS",
+      "nrCodigo": "C16.10"
+    }
+  ],
+  "948": [
+    {
+      "nmDescritivo": "CONSULTÓRIO/CLÍNICA (TÉRREO/SOBRADO) - TODOS OS TIPOS",
+      "nrCodigo": "C16.10"
+    }
+  ],
+  "949": [
+    {
+      "nmDescritivo": "EXTRACAO DE MINERIOS EM GERAL",
+      "nrCodigo": "E20.10"
+    }
+  ],
+  "950": [
+    {
+      "nmDescritivo": "ABATE E/OU FRIGORIFICACAO DE SUINOS, BOVINOS, OVINOS CONSERV E PROD DERIV",
+      "nrCodigo": "M5.20"
+    }
+  ],
+  "951": [
+    {
+      "nmDescritivo": "RESTAURANTES/PIZZARIAS",
+      "nrCodigo": "R3.10"
+    }
+  ],
+  "952": [
+    {
+      "nmDescritivo": "ARTIGOS ESPORTIVOS - LOJAS",
+      "nrCodigo": "A16.20"
+    }
+  ],
+  "953": [
+    {
+      "nmDescritivo": "ESCOLAS - ESCOLAS DEMAIS",
+      "nrCodigo": "E5.10"
+    }
+  ],
+  "954": [
+    {
+      "nmDescritivo": "AUTOMÓVEIS - LOCADORAS DE AUTO",
+      "nrCodigo": "A19.30"
+    }
+  ],
+  "955": [
+    {
+      "nmDescritivo": "FRANQUIAS NÃO DESCRIMINADAS",
+      "nrCodigo": "F10.10"
+    }
+  ],
+  "956": [
+    {
+      "nmDescritivo": "PAPEL/PAPELAO COM PREPARAÇAO DE FRIBRAS - FABRICAS",
+      "nrCodigo": "P2.30"
+    }
+  ],
+  "957": [
+    {
+      "nmDescritivo": "AGÊNCIAS BANCÁRIAS - BANCOS/FINANCIADORAS",
+      "nrCodigo": "A7.10"
+    }
+  ],
+  "958": [
+    {
+      "nmDescritivo": "RECICLAGEM DE QUALQUER TIPO E DE QUALQUER PROCESSO",
+      "nrCodigo": "R5.10"
+    }
+  ],
+  "959": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "960": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "961": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "962": [
+    {
+      "nmDescritivo": "CEREAIS E GRÃOS - DEPÓSITO COM SECADORES",
+      "nrCodigo": "C7.50"
+    }
+  ],
+  "963": [
+    {
+      "nmDescritivo": "CEREAIS E GRÃOS - DEPÓSITO COM SECADORES",
+      "nrCodigo": "C7.50"
+    }
+  ],
+  "964": [
+    {
+      "nmDescritivo": "CAFE - ENGENHOS DE BENEFICIAR - COM SISTEMA EXAUSTAO",
+      "nrCodigo": "C2.10"
+    }
+  ],
+  "965": [
+    {
+      "nmDescritivo": "CEREAIS E GRÃOS - DEPÓSITO COM SECADORES",
+      "nrCodigo": "C7.50"
+    }
+  ],
+  "966": [
+    {
+      "nmDescritivo": "ARROZ - DEPOSITOS - SEM SECADORES",
+      "nrCodigo": "A17.30"
+    }
+  ],
+  "967": [
+    {
+      "nmDescritivo": "QUITANDAS/SACOLÕES - LOJAS",
+      "nrCodigo": "Q1.10"
+    }
+  ],
+  "968": [
+    {
+      "nmDescritivo": "USINA DE AÇUCAR OU CANA DE AÇUCAR",
+      "nrCodigo": "U10.10"
+    }
+  ],
+  "969": [
+    {
+      "nmDescritivo": "CEREAIS E GRÃOS - DEPÓSITO COM SECADORES",
+      "nrCodigo": "C7.50"
+    }
+  ],
+  "970": [
+    {
+      "nmDescritivo": "CEREAIS E GRÃOS - DEPÓSITO COM SECADORES",
+      "nrCodigo": "C7.50"
+    }
+  ],
+  "971": [
+    {
+      "nmDescritivo": "CAFE - ENGENHOS DE BENEFICIAR - COM SISTEMA EXAUSTAO",
+      "nrCodigo": "C2.10"
+    }
+  ],
+  "972": [
+    {
+      "nmDescritivo": "CEREAIS E GRÃOS - DEPÓSITO COM SECADORES",
+      "nrCodigo": "C7.50"
+    }
+  ],
+  "973": [
+    {
+      "nmDescritivo": "ARROZ - DEPOSITOS - SEM SECADORES",
+      "nrCodigo": "A17.30"
+    }
+  ],
+  "974": [
+    {
+      "nmDescritivo": "AGUA MINERAL/SUCO/REFRIGERANTE SEM VENDAS - DEPOSITOS",
+      "nrCodigo": "A10.30"
+    }
+  ],
+  "975": [
+    {
+      "nmDescritivo": "USINA DE AÇUCAR OU CANA DE AÇUCAR",
+      "nrCodigo": "U10.10"
+    }
+  ],
+  "976": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "977": [
+    {
+      "nmDescritivo": "USINA HIDRELETRICA, USINA TERMOELETRICA, ELETRICA",
+      "nrCodigo": "U10.50"
+    }
+  ],
+  "978": [
+    {
+      "nmDescritivo": "MINERAÇAO A FLOR DA TERRA - SEM USO DE EXPLOSIVO",
+      "nrCodigo": "M9.10"
+    }
+  ],
+  "979": [
+    {
+      "nmDescritivo": "CELULOSE",
+      "nrCodigo": "C28.0"
+    }
+  ],
+  "980": [
+    {
+      "nmDescritivo": "EXTRACAO DE PETROLEO E/OU GAS NATURAL",
+      "nrCodigo": "E20.30"
+    }
+  ],
+  "981": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "982": [
+    {
+      "nmDescritivo": "EXTRACAO DE PETROLEO E/OU GAS NATURAL",
+      "nrCodigo": "E20.30"
+    }
+  ],
+  "983": [
+    {
+      "nmDescritivo": "AGÊNCIAS BANCÁRIAS - BANCOS/FINANCIADORAS",
+      "nrCodigo": "A7.10"
+    }
+  ],
+  "984": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "985": [
+    {
+      "nmDescritivo": "TRANSPORTADORAS, TRANSP MARITIMOS, FERROVIARIOS, FLUVIAIS, HIDROVIARIAS, AEREOS, CABEAIS  DE CARGAS EM GERAL",
+      "nrCodigo": "T6.30"
+    }
+  ],
+  "986": [
+    {
+      "nmDescritivo": "ASSOCIAÇÕES RESIDENCIAIS - ASSOCIAÇÕES RESIDENCIAIS",
+      "nrCodigo": "A26.10"
+    }
+  ],
+  "987": [
+    {
+      "nmDescritivo": "ASSOCIAÇÃO DE PROPRIETÁRIOS EDIFICIOS ASSOCIAÇÕES COMERCIAIS",
+      "nrCodigo": "A26.11"
+    }
+  ],
+  "988": [
+    {
+      "nmDescritivo": "SUPERMERCADOS (SECOS E MOLHADOS) LOJAS CONVENCIONAIS",
+      "nrCodigo": "S5.30"
+    }
+  ],
+  "989": [
+    {
+      "nmDescritivo": "CLUBES/GINASIOS/ESTADIOS DE ESPORTES INTALACOES COBERTAS E AO AR LIVRE",
+      "nrCodigo": "C12.20"
+    }
+  ],
+  "99": [
+    {
+      "nmDescritivo": "METAL - FABRICAS/OFICINAS - COM TRABALHOS DE MADEIRA",
+      "nrCodigo": "M8.30"
+    }
+  ],
+  "990": [
+    {
+      "nmDescritivo": "ARTIGOS ESPORTIVOS - LOJAS",
+      "nrCodigo": "A16.20"
+    },
+    {
+      "nmDescritivo": "CLUBES/GINASIOS/ESTADIOS DE ESPORTES INTALACOES COBERTAS E AO AR LIVRE",
+      "nrCodigo": "C12.20"
+    }
+  ],
+  "991": [
+    {
+      "nmDescritivo": "CEREAIS E GRÃOS - DEPÓSITO COM SECADORES",
+      "nrCodigo": "C7.50"
+    }
+  ],
+  "992": [
+    {
+      "nmDescritivo": "ELETRICIDADE - LOJAS (ARTIGOS) - COM OFICINAS DE CONSERTO",
+      "nrCodigo": "E1.40"
+    }
+  ],
+  "993": [
+    {
+      "nmDescritivo": "ELETRICIDADE - FABR./MONTAGEM (ARTIGOS) - SEM PINTURA/INFLAMAVEIS",
+      "nrCodigo": "E1.10"
+    }
+  ],
+  "996": [
+    {
+      "nmDescritivo": "ESCRITORIOS - DEMAIS ESCRITÓRIOS (TERREOS/SOBRADOS)",
+      "nrCodigo": "E6.40"
+    }
+  ],
+  "997": [
+    {
+      "nmDescritivo": "ELETRICIDADE - LOJAS (ARTIGOS) - COM OFICINAS DE CONSERTO",
+      "nrCodigo": "E1.40"
+    }
+  ],
+  "998": [
+    {
+      "nmDescritivo": "PAPELARIA/ARTIGOS PARA FESTAS - LOJAS",
+      "nrCodigo": "P3.10"
+    }
+  ],
+  "999": [
+    {
+      "nmDescritivo": "USINA HIDRELETRICA, USINA TERMOELETRICA, ELETRICA",
+      "nrCodigo": "U10.50"
+    }
+  ]
+}

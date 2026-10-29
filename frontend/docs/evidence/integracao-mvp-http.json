@@ -1,0 +1,78 @@
+{
+  "checkedAt": "2026-10-28T20:01:42.295Z",
+  "checks": [
+    {
+      "check": "Busca com IDs reais e subatividade vinculada",
+      "status": "PASS",
+      "activity": "625",
+      "subactivity": "R3.10"
+    },
+    {
+      "check": "Recomendação imediata apenas pelo cadastro, sem respostas presumidas",
+      "status": "PASS",
+      "suggestedPlan": "PRATICO",
+      "questionnaireAnswers": null,
+      "plans": [
+        {
+          "plan": "ESSENCIAL",
+          "fit": 67.51579428971336
+        },
+        {
+          "plan": "PRATICO",
+          "fit": 86.82938781942373
+        },
+        {
+          "plan": "TOTAL",
+          "fit": 100
+        }
+      ]
+    },
+    {
+      "check": "Motor Python por HTTP, quatro índices e dez necessidades",
+      "status": "PASS",
+      "linkedLocalBase": true,
+      "establishmentsAvailable": 2978,
+      "sources": [
+        {
+          "type": "seguranca",
+          "available": true,
+          "period": "2021"
+        },
+        {
+          "type": "clima",
+          "available": true,
+          "period": "1996-01-01/2025-12-31"
+        },
+        {
+          "type": "nr4",
+          "available": true,
+          "period": "PDF atualizado 2023; classificação contextual para o projeto"
+        }
+      ],
+      "plans": [
+        {
+          "plan": "ESSENCIAL",
+          "fit": 62.841151003614016
+        },
+        {
+          "plan": "PRATICO",
+          "fit": 81.18600235074037
+        },
+        {
+          "plan": "TOTAL",
+          "fit": 100
+        }
+      ],
+      "confirmedMunicipality": true
+    },
+    {
+      "check": "Personalização, adicionais condicionais, vigência, triagem e obrigatórias validados no servidor",
+      "status": "PASS",
+      "defaultFit": 81.18600235074037,
+      "customFit": 93.42661104968072,
+      "customCovers": 9,
+      "termYears": 3,
+      "mandatoryExclusionStatus": 422
+    }
+  ]
+}

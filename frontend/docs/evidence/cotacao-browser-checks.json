@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-28",
+  "checks": [
+    {
+      "name": "CPF ausente",
+      "pass": true
+    },
+    {
+      "name": "970 atividades na lista rolável",
+      "pass": true
+    },
+    {
+      "name": "Seleção por nome e teclado",
+      "pass": true
+    },
+    {
+      "name": "Descrição vaga pede esclarecimento",
+      "pass": true
+    },
+    {
+      "name": "Descrição sugere subatividade de pizzaria",
+      "pass": true
+    },
+    {
+      "name": "Troca de atividade limpa subatividade incompatível",
+      "pass": true
+    },
+    {
+      "name": "Três planos disponíveis",
+      "pass": true
+    },
+    {
+      "name": "Preferência de pagamento permanece selecionada",
+      "pass": true
+    },
+    {
+      "name": "Conclusão da sexta etapa",
+      "pass": true
+    },
+    {
+      "name": "Plano Total preservado",
+      "pass": true
+    }
+  ]
+}

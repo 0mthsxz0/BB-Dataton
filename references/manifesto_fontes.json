@@ -1,0 +1,57 @@
+{
+  "gerado_em_utc": "2026-10-28T12:07:11.076832+00:00",
+  "arquivos": {
+    "clima_municipal.csv": "4a7e687f1ab690c4eff53c7ceca577b9fdc4fe4988aba76b93d0aea26b7575ae",
+    "nr4_cnae.csv": "08e511a1cdb2bdbe22afbad6efa2fb04a1055243efed74e3c1a2b3acd68fcaa7",
+    "seguranca_municipal.csv": "5f336788116f9a232de7666f3706820d057c9ef6a3aa5f091746b8c4c2dd028f",
+    "auditoria_sinesp_2025.json": "2fcc1c7373aad86b8977e5b13313630e051958409d1e74374dabc9de628710e1"
+  },
+  "entradas_cache_sha256": {
+    "clima_2304400_1996-01-01_2025-12-31.json": "ff8ad5c0a0f16884d7deb411916a69a261584503fd38ac174667b2452a69d87b",
+    "clima_2611606_1996-01-01_2025-12-31.json": "05e33b45e0c6da5561edd89de8195bda359b75444081fe57ec6e5252a2626e27",
+    "clima_2927408_1996-01-01_2025-12-31.json": "f005a70e420a8e5b21cc4c7abf71c4b3996a4f9ca9b951a22d1993ce4c0c2836",
+    "clima_3106200_1996-01-01_2025-12-31.json": "9b0c67d63bfcc6c24674bb45941322cd2a2660096b910354cc37eb77b891aed7",
+    "clima_3304557_1996-01-01_2025-12-31.json": "d7e634f5fe659d169ac4f186630db9a1aabfeef6a57b5133e4af415e64078d0e",
+    "clima_3550308_1996-01-01_2025-12-31.json": "c5ceade8457a88d70bb94aade25dd02475b887f835ef058105098c2a5b27b534",
+    "clima_4106902_1996-01-01_2025-12-31.json": "bd48694a5149a49956e3db3a6f9e4631295e78a5bfb617842cd9dc9f81fccf58",
+    "clima_4314902_1996-01-01_2025-12-31.json": "1ce3ba54a220d172028733732d508986f4837cd2009c09d46dbcefd15285a6fd",
+    "clima_5208707_1996-01-01_2025-12-31.json": "d044f340bd6b4e8f0ad35f5c2b070305ceedaf6afe1eeb0dacd7fd4a0d4bd12a",
+    "clima_5300108_1996-01-01_2025-12-31.json": "1af9241d49aea9f803b08b2da4681e0bf5a865834bfd734648ef7b86a387b118",
+    "geo_2304400.json": "70cb5247c67d25baf81ff1c5759c1807cd693bc0edfd0568efb32b916770d3c8",
+    "geo_2611606.json": "21652f9ad930a71a3da5ef1fd52cf12197b180b0a2dbc2a25daf50f2606a8e54",
+    "geo_2927408.json": "e5cb24788a396b78ea9f7ec88944cd68c6401553960a017d7312ea3db72fe87c",
+    "geo_3106200.json": "89c132eafb4ccac5a8907760b083f89123451b9c97302506e5c80989cda20aba",
+    "geo_3304557.json": "597b0172c4ad29aa648b933fce4307aaf952e55b86e1f4c34b6250eb1bb19890",
+    "geo_3550308.json": "9bbd5745b40b0f0589510f509437fa51466571ee4ab7b1ca9457cf3f52c29afc",
+    "geo_4106902.json": "e3ecfcc99b020e10bcc8c7b4ae8254802fafece2f1dcfb07c8d00b245a94a25e",
+    "geo_4314902.json": "3ef89b4379532d2bc6d2be0da356ff3c8bf2050de04f11a4b0591bcc16d46cb1",
+    "geo_5208707.json": "839f184184a3ba30a0bd156363e3b4239a3291c41bd973152379e8f78b6682bf",
+    "geo_5300108.json": "210e79364919364a03f138828b661b4015bc1942f7a38e81a36edc7b9d459512",
+    "ibge_8508_162.json": "7f29ee5f8b1d7a859fc42827a9f4d96b6a51a8ac1ba53cfe9ec9d94ffb328016",
+    "ibge_8510_12456.json": "c518711fec938cf160646f1ebe92fe0ffd5286b98c53ab0958cdab0cefba883c",
+    "ibge_8512_12462.json": "e688c0d4b2a2db6e9ca93ac676f1589075c09dd8f4c157818e038e914bc8b180",
+    "nr4_2023.pdf": "16383b6b8592ffd873dd96677a7d945a5ef30f2a3c71fb2983c03bb6e7882413",
+    "sinesp/bancovde-2025.xlsx": "6b87609815afc534f44f3423bf8660a69c961130c187f759b9d3e38ee2a8a6e8",
+    "sinesp/notas_metodologicas.html": "02fce6f0efe037c615184b8417caf7f5962aef755c80a81f1e605e1c2752a23e"
+  },
+  "config_clima": {
+    "inicio": "1996-01-01",
+    "fim": "2025-12-31",
+    "rajada_forte_kmh": 50,
+    "rajada_severa_kmh": 70,
+    "rajada_chuva_kmh": 40,
+    "chuva_mm": 50,
+    "pesos": [
+      0.5,
+      0.3,
+      0.2
+    ],
+    "referencia_frequencia": 0.01
+  },
+  "auditoria_sinesp": {
+    "fonte": "https://www.gov.br/mj/pt-br/assuntos/sua-seguranca/seguranca-publica/estatistica/download/dnsp-base-de-dados/bancovde-2025.xlsx/@@download/file",
+    "baixado_em": "2026-10-28T21:44:40.793500+00:00",
+    "uso_no_indice_empresarial": false,
+    "motivo": "Nenhuma categoria de roubo em comércio encontrada. Outros crimes não substituem essa medida."
+  }
+}

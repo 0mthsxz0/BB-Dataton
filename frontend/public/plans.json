@@ -1,0 +1,428 @@
+{
+  "capturedAt": "2026-10-27",
+  "source": "https://www.bbseguros.com.br/seguros/seguro-empresarial",
+  "plans": [
+    {
+      "id": "892",
+      "name": "Empresarial Essencial",
+      "price": "R$ 28,33",
+      "assistances": "9",
+      "coverageCount": "5",
+      "coverages": [
+        "10921",
+        "10922",
+        "10923",
+        "10924",
+        "10925",
+        "45084",
+        "10929",
+        "10930",
+        "10931"
+      ],
+      "assistanceIds": [
+        "10960",
+        "10961",
+        "10962",
+        "10963",
+        "10933",
+        "10934",
+        "10936",
+        "10975",
+        "10976"
+      ],
+      "premium": false,
+      "detailUrl": "https://www.bbseguros.com.br/seguros/para-empresas/patrimonio/novo-seguro-empresarial/empresarial-essencial",
+      "quoteUrl": "https://cotacaoseguroempresarial.bbseguros.com.br/home"
+    },
+    {
+      "id": "893",
+      "name": "Empresarial Prático",
+      "price": "R$ 34,13",
+      "assistances": "31",
+      "coverageCount": "7",
+      "coverages": [
+        "10921",
+        "10922",
+        "10923",
+        "10932",
+        "10925",
+        "45084",
+        "10924",
+        "10926",
+        "10929",
+        "10930",
+        "10931"
+      ],
+      "assistanceIds": [
+        "10960",
+        "10961",
+        "10962",
+        "10963",
+        "10933",
+        "10936",
+        "10934",
+        "10975",
+        "10964",
+        "10965",
+        "10937",
+        "10938",
+        "10939",
+        "10940",
+        "10941",
+        "10942",
+        "10976"
+      ],
+      "premium": false,
+      "detailUrl": "https://www.bbseguros.com.br/seguros/para-empresas/patrimonio/novo-seguro-empresarial/empresarial-pratico",
+      "quoteUrl": "https://cotacaoseguroempresarial.bbseguros.com.br/home"
+    },
+    {
+      "id": "894",
+      "name": "Empresarial Total",
+      "price": "R$ 43,48",
+      "assistances": "40",
+      "coverageCount": "9",
+      "coverages": [
+        "10921",
+        "10922",
+        "10923",
+        "10924",
+        "10925",
+        "45084",
+        "10932",
+        "10926",
+        "10929",
+        "10930",
+        "10931",
+        "10927",
+        "10928"
+      ],
+      "assistanceIds": [
+        "10960",
+        "10961",
+        "10962",
+        "10963",
+        "10933",
+        "10934",
+        "10936",
+        "10975",
+        "10964",
+        "10965",
+        "10937",
+        "10938",
+        "10939",
+        "10940",
+        "10941",
+        "10942",
+        "10966",
+        "10967",
+        "10968",
+        "10969",
+        "10970",
+        "10935",
+        "10943",
+        "10944",
+        "10945",
+        "10946",
+        "10947",
+        "10948",
+        "10949",
+        "10950",
+        "10951",
+        "10971",
+        "10952",
+        "10972",
+        "10953",
+        "10954",
+        "10973",
+        "10959",
+        "10955",
+        "10956",
+        "10957",
+        "10976"
+      ],
+      "premium": true,
+      "detailUrl": "https://www.bbseguros.com.br/seguros/para-empresas/patrimonio/novo-seguro-empresarial/empresarial-total",
+      "quoteUrl": "https://cotacaoseguroempresarial.bbseguros.com.br/home"
+    }
+  ],
+  "coverages": [
+    {
+      "id": "10921",
+      "name": "Incêndio, Raio, Explosão e Fumaça",
+      "description": "Garante os danos materiais causados ao imóvel exclusivamente decorrentes de incêndio, queda de raio ou fumaça."
+    },
+    {
+      "id": "10922",
+      "name": "Danos Elétricos",
+      "description": "Garante os danos materiais causados aos bens segurados decorrentes de variações anormais de tensão, curto circuito, calor gerado acidentalmente por eletricidade, descargas elétricas, eletricidade estática e raios. A cobertura também garante fiação, dispositivos de proteção e instalações eletrônicas ou elétricas."
+    },
+    {
+      "id": "10923",
+      "name": "Perda ou Pagamento de Aluguel",
+      "description": "É o reembolso dos aluguéis que você deixar de receber ou tiver que pagar se o imóvel precisar ser desocupado por algum motivo previsto nas condições gerais."
+    },
+    {
+      "id": "10924",
+      "name": "Responsabilidade Civil Estabelecimento",
+      "description": "Garante as reparações por danos corporais ou materiais, causados involuntariamente a terceiros em decorrência de: \r\na) Existência, uso e conservação do estabelecimento segurado, objeto deste seguro; \r\nb) Existência e conservação de antenas, painéis de propaganda, letreiros e anúncios luminosos, instalados no estabelecimento segurado, objeto deste seguro."
+    },
+    {
+      "id": "10925",
+      "name": "Despesas Fixas",
+      "description": "Garante as despesas fixas do estabelecimento segurado na proporção da queda de faturamento e/ou produção ocorrida, em decorrência de um dano físico causado ao imóvel por Incêndio, Queda de Raio, Explosão e Fumaça, ocorrido no estabelecimento segurado."
+    },
+    {
+      "id": "45084",
+      "name": "Ampla Proteção Cibernética",
+      "description": "Garante o pagamento de diárias por interrupção de negócios provocada diretamente por Ataque Cibernético, além de eventuais despesas de notificação a órgão competentes e/ou clientes, além de reembolso em caso de indenização para a reparação de danos causados a terceiros provocados por Ataque Cibernético."
+    },
+    {
+      "id": "10929",
+      "name": "Home Office* (Extra)",
+      "description": "Garante os prejuízos decorrentes de alguns eventos causados aos bens do estabelecimento segurado utilizados por funcionários em regime de home office/teletrabalho.\r\n\r\n*Cobertura extra de acordo com a atividade poderão ser incluídas/excluídas em qualquer plano."
+    },
+    {
+      "id": "10930",
+      "name": "Delivery* (Extra)",
+      "description": "Garante os danos causados às mercadorias seguradas, fora do estabelecimento segurado, exclusivamente durante o percurso de entrega para o cliente final realizada por veículo transportador."
+    },
+    {
+      "id": "10931",
+      "name": "Deterioração de Mercadorias em Ambientes Frigorificados* (Extra)",
+      "description": "Garante as perdas e danos materiais às mercadorias em ambientes frigorificados."
+    },
+    {
+      "id": "10932",
+      "name": "Roubo ou Furto de Bens mediante arrombamento",
+      "description": "Garante os danos materiais causados aos bens segurados decorrentes de roubo ou furto mediante arrombamento do imóvel segurado.\r\nCobertura extra de acordo com a atividade poderão ser incluídas/excluídas em qualquer plano."
+    },
+    {
+      "id": "10926",
+      "name": "Vendaval, Granizo, Ciclone, Tornado e Furacão",
+      "description": "Garante os danos materiais causados aos bens segurados, decorrentes de Vendaval, Furacão, Ciclone, Tornado e Granizo."
+    },
+    {
+      "id": "10927",
+      "name": "Responsabilidade Civil Empregador",
+      "description": "Garante os Danos Corporais, despesas hospitalares e funerárias decorrentes de acidentes súbitos e inesperados a empregados do segurado, quando a seu serviço, ou durante o percurso de ida e volta do trabalho, sem interrupção de trajeto."
+    },
+    {
+      "id": "10928",
+      "name": "Quebra de Vidros",
+      "description": "Garante as despesas com a reposicão dos vidros e vitrais comuns ou blindados causados por acidentes de origem externa."
+    }
+  ],
+  "assistances": [
+    {
+      "id": "10961",
+      "name": "Eletricista",
+      "description": "Mão de obra profissional para realizar os reparos emergenciais necessários para reestabelecer a energia elétrica no sistema defeituoso ou danificado."
+    },
+    {
+      "id": "10962",
+      "name": "Chaveiro",
+      "description": "Mão de obra emergencial para reparo ou substituição de fechaduras em caso de roubo ou furto qualificado da Empresa, desde que tenha havido arrombamento de janelas ou de portas de entrada e de acesso comum à empresa segurada."
+    },
+    {
+      "id": "10963",
+      "name": "Desentupimento",
+      "description": "O desentupimento em encanamentos, tubulações, ramais internos, caixa de esgoto e gordura, pias, sifões e vasos sanitários, na área interna e externa, desde que dentro da empresa segurada. \r\nCondições: A caixa de gordura ou esgoto devem estar aparentes e acessíveis por tampas ou grelhas removíveis; \r\nDesentupimento de até 30 m de tubulação ou desobstrução de caixa de gordura ou inspeção de até 60 litros."
+    },
+    {
+      "id": "10933",
+      "name": "Caça-vazamentos",
+      "description": "Avaliação do encanamento da empresa e apontamento de possíveis vazamentos."
+    },
+    {
+      "id": "10934",
+      "name": "Cobertura provisória de telhados ou troca de telhas",
+      "description": "Instalação de uma lona de plástico para proteger provisoriamente o interior do imóvel em caso de destelhamento na empresa segurada causado por evento coberto pelo seguro.\r\nCondições: O local deve apresentar condições técnicas mínimas para fixação da cobertura provisória ou substituição das telhas."
+    },
+    {
+      "id": "10936",
+      "name": "Coberturas provisórias de portas, janelas, divisórias e vitrines",
+      "description": "Cobertura provisória de portas, janelas, divisórias e vitrines quebradas, trincadas e soltas com risco de queda, cujo dano foi ocasionado por evento coberto pelo seguro, desde que façam parte do fechamento das áreas comuns externas da empresa e comprometam a segurança do imóvel segurado."
+    },
+    {
+      "id": "10975",
+      "name": "Limpeza após sinistro",
+      "description": "Limpeza de pisos, paredes e tetos, para a retirada de sujeiras que impeçam o acesso ou a permanência no local e desobstrução da empresa segurada em caso de incêndio, raio e explosão, desmoronamento, vendaval, granizo, fumaça, alagamento (provenientes da rede interna de água), impacto de veículos, queda de aeronave ou outro evento coberto pelo seguro."
+    },
+    {
+      "id": "10976",
+      "name": "Proteção Digital",
+      "description": "Os serviços serão prestados, observando as condições, regras e limites de dados pessoais estabelecidos e atrelada ao fornecimento dos dados indispensáveis para a sua realização, fornecidos pelo usuário, sendo que, caso os dados necessários não sejam informados, a prestação poderá ficar prejudicada."
+    },
+    {
+      "id": "10960",
+      "name": "Encanador",
+      "description": "Mão de obra profissional para reparar o vazamento interno que causa ou possa causar alagamentos na empresa segurada."
+    },
+    {
+      "id": "10940",
+      "name": "Conserto de central telefônica",
+      "description": "Reparo na linha telefônica em caso de distúrbios na linha ocasionados pela ação de intempéries, mau contato ou ruptura de instalação, desde que seja confirmado que o problema seja de origem interna."
+    },
+    {
+      "id": "10942",
+      "name": "Instalação de Wi-Fi",
+      "description": "Instalação de conexões sem fio na empresa."
+    },
+    {
+      "id": "10941",
+      "name": "Conserto de computadores e notebooks",
+      "description": "Reparo em caso de defeito ou mau funcionamento de computadores e notebooks, por exemplo: conserto de placa mãe, equipamento travando e outros."
+    },
+    {
+      "id": "10939",
+      "name": "Conserto de porta ondulada",
+      "description": "Reparo em caso de defeito ou mau funcionamento de porta ondulada ocasionado pela necessidade de recarga de pressão da mola, substituição da caixa de mola ou conjunto de trancas, travas e fechaduras e lubrificação e limpeza dos trilhos e coluna."
+    },
+    {
+      "id": "10938",
+      "name": "Conserto de interfone",
+      "description": "Reparo em caso de defeito ou mau funcionamento de interfone analógico ou digital, por exemplo: chiados, falhas nos comandos, entre outros."
+    },
+    {
+      "id": "10937",
+      "name": "Conserto de bebedouro",
+      "description": "Reparo em bebedouro, desde que não sejam serviços para fins estéticos ou de melhoria."
+    },
+    {
+      "id": "10965",
+      "name": "Conserto de ar condicionado",
+      "description": "Reparo aparelhos de ar-condicionado compactos e splits em caso de defeito ou mau funcionamento."
+    },
+    {
+      "id": "10964",
+      "name": "Conserto de eletrodomésticos",
+      "description": "Reparo em caso de defeito ou mau funcionamento."
+    },
+    {
+      "id": "10957",
+      "name": "Desratização",
+      "description": "Desinfecção de ambiente, dedetização, desratização e descupinização na empresa segurada em caso de infestação de insetos, como baratas, carrapatos, caramujos, escorpiões, formigas, grilos, lacraias, moscas, mosquitos, vespas, pulgas, percevejos e traças, cupins, aracnídeos, ratos, ratazanas, camundongos e microrganismos patogênicos."
+    },
+    {
+      "id": "10956",
+      "name": "Descupinização",
+      "description": "Desinfecção de ambiente, dedetização, desratização e descupinização na empresa segurada em caso de infestação de insetos, como baratas, carrapatos, caramujos, escorpiões, formigas, grilos, lacraias, moscas, mosquitos, vespas, pulgas, percevejos e traças, cupins, aracnídeos, ratos, ratazanas, camundongos e microrganismos patogênicos."
+    },
+    {
+      "id": "10955",
+      "name": "Dedetização",
+      "description": "Desinfecção de ambiente, dedetização, desratização e descupinização na empresa segurada em caso de infestação de insetos, como baratas, carrapatos, caramujos, escorpiões, formigas, grilos, lacraias, moscas, mosquitos, vespas, pulgas, percevejos e traças, cupins, aracnídeos, ratos, ratazanas, camundongos e microrganismos patogênicos."
+    },
+    {
+      "id": "10959",
+      "name": "Vigia após sinistro",
+      "description": "Um vigia, em caso de roubo, furto, arrombamento, vendaval, granizo, desmoronamento, explosão, fumaça, incêndio, queda de raios, danos elétricos, alagamento, impacto de veículos ou queda de aeronaves que afete, as áreas comuns da empresa."
+    },
+    {
+      "id": "10973",
+      "name": "Instalação de interfone",
+      "description": "Instalação de interfone analógico ou digital, desde que as especificações do equipamento sejam compatíveis com o local de instalação."
+    },
+    {
+      "id": "10954",
+      "name": "Check-up instalações hidráulicas",
+      "description": "Avaliação de todo o sistema hidráulico, apontando possíveis riscos de vazamento, além de orientação sobre melhorias que devem ser feitas para garantir a segurança da empresa segurada."
+    },
+    {
+      "id": "10953",
+      "name": "Check-up instalações elétricas",
+      "description": "Avaliação de possíveis defeitos nos pontos de iluminação e quadro de distribuição interna da empresa segurada."
+    },
+    {
+      "id": "10972",
+      "name": "Verificação de extintores",
+      "description": "A inspeção nos extintores da empresa segurada para constatar se estes permanecem em condições de operação e instalação adequada."
+    },
+    {
+      "id": "10952",
+      "name": "Instalação de câmeras de monitoramento",
+      "description": "Instalação de câmeras de monitoramento, desde que as especificações da câmera sejam compatíveis com o local de instalação."
+    },
+    {
+      "id": "10971",
+      "name": "Instalação de fechadura eletrônica",
+      "description": "Instalação de fechadura eletrônica, desde que as especificações da fechadura sejam compatíveis com a porta."
+    },
+    {
+      "id": "10951",
+      "name": "Troca de segredo de fechadura, inclusive tetra",
+      "description": "Troca de fechadura simples ou tetra das portas internas e externas da empresa segurada."
+    },
+    {
+      "id": "10950",
+      "name": "Instalação e montagem de prateleiras",
+      "description": "Fixação de prateleiras, desde que a parede suporte o tamanho da prateleira."
+    },
+    {
+      "id": "10949",
+      "name": "Instalação de ventilador de teto",
+      "description": "Instalação de ventilador de teto, desde que compatíveis com o circuito elétrico da empresa."
+    },
+    {
+      "id": "10948",
+      "name": "Instalação de torneiras",
+      "description": "Instalação de torneiras, desde que compatíveis com o circuito elétrico da empresa."
+    },
+    {
+      "id": "10947",
+      "name": "Instalação de tomadas e interruptores",
+      "description": "Instalação ou substituição de tomadas, interruptores e extensões elétricas aparentes, desde que compatíveis com o circuito elétrico da empresa. A parte de alvenaria e a fiação devem estar prontas para instalação do interruptor e/ou tomada."
+    },
+    {
+      "id": "10946",
+      "name": "Instalação de cubas",
+      "description": "Instalação de cuba de sobrepor ou de embutir, torneira e sifão, desde que o local seja compatível com as especificações do item a ser instalado."
+    },
+    {
+      "id": "10945",
+      "name": "Instalação de lustres ou spots",
+      "description": "Instalação e substituição de luminárias, lustres, spots ou pendentes convencionais."
+    },
+    {
+      "id": "10944",
+      "name": "Instalação de espelho",
+      "description": "Instalação de espelhos simples com moldura."
+    },
+    {
+      "id": "10943",
+      "name": "Locação de caçamba",
+      "description": "Aluguel de caçamba de até 4 m3 para descarte de resíduos de construção, reformas, reparos e demolições de obras de construção civil e resíduos resultantes da preparação e da escavação de terrenos."
+    },
+    {
+      "id": "10935",
+      "name": "Limpeza pesada após evento previsto",
+      "description": "."
+    },
+    {
+      "id": "10970",
+      "name": "Limpeza de placa solar",
+      "description": "Limpeza e higienização de placa solar."
+    },
+    {
+      "id": "10969",
+      "name": "Descarte inteligente",
+      "description": "É a retirada e destinação adequada de móveis, eletrodomésticos, eletroeletrônicos e equipamentos."
+    },
+    {
+      "id": "10968",
+      "name": "Limpeza de ar condicionado",
+      "description": "Limpeza preventiva de aparelho de ar-condicionado compacto ou split e sua condensadora."
+    },
+    {
+      "id": "10967",
+      "name": "Limpeza de calhas",
+      "description": "Limpeza de calhas com até 3,5 metros de altura e até 25 metros lineares."
+    },
+    {
+      "id": "10966",
+      "name": "Limpeza de caixa de água",
+      "description": "Limpeza e higienização de caixas de água de até 5.000 litros, incluindo caixas interligadas e boiler."
+    }
+  ]
+}

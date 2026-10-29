@@ -1,0 +1,338 @@
+{
+  "resumo": {
+    "base": "Desenvolvimento",
+    "data": "2026-10-28",
+    "estabelecimentos": 2978,
+    "empresas": 2500,
+    "impedimento_explicito": 78,
+    "impedimento_pct": 2.62,
+    "sem_impedimento_explicito_mas_pendentes": 2900,
+    "pendentes_pct": 97.38,
+    "prontos_demonstraveis_apenas_com_csv": 0,
+    "unidades_de_empresas_com_filiais": 956,
+    "hashes": {
+      "empresas.csv": "470f5bf17c33a4dab1c36877ff9b8bed31ba4ea9ff054b50aec52f2f1d611345",
+      "enderecos_estabelecimentos.csv": "a3d173691af21a1891e9445c4448449bac8c45d51ceb737ec40b662b2e86e381",
+      "sinais_financeiros_operacionais.csv": "48f5a7a2c2f0e331ffbbd68b2bd741f1a8d75445e37d4e3b5fcd73657a17bc2b",
+      "bens_cadastrados.csv": "8a648196897c1a03f099bff7e6d7893346895be9884b2aa511e51eb717608555",
+      "territorio.csv": "37051cb3f431bf809c93ae5d3544f9828d631f3f55bd0976071d61bda541fdd5",
+      "catalogo_coberturas_fixas_planos.csv": "6decd9c37e35cf1cf451cf7b7af8543a074dcaed07ecb1874793dcdbd01cd2b2",
+      "dicionario_dados.csv": "25bf47ae583a5941478433537300e12c0d1b897a30af9210656abdd972e81b32",
+      "template_resultado_times.csv": "31f756cf1f2708a80052874d54a8270a85b53caa2d6ed0d14621527b97792fac",
+      "template_coberturas_times.csv": "43ae394507c120a5df25d7cca6b9dc8e8b6d675fde407a550775e30020fc0a2a",
+      "seguranca_municipal.csv": "5f336788116f9a232de7666f3706820d057c9ef6a3aa5f091746b8c4c2dd028f",
+      "clima_municipal.csv": "4a7e687f1ab690c4eff53c7ceca577b9fdc4fe4988aba76b93d0aea26b7575ae",
+      "nr4_cnae.csv": "08e511a1cdb2bdbe22afbad6efa2fb04a1055243efed74e3c1a2b3acd68fcaa7"
+    }
+  },
+  "restricoes": [
+    {
+      "motivo": "Atividade rural: sinal pelo CNAE",
+      "unidades": 0,
+      "percentual": 0.0,
+      "denominador": 2978,
+      "parametro": "Divisões CNAE 01, 02 ou 03",
+      "observacao": "Nenhum sinal rural nos CNAEs fornecidos; confirmar atividade efetiva e aceitação."
+    },
+    {
+      "motivo": "Localização rural ou nas áreas restritas do guia",
+      "unidades": 0,
+      "percentual": 0.0,
+      "denominador": 2978,
+      "parametro": "Confirmação específica da localização",
+      "observacao": "Não verificável em 100%: sem campo próprio. Não inferir de renda, bairro, CEP ou coordenadas perturbadas. Zero identificado não prova ausência."
+    },
+    {
+      "motivo": "Imóvel tombado ou desapropriado",
+      "unidades": 0,
+      "percentual": 0.0,
+      "denominador": 2978,
+      "parametro": "Confirmação documental específica",
+      "observacao": "Não verificável em 100%: sem campos próprios."
+    },
+    {
+      "motivo": "Imóvel condenado",
+      "unidades": 0,
+      "percentual": 0.0,
+      "denominador": 2978,
+      "parametro": "situacao_imovel_cadastral = CONDENADO",
+      "observacao": "Nenhum registro com esse valor. IRREGULAR não equivale a condenado."
+    },
+    {
+      "motivo": "Construção, reforma ou reconstrução",
+      "unidades": 78,
+      "percentual": 2.62,
+      "denominador": 2978,
+      "parametro": "Situação em obra/construção/reforma/reconstrução",
+      "observacao": "EM_OBRA é o único impedimento explícito encontrado. Confirmar situação atual antes de decisão oficial."
+    },
+    {
+      "motivo": "Paredes externas combustíveis",
+      "unidades": 0,
+      "percentual": 0.0,
+      "denominador": 2978,
+      "parametro": "Material = MADEIRA ou MATERIAL_COMBUSTIVEL",
+      "observacao": "Nenhum positivo informado; em 2.524 unidades o material é desconhecido."
+    },
+    {
+      "motivo": "Mesmo objeto em outra proposta BB Seguros",
+      "unidades": 0,
+      "percentual": 0.0,
+      "denominador": 2978,
+      "parametro": "Checar objeto, proposta/apólice existente",
+      "observacao": "Não verificável em 100%: sem histórico de propostas por objeto."
+    },
+    {
+      "motivo": "Objeto básico acima de R$ 7,5 milhões",
+      "unidades": 0,
+      "percentual": 0.0,
+      "denominador": 2978,
+      "parametro": "Prédio e conteúdo, limite único > 7.500.000",
+      "observacao": "Encaminhar ao Personalizado; não é recusa geral. Nenhum subtotal disponível supera o corte, mas falta reconstrução em 100%. Não comprova valor total abaixo do limite."
+    }
+  ],
+  "pendencias": [
+    {
+      "motivo": "Identificação legal: nome/razão social e CPF/CNPJ",
+      "unidades": 2978,
+      "percentual": 100.0,
+      "denominador": 2978,
+      "parametro": "Identificação legal válida; IDs anônimos não substituem CPF/CNPJ",
+      "observacao": "Ausência estrutural do pacote anonimizado, não falha do cliente real."
+    },
+    {
+      "motivo": "Relação com o imóvel",
+      "unidades": 2978,
+      "percentual": 100.0,
+      "denominador": 2978,
+      "parametro": "Confirmar proprietário ou inquilino",
+      "observacao": "Pagamento de aluguel ou sua ausência não comprova a relação jurídica."
+    },
+    {
+      "motivo": "Escopo: prédio, conteúdo ou ambos",
+      "unidades": 2978,
+      "percentual": 100.0,
+      "denominador": 2978,
+      "parametro": "Escolha explícita do cliente",
+      "observacao": "Define quais valores são aplicáveis. Não consta nos CSVs."
+    },
+    {
+      "motivo": "Condições do local e aceitação da atividade",
+      "unidades": 2978,
+      "percentual": 100.0,
+      "denominador": 2978,
+      "parametro": "Confirmar restrições e atividade aceita no produto",
+      "observacao": "CNAE preenchido não comprova aceitação; o pacote não confirma toda a lista do guia."
+    },
+    {
+      "motivo": "CEP completo e validado",
+      "unidades": 2978,
+      "percentual": 100.0,
+      "denominador": 2978,
+      "parametro": "CEP completo de oito dígitos",
+      "observacao": "cep_agregado não é CEP completo. Logradouro, número, bairro, cidade e UF estão preenchidos."
+    },
+    {
+      "motivo": "Empregados confirmados nesta unidade",
+      "unidades": 2978,
+      "percentual": 100.0,
+      "denominador": 2978,
+      "parametro": "Quantidade local confirmada ou ausência declarada",
+      "observacao": "Há estimativa empresarial e folha local; sem confirmação por unidade."
+    },
+    {
+      "motivo": "Reconstrução ou dispensa explícita pelo escopo",
+      "unidades": 2978,
+      "percentual": 100.0,
+      "denominador": 2978,
+      "parametro": "Reconstrução sem terreno para prédio/ambos; dispensável se conteúdo apenas",
+      "observacao": "Pendência de aplicabilidade: o escopo ainda é desconhecido em todos os registros."
+    },
+    {
+      "motivo": "Bens, equipamentos e estoque confirmados",
+      "unidades": 2978,
+      "percentual": 100.0,
+      "denominador": 2978,
+      "parametro": "Inventário atual, vínculo e valor de reposição na unidade",
+      "observacao": "Há estimativas agregadas, sem validação atual para cotação."
+    },
+    {
+      "motivo": "Plano e adicionais com aceitação da atividade",
+      "unidades": 2978,
+      "percentual": 100.0,
+      "denominador": 2978,
+      "parametro": "Sugestão do motor e validação de compatibilidade/aceitação",
+      "observacao": "Plano pode ser calculado; não equivale a cotação concluída ou aceitação."
+    },
+    {
+      "motivo": "Refrigeração confirmada",
+      "unidades": 2978,
+      "percentual": 100.0,
+      "denominador": 2978,
+      "parametro": "Sim/Não; se Sim, mercadorias e valores",
+      "observacao": "Probabilidade estimada não substitui resposta."
+    },
+    {
+      "motivo": "Delivery confirmado",
+      "unidades": 2978,
+      "percentual": 100.0,
+      "denominador": 2978,
+      "parametro": "Sim/Não; se Sim, detalhar operação",
+      "observacao": "Receita/probabilidade estimadas não substituem resposta."
+    },
+    {
+      "motivo": "Home office confirmado",
+      "unidades": 2978,
+      "percentual": 100.0,
+      "denominador": 2978,
+      "parametro": "Sim/Não; se Sim, bens e locais de uso",
+      "observacao": "Vendas online não comprovam trabalho remoto."
+    },
+    {
+      "motivo": "Dinheiro/valores em caixa confirmados",
+      "unidades": 2978,
+      "percentual": 100.0,
+      "denominador": 2978,
+      "parametro": "Sim/Não; se Sim, quantia e controles",
+      "observacao": "Recebimentos não digitais não equivalem a dinheiro em caixa."
+    },
+    {
+      "motivo": "Eletrônicos: exposição e inventário confirmados",
+      "unidades": 2978,
+      "percentual": 100.0,
+      "denominador": 2978,
+      "parametro": "Confirmar uso e reposição na unidade",
+      "observacao": "Bens cadastrados são sinais, não confirmação atual."
+    },
+    {
+      "motivo": "Segurança física e controles digitais confirmados",
+      "unidades": 2978,
+      "percentual": 100.0,
+      "denominador": 2978,
+      "parametro": "Confirmar controles efetivos; verificar requisitos de shopping quando aplicáveis",
+      "observacao": "Bem SISTEMA_SEGURANCA e maturidade digital não comprovam controles. Condições para desconto não são exclusões gerais."
+    },
+    {
+      "motivo": "Material das paredes ausente",
+      "unidades": 2524,
+      "percentual": 84.75,
+      "denominador": 2978,
+      "parametro": "Ausente ou NAO_DISPONIVEL",
+      "observacao": "Impede verificação de combustível; não classificar ausência como material combustível."
+    },
+    {
+      "motivo": "Padrão construtivo ausente",
+      "unidades": 2437,
+      "percentual": 81.83,
+      "denominador": 2978,
+      "parametro": "Ausente ou NAO_DISPONIVEL",
+      "observacao": "Parâmetro de apoio ao dimensionamento, não exclusão autônoma do guia."
+    },
+    {
+      "motivo": "Ao menos um bem com vínculo de baixa confiança",
+      "unidades": 1827,
+      "percentual": 61.35,
+      "denominador": 2978,
+      "parametro": "bens_baixa_confianca > 0",
+      "observacao": "Prioridade de revisão de inventário; não taxa de inelegibilidade."
+    },
+    {
+      "motivo": "Endereço incompatível com cadastro",
+      "unidades": 656,
+      "percentual": 22.03,
+      "denominador": 2978,
+      "parametro": "endereco_cnpj_compativel != SIM",
+      "observacao": "Conferir vínculo/endereço; divergência não é proibição automática."
+    },
+    {
+      "motivo": "Situação cadastral irregular",
+      "unidades": 52,
+      "percentual": 1.75,
+      "denominador": 2978,
+      "parametro": "situação = IRREGULAR",
+      "observacao": "Apurar; não equiparar automaticamente a condenado ou em obra."
+    }
+  ],
+  "disponibilidade": [
+    {
+      "motivo": "CNAE",
+      "unidades": 0,
+      "percentual": 0.0,
+      "denominador": 2978,
+      "parametro": "cnae_principal",
+      "observacao": "Ausência literal. Presença não comprova confirmação contratual. Zero válido é preservado."
+    },
+    {
+      "motivo": "Atividade descrita",
+      "unidades": 0,
+      "percentual": 0.0,
+      "denominador": 2978,
+      "parametro": "descricao_cnae",
+      "observacao": "Ausência literal. Presença não comprova confirmação contratual. Zero válido é preservado."
+    },
+    {
+      "motivo": "Faturamento empresarial",
+      "unidades": 0,
+      "percentual": 0.0,
+      "denominador": 2978,
+      "parametro": "faturamento_mensal",
+      "observacao": "Ausência literal. Presença não comprova confirmação contratual. Zero válido é preservado."
+    },
+    {
+      "motivo": "Empregados estimados da empresa",
+      "unidades": 0,
+      "percentual": 0.0,
+      "denominador": 2978,
+      "parametro": "quantidade_funcionarios_estimada",
+      "observacao": "Ausência literal. Presença não comprova confirmação contratual. Zero válido é preservado."
+    },
+    {
+      "motivo": "Folha local",
+      "unidades": 0,
+      "percentual": 0.0,
+      "denominador": 2978,
+      "parametro": "folha_pagamento_mensal",
+      "observacao": "Ausência literal. Presença não comprova confirmação contratual. Zero válido é preservado."
+    },
+    {
+      "motivo": "Bens agregados",
+      "unidades": 0,
+      "percentual": 0.0,
+      "denominador": 2978,
+      "parametro": "bens_ponderados",
+      "observacao": "Ausência literal. Presença não comprova confirmação contratual. Zero válido é preservado."
+    },
+    {
+      "motivo": "Equipamentos agregados",
+      "unidades": 0,
+      "percentual": 0.0,
+      "denominador": 2978,
+      "parametro": "equipamentos_ponderados",
+      "observacao": "Ausência literal. Presença não comprova confirmação contratual. Zero válido é preservado."
+    },
+    {
+      "motivo": "Estoque estimado",
+      "unidades": 0,
+      "percentual": 0.0,
+      "denominador": 2978,
+      "parametro": "estoque_medio_estimado",
+      "observacao": "Ausência literal. Presença não comprova confirmação contratual. Zero válido é preservado."
+    },
+    {
+      "motivo": "Despesas fixas estimadas",
+      "unidades": 0,
+      "percentual": 0.0,
+      "denominador": 2978,
+      "parametro": "despesa_fixa_mensal_estimada",
+      "observacao": "Ausência literal. Presença não comprova confirmação contratual. Zero válido é preservado."
+    },
+    {
+      "motivo": "Aluguel identificado",
+      "unidades": 0,
+      "percentual": 0.0,
+      "denominador": 2978,
+      "parametro": "valor_aluguel_recorrente",
+      "observacao": "Ausência literal. Presença não comprova confirmação contratual. Zero válido é preservado."
+    }
+  ]
+}

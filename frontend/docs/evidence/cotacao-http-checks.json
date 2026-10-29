@@ -1,0 +1,34 @@
+[
+  {
+    "path": "/",
+    "status": 200
+  },
+  {
+    "path": "/seguros/seguro-empresarial",
+    "status": 200
+  },
+  {
+    "path": "/cotacao",
+    "status": 200
+  },
+  {
+    "path": "/cotacao/home",
+    "status": 200
+  },
+  {
+    "path": "/home",
+    "status": 200
+  },
+  {
+    "path": "/quote.js",
+    "status": 200
+  },
+  {
+    "path": "/activity-search.js",
+    "status": 200
+  },
+  {
+    "path": "/activities.json",
+    "status": 200
+  }
+]

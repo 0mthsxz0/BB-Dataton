@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-28",
+  "environment": "Servidor local localhost:4174 e navegador integrado",
+  "pythonTestsPassed": 203,
+  "nodeTestsPassed": 33,
+  "syntax": "PASS",
+  "checks": [
+    "Painel interno carrega 2978 estabelecimentos e calcula análise cadastral com 17 opcionais e três alternativas.",
+    "Empresa de eletrônicos mostra evidência por campo CSV e confirmação pendente, sem inclusão automática.",
+    "Cadastro público não exibe consulta de empresas.",
+    "Cadastro próprio com confirmação de eletrônicos calcula Empresarial Essencial.",
+    "Selecionar adicional de eletrônicos recalcula pacote com seis obrigatórias e um adicional condicional.",
+    "Fluxo público chega à revisão e conclusão demonstrativa, sem cobrança.",
+    "Resumo JSON baixado contém plano e adicional selecionado, sem contato ou rastreabilidade interna.",
+    "Nenhum erro de console observado na jornada pública."
+  ],
+  "screenshots": [
+    "../screenshots/opcionais-interno.png",
+    "../screenshots/opcionais-publico-conclusao.png"
+  ],
+  "limitations": [
+    "Aplicação local demonstrativa, sem autenticação de produção, sem persistência de leads ou emissão de seguro.",
+    "Confirmações declaradas não comprovam compatibilidade contratual.",
+    "Comparação de proteção sem preços e sem promessa de economia."
+  ]
+}
