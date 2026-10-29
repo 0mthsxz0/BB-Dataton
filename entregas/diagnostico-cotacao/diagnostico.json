@@ -20,9 +20,9 @@
       "dicionario_dados.csv": "25bf47ae583a5941478433537300e12c0d1b897a30af9210656abdd972e81b32",
       "template_resultado_times.csv": "31f756cf1f2708a80052874d54a8270a85b53caa2d6ed0d14621527b97792fac",
       "template_coberturas_times.csv": "43ae394507c120a5df25d7cca6b9dc8e8b6d675fde407a550775e30020fc0a2a",
-      "C:\\Users\\mathe\\OneDrive\\Área de Trabalho\\BB Datahakon\\BB-Dataton\\data\\referencias\\seguranca_municipal.csv": "5f336788116f9a232de7666f3706820d057c9ef6a3aa5f091746b8c4c2dd028f",
-      "C:\\Users\\mathe\\OneDrive\\Área de Trabalho\\BB Datahakon\\BB-Dataton\\data\\referencias\\clima_municipal.csv": "4a7e687f1ab690c4eff53c7ceca577b9fdc4fe4988aba76b93d0aea26b7575ae",
-      "C:\\Users\\mathe\\OneDrive\\Área de Trabalho\\BB Datahakon\\BB-Dataton\\data\\referencias\\nr4_cnae.csv": "08e511a1cdb2bdbe22afbad6efa2fb04a1055243efed74e3c1a2b3acd68fcaa7"
+      "seguranca_municipal.csv": "5f336788116f9a232de7666f3706820d057c9ef6a3aa5f091746b8c4c2dd028f",
+      "clima_municipal.csv": "4a7e687f1ab690c4eff53c7ceca577b9fdc4fe4988aba76b93d0aea26b7575ae",
+      "nr4_cnae.csv": "08e511a1cdb2bdbe22afbad6efa2fb04a1055243efed74e3c1a2b3acd68fcaa7"
     }
   },
   "restricoes": [
