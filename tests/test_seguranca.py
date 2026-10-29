@@ -81,6 +81,20 @@ def test_hash_modificado_rejeitado_antes_da_analise(tmp_path):
         incorporar_ssp(pd.DataFrame([{'codigo_ibge_municipio':'5300108'}]),arquivo)
 
 
+def test_snapshot_equivalente_em_lf_e_crlf(tmp_path):
+    arquivo = tmp_path/'seguranca_ssp.csv'
+    original = b'coluna\r\nvalor\r\n'
+    arquivo.write_bytes(original.replace(b'\r\n', b'\n'))
+    manifesto = arquivo.with_name(arquivo.name+'.manifesto.json')
+    manifesto.write_text(json.dumps({
+        'arquivos': {arquivo.name: hashlib.sha256(original).hexdigest()}
+    }), encoding='utf-8')
+    assert verificar_snapshot(arquivo) == 'VERIFICADA'
+    arquivo.write_bytes(b'coluna\nALTERADO\n')
+    with pytest.raises(ValueError, match='Integridade'):
+        verificar_snapshot(arquivo)
+
+
 def test_denominador_sem_fonte_ou_de_outro_ano_nao_gera_taxa():
     r=dict(uf='DF',codigo_ibge_municipio='5300108',regiao_administrativa='TOTAL',ano='2025',
            meses_observados=12,roubo_comercio_total=10,estabelecimentos=100,
