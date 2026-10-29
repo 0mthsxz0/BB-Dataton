@@ -16,8 +16,12 @@ export function classificarCnae(resposta,catalog,index){
  if(!/^\d{7}$/.test(cnae)||!resposta?.encontrado||!descricao)
    return {tipo:'nao_encontrado',descricao:'',cnae,sugestoes:[]};
  const direto=DE_PARA[cnae];
- if(direto && isValidSelection(catalog,direto.activityId,direto.subactivityId)){
-   return {tipo:'automatico',cnae,descricao,...direto,origem:'equivalencia_validada',sugestoes:[]};
+ if(direto){
+   if(isValidSelection(catalog,direto.activityId,direto.subactivityId)){
+     return {tipo:'automatico',cnae,descricao,...direto,origem:'equivalencia_validada',sugestoes:[]};
+   }
+   // Não trocar por uma categoria incompatível caso o catálogo seja alterado.
+   return {tipo:'confirmar',cnae,descricao,sugestoes:[]};
  }
  const busca=searchActivities(index,descricao,{mode:'description',limit:3});
  const [primeiro,segundo]=busca.results;
@@ -28,7 +32,12 @@ export function classificarCnae(resposta,catalog,index){
  }));
  // Só avançar quando a busca tem confiança forte, margem alta e
  // subatividade efetivamente pertencente à mesma categoria do catálogo.
- if(busca.confidence==='strong'&&margem>=12&&primeiro?.subactivity
+ const retail=/\b(varejista|varejo)\b/i.test(descricao);
+ const atacado=/\b(atacadista|atacado)\b/i.test(descricao);
+ const titulo=primeiro?.activity.label||'';
+ const operacaoIncompativel=(retail&&/atacadista|atacado/i.test(titulo))
+    ||(atacado&&/varejista|varejo/i.test(titulo));
+ if(!operacaoIncompativel&&busca.confidence==='strong'&&margem>=12&&primeiro?.subactivity
     &&!primeiro.requiresSubactivityConfirmation
     &&isValidSelection(catalog,primeiro.activity.id,primeiro.subactivity.id)){
    return {tipo:'automatico',cnae,descricao,activityId:primeiro.activity.id,
