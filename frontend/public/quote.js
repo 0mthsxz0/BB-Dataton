@@ -1,5 +1,6 @@
 import { fullName, questionLabel } from './language.js';
 import { voiceMarkup, bindVoice } from './voice-ui.js';
+import { cnaeReportView } from './cnae-report-ui.js';
 import { customerRecommendationView, customerReport } from './journeys.js';
 import { initializeProductState, productPayload, productFields, packageFields, optionalFields, syncPackageState, packageCount } from './product-ui.js';
 import { api, riskFields, riskPayload, employeePresence, syncEmployeeExposure, recommendationView, baseFields, cadastroRecommendationView } from './quote-engine.js';
@@ -23,6 +24,7 @@ const TITLES=[
 let catalog,index,plans,questionnaire,baseContext,productRules;
 let recommendation=null,busy=false;
 let cadastroRecommendation=null,cadastroLoading=false,cadastroError='',cadastroRevision=0;
+let cnaeReport=null;
 let step=internal?1:0;
 let completed=internal?1:0;
 let picker;
@@ -96,8 +98,28 @@ function render(){
   document.title=`${LABELS[step]} · Cotação empresarial`;
   $('#quote-root').innerHTML=`<ol class="quote-progress" aria-label="Etapas da cotação">${LABELS.map((label,i)=>`<li><button type="button" data-step="${i}" aria-label="Etapa ${i+1}: ${label}" ${i===step?'aria-current="step"':''} ${i<step?'class="completed"':''} ${i>completed?'disabled':''}></button></li>`).join('')}</ol><p class="step-caption">Etapa ${step+1} de ${LABELS.length} · ${LABELS[step]}</p><h1 class="quote-title" id="form-title">${TITLES[step]}</h1><div id="form-errors" role="alert"></div><div id="step-content"></div>`;
   $$('[data-step]').forEach(b=>b.addEventListener('click',()=>go(Number(b.dataset.step))));
-  const content=[personal,business,address,protectionStep,planStep,review,success][step]();
+  const direct=internal&&step===1&&cnaeReport;
+  const content=direct?cnaeReportView(cnaeReport):[personal,business,address,protectionStep,planStep,review,success][step]();
   $('#step-content').innerHTML=content;
+  if(direct){
+    document.title='Relatório do CNAE '+cnaeReport.cnae+' · BB-Datathon';
+    $('#form-title').textContent='Relatório automático da atividade econômica';
+    $('#cnae-report-back').addEventListener('click',()=>{
+      cnaeReport=null;cadastroRecommendation=null;state.sourceKey='';render();
+      $('#cnae')?.focus({preventScroll:true});
+    });
+    $('#cnae-report-download').addEventListener('click',()=>{
+      const blob=new Blob([JSON.stringify(cnaeReport,null,2)],{type:'application/json'});
+      const url=URL.createObjectURL(blob),link=document.createElement('a');
+      link.href=url;link.download='relatorio-cnae-'+cnaeReport.cnae+'.json';
+      document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+    });
+    if(cnaeReport.tipo==='individual'){
+      const r=cnaeReport.relatorio;
+      bindVoice(r.cadastro.empresa_id+'|'+r.cadastro.imovel_id);
+    }
+    return;
+  }
   if(step<6){
     const form=$('#quote-form');
     form.addEventListener('input',remember);
@@ -169,9 +191,16 @@ function profileNotice(){
 async function requestProfile(){
  clearTimeout(profileTimer);
  const code=state.cnae.replace(/\D/g,'');if(code.length!==7){$('#cnae-profile-status').textContent='Informe os sete dígitos do código da atividade.';return;}
- const revision=++profileRevision;profileLoading=true;const status=$('#cnae-profile-status');status.textContent='Consultando referências da atividade…';
+ const revision=++profileRevision;profileLoading=true;const status=$('#cnae-profile-status');status.textContent=internal?'Gerando relatório automático dos estabelecimentos deste CNAE…':'Consultando referências da atividade…';
  try{
-  const p=await api('/api/cnae/perfil',{cnae:code});if(revision!==profileRevision)return;
+  if(internal && !state.sourceKey){
+    const report=await api('/api/interno/relatorio-cnae',{cnae:code});
+    if(revision!==profileRevision||state.cnae.replace(/\D/g,'')!==code)return;
+    cnaeReport=report;cadastroRecommendation=null;
+    render();$('#quote-main').scrollIntoView({block:'start'});
+    return;
+   }
+   const p=await api('/api/cnae/perfil',{cnae:code});if(revision!==profileRevision)return;
   const previousFields=new Set(state.profileFields||[]);state.cnaeProfile=p;state.profileFields=[];
   for(const [key,value] of Object.entries(p.valores)){if(!state.sourceKey&&(state[key]===''||state[key]==null||previousFields.has(key))){state[key]=String(value);state.profileFields.push(key);}}
   status.innerHTML=profileNotice();
@@ -192,7 +221,7 @@ function review(){return form(`${summary({includeContact:true})}<div class="form
 function success(){return `<div class="quote-success"><div class="success-icon" aria-hidden="true">✓</div><p>Você percorreu todas as etapas da demonstração. A recomendação foi calculada pelo motor local do MVP. Contatos e pagamento permanecem somente na memória da página; os dados de proteção são processados no servidor local, sem gravar proposta.</p>${summary()}<p>Para obter uma cotação válida e contratar, utilize o canal oficial da BB Seguros. Os dados preenchidos aqui não são transferidos.</p><button class="btn" id="download-summary">Baixar resumo sem dados pessoais</button><a class="btn btn-outline" href="https://cotacaoseguroempresarial.bbseguros.com.br/home" target="_blank" rel="noopener noreferrer">Abrir cotação oficial ↗</a><p><button class="back-button" id="restart-quote">Começar novamente e limpar os dados</button></p></div>`;}
 
 function updateReportLayout(){
-  const visible=step>=4||step===1&&Boolean(cadastroRecommendation);
+  const visible=step>=4||step===1&&Boolean(cadastroRecommendation||cnaeReport);
   document.body.classList.toggle('report-mode',visible);
   $('.quote-visual').hidden=visible;
 }
@@ -260,7 +289,7 @@ async function verifyClient(){
  }catch(e){status.textContent=e.message;button.disabled=false;}
 }
 function invalidate(){recommendation=null;state.planId='';state.reviewed=false;completed=Math.min(completed,3);$$('[data-step]').forEach(b=>{b.disabled=Number(b.dataset.step)>completed;});}
-function remember(e){const t=e.target;if(!t.name||!(t.name in state))return;if(t.name.startsWith('extra_'))state['excludeExtra_'+t.name.slice(6)]=!t.checked;if(Array.isArray(state.profileFields)&&state.profileFields.includes(t.name))state.profileFields=state.profileFields.filter(k=>k!==t.name);if(t.name==='cnae'&&e.type==='input')clearProfile();const previousEmployees=state.employees;state[t.name]=t.type==='checkbox'?t.checked:t.value;if(t.name==='cnae'&&e.type==='input'&&state.cnae.replace(/\D/g,'').length===7)profileTimer=setTimeout(requestProfile,350);if(t.name==='employees'&&employeePresence(state)===false){state.payroll='0';const payrollInput=$('#payroll');if(payrollInput)payrollInput.value='0';state.profileFields=(state.profileFields||[]).filter(k=>k!=='payroll');}if(t.name==='employees'){const presence=syncEmployeeExposure(state,previousEmployees);$$('[data-employee-exposure] input').forEach(r=>{r.disabled=presence===false;r.required=presence!==false;r.checked=r.value===state.hazardousWork;});}if(t.name==='shopping'&&t.value!=='yes')state.op_shoppingControls='';if(step===4){if(t.name.startsWith('op_')||t.name==='planId'){for(const x of productRules.optional){const plan={892:'ESSENCIAL',893:'PRATICO',894:'TOTAL'}[state.planId];if(state['op_'+x.operation]!=='yes'||!x.plans.includes(plan))state['extra_'+x.code]=false;else if(x.operation!=='interruption'&&!state['excludeExtra_'+x.code])state['extra_'+x.code]=true;}if(e.type==='change')render();}if(t.name.startsWith('extra_LUCRO_')&&t.checked){for(const x of productRules.optional.filter(x=>x.code.startsWith('LUCRO_'))){if('extra_'+x.code!==t.name){state['extra_'+x.code]=false;state['excludeExtra_'+x.code]=true;}}if(e.type==='change')render();}const status=$('#package-status');if(status)status.textContent='Há alterações pendentes. Aplique os ajustes para atualizar o pacote.';return;}if(!['name','cnpj','birthDate','maritalStatus','phone','email','personType','planId','payment','installments','paymentDay','reviewed','description'].includes(t.name))invalidate();if(t.name==='phone'){let v=t.value.replace(/\D/g,'').slice(0,11);if(v.length>2)v=`(${v.slice(0,2)}) ${v.slice(2)}`;if(v.replace(/\D/g,'').length>7)v=v.slice(0,-4)+'-'+v.slice(-4);t.value=v;state.phone=v;}if(t.name==='cep'){const v=t.value.replace(/\D/g,'').slice(0,8);t.value=v.length>5?v.slice(0,5)+'-'+v.slice(5):v;state.cep=t.value;}}
+function remember(e){const t=e.target;if(!t.name||!(t.name in state))return;if(t.name.startsWith('extra_'))state['excludeExtra_'+t.name.slice(6)]=!t.checked;if(Array.isArray(state.profileFields)&&state.profileFields.includes(t.name))state.profileFields=state.profileFields.filter(k=>k!==t.name);if(t.name==='cnae'&&e.type==='input'){clearProfile();cnaeReport=null;}const previousEmployees=state.employees;state[t.name]=t.type==='checkbox'?t.checked:t.value;if(t.name==='cnae'&&e.type==='input'&&state.cnae.replace(/\D/g,'').length===7)profileTimer=setTimeout(requestProfile,350);if(t.name==='employees'&&employeePresence(state)===false){state.payroll='0';const payrollInput=$('#payroll');if(payrollInput)payrollInput.value='0';state.profileFields=(state.profileFields||[]).filter(k=>k!=='payroll');}if(t.name==='employees'){const presence=syncEmployeeExposure(state,previousEmployees);$$('[data-employee-exposure] input').forEach(r=>{r.disabled=presence===false;r.required=presence!==false;r.checked=r.value===state.hazardousWork;});}if(t.name==='shopping'&&t.value!=='yes')state.op_shoppingControls='';if(step===4){if(t.name.startsWith('op_')||t.name==='planId'){for(const x of productRules.optional){const plan={892:'ESSENCIAL',893:'PRATICO',894:'TOTAL'}[state.planId];if(state['op_'+x.operation]!=='yes'||!x.plans.includes(plan))state['extra_'+x.code]=false;else if(x.operation!=='interruption'&&!state['excludeExtra_'+x.code])state['extra_'+x.code]=true;}if(e.type==='change')render();}if(t.name.startsWith('extra_LUCRO_')&&t.checked){for(const x of productRules.optional.filter(x=>x.code.startsWith('LUCRO_'))){if('extra_'+x.code!==t.name){state['extra_'+x.code]=false;state['excludeExtra_'+x.code]=true;}}if(e.type==='change')render();}const status=$('#package-status');if(status)status.textContent='Há alterações pendentes. Aplique os ajustes para atualizar o pacote.';return;}if(!['name','cnpj','birthDate','maritalStatus','phone','email','personType','planId','payment','installments','paymentDay','reviewed','description'].includes(t.name))invalidate();if(t.name==='phone'){let v=t.value.replace(/\D/g,'').slice(0,11);if(v.length>2)v=`(${v.slice(0,2)}) ${v.slice(2)}`;if(v.replace(/\D/g,'').length>7)v=v.slice(0,-4)+'-'+v.slice(-4);t.value=v;state.phone=v;}if(t.name==='cep'){const v=t.value.replace(/\D/g,'').slice(0,8);t.value=v.length>5?v.slice(0,5)+'-'+v.slice(5):v;state.cep=t.value;}}
 function fail(message){$('#form-errors').innerHTML=`<p class="quote-error">${esc(message)}</p>`;$('#form-errors').scrollIntoView({block:'nearest'});return false;}
 function validCnpj(value){const digits=value.replace(/\D/g,'');if(digits.length!==14||/^(\d)\1+$/.test(digits))return false;function digit(base){let weight=base.length-7;let sum=0;for(const c of base){sum+=Number(c)*weight--;if(weight===1)weight=9;}const rest=sum%11;return rest<2?'0':String(11-rest);}return digit(digits.slice(0,12))===digits[12]&&digit(digits.slice(0,13))===digits[13];}
 function validateStep(){
