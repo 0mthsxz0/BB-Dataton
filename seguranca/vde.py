@@ -57,9 +57,9 @@ def ler_vde(arquivo):
         livro.close()
 
 
-def gravar_vde(con, arquivo, url, registros, auditoria):
+def gravar_vde(con, arquivo, url, registros, auditoria, somente_bruto=False):
     """Importação atômica, idempotente e sem soma de dimensões desconhecidas."""
-    if not con.execute('SELECT 1 FROM municipios LIMIT 1').fetchone():
+    if not somente_bruto and not con.execute('SELECT 1 FROM municipios LIMIT 1').fetchone():
         raise ValueError('Importe o cadastro IBGE antes do VDE.')
     con.execute('''CREATE TABLE IF NOT EXISTS vde_registros (
         fonte_id INTEGER NOT NULL REFERENCES fontes(id), linha INTEGER NOT NULL,
@@ -68,6 +68,8 @@ def gravar_vde(con, arquivo, url, registros, auditoria):
         metrica TEXT NOT NULL, valor INTEGER, status TEXT NOT NULL, dados TEXT NOT NULL,
         PRIMARY KEY(fonte_id,linha))''')
     fonte = registrar_fonte(con, arquivo, url)
+    if somente_bruto and con.execute('SELECT 1 FROM ocorrencia_fontes WHERE fonte_id=? LIMIT 1', (fonte,)).fetchone():
+        raise ValueError('Fonte já publicada como municipal; coleta bruta não pode rebaixar sua auditoria.')
     por_nome = {}
     for r in con.execute('SELECT codigo_ibge,municipio,uf FROM municipios'):
         por_nome.setdefault((r['uf'], normalizar(r['municipio'])), []).append(r['codigo_ibge'])
@@ -83,7 +85,7 @@ def gravar_vde(con, arquivo, url, registros, auditoria):
         if mes >= datetime.now(timezone.utc).strftime('%Y-%m-01'):
             raise ValueError('VDE contém mês corrente ou futuro.')
         candidatos = por_nome.get((uf, normalizar(r['municipio'])), [])
-        codigo = candidatos[0] if len(candidatos) == 1 else None
+        codigo = candidatos[0] if len(candidatos) == 1 and not somente_bruto else None
         n, vitimas = numero(r['total'], inteiro=True), numero(r['total_vitima'], inteiro=True)
         if n is not None and vitimas is not None:
             raise ValueError('VDE com duas unidades na mesma linha; revisar o adaptador.')
@@ -94,6 +96,8 @@ def gravar_vde(con, arquivo, url, registros, auditoria):
             status = 'abrangencia_nao_estadual'
         elif normalizar(r['municipio']) in ('nao informado', ''):
             status = 'sem_municipio'
+        elif somente_bruto:
+            status = 'aguardando_validacao_municipal'
         elif codigo is None:
             status = 'municipio_sem_correspondencia'
         elif repetida:
@@ -137,6 +141,6 @@ def gravar_vde(con, arquivo, url, registros, auditoria):
     return resultado
 
 
-def importar_vde(con, arquivo, url):
+def importar_vde(con, arquivo, url, somente_bruto=False):
     registros, auditoria = ler_vde(Path(arquivo))
-    return gravar_vde(con, arquivo, url, registros, auditoria)
+    return gravar_vde(con, arquivo, url, registros, auditoria, somente_bruto)

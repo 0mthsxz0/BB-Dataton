@@ -1,0 +1,45 @@
+{
+  "criado_em": "2026-10-29T03:13:59.421909+00:00",
+  "status_motor": "PENDENTE_FONTES_COMPATIVEIS",
+  "municipios_utilizaveis": 0,
+  "coleta": {
+    "ibge/localidades.json": {
+      "status": "pendente",
+      "url": "https://servicodados.ibge.gov.br/api/v1/localidades/municipios",
+      "erro": "Arquivo não disponível no cache; rede desativada."
+    },
+    "ibge/indicadores.json": {
+      "status": "pendente",
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/4714/periodos/2022/variaveis/93%7C6318?localidades=N6[all]",
+      "erro": "Arquivo não disponível no cache; rede desativada."
+    },
+    "ibge/populacao_2025.json": {
+      "status": "pendente",
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/2025/variaveis/9324?localidades=N6[all]",
+      "erro": "Arquivo não disponível no cache; rede desativada."
+    },
+    "sinesp/bancovde-2025.xlsx": {
+      "status": "disponivel",
+      "url": "https://www.gov.br/mj/pt-br/assuntos/sua-seguranca/seguranca-publica/estatistica/download/dnsp-base-de-dados/bancovde-2025.xlsx/@@download/file",
+      "url_final": "https://www.gov.br/mj/pt-br/assuntos/sua-seguranca/seguranca-publica/estatistica/download/dnsp-base-de-dados/bancovde-2025.xlsx/@@download/file",
+      "arquivo": "/workspace/BB-Dataton/data/seguranca/fontes/sinesp/bancovde-2025.xlsx",
+      "bytes": 26644100,
+      "sha256": "6b87609815afc534f44f3423bf8660a69c961130c187f759b9d3e38ee2a8a6e8",
+      "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "coletado_em": "2026-10-29T03:08:50.442275+00:00"
+    }
+  },
+  "etapas": {
+    "sinesp": "Snapshot já importado; preservado. Reimportação municipal exige comando explícito após atualização do cadastro."
+  },
+  "contagens": {
+    "municipios": 0,
+    "ocorrencias": 0,
+    "fontes": 1,
+    "vde_registros": 69510
+  },
+  "integridade_sqlite": "ok",
+  "violacoes_fk": 0,
+  "tabelas_clientes_encontradas": [],
+  "banco": "/workspace/BB-Dataton/data/seguranca/seguranca.sqlite"
+}

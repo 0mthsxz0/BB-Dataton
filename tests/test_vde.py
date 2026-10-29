@@ -53,6 +53,9 @@ def test_vde_nao_rateia_estado_nem_mistura_unidades_e_abrangencias(banco, tmp_pa
                                'vitimas_nao_sao_ocorrencias': 1, 'abrangencia_nao_estadual': 1}
         assert con.execute('SELECT count(*) FROM vde_registros').fetchone()[0] == 4
         assert con.execute('SELECT count(*),sum(ocorrencias) FROM ocorrencias').fetchone()[:] == (1, 0)
+        with pytest.raises(ValueError, match='já publicada'):
+            importar_vde(con, arquivo, 'fixture:vde', somente_bruto=True)
+        assert con.execute('SELECT count(*),sum(ocorrencias) FROM ocorrencias').fetchone()[:] == (1, 0)
 
 
 def test_vde_chave_repetida_preservada_sem_soma(banco, tmp_path):
@@ -80,7 +83,7 @@ def test_sem_ocorrencias_exporta_lacunas_sem_criar_pesos_ou_ranking(banco, tmp_p
         a = auditar(con, arquivo, tmp_path/'auditoria')
         assert a['correspondencia_ibge'] == 1 and a['com_indice'] == 0
         assert a['motivos_revisao'] == {'uf_divergente': 1}
-        assert con.execute('SELECT count(*) FROM estabelecimentos').fetchone()[0] == 1
+        assert con.execute("SELECT count(*) FROM sqlite_master WHERE name='estabelecimentos'").fetchone()[0] == 0
     lacunas = pd.read_csv(tmp_path/'auditoria/lacunas_municipio_crime.csv')
     assert lacunas.meses_presentes.tolist() == [0]
     assert len(lacunas.meses_ausentes.iloc[0].split('|')) == 12

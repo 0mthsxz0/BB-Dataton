@@ -15,6 +15,7 @@ from .vde import importar_vde
 from .auditoria import auditar
 from .hierarquia import atualizar_hierarquia
 from .mosler import avaliar_cruzamento
+from .motor_principal import importar_referencia, consultar_motor, exportar_motor
 
 
 RAIZ = Path(__file__).resolve().parents[1]
@@ -46,6 +47,16 @@ def main():
     vde.add_argument('arquivo', type=Path)
     vde.add_argument('--url', required=True)
     vde.add_argument('--auditoria', type=Path, required=True)
+    vde.add_argument('--somente-bruto', action='store_true', help='Preserva registros sem publicar ocorrências municipais; permite coleta antes do cadastro IBGE.')
+    importar_motor = sub.add_parser('importar-referencia-motor', help='Importa referência pública revisada compatível com a main; não aceita CSVs de clientes.')
+    importar_motor.add_argument('arquivo', type=Path)
+    importar_motor.add_argument('--data-analise')
+    consultar_ref = sub.add_parser('consultar-motor', help='Consulta apenas referências elegíveis no contrato da main.')
+    consultar_ref.add_argument('--codigo')
+    consultar_ref.add_argument('--data-analise')
+    exportar_ref = sub.add_parser('exportar-motor', help='Exporta CSV e manifesto para o motor da main, ou diagnóstico de pendências.')
+    exportar_ref.add_argument('--saida', type=Path, required=True)
+    exportar_ref.add_argument('--data-analise')
     sinesp = sub.add_parser('importar-sinesp')
     sinesp.add_argument('arquivo', type=Path)
     sinesp.add_argument('--url', required=True, help='URL original oficial do arquivo para proveniência.')
@@ -89,6 +100,17 @@ def main():
     if args.comando == 'inspecionar':
         emitir([{'folha': nome, 'colunas': list(df.columns), 'linhas': len(df),
                  'amostra': df.head(5).to_dict('records')} for nome, df, _ in tabelas(args.arquivo)])
+        return 0
+    if args.comando in ('consultar-motor', 'exportar-motor'):
+        with conectar(args.banco, somente_leitura=True) as con:
+            resultado = (consultar_motor(con, args.codigo, args.data_analise)
+                         if args.comando == 'consultar-motor' else
+                         exportar_motor(con, args.saida, args.data_analise))
+        emitir(resultado)
+        return 0 if resultado['municipios_utilizaveis'] else 2
+    if args.comando == 'auditar':
+        with conectar(args.banco, somente_leitura=True) as con:
+            emitir(auditar(con, args.estabelecimentos, args.saida))
         return 0
     if args.comando == 'consultar':
         try:
@@ -142,13 +164,15 @@ def main():
         elif args.comando == 'importar-populacao':
             emitir(importar_populacao(con, args.arquivo, args.url, args.ano))
         elif args.comando == 'importar-vde':
-            resultado = importar_vde(con, args.arquivo, args.url)
+            resultado = importar_vde(con, args.arquivo, args.url, args.somente_bruto)
             args.auditoria.parent.mkdir(parents=True, exist_ok=True)
             args.auditoria.write_text(json.dumps(resultado, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
             emitir({'auditoria': str(args.auditoria), 'linhas_roubo': resultado['linhas_roubo'],
                     'observacoes_municipais_importadas': resultado['observacoes_municipais_importadas'],
                     'status': resultado['status']})
             return 0
+        elif args.comando == 'importar-referencia-motor':
+            emitir(importar_referencia(con, args.arquivo, args.data_analise))
         elif args.comando == 'auditar':
             emitir(auditar(con, args.estabelecimentos, args.saida))
         elif args.comando == 'resolver-fontes':

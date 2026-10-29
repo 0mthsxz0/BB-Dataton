@@ -1,5 +1,18 @@
 # Protege Empresa | BB Datathon
 
+## Banco público para o motor principal
+
+A preparação e o contrato de integração com a `main` estão documentados em
+[Banco de segurança para o motor principal](docs/INTEGRACAO_BANCO_MOTOR_MAIN.md).
+O SQLite deste ambiente recebeu 69.510 registros públicos de roubo do SINESP VDE
+2025. A referência municipal empresarial continua pendente de fontes compatíveis;
+coleta bruta não equivale a indicador validado. Os CSVs do Datathon não são
+importados nesse banco. A auditoria de cobertura também não persiste clientes.
+
+Use `python scripts/preparar_banco_seguranca.py --saida data/seguranca/pacote-NOVO`.
+O comando registra falhas e retorna código 2 enquanto não houver cobertura elegível.
+Os relatos de coleta abaixo são históricos e podem se referir a outro ambiente.
+
 ## Modelo de segurança: cruzamento integrado com Mosler
 
 O modelo proposto cruza IBGE, SINESP e CSV em cada estabelecimento, conforme o

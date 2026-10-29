@@ -1,0 +1,48 @@
+[
+  {
+    "arquivo": "/workspace/BB-Dataton/data/seguranca/fontes/sinesp/bancovde-2025.xlsx",
+    "status": "baixado",
+    "url": "https://www.gov.br/mj/pt-br/assuntos/sua-seguranca/seguranca-publica/estatistica/download/dnsp-base-de-dados/bancovde-2025.xlsx/@@download/file",
+    "url_final": "https://www.gov.br/mj/pt-br/assuntos/sua-seguranca/seguranca-publica/estatistica/download/dnsp-base-de-dados/bancovde-2025.xlsx/@@download/file",
+    "bytes": 26644100,
+    "sha256": "6b87609815afc534f44f3423bf8660a69c961130c187f759b9d3e38ee2a8a6e8",
+    "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "coletado_em": "2026-10-29T03:08:50.442275+00:00"
+  },
+  {
+    "arquivo": "ibge/localidades.json",
+    "url": "https://servicodados.ibge.gov.br/api/v1/localidades/municipios?orderBy=nome",
+    "status": "falha",
+    "erro": "503 Server Error: Service Unavailable for url: https://servicodados.ibge.gov.br/api/v1/localidades/municipios?orderBy=nome"
+  },
+  {
+    "arquivo": "ibge/indicadores.json",
+    "url": "https://servicodados.ibge.gov.br/api/v3/agregados/4714/periodos/2022/variaveis/93%7C6318?localidades=N6[all]",
+    "status": "falha",
+    "erro": "503 Server Error: Service Unavailable for url: https://servicodados.ibge.gov.br/api/v3/agregados/4714/periodos/2022/variaveis/93%7C6318?localidades=N6%5Ball%5D"
+  },
+  {
+    "arquivo": "ibge/populacao_2025.json",
+    "url": "https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/2025/variaveis/9324?localidades=N6[all]",
+    "status": "falha",
+    "erro": "503 Server Error: Service Unavailable for url: https://servicodados.ibge.gov.br/api/v3/agregados/6579/periodos/2025/variaveis/9324?localidades=N6%5Ball%5D"
+  },
+  {
+    "arquivo": "isp_rj/BaseMunicipioMensal.csv",
+    "url": "https://www.ispdados.rj.gov.br/Arquivos/BaseMunicipioMensal.csv",
+    "status": "falha",
+    "erro": "HTTPSConnectionPool(host='www.ispdados.rj.gov.br', port=443): Max retries exceeded with url: /Arquivos/BaseMunicipioMensal.csv (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))"
+  },
+  {
+    "arquivo": "ssp_rs/municipios_2025.xlsx",
+    "url": "https://ssp.rs.gov.br/upload/arquivos/202610/08160105-site-geral-e-municipios-ano-2025-atualizado-em-06-out-2026-dados-cvli-atualizado-publicacao.xlsx",
+    "status": "falha",
+    "erro": "HTTPSConnectionPool(host='ssp.rs.gov.br', port=443): Max retries exceeded with url: /upload/arquivos/202610/08160105-site-geral-e-municipios-ano-2025-atualizado-em-06-out-2026-dados-cvli-atualizado-publicacao.xlsx (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))"
+  },
+  {
+    "arquivo": "ibge/cempre_9509.json",
+    "url": "https://apisidra.ibge.gov.br/values/t/9509/n6/all/v/all/p/2024",
+    "status": "falha",
+    "erro": "HTTPSConnectionPool(host='apisidra.ibge.gov.br', port=443): Max retries exceeded with url: /values/t/9509/n6/all/v/all/p/2024 (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))"
+  }
+]

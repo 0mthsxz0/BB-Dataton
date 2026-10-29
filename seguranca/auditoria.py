@@ -47,16 +47,9 @@ def auditar(con, estabelecimentos, saida):
         correspondencia_ibge=('correspondencia_ibge', 'sum'), com_indice=('com_indice', 'sum'),
         com_algum_indicador=('com_algum_indicador', 'sum'), com_roubo_comercio=('com_roubo_comercio', 'sum')).reset_index()
     cobertura['cobertura_indice_0_1'] = cobertura.com_indice / cobertura.estabelecimentos
-    # Apenas identificadores necessários à associação; originais não são alterados.
-    con.execute('''CREATE TABLE IF NOT EXISTS estabelecimentos (
-        pacote_sha256 TEXT NOT NULL, empresa_id TEXT NOT NULL, imovel_id TEXT NOT NULL,
-        codigo_ibge TEXT NOT NULL REFERENCES municipios(codigo_ibge),
-        PRIMARY KEY(pacote_sha256,empresa_id,imovel_id))''')
+    # A associação existe apenas em memória e nas saídas da auditoria do consumidor.
+    # O banco de segurança armazena somente fontes/indicadores públicos.
     digest = hashlib.sha256(arquivo.read_bytes()).hexdigest()
-    con.execute('DELETE FROM estabelecimentos WHERE pacote_sha256=?', (digest,))
-    con.executemany('INSERT INTO estabelecimentos VALUES(?,?,?,?)',
-                    [(digest, r['empresa_id'], r['imovel_id'], r['codigo_ibge'])
-                     for r in registros if r['correspondencia_ibge']])
     integridade = con.execute('PRAGMA integrity_check').fetchone()[0]
     duplicacoes = con.execute('''SELECT count(*) FROM (
         SELECT codigo_ibge,crime,mes FROM ocorrencias GROUP BY 1,2,3 HAVING count(*)>1)''').fetchone()[0]
