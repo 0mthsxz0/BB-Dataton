@@ -84,3 +84,11 @@ test('interface pública mantém caminho de ID e não exibe campo CNAE para o cl
   assert.doesNotMatch(business,/cnae-lookup|load-cnae-profile|cnae-profile-status/);
   assert.doesNotMatch(business,/Código da atividade econômica da empresa/);
 });
+test('consulta pública de segurança valida município e preserva bloqueio de origem',async()=>{
+ assert.equal((await post('/api/seguranca/municipio',{codigoIBGE:3550308})).status,422);
+ assert.equal((await post('/api/seguranca/municipio',{codigoIBGE:'3550308',uf:'SP'},{Origin:'https://example.org'})).status,403);
+ const response=await post('/api/seguranca/municipio',{codigoIBGE:'3550308',uf:'SP'});
+ assert.equal(response.status,200);
+ const data=await response.json();assert.equal(data.contrato,'contexto-seguranca-1.0');
+ assert.ok(!('empresa_id' in data));assert.ok(!('arquivo' in data));
+});

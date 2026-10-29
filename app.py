@@ -17,6 +17,7 @@ from processamento import ARQUIVOS, carregar_base, localizar_dados, localizar_re
 from recomendador import recomendar_plano
 from localizacao import consultar_cep, aplicar_localizacao
 from seguranca import avaliar_seguranca
+from contexto_seguranca import assinatura_banco, estado_base
 
 st.set_page_config(page_title='Protege Empresa | Datathon', page_icon='🛡️', layout='wide')
 st.markdown('''<style>
@@ -54,7 +55,7 @@ def assinatura(pasta, externo, referencias='', confirmacoes=''):
             if caminho_referencia(n,referencias).exists())
     if confirmacoes:
         caminhos.append(Path(confirmacoes))
-    return tuple((str(p), p.stat().st_mtime_ns, p.stat().st_size) for p in caminhos)
+    return tuple((str(p), p.stat().st_mtime_ns, p.stat().st_size) for p in caminhos) + (assinatura_banco(),)
 
 
 @st.cache_data(show_spinner='Organizando os dados…')
@@ -169,6 +170,7 @@ def seletor(base, chave='principal'):
 
 def detalhar(registro, base, config):
     motor = MotorPontuacao(base, config)
+    registro = motor.preparar_registro(registro)
     pontos = motor.analisar_registro(registro)
     plano = recomendar_plano(pontos, base.catalogo, config, registro)
     st.subheader(f'{registro["imovel_id"]} · {registro["grupo_atividade"]}')
@@ -182,6 +184,16 @@ def detalhar(registro, base, config):
         st.warning(f'Sensível à incerteza dos dados: cenários variam entre {plano["plano_cenario_inferior"]} e {plano["plano_cenario_superior"]}.')
     st.plotly_chart(grafico(pontos), use_container_width=True)
     st.caption('Quatro índices multifatoriais preservam evento, impacto e vulnerabilidade. A escolha do plano considera dez necessidades; nota não é probabilidade de sinistro.')
+    with st.expander('Contexto público de segurança e avaliação Mosler'):
+        contexto=pontos[ROUBO]['contexto_seguranca']
+        st.write(contexto['motivo'])
+        st.write('Situação:',contexto['status'])
+        st.write('Referência do banco usada na recomendação:', 'Sim' if contexto['aplicada_no_motor'] else 'Não')
+        if contexto['indicadores']:
+            st.dataframe(pd.DataFrame(contexto['indicadores']).drop(columns=['fontes']),hide_index=True)
+        st.json(contexto)
+        st.write('Mosler:',pontos[ROUBO]['avaliacao_mosler']['status'])
+        st.caption(pontos[ROUBO]['avaliacao_mosler']['aviso'])
     with st.expander('Valores das dez coberturas do catálogo'):
         dimensoes=motor.dimensionar_coberturas(registro)
         st.dataframe(pd.DataFrame([{'Cobertura':x['nome'],'Papel':x['papel'],
@@ -200,7 +212,7 @@ def detalhar(registro, base, config):
     st.dataframe(pd.DataFrame(s['fatores_evento']).astype(str), hide_index=True, use_container_width=True)
     with st.expander('Fonte, período e abrangência do indicador'):
         st.json(s['referencia_evento'])
-        st.caption('Referências municipais não distinguem bairros ou ruas. Dados de vitimização domiciliar são uma proxy contextual para empresas.')
+        st.caption('Referências municipais não distinguem bairros ou ruas. Referências domiciliares incompatíveis são excluídas do índice empresarial.')
     with st.expander('Fórmula, impacto e interações'):
         st.code(s['formula'], language='text')
         st.json({'impacto':s['fator_impacto'], 'vulnerabilidade':s['fator_vulnerabilidade'],
@@ -254,6 +266,8 @@ def main():
     st.markdown('<div class="eyebrow">PROTEÇÃO QUE FAZ SENTIDO</div>', unsafe_allow_html=True)
     st.title(pagina)
     st.markdown('<div class="hero"><p>Dados da empresa, consequências financeiras e decisões que você consegue explicar.</p></div>', unsafe_allow_html=True)
+    with st.expander('Disponibilidade do banco público de segurança'):
+        st.json(estado_base())
     try:
         versao = assinatura(pasta, externo,referencias,confirmacoes)
         base = obter_base(pasta, externo, versao,referencias,confirmacoes)

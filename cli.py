@@ -1,6 +1,7 @@
 """Execução em lote sem abrir a interface: python cli.py --dados PASTA."""
 import argparse
 import json
+import os
 from exportacao import exportar
 from processamento import carregar_base
 from motor_pontuacao import carregar_config
@@ -17,7 +18,11 @@ def main():
     parser.add_argument('--indispensavel',action='append',default=[],help='Código de cobertura da qual não abrir mão; pode repetir')
     parser.add_argument('--saida', default='output', help='Pasta de resultados')
     parser.add_argument('--data-analise', help='Data ISO AAAA-MM-DD para reproduzir a validade das referências; padrão hoje')
+    parser.add_argument('--banco-seguranca', help='SQLite público instalado com manifesto adjacente; não recebe dados de clientes')
+    parser.add_argument('--modo-seguranca', choices=['complementar','referencia_validada'], help='Padrão complementar; referência elegível só altera roubo no modo referencia_validada')
     args = parser.parse_args()
+    if args.banco_seguranca is not None: os.environ['BB_SEGURANCA_DB']=args.banco_seguranca
+    if args.modo_seguranca is not None: os.environ['BB_SEGURANCA_MODO']=args.modo_seguranca
     try:
         base = carregar_base(args.dados, args.territorio, args.referencias, args.confirmacoes, data_analise=args.data_analise)
         config = carregar_config(args.config)
