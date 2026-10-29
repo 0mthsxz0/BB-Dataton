@@ -25,6 +25,7 @@ let catalog,index,plans,questionnaire,baseContext,productRules;
 let recommendation=null,busy=false;
 let cadastroRecommendation=null,cadastroLoading=false,cadastroError='',cadastroRevision=0;
 let cnaeReport=null;
+let demoCompanyId='',demoResult=null,demoUnits=[],demoRevision=0,demoTimer=null;
 let step=internal?1:0;
 let completed=internal?1:0;
 let picker;
@@ -99,8 +100,21 @@ function render(){
   $('#quote-root').innerHTML=`<ol class="quote-progress" aria-label="Etapas da cotação">${LABELS.map((label,i)=>`<li><button type="button" data-step="${i}" aria-label="Etapa ${i+1}: ${label}" ${i===step?'aria-current="step"':''} ${i<step?'class="completed"':''} ${i>completed?'disabled':''}></button></li>`).join('')}</ol><p class="step-caption">Etapa ${step+1} de ${LABELS.length} · ${LABELS[step]}</p><h1 class="quote-title" id="form-title">${TITLES[step]}</h1><div id="form-errors" role="alert"></div><div id="step-content"></div>`;
   $$('[data-step]').forEach(b=>b.addEventListener('click',()=>go(Number(b.dataset.step))));
   const direct=internal&&step===1&&cnaeReport;
-  const content=direct?cnaeReportView(cnaeReport):[personal,business,address,protectionStep,planStep,review,success][step]();
+  const demoView=!internal&&step===0&&Boolean(demoResult);
+  const content=demoView?demoReportView():direct?cnaeReportView(cnaeReport):[personal,business,address,protectionStep,planStep,review,success][step]();
   $('#step-content').innerHTML=content;
+  if(demoView){
+    $('#form-title').textContent='Seu relatório empresarial está pronto';
+    document.title='Relatório empresarial demonstrativo · BB-Datathon';
+    $('#demo-reset').addEventListener('click',()=>{demoResult=null;demoUnits=[];demoCompanyId='';render();});
+    $('#demo-download').addEventListener('click',()=>{
+      const blob=new Blob([JSON.stringify(demoResult,null,2)],{type:'application/json'});
+      const url=URL.createObjectURL(blob),a=document.createElement('a');
+      a.href=url;a.download='relatorio-demonstrativo-'+demoCompanyId+'.json';
+      document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+    });
+    return;
+  }
   if(direct){
     document.title='Relatório do CNAE '+cnaeReport.cnae+' · BB-Datathon';
     $('#form-title').textContent='Relatório automático da atividade econômica';
@@ -132,7 +146,20 @@ function render(){
       completed=Math.max(completed,step+1);go(step+1);});
     $('#quote-back')?.addEventListener('click',()=>go(step-1));
   }
-  if(step===0){$$('[name=personType]').forEach(r=>r.addEventListener('change',e=>{state.personType=e.target.value;state.cnpj='';state.birthDate='';state.maritalStatus='';render();}));$('#verify-client')?.addEventListener('click',verifyClient);}
+  if(step===0){
+    const id=$('#demo-company-id'),search=$('#demo-company-search');
+    if(id){
+      id.addEventListener('input',()=>{
+        clearTimeout(demoTimer);demoCompanyId=id.value.trim().toUpperCase();
+        demoUnits=[];demoResult=null;$('#demo-company-status').textContent='';
+        if(/^EMP_[A-Z0-9_-]{1,80}$/.test(demoCompanyId))
+          demoTimer=setTimeout(()=>demoLookup(),700);
+      });
+      id.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();clearTimeout(demoTimer);demoLookup();}});
+      search.addEventListener('click',()=>{clearTimeout(demoTimer);demoLookup();});
+      $$('[data-demo-unit]').forEach(b=>b.addEventListener('click',()=>demoLookup(b.dataset.demoUnit)));
+    }
+    $$('[name=personType]').forEach(r=>r.addEventListener('change',e=>{state.personType=e.target.value;state.cnpj='';state.birthDate='';state.maritalStatus='';render();}));$('#verify-client')?.addEventListener('click',verifyClient);}
   if(step===1){
     picker=new ActivityPicker($('#activity-picker'),(activity,sub,requireSubactivityConfirmation=false)=>{
       invalidate();
@@ -152,14 +179,62 @@ function render(){
   }
   if(step===4){$('#apply-package')?.addEventListener('click',()=>applyPackage());if(internal)bindVoice(state.sourceKey,()=>({...riskPayload(state,questionnaire),...productPayload(state,productRules)}));}
   if(step===5){$('#payment')?.addEventListener('change',e=>{state.payment=e.target.value;render();});}
-  if(step===6){$('#download-summary').addEventListener('click',downloadSummary);$('#restart-quote').addEventListener('click',()=>{Object.keys(state).forEach(k=>state[k]=typeof state[k]==='boolean'?false:'');initializeProductState(state,productRules);state.personType='pf';state.installments='1';state.paymentDay='5';recommendation=null;cadastroRecommendation=null;cadastroLoading=false;cadastroError='';cadastroRevision++;state.profileFields=[];state.prefilledFields=[];state.cnaeProfile=null;profileRevision++;completed=internal?1:0;go(internal?1:0);});}
+  if(step===6){$('#download-summary').addEventListener('click',downloadSummary);$('#restart-quote').addEventListener('click',()=>{Object.keys(state).forEach(k=>state[k]=typeof state[k]==='boolean'?false:'');initializeProductState(state,productRules);state.personType='pf';state.installments='1';state.paymentDay='5';recommendation=null;cadastroRecommendation=null;cadastroLoading=false;cadastroError='';cadastroRevision++;state.profileFields=[];state.prefilledFields=[];state.cnaeProfile=null;demoCompanyId='';demoUnits=[];demoResult=null;demoRevision++;profileRevision++;completed=internal?1:0;go(internal?1:0);});}
 }
 function form(body,button='Avançar'){return `<form id="quote-form" aria-labelledby="form-title">${body}<div class="quote-navigation"><button type="button" class="back-button" id="quote-back" ${step===0?'disabled':''}>← Voltar</button><button class="btn" type="submit">${button} →</button></div></form>`;}
-function personal(){const pj=state.personType==='pj';const today=new Date().toISOString().slice(0,10);return form(`<fieldset class="person-types"><legend>Você está cotando como</legend><label><input type="radio" name="personType" value="pj" ${pj?'checked':''}> Pessoa Jurídica</label><label><input type="radio" name="personType" value="pf" ${!pj?'checked':''}> Pessoa Física</label></fieldset><div class="form-grid">${field('name',pj?'Razão social':'Nome completo',{full:true,autocomplete:pj?'organization':'name',maxlength:160})}${pj?field('cnpj','CNPJ da empresa',{full:true,placeholder:'00.000.000/0000-00',maxlength:18,inputmode:'numeric'}):field('birthDate','Data de nascimento',{type:'date',autocomplete:'bday',min:'1900-01-01',max:today})}${!pj?selectField('maritalStatus','Estado civil',['Solteiro(a)','Casado(a)','Separado(a)']):''}${field('phone','Celular',{type:'tel',autocomplete:'tel',placeholder:'(00) 00000-0000',maxlength:16,inputmode:'tel'})}${field('email','E-mail',{type:'email',autocomplete:'email',maxlength:160,full:pj})}</div>${pj?'<section class="client-lookup"><h2>Já tem cadastro no banco?</h2><p>Confirme seu vínculo para aproveitar os dados existentes e ver sua recomendação preliminar. Dados não confirmados serão solicitados no formulário. O CNAE identifica uma atividade, não uma empresa.</p><label for="client-access-code">Código de verificação (demonstração)</label><input type="password" id="client-access-code" minlength="8" maxlength="128" autocomplete="off" placeholder="Código de acesso autorizado"><button type="button" class="btn btn-outline" id="verify-client">Verificar cadastro e recomendar</button><div id="client-status" role="status"></div></section>':''}`);}
+
+function demoIdSection(){
+ const units=demoUnits.length?'<div class="demo-unit-options"><p>Esta empresa possui mais de um estabelecimento. Selecione a unidade do relatório:</p>'+
+  demoUnits.map(u=>'<button class="btn btn-outline" type="button" data-demo-unit="'+esc(u.imovelId)+'">'+esc(u.imovelId)+' · '+esc(u.municipio)+' / '+esc(u.uf)+' · '+esc(u.tipoUnidade)+'</button>').join('')+'</div>':'';
+ return '<section class="demo-lookup" aria-label="Consulta de empresa no MVP">'+
+ '<p class="result-eyebrow">Demonstração do cadastro BB-Datathon</p>'+
+ '<h2>Identifique sua empresa</h2><p>Em produção, esta etapa usará o <strong>CNPJ com autenticação do cliente</strong>. Neste MVP local, utilize o <strong>ID anonimizado da empresa</strong> presente nos CSVs, como EMP_0001. Não é necessário informar o CNAE.</p>'+
+ '<label for="demo-company-id">CNPJ (produção) / ID da empresa (MVP)</label>'+
+ '<div class="demo-lookup-row"><input type="text" id="demo-company-id" autocomplete="off" maxlength="84" placeholder="EMP_0001" value="'+esc(demoCompanyId)+'"><button class="btn" id="demo-company-search" type="button">Gerar relatório</button></div>'+
+ '<p id="demo-company-status" role="status"></p>'+units+
+ '<p class="catalog-note">A consulta por ID está disponível apenas quando a demonstração local estiver habilitada no servidor. O identificador não comprova a titularidade de uma empresa.</p></section>';
+}
+function demoReportView(){
+ return '<section class="demo-direct-report">'+
+ '<p class="result-eyebrow">Relatório individual · Base anonimizada do Datathon</p>'+
+ '<h2>Empresa '+esc(demoCompanyId)+' · Unidade '+esc(demoResult.imovelId)+'</h2>'+
+ '<p>Relatório preliminar gerado pelo mesmo motor do painel interno com os dados disponíveis para esta unidade. Este ID não é um CNPJ nem comprova que o visitante é seu titular.</p>'+
+ cadastroRecommendationView(demoResult.relatorio)+
+ '<div class="cnae-report-actions"><button type="button" class="btn btn-outline" id="demo-reset">Consultar outra empresa</button><button type="button" class="btn btn-outline" id="demo-download">Baixar relatório JSON</button></div>'+
+ '</section>';
+}
+async function demoLookup(imovelId){
+ clearTimeout(demoTimer);
+ const empresaId=demoCompanyId.trim().toUpperCase();
+ const status=$('#demo-company-status');
+ if(!/^EMP_[A-Z0-9_-]{1,80}$/.test(empresaId)){
+   if(status)status.textContent='Use o ID anonimizado do Datathon, por exemplo EMP_0001. CNPJ real não está disponível nesta demonstração.';
+   return;
+ }
+ const rev=++demoRevision,button=$('#demo-company-search');
+ if(button)button.disabled=true;
+ if(status)status.textContent='Localizando o cadastro e calculando a recomendação…';
+ try{
+   const resposta=await api('/api/demo/empresa',{empresaId,...(imovelId?{imovelId}:{})});
+   if(rev!==demoRevision||demoCompanyId!==empresaId||step!==0)return;
+   if(resposta.tipo==='selecionar_unidade'){
+     demoUnits=resposta.unidades;
+     render();
+     $('#demo-company-id')?.focus({preventScroll:true});
+   }else if(resposta.tipo==='relatorio'){
+     demoUnits=[];demoResult=resposta;
+     render();
+     $('#quote-main').scrollIntoView({block:'start'});
+   }
+ }catch(error){if(rev===demoRevision&&status)status.textContent=error.message;}
+ finally{if(rev===demoRevision&&button&&button.isConnected)button.disabled=false;}
+}
+
+function personal(){const pj=state.personType==='pj';const today=new Date().toISOString().slice(0,10);return form(`${demoIdSection()}<h2>Não tem ID demonstrativo? Preencha a solicitação manualmente</h2><fieldset class="person-types"><legend>Você está cotando como</legend><label><input type="radio" name="personType" value="pj" ${pj?'checked':''}> Pessoa Jurídica</label><label><input type="radio" name="personType" value="pf" ${!pj?'checked':''}> Pessoa Física</label></fieldset><div class="form-grid">${field('name',pj?'Razão social':'Nome completo',{full:true,autocomplete:pj?'organization':'name',maxlength:160})}${pj?field('cnpj','CNPJ da empresa',{full:true,placeholder:'00.000.000/0000-00',maxlength:18,inputmode:'numeric'}):field('birthDate','Data de nascimento',{type:'date',autocomplete:'bday',min:'1900-01-01',max:today})}${!pj?selectField('maritalStatus','Estado civil',['Solteiro(a)','Casado(a)','Separado(a)']):''}${field('phone','Celular',{type:'tel',autocomplete:'tel',placeholder:'(00) 00000-0000',maxlength:16,inputmode:'tel'})}${field('email','E-mail',{type:'email',autocomplete:'email',maxlength:160,full:pj})}</div>${pj?'<section class="client-lookup"><h2>Já tem cadastro no banco?</h2><p>Confirme seu vínculo para aproveitar os dados existentes e ver sua recomendação preliminar. Dados não confirmados serão solicitados no formulário. O CNAE identifica uma atividade, não uma empresa.</p><label for="client-access-code">Código de verificação (demonstração)</label><input type="password" id="client-access-code" minlength="8" maxlength="128" autocomplete="off" placeholder="Código de acesso autorizado"><button type="button" class="btn btn-outline" id="verify-client">Verificar cadastro e recomendar</button><div id="client-status" role="status"></div></section>':''}`);}
 function business(){
   const activity=selectedActivity();
   const sub=activity?`<div class="qfield" id="subactivity-field"><span id="subactivity-label">Qual é a subatividade econômica?</span><div class="subactivity-options" role="radiogroup" aria-labelledby="subactivity-label">${activity.subactivities.map(s=>`<label class="subactivity-choice"><input type="radio" name="subactivityId" value="${esc(s.id)}" ${s.id===state.subactivityId?'checked':''} required><span>${esc(s.label)}</span></label>`).join('')}<label class="subactivity-choice"><input type="radio" name="subactivityId" value="other" ${state.subactivityId==='other'?'checked':''} required><span>Outra subatividade — quero especificar</span></label></div>${state.subactivityId==='other'?`<div class="other-search">${field('otherSubactivity','Especifique a subatividade',{full:true,maxlength:300})}</div><small>Esta descrição precisa de confirmação de enquadramento. Não é uma categoria aprovada automaticamente.</small>`:''}<p class="sub-description">Revise a atividade e a subatividade escolhidas, mesmo quando vierem de uma sugestão.</p></div>`:'<p class="sub-description">A lista de subatividades aparece depois que você escolhe a atividade econômica.</p>';
-  return form(`<div class="quote-form">${internal?baseFields(baseContext,state):'<p class="quote-helper">Conte sobre sua empresa. Vamos usar suas respostas para sugerir uma proteção.</p>'}<div id="cadastro-result" aria-live="polite"></div><section class="cnae-lookup">${field('cnae','Código da atividade econômica da empresa',{required:false,full:true,maxlength:10,help:'São os sete dígitos da classificação de atividade que constam no cadastro da empresa.'})}${internal?'<p class="quote-helper" role="status">Ao completar os sete dígitos, abriremos o relatório automaticamente, sem usar a lista de empresas.</p>':'<button type="button" class="btn btn-outline" id="load-cnae-profile">Aproveitar referências desta atividade</button>'}<div id="cnae-profile-status" role="status">${profileNotice()}</div></section><div id="activity-picker"></div>${sub}<div class="form-grid">${selectField('protection','O que você deseja proteger?',[['both','Imóvel e conteúdo'],['building','Somente o imóvel'],['contents','Somente o conteúdo']],{full:true})}${selectField('shopping','Sua empresa fica dentro de um shopping, prédio comercial ou galeria protegida?',[['yes','Shopping center'],['building','Prédio comercial'],['gallery','Galeria protegida'],['no','Nenhum desses locais']],{full:true})}</div><p class="catalog-note">${catalog.counts.activities} atividades do catálogo consultado em 28/10/2026. Os nomes foram escritos por extenso para facilitar a leitura. A escolha precisa refletir a atividade principal do negócio.</p></div>`);
+  return form(`<div class="quote-form">${internal?baseFields(baseContext,state):'<p class="quote-helper">Conte sobre sua empresa. Vamos usar suas respostas para sugerir uma proteção.</p>'}<div id="cadastro-result" aria-live="polite"></div>${internal?`<section class="cnae-lookup">${field('cnae','Código da atividade econômica da empresa',{required:false,full:true,maxlength:10,help:'São os sete dígitos da classificação de atividade que constam no cadastro da empresa.'})}${internal?'<p class="quote-helper" role="status">Ao completar os sete dígitos, abriremos o relatório automaticamente, sem usar a lista de empresas.</p>':'<button type="button" class="btn btn-outline" id="load-cnae-profile">Aproveitar referências desta atividade</button>'}<div id="cnae-profile-status" role="status">${profileNotice()}</div></section>`:''}<div id="activity-picker"></div>${sub}<div class="form-grid">${selectField('protection','O que você deseja proteger?',[['both','Imóvel e conteúdo'],['building','Somente o imóvel'],['contents','Somente o conteúdo']],{full:true})}${selectField('shopping','Sua empresa fica dentro de um shopping, prédio comercial ou galeria protegida?',[['yes','Shopping center'],['building','Prédio comercial'],['gallery','Galeria protegida'],['no','Nenhum desses locais']],{full:true})}</div><p class="catalog-note">${catalog.counts.activities} atividades do catálogo consultado em 28/10/2026. Os nomes foram escritos por extenso para facilitar a leitura. A escolha precisa refletir a atividade principal do negócio.</p></div>`);
 }
 function address(){return form(`<p class="quote-subtitle">${state.sourceKey?'Município da unidade identificado no cadastro. Se algum dado estiver ausente, complete apenas o necessário.':'Informe o endereço do local que você quer proteger.'}</p><div class="form-grid">${field('cep','CEP',{placeholder:'00000-000',maxlength:9,inputmode:'numeric',autocomplete:'postal-code',required:!state.sourceKey})}${field('number','Número',{maxlength:12,help:'Se não houver número, informe “sem número”.',required:!state.sourceKey})}${field('street','Endereço',{full:true,autocomplete:'address-line1',maxlength:200,required:!state.sourceKey})}${field('complement','Complemento',{full:true,required:false,autocomplete:'address-line2',maxlength:100})}${field('district','Bairro',{maxlength:100,required:!state.sourceKey})}${field('city','Cidade',{autocomplete:'address-level2',maxlength:100})}${selectField('uf','UF',['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'],{full:true})}</div><p class="catalog-note">O endereço é preenchido localmente. Na análise, a cidade e a UF localizam o município na API do IBGE. CEP e endereço completo não são enviados ao motor de recomendação nem à seguradora.</p>`,'Informar proteção');}
 function protectionStep(){let fields=profileNotice()+productFields(state,selectField,productRules)+riskFields(state,questionnaire,field,{internal});if(!internal)fields=fields.replace('Campos sem confirmação preservam os sinais do cadastro. A triagem verifica condições do imóvel e o limite único básico de R$ 7,5 milhões.','Conte como é o imóvel e o que mais importa proteger. Se não souber uma resposta, deixe para confirmar.').replace('Estas confirmações opcionais ajudam a avaliar adicionais. Estimativas do cadastro não substituem sua resposta.','Estas perguntas ajudam a identificar proteções que podem fazer sentido para sua empresa.').replace('Pesos experimentais do MVP.','').replaceAll('Usar cadastro / a confirmar','Ainda não sei').replace('O foco escolhido multiplica por 1,5 os pesos das necessidades correspondentes. Não altera o risco territorial nem cria um preço.','Escolha o que mais importa para você. Isso ajuda a adaptar a sugestão às prioridades do seu negócio.').replace('Campos financeiros vazios aproveitam o cadastro vinculado; sem cadastro, ficam desconhecidos. Zero significa ausência confirmada.','Se não souber um valor, deixe em branco. Informe zero somente quando confirmar que não há esse item.').replace('Se vincular uma empresa, deixe vazio para usar o CNAE cadastrado. O código da lista de atividades não é um CNAE.','Se souber, informe o CNAE da sua empresa. Você pode deixar em branco.');return form(fields,'Calcular recomendação');}
@@ -221,7 +296,7 @@ function review(){return form(`${summary({includeContact:true})}<div class="form
 function success(){return `<div class="quote-success"><div class="success-icon" aria-hidden="true">✓</div><p>Você percorreu todas as etapas da demonstração. A recomendação foi calculada pelo motor local do MVP. Contatos e pagamento permanecem somente na memória da página; os dados de proteção são processados no servidor local, sem gravar proposta.</p>${summary()}<p>Para obter uma cotação válida e contratar, utilize o canal oficial da BB Seguros. Os dados preenchidos aqui não são transferidos.</p><button class="btn" id="download-summary">Baixar resumo sem dados pessoais</button><a class="btn btn-outline" href="https://cotacaoseguroempresarial.bbseguros.com.br/home" target="_blank" rel="noopener noreferrer">Abrir cotação oficial ↗</a><p><button class="back-button" id="restart-quote">Começar novamente e limpar os dados</button></p></div>`;}
 
 function updateReportLayout(){
-  const visible=step>=4||step===1&&Boolean(cadastroRecommendation||cnaeReport);
+  const visible=Boolean(!internal&&demoResult)||step>=4||step===1&&Boolean(cadastroRecommendation||cnaeReport);
   document.body.classList.toggle('report-mode',visible);
   $('.quote-visual').hidden=visible;
 }
