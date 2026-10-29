@@ -126,6 +126,7 @@ export const server = http.createServer(async (req, res) => {
       if (pathname === '/api/demo/empresa') {
         // Atalho de ID sem autenticação é EXCLUSIVO da demonstração local, nunca produção.
         if (process.env.BB_DEMO_ID_LOOKUP !== '1' ||
+            req.headers.forwarded || req.headers['x-forwarded-for'] || req.headers['x-forwarded-host'] ||
             !['127.0.0.1','::1','::ffff:127.0.0.1'].includes(req.socket.remoteAddress)) {
           json(res,403,{error:'Demonstração por ID desativada. Configure BB_DEMO_ID_LOOKUP=1 apenas no computador local.'}); return;
         }
