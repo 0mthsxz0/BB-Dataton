@@ -267,6 +267,8 @@ def analisar(payload, base=None, municipio_fn=consultar_municipio):
             record['confianca_bens'] = .35
             origins['bens_total_referencia'] = origins['bens_ponderados']
         if 'equipmentValue' in profile_fields:origins['equipamentos_total_referencia'] = origins['equipamentos_ponderados']
+        if 'stockValue' in profile_fields:origins['estoque_pico_estimado'] = origins['estoque_medio_estimado']
+        record['_perfil_cnae'] = {k: profile[k] for k in ('cnae', 'amostra', 'metodo', 'origem')}
         warnings.append('Foram usados valores estimados do perfil da atividade. Eles precisam de confirmação antes da cotação oficial.')
     if numero(record.get('equipamentos_ponderados')) is not None and numero(record.get('bens_ponderados')) is not None and record['equipamentos_ponderados'] > record['bens_ponderados']:
         raise ValueError('Equipamentos fazem parte dos bens: seu valor não pode superar o total dos bens sem estoque.')

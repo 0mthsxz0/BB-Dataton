@@ -419,10 +419,10 @@ class MotorPontuacao:
                 limitacoes.append('Funcionários informados por empresa; distribuição entre unidades não observada.')
             if valor is not None and valor > regra['referencia_financeira']:
                 limitacoes.append('Impacto normalizado atingiu o limite; consultar o valor bruto, que foi preservado.')
-            justificativa = (f'{regra["nome"]}: prioridade {prioridade:.1f}/100 ({nivel.lower()}). '
-                             f'Componente relativo do evento {evento:.3f}; impacto {i:.3f}; '
-                             f'vulnerabilidade estimada {vv:.3f}. Base {base_pontos:.2f} pontos '
-                             f'+ interação {j_pontos:.2f}, limitada a 100. '
+            justificativa = (f'{regra["nome"]}: prioridade {prioridade:.1f}% ({nivel.lower()}). '
+                             f'Componente relativo do evento {evento*100:.1f}%; impacto {i*100:.1f}%; '
+                             f'vulnerabilidade estimada {vv*100:.1f}%. Base {base_pontos:.2f} pontos percentuais '
+                             f'+ interação {j_pontos:.2f} pontos percentuais, limitada a 100%. '
                              f'Confiança {confianca:.0%}.')
             if codigo==VIDROS and r.get('possui_vidros_confirmado')=='NAO':
                 justificativa+=' Ausência de vidros informada na confirmação da unidade; sem exposição identificada.'

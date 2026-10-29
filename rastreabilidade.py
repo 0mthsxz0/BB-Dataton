@@ -4,6 +4,7 @@ from __future__ import annotations
 import hashlib
 import json
 from processamento import numero, caminho_referencia
+from evidencias_origem import celulas_originais, confirmacao
 
 # Campo -> rótulo, arquivo de origem, unidade. Nunca inclui endereço ou contato.
 CAMPOS = {
@@ -52,6 +53,8 @@ def anexar_evidencias(record, indices, dimensoes, origens, base=None):
             estado, confirmar = 'EXCLUIDO_ESCOPO', 'Valor zerado pelo escopo; não representa inexistência do bem.'
         elif origem.startswith('Mapa contextual'):
             estado, confirmar = 'HIPOTESE_MODELO', 'Mapeamento editorial do catálogo para o grupo do modelo; conferir correspondência com a operação.'
+        elif origem.startswith('Estimativa do perfil agregado'):
+            estado, confirmar = 'PERFIL_ATIVIDADE_ESTIMATIVA', 'Mediana da atividade; confirmar os valores reais desta empresa.'
         elif not cadastral:
             estado, confirmar = 'DECLARADO', 'Informação declarada no formulário; não equivale a vistoria ou documento verificado.'
         else:
@@ -70,12 +73,34 @@ def anexar_evidencias(record, indices, dimensoes, origens, base=None):
         elif cadastral and chave=='quantidade_unidades':
             campos_origem = ['empresa_id', 'imovel_id']
             transformacao = 'Contagem de estabelecimentos da empresa, sem duplicar vínculos'
+        orientacao = confirmacao(chave, estado)
+        campos_fonte = campos_origem
+        if arquivo == 'bens_cadastrados.csv':
+            campos_fonte = ['valor_cadastrado']
+            if chave not in ('bens_total_referencia', 'equipamentos_total_referencia'):
+                campos_fonte.append('probabilidade_bem_no_imovel_referencia')
+            if chave.startswith(('equipamentos', 'informatica')):
+                campos_fonte.append('tipo_bem')
+        elif chave == 'quantidade_unidades':
+            campos_fonte = ['empresa_id', 'imovel_id']
+        fontes = celulas_originais(base, record, chave, arquivo, campos_fonte, unidade)
+        perfil = record.get('_perfil_cnae') if estado == 'PERFIL_ATIVIDADE_ESTIMATIVA' else None
+        if perfil:
+            agregado = {'bens_total_referencia': 'bens_ponderados',
+                        'equipamentos_total_referencia': 'equipamentos_ponderados',
+                        'estoque_pico_estimado': 'estoque_medio_estimado'}.get(chave, chave)
+            perfil = dict(perfil, campo_agregado=agregado)
+            if agregado != chave:
+                transformacao = f'Reutiliza a mediana de {agregado}; não há observação independente de {chave}.'
+                orientacao['significado'] = transformacao
         return {'campo': chave, 'rotulo': label, 'valor': valor, 'unidade': unidade, 'estado': estado,
                 'campos_origem': campos_origem, 'transformacao_origem': transformacao,
                 'origem': origem, 'arquivo': arquivo if cadastral and valor is not None else None,
                 'chave': ({'empresa_id': record.get('empresa_id')} if arquivo=='empresas.csv' else vinculo) if cadastral else None,
                 'sha256': base.hashes.get(arquivo) if base and cadastral else None,
-                'confirmar': confirmar}
+                'fontes_originais': fontes, 'fonte_utilizada': cadastral and valor is not None,
+                'perfil_referencia': perfil, 'significado': orientacao.pop('significado'),
+                'confirmacao': orientacao, 'confirmar': confirmar}
 
     grupos = {
         'patrimonio': ['bens_ponderados','estoque_medio_estimado','bens_total_referencia','estoque_pico_estimado','valor_predio_reposicao_brl'],
@@ -112,6 +137,7 @@ def anexar_evidencias(record, indices, dimensoes, origens, base=None):
             'arquivo': nome_arquivo, 'sha256_snapshot': (record.get('sha256_snapshot_seguranca') if tipo == 'seguranca' else None) or (hashlib.sha256(arquivo.read_bytes()).hexdigest() if arquivo.exists() else None),
             'metodologia': record.get('metodologia_' + tipo),
             'dados': {c: numero(record.get(c)) if c in numericos else record.get(c) for c in campos},
+            'dados_originais': {c: record.get(c) for c in campos},
             'vinculo': {'codigo_ibge_municipio': record.get('codigo_ibge_municipio'),
                        'municipio': record.get('municipio_real'), 'uf': record.get('uf_real')} if tipo!='nr4' else
                       {'cnae': record.get('cnae_principal'), 'classe_cnae': record.get('classe_cnae')}}

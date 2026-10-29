@@ -310,11 +310,33 @@ def test_perfil_agregado_tem_origem_e_nao_confirma_respostas(monkeypatch,payload
     import copy
     import cotacao_service as service
     p=copy.deepcopy(payload);p.update(cnae='1234567',contentsValue=50000,profileFields=['contentsValue'])
-    monkeypatch.setattr(service,'perfil_cnae',lambda *args:{'cnae':'1234567','valores':{'contentsValue':50000}})
+    monkeypatch.setattr(service,'perfil_cnae',lambda *args:{'cnae':'1234567','valores':{'contentsValue':50000},
+        'amostra':{'empresas':12,'estabelecimentos':15},'metodo':'Mediana por estabelecimento','origem':'Base fictícia'})
     r=analyze(p)
     assert r['perfilAtividade']['usado']
     assert 'perfil agregado' in r['origens']['bens_ponderados']
     assert r['respostas']==p['answers']
     assert any('estimados do perfil' in x for x in r['avisos'])
+    e=next(x for x in r['dimensionamento'][ROUBO]['evidencias'] if x['campo']=='bens_ponderados')
+    assert e['estado']=='PERFIL_ATIVIDADE_ESTIMATIVA'
+    assert e['perfil_referencia']['amostra']['empresas']==12
+    assert not e['fontes_originais']
+    assert 'mediana' in e['confirmacao']['motivo']
+    total=next(x for x in r['dimensionamento'][ROUBO]['evidencias'] if x['campo']=='bens_total_referencia')
+    assert total['perfil_referencia']['campo_agregado']=='bens_ponderados'
+    assert 'não há observação independente' in total['significado']
     with pytest.raises(ValueError,match='perfil da atividade mudou'):
         analyze(dict(p,contentsValue=60000))
+
+
+def test_valor_declarado_preserva_cadastro_so_como_comparacao(analyze,payload,pasta_csv):
+    base=carregar_base(pasta_csv)
+    r=analyze(dict(payload,empresaId='EMP_TESTE',imovelId='IMO_TESTE',contentsValue=75000),base)
+    e=next(e for e in r['dimensionamento'][ROUBO]['evidencias'] if e['campo']=='bens_ponderados')
+    assert e['valor']==75000 and e['estado']=='DECLARADO'
+    assert not e['fonte_utilizada']
+    assert e['fontes_originais'][0]['celulas'][0]['valor_original']=='100000'
+    assert 'documentação' in e['confirmacao']['motivo']
+    # A mesma base pode gerar referência agregada, mas sem vínculo público não expõe células de empresas.
+    publico=analyze(dict(payload,contentsValue=75000),base)
+    assert all(not e['fontes_originais'] for d in publico['dimensionamento'].values() for e in d['evidencias'])

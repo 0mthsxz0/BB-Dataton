@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-28",
+  "story": "Selecionar empresa/unidade no painel interno, gerar recomendação e conferir células de origem, significado, pendências e percentuais.",
+  "flow": {
+    "browser": "Unidade fictícia EMP_00002 / IMO_EMP_00002_01 selecionada pela interface em /interno.",
+    "api": "POST /api/recomendacao/cadastro respondeu com fontes_originais, significado e confirmacao por evidência.",
+    "data": "Bens: quatro registros, linhas 10–13 de bens_cadastrados.csv, com valores e pesos originais; estoque médio 138950, linha 4 de sinais_financeiros_operacionais.csv.",
+    "response": "O cadastro mostra agregados separados de células; declarações substitutas não marcam o cadastro como usado; referências agregadas por atividade não expõem outras empresas.",
+    "render": "Estoque apresentado em R$ 138.950,00 com célula original, significado e orientação de inventário/controle de compras. Memória técnica: R 50%, I 89,72%, V 50%. Valores são cenários, não probabilidades de sinistro.",
+    "consoleErrors": 0
+  },
+  "validation": {
+    "python": "226 testes aprovados",
+    "javascript": "47 testes aprovados",
+    "syntax": "npm run check aprovado"
+  },
+  "screenshot": "../screenshots/origem-celulas-confirmacao.png",
+  "units": "Índices, proporções, confiança e pesos em porcentagem; reais, quantidades, classes e conteúdo original preservados. Taxas por mil divididas por dez apenas na apresentação."
+}
