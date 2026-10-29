@@ -118,6 +118,12 @@ export const server = http.createServer(async (req, res) => {
       }
       if (req.method !== 'POST') { json(res,405,{error:'Método não permitido.'}); return; }
       const data = await body(req);
+      if (pathname === '/api/seguranca/municipio') {
+        if (typeof data.codigoIBGE !== 'string' || !/^\d{7}$/.test(data.codigoIBGE) || data.uf != null && (typeof data.uf !== 'string' || !/^[A-Z]{2}$/.test(data.uf))) {
+          json(res,422,{error:'Informe código IBGE de sete dígitos e UF válida.'});return;
+        }
+        json(res,200,await runMotor({action:'seguranca',payload:{codigoIBGE:data.codigoIBGE,uf:data.uf}}));return;
+      }
       if (pathname === '/api/atividades/buscar') {
         if (typeof data.description !== 'string' || data.description.length > 2000) { json(res,422,{error:'Descreva a empresa em até 2.000 caracteres.'}); return; }
         const found = searchActivities(index,data.description,{mode:'description',limit:3});

@@ -1,5 +1,14 @@
 # Protege Empresa | BB Datathon
 
+## Banco público de segurança separado
+
+O motor está preparado para consultar o SQLite da branch de segurança por código IBGE,
+em leitura somente, com manifesto, versão e integridade verificados. O padrão é
+contexto complementar; referências empresariais elegíveis podem ser habilitadas
+explicitamente para o evento de roubo. Mosler permanece em avaliação complementar.
+Consulte [instalação, atualização, modos e limitações](docs/INTEGRACAO_SEGURANCA.md).
+Os CSVs do Datathon não entram no banco público.
+
 ## Portal e formulário web
 
 O diretório [frontend/](frontend/) contém a home, o Seguro Empresarial e um formulário integrado de sete etapas, sem campo CPF. A seleção econômica tem as 970 atividades do catálogo público, nomes por extenso e busca por lista, nome ou descrição do negócio, com sugestão de subatividade.

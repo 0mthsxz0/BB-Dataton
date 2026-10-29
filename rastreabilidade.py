@@ -150,6 +150,9 @@ def anexar_evidencias(record, indices, dimensoes, origens, base=None):
     clima = referencia('clima', ['frequencia_rajada_forte','frequencia_rajada_severa','frequencia_vento_chuva',
         'exposicao_climatica_bruta','exposicao_climatica_0_1','dias_esperados','dias_vento_validos','dias_conjuntos_validos',
         'modelo_clima','sha256_serie'], 'clima_municipal.csv', 'Snapshot calculado de séries da API histórica Open-Meteo/ERA5; não é previsão nem consulta ao vivo.')
+    if record.get('contexto_seguranca',{}).get('aplicada_no_motor'):
+        seguranca['modo_acesso']='Referência empresarial elegível no SQLite público verificado; consulta somente leitura.'
+        seguranca['versao_dados']=record['contexto_seguranca']['versao_dados']
     try:
         clima['parametros'] = json.loads(record.get('metodologia_clima') or '{}')
     except (ValueError, TypeError):

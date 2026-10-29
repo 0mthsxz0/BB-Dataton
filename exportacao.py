@@ -17,6 +17,7 @@ def analisar_base(base, config=None, data_analise=None):
     motor = MotorPontuacao(base, config, data_analise=data_analise)
     resultados, coberturas, auditoria = [], [], []
     for registro in base.estabelecimentos.to_dict('records'):
+        registro = motor.preparar_registro(registro)
         pontos = motor.analisar_registro(registro)
         dimensoes = motor.dimensionar_coberturas(registro)
         recomendacao = recomendar_plano(pontos, base.catalogo, motor.config, registro)
@@ -56,7 +57,9 @@ def analisar_base(base, config=None, data_analise=None):
         auditoria.append({'empresa_id': registro['empresa_id'], 'imovel_id': registro['imovel_id'],
                          'pontuacoes': pontos, 'necessidades_plano': recomendacao['necessidades'],
                          'dimensionamento': dimensoes, 'recomendacao': recomendacao,
-                         'personalizacao': personalizacao})
+                         'personalizacao': personalizacao,
+                         'contexto_seguranca': pontos['ROUBO_FURTO_ARROMBAMENTO']['contexto_seguranca'],
+                         'avaliacao_mosler': pontos['ROUBO_FURTO_ARROMBAMENTO']['avaliacao_mosler']})
     r = pd.DataFrame(resultados, columns=base.templates['template_resultado_times'])
     c = pd.DataFrame(coberturas, columns=base.templates['template_coberturas_times'])
     return r, c, auditoria
@@ -77,9 +80,13 @@ def exportar(base, config=None, destino='output', data_analise=None):
         (pasta / nome).write_bytes(conteudo)
     (pasta / 'auditoria.json').write_text(json.dumps(auditoria, ensure_ascii=False, allow_nan=False), encoding='utf-8')
     config_texto = json.dumps(motor.config, ensure_ascii=False, sort_keys=True, allow_nan=False)
+    releases = {x['contexto_seguranca'].get('sha256_banco'):x['contexto_seguranca'].get('versao_dados')
+                for x in auditoria if x['contexto_seguranca'].get('sha256_banco')}
     manifesto = {'versao': motor.config['versao'], 'gerado_em_utc': datetime.now(timezone.utc).isoformat(),
                  'data_analise':motor.data_analise.isoformat(), 'politica_seguranca':POLITICA_SEGURANCA,
                  'regras_produto': REGRAS,
+                 'integracao_seguranca': {'contrato':'contexto-seguranca-1.0',
+                    'modo':motor.integracao_seguranca.modo,'releases':releases},
                  'regras_produto_sha256': hashlib.sha256(json.dumps(REGRAS, sort_keys=True, ensure_ascii=False).encode()).hexdigest(),
                  'entradas_sha256': base.hashes, 'config_sha256': hashlib.sha256(config_texto.encode()).hexdigest(),
                  'configuracao': motor.config,

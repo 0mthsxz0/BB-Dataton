@@ -1,0 +1,60 @@
+{
+  "tipo": "verificação com banco SINESP real parcial; sem índices inventados",
+  "banco": {
+    "status": "INSTALADO",
+    "versao_dados": "2025-vde-parcial.1",
+    "versao_schema": 1,
+    "sha256": "826e4b9ea512c0c81e4f3c07df383c2046a75b24994d6684bef76bc79d2fd6bb",
+    "gerado_em": "2026-10-29T03:38:44.378172+00:00",
+    "contagens": {
+      "municipios": 0,
+      "fontes": 1,
+      "ocorrencias": 0,
+      "ocorrencia_fontes": 0,
+      "vde_registros": 69510
+    },
+    "motivo": "Banco verificado. Disponibilidade de referência elegível depende do município e do período."
+  },
+  "municipio": {
+    "contrato": "contexto-seguranca-1.0",
+    "status": "MUNICIPIO_NAO_ENCONTRADO",
+    "motivo": "Município não consta no cadastro público importado.",
+    "codigo_ibge": "3550308",
+    "data_analise": "2026-10-29",
+    "indicadores": [],
+    "fontes": [],
+    "referencia_empresarial": null,
+    "qualidade_referencia": null,
+    "versao_dados": "2025-vde-parcial.1",
+    "aviso": "Contexto municipal, sem probabilidade individual ou precisão de rua.",
+    "sha256_banco": "826e4b9ea512c0c81e4f3c07df383c2046a75b24994d6684bef76bc79d2fd6bb",
+    "versao_schema": 1
+  },
+  "visao_geral": {
+    "excecoes": [],
+    "erros": [],
+    "metricas": [
+      {
+        "rotulo": "Empresas",
+        "valor": "2.500"
+      },
+      {
+        "rotulo": "Estabelecimentos",
+        "valor": "2.978"
+      },
+      {
+        "rotulo": "Baixa confiança (< 50%)",
+        "valor": "100%"
+      },
+      {
+        "rotulo": "Sensíveis à incerteza",
+        "valor": "100%"
+      }
+    ]
+  },
+  "analise": {
+    "excecoes": [],
+    "erros": [],
+    "contexto_visivel": true
+  }
+}
