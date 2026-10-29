@@ -16,7 +16,8 @@ const report={
 };
 test('roteiro é construído apenas da recomendação e precisa de aprovação humana',async()=>{
  const d=await newDraft(report,{empresa:'Loja Teste',organizacao:'Equipe Teste'});
- assert.match(d.text,/voz automatizada/i);
+ assert.match(d.text,/Esta é uma mensagem da Equipe Teste do BB Seguros\./);
+ assert.match(d.text,/proteção da sua empresa, Loja Teste\./);
  assert.match(d.text,/Prático/);
  assert.match(d.text,/Loja Teste/);
  assert.equal(status(d.id).approved,false);

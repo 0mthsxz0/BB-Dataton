@@ -6,6 +6,34 @@ from xml.etree.ElementTree import fromstring
 import pytest
 
 from roteiros_voz import DURACAO_ROTEIRO, RoteiroExpirado, ler_roteiro, salvar_roteiro, url_roteiro
+import roteiros_voz
+
+
+def test_audio_publico_tem_mesmo_id_e_expiracao(monkeypatch, tmp_path):
+    monkeypatch.setenv('BB_ROTEIROS_DIR', str(tmp_path))
+    def sintetizar(texto, destino):
+        assert texto == 'Mensagem aprovada'
+        destino.write_bytes(b'RIFF-audio-teste')
+    monkeypatch.setattr(roteiros_voz, 'gerar_audio', sintetizar)
+    id = salvar_roteiro('Mensagem aprovada', audio_base='https://exemplo.test/voz.xml')
+    xml = fromstring(ler_roteiro(id))
+    assert xml.find('Say') is None
+    assert xml.find('Play').text == f'https://exemplo.test/voz/{id}.wav'
+    servidor = criar_servidor(0)
+    thread = Thread(target=servidor.serve_forever, daemon=True)
+    thread.start()
+    try:
+        with urlopen(f'http://127.0.0.1:{servidor.server_port}/voz/{id}.wav', timeout=3) as resposta:
+            assert resposta.headers['Content-Type'] == 'audio/wav'
+            assert resposta.read() == b'RIFF-audio-teste'
+        monkeypatch.setattr(roteiros_voz.time, 'time', lambda: 2_000_000_000)
+        with pytest.raises(HTTPError) as erro:
+            urlopen(f'http://127.0.0.1:{servidor.server_port}/voz/{id}.wav', timeout=3)
+        assert erro.value.code == 410
+    finally:
+        servidor.shutdown()
+        servidor.server_close()
+        thread.join(timeout=3)
 from servidor_voz import criar_servidor
 
 

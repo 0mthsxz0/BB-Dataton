@@ -6,7 +6,7 @@ import re
 from urllib.parse import urlsplit
 
 from ligacoes import criar_twiml
-from roteiros_voz import PADRAO_ID, RoteiroExpirado, ler_roteiro
+from roteiros_voz import PADRAO_ID, RoteiroExpirado, ler_roteiro, ler_audio
 
 ARQUIVO_MENSAGEM = Path(__file__).with_name("mensagem_ligacao.txt")
 
@@ -28,11 +28,14 @@ class RoteiroHandler(BaseHTTPRequestHandler):
     def responder(self):
         caminho = urlsplit(self.path).path
         roteiro = re.fullmatch(r"/voz/(" + PADRAO_ID + r")\.xml", caminho)
-        if caminho != "/voz.xml" and not roteiro:
+        audio = re.fullmatch(r"/voz/(" + PADRAO_ID + r")\.wav", caminho)
+        if caminho != "/voz.xml" and not roteiro and not audio:
             self.send_error(404)
             return
         try:
-            if roteiro:
+            if audio:
+                conteudo = ler_audio(audio.group(1))
+            elif roteiro:
                 conteudo = ler_roteiro(roteiro.group(1)).encode("utf-8")
             else:
                 # A rota de demonstração continua relendo o TXT.
@@ -51,7 +54,7 @@ class RoteiroHandler(BaseHTTPRequestHandler):
             tipo = "text/plain; charset=utf-8"
         else:
             self.send_response(200)
-            tipo = "application/xml; charset=utf-8"
+            tipo = 'audio/wav' if audio else "application/xml; charset=utf-8"
         self.send_header("Content-Type", tipo)
         self.send_header("Content-Length", str(len(conteudo)))
         self.send_header("Cache-Control", "no-store")
