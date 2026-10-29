@@ -38,8 +38,23 @@ test('personal, address and payment fields never enter recommendation payload',a
   assert.equal(Object.values(payload.answers).length,8);
   assert.ok(Object.values(payload.answers).every(v=>v===null));
 });
-test('immediate recommendation has its own validated endpoint',async()=>{
-  const response=await post('/api/recomendacao/cadastro',{});
-  assert.equal(response.status,422);
-  assert.match((await response.json()).error,/estabelecimento/);
+test('public visitor cannot read internal Datathon records',async()=>{
+  const context=await fetch(base+'/api/contexto');
+  assert.equal(context.status,401);
+  const internal=await post('/api/recomendacao/cadastro',{empresaId:'EMP_1',imovelId:'IMO_1'});
+  assert.equal(internal.status,401);
+  const publicLinked=await post('/api/recomendacao',{empresaId:'EMP_1',imovelId:'IMO_1'});
+  assert.equal(publicLinked.status,403);
+  const voice=await post('/api/interno/roteiros',{empresaId:'EMP_1',imovelId:'IMO_1'});
+  assert.equal(voice.status,401);
+});
+
+test('passive client identification never reveals company information without verification',async()=>{
+  const response=await post('/api/cliente/cadastro',{empresaId:'EMP_1',imovelId:'IMO_1'});
+  assert.equal(response.status,401);
+  const unconfigured=await post('/api/cliente/vincular',{cnpj:'00000000000000',code:'abcdefgh'});
+  assert.ok([422,503].includes(unconfigured.status));
+  const login=await fetch(base+'/interno');
+  assert.equal(login.status,200);
+  assert.match(await login.text(),/Acesso ao painel interno/);
 });

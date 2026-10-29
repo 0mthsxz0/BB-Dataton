@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Painel interno · Protege Empresa</title><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/quote.css"></head>
+<body class="quote-body"><header class="quote-header"><a class="brand" href="/">BB Seguros · Datathon</a><a href="/cotacao">Área do cliente</a></header>
+<main class="quote-main" style="max-width:610px;margin:7vh auto;padding:30px;border-radius:20px">
+<h1 class="quote-title">Acesso ao painel interno</h1>
+<p>O cadastro de empresas, as recomendações internas e as ligações exigem identificação do colaborador. Esta versão utiliza autenticação local de demonstração, não a identidade corporativa do banco.</p>
+<form id="login" class="quote-form"><div class="qfield"><label for="pwd">Senha de acesso do ambiente</label><input id="pwd" type="password" required autocomplete="current-password" minlength="12"></div><p id="message" role="alert"></p><button class="btn" type="submit">Entrar no painel</button></form>
+</main><script type="module">
+document.getElementById('login').addEventListener('submit',async e=>{
+ e.preventDefault();const btn=e.currentTarget.querySelector('button'),m=document.getElementById('message');btn.disabled=true;
+ try{const r=await fetch('/api/interno/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:document.getElementById('pwd').value})});const d=await r.json();if(!r.ok)throw Error(d.error||'Acesso negado');location.replace('/interno');}
+ catch(error){m.textContent=error.message;btn.disabled=false;}
+});
+</script></body></html>
