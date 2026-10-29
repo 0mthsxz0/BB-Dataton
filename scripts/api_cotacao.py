@@ -14,6 +14,8 @@ def main():
             result = contexto()
         elif request.get('action') == 'perfil_cnae':
             result = consultar_perfil_cnae(request.get('payload'))
+        elif request.get('action') == 'atividade_cnae':
+            result = consultar_atividade_cnae(request.get('payload'))
         elif request.get('action') == 'cadastro':
             result = analisar_cadastro(request.get('payload'))
         elif request.get('action') == 'relatorio_cnae':
