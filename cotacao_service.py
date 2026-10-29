@@ -73,6 +73,8 @@ def consultar_atividade_cnae(payload, base=None):
     # Fallback público e explícito para o exemplo validado; sem inferir um cliente da base.
     conhecidas = {'4771701': 'Comércio varejista de produtos farmacêuticos sem manipulação'}
     descricao = conhecidas.get(code, '')
+    if descricao:
+        return {'cnae': code, 'encontrado': True, 'descricao': descricao, 'aviso': ''}
     if base is None:
         base = base_opcional()
     if base is not None:
