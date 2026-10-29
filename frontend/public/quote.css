@@ -109,3 +109,19 @@ body.report-mode .recommendation{background:#f7f8ff;padding:clamp(16px,2.5vw,36p
 .cnae-stat strong{font-size:15px;color:#202f63}
 .cnae-report-actions{display:flex;flex-wrap:wrap;gap:12px}
 @media(max-width:720px){.cnae-summary-grid,.cnae-stat-grid{grid-template-columns:1fr}.cnae-direct-report{gap:16px}}
+
+/* Prospecção passiva: identificação demonstrativa por ID, sem busca por CNAE. */
+.demo-lookup{padding:22px;border:1px solid #ced9ff;background:#f6f8ff;border-radius:16px;display:grid;gap:13px;margin:0 0 28px}
+.demo-lookup h2{color:#1d3475;font-size:clamp(22px,2.5vw,28px);margin:0}
+.demo-lookup p{margin:0;line-height:1.6}
+.demo-lookup label{font-size:14px;font-weight:700;color:#263968}
+.demo-lookup-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:stretch}
+.demo-lookup-row input{min-width:0;border:1px solid #a9b9e6;border-radius:10px;padding:12px;font:inherit;background:#fff;color:#182b5e}
+.demo-lookup-row button{margin:0}
+#demo-company-status{min-height:19px;color:#304a96;font-weight:600;font-size:13px}
+.demo-unit-options{display:grid;gap:12px;border-top:1px solid #d1dcfb;padding-top:18px}
+.demo-unit-options button{text-align:left;white-space:normal}
+.demo-direct-report{display:grid;gap:21px}
+.demo-direct-report>h2{font-size:clamp(22px,3vw,34px);color:#1d3475}
+.demo-direct-report>p{line-height:1.7}
+@media(max-width:640px){.demo-lookup{padding:16px}.demo-lookup-row{grid-template-columns:1fr}}

@@ -371,3 +371,41 @@ def test_relatorio_direto_cnae_invalido_ou_sem_unidade(pasta_csv,codigo):
     b = carregar_base(pasta_csv)
     with pytest.raises(ValueError):
         service.analisar_cnae({'cnae': codigo}, base=b)
+
+
+def test_demo_empresa_por_id_seleciona_unidade_sem_adivinhar(pasta_csv):
+    base = carregar_base(pasta_csv)
+    result = service.demonstrar_empresa_por_id({'empresaId': 'EMP_TESTE'}, base=base)
+    assert result['tipo'] == 'selecionar_unidade'
+    assert result['empresaId'] == 'EMP_TESTE'
+    assert {r['imovelId'] for r in result['unidades']} == {'IMO_TESTE', 'IMO_FILIAL'}
+    assert 'relatorio' not in result
+
+
+def test_demo_empresa_por_id_gera_mesmo_relatorio_do_painel_interno(pasta_csv):
+    base = carregar_base(pasta_csv)
+    payload = {'empresaId': 'EMP_TESTE', 'imovelId': 'IMO_TESTE'}
+    actual = service.demonstrar_empresa_por_id(payload, base=base)
+    expected = service.analisar_cadastro(payload, base=base)
+    assert actual['tipo'] == 'relatorio'
+    assert actual['relatorio'] == expected
+    assert actual['identidadeVerificada'] is False
+    assert actual['relatorio']['cadastro']['empresa_id'] == 'EMP_TESTE'
+    assert actual['relatorio']['cadastro']['imovel_id'] == 'IMO_TESTE'
+
+
+def test_demo_empresa_por_id_um_estabelecimento(pasta_csv):
+    base = carregar_base(pasta_csv)
+    base.estabelecimentos = base.estabelecimentos.iloc[:1].copy()
+    result = service.demonstrar_empresa_por_id({'empresaId':'EMP_TESTE'}, base=base)
+    assert result['tipo'] == 'relatorio'
+    assert result['imovelId'] in {'IMO_FILIAL', 'IMO_TESTE'}
+
+
+@pytest.mark.parametrize('payload', [{}, {'empresaId':'4771701'}, {'empresaId':'11444777000161'},
+  {'empresaId':'EMP_@@@'}, {'empresaId':'EMP_NAO_EXISTE'}, 
+  {'empresaId':'EMP_TESTE','imovelId':'IMO_OUTRA_EMPRESA'}])
+def test_demo_empresa_por_id_nao_confunde_cnae_cnpj_ou_unidades(pasta_csv,payload):
+    base = carregar_base(pasta_csv)
+    with pytest.raises(ValueError):
+        service.demonstrar_empresa_por_id(payload, base=base)

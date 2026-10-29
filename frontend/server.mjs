@@ -123,6 +123,15 @@ export const server = http.createServer(async (req, res) => {
         const found = searchActivities(index,data.description,{mode:'description',limit:3});
         json(res,200,{...found,engine:'local-rules-tfidf-v2',catalogCount:catalog.activities.length}); return;
       }
+      if (pathname === '/api/demo/empresa') {
+        // Atalho de ID sem autenticação é EXCLUSIVO da demonstração local, nunca produção.
+        if (process.env.BB_DEMO_ID_LOOKUP !== '1' ||
+            req.headers.forwarded || req.headers['x-forwarded-for'] || req.headers['x-forwarded-host'] ||
+            !['127.0.0.1','::1','::ffff:127.0.0.1'].includes(req.socket.remoteAddress)) {
+          json(res,403,{error:'Demonstração por ID desativada. Configure BB_DEMO_ID_LOOKUP=1 apenas no computador local.'}); return;
+        }
+        json(res,200,await runMotor({action:'demo_empresa',payload:data})); return;
+      }
       if (pathname === '/api/cnae/perfil') { json(res,200,await runMotor({action:'perfil_cnae',payload:data})); return; }
       if (pathname === '/api/interno/relatorio-cnae') { json(res,200,await runMotor({action:'relatorio_cnae',payload:data})); return; }
       if (pathname === '/api/recomendacao/cadastro') { if(!authorized(req,'internal')){json(res,401,{error:'Acesso interno necessário.'});return;} json(res,200,await runMotor({action:'cadastro',payload:data})); return; }

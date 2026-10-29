@@ -433,6 +433,51 @@ def analisar_cadastro(payload, base=None):
 
 
 
+
+def demonstrar_empresa_por_id(payload, base=None):
+    """MVP local: identificação de registro anonimizado, nunca autenticação por CNPJ.
+
+    A rota Node correspondente fica DESLIGADA por padrão e somente funciona em
+    localhost quando o operador habilita a demonstração explicitamente.
+    """
+    if not isinstance(payload, dict) or not isinstance(payload.get('empresaId'), str):
+        raise ValueError('Informe um ID demonstrativo, por exemplo EMP_0001.')
+    empresa_id = payload['empresaId'].strip()
+    if not re.fullmatch(r'EMP_[A-Za-z0-9_-]{1,80}', empresa_id):
+        raise ValueError('Informe um ID demonstrativo no formato EMP_0001; CNPJ real não é aceito neste MVP.')
+    imovel_id = payload.get('imovelId')
+    if imovel_id is not None and (
+            not isinstance(imovel_id, str) or
+            not re.fullmatch(r'[A-Za-z0-9_-]{1,100}', imovel_id)):
+        raise ValueError('Identificador de estabelecimento inválido.')
+
+    base = base if base is not None else base_opcional()
+    if base is None:
+        raise ValueError('Base local dos CSVs do Datathon não disponível.')
+    unidades = base.estabelecimentos.loc[base.estabelecimentos.empresa_id.eq(empresa_id)]
+    if unidades.empty:
+        raise ValueError('Esse ID não foi encontrado nos CSVs locais. Confira o identificador de empresa.')
+    unidades = unidades.sort_values('imovel_id')
+    if imovel_id is None and len(unidades) > 1:
+        return {'tipo': 'selecionar_unidade', 'empresaId': empresa_id,
+                'unidades': [
+                    {'imovelId': str(r['imovel_id']),
+                     'municipio': str(r.get('municipio_real') or ''),
+                     'uf': str(r.get('uf_real') or ''),
+                     'tipoUnidade': str(r.get('tipo_unidade') or '')}
+                    for r in unidades.to_dict('records')]}
+    if imovel_id is None:
+        imovel_id = str(unidades.iloc[0]['imovel_id'])
+    elif not unidades.imovel_id.eq(imovel_id).any():
+        raise ValueError('O estabelecimento não pertence à empresa informada.')
+    report = analisar_cadastro({'empresaId': empresa_id, 'imovelId': imovel_id}, base=base)
+    return {'tipo': 'relatorio', 'empresaId': empresa_id,
+            'imovelId': imovel_id, 'relatorio': report,
+            'ambiente': 'MVP_LOCAL', 'identidadeVerificada': False,
+            'aviso': 'Demonstração com IDs anonimizados. Este ID não comprova titularidade da empresa e não autoriza acesso bancário real.'}
+
+
+
 def analisar_cnae(payload, base=None):
     """Abre o relatório diretamente por CNAE, sem escolher uma empresa ao acaso.
 
