@@ -371,3 +371,26 @@ def test_relatorio_direto_cnae_invalido_ou_sem_unidade(pasta_csv,codigo):
     b = carregar_base(pasta_csv)
     with pytest.raises(ValueError):
         service.analisar_cnae({'cnae': codigo}, base=b)
+
+
+
+def test_consulta_publica_cnae_retorna_apenas_descricao_sem_dados_de_empresas(pasta_csv):
+    b = carregar_base(pasta_csv)
+    r = service.consultar_atividade_cnae({'cnae': '0000-0/00'}, base=b)
+    assert r['cnae'] == '0000000'
+    assert r['encontrado'] is True
+    assert r['descricao'] == 'Teste'
+    assert not any(k in r for k in ('amostra', 'valores', 'empresaId', 'imovelId'))
+
+
+def test_consulta_cnae_farmacia_tambem_sem_base_local():
+    r = service.consultar_atividade_cnae({'cnae': '4771-7/01'}, base=False)
+    assert r['encontrado'] is True
+    assert 'farmacêuticos sem manipulação' in r['descricao']
+    assert 'amostra' not in r
+
+
+@pytest.mark.parametrize('payload',[{}, {'cnae':'1'}, {'cnae':'12345678'}])
+def test_consulta_cnae_rejeita_codigo_invalido(payload):
+    with pytest.raises(ValueError,match='sete dígitos'):
+        service.consultar_atividade_cnae(payload,base=False)
