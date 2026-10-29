@@ -97,7 +97,10 @@ export const server = http.createServer(async (req, res) => {
       }
       if (pathname === '/api/interno/roteiros' && req.method === 'POST') {
         const data=await body(req);
-        const report=await runMotor({action:'cadastro',payload:{empresaId:data.empresaId,imovelId:data.imovelId}});
+        const input={empresaId:data.empresaId,imovelId:data.imovelId};
+        const report=await runMotor(data.cotacaoPayload?
+          {action:'analisar',payload:{...data.cotacaoPayload,...input}}:
+          {action:'cadastro',payload:input});
         json(res,200,await newDraft(report,data));return;
       }
       if (pathname === '/api/interno/roteiros/aprovar' && req.method === 'POST') {
