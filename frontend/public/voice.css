@@ -1,0 +1,14 @@
+.voice-panel,.client-lookup{border:1px solid #ccd6ef;background:#f8faff;border-radius:18px;padding:24px;margin:24px 0;color:#25345a}
+.voice-panel h2,.client-lookup h2{font-size:23px;line-height:1.2;margin:8px 0 12px}
+.voice-panel p,.client-lookup p{font-size:14px;line-height:1.65}
+.voice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}
+.voice-grid label,.voice-call label,.client-lookup label{display:grid;gap:7px;font-size:13px;font-weight:700}
+.voice-grid input,.voice-call input[type=tel],.client-lookup input,.voice-panel textarea{width:100%;box-sizing:border-box;padding:11px;border:1px solid #9eabd0;border-radius:10px;font:inherit;background:#fff;color:#182442}
+.voice-panel textarea{resize:vertical;min-height:150px;margin:10px 0 14px;line-height:1.55}
+.voice-call{display:grid;gap:16px;margin:17px 0}
+.voice-call .voice-check{display:flex;align-items:flex-start;font-weight:500;line-height:1.5}
+.voice-check input{margin:4px 9px 0 0}
+.voice-panel .btn,.client-lookup .btn{margin-top:12px}
+#voice-status,#client-status{font-weight:600;font-size:13px;margin:15px 0;color:#263e83}
+.client-lookup input{margin:8px 0;display:block}
+@media(max-width:640px){.voice-grid{grid-template-columns:1fr}.voice-panel,.client-lookup{padding:16px}}
