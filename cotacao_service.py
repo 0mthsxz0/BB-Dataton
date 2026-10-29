@@ -432,6 +432,78 @@ def analisar_cadastro(payload, base=None):
     return clean(result)
 
 
+
+def analisar_cnae(payload, base=None):
+    """Abre o relatório diretamente por CNAE, sem escolher uma empresa ao acaso.
+
+    Uma única unidade permite análise individual. Para múltiplas unidades,
+    calcula cada análise com os dados reais daquela unidade e só entrega
+    indicadores consolidados por CNAE, nunca um cadastro inventado.
+    """
+    from collections import Counter
+    from statistics import median
+
+    base = base if base is not None else base_opcional()
+    if base is None:
+        raise ValueError('A base local do Datathon não está disponível.')
+    perfil = perfil_cnae(payload, base)  # valida e normaliza o CNAE
+    code = perfil['cnae']
+    linhas = [r for r in base.estabelecimentos.to_dict('records')
+              if re.sub(r'\D', '', str(r.get('cnae_principal', ''))) == code]
+    if not linhas:
+        raise ValueError('Nenhuma unidade cadastrada com esse CNAE. Confira o código ou utilize o formulário.')
+    if len(linhas) == 1:
+        row = linhas[0]
+        return {'tipo': 'individual', 'cnae': code,
+                'amostra': perfil['amostra'],
+                'relatorio': analisar_cadastro(
+                    {'empresaId': row['empresa_id'], 'imovelId': row['imovel_id']},
+                    base=base)}
+    if len(linhas) > 1000:
+        raise ValueError('CNAE com mais de 1.000 estabelecimentos: refine a consulta antes de gerar o relatório.')
+
+    motor = MotorPontuacao()
+    contagem = Counter()
+    pontuacoes = {}
+    confiancas = {}
+    bloqueadas = 0
+    for row in linhas:
+        indices = motor.analisar_registro(row)
+        recomendacao = recomendar_plano(indices, base.catalogo, motor.config, row)
+        contagem[recomendacao['plano_recomendado']] += 1
+        bloqueadas += bool(recomendacao['indicacao_bloqueada'])
+        for chave, indice in indices.items():
+            pontuacoes.setdefault(chave, []).append(indice['prioridade'])
+            confiancas.setdefault(chave, []).append(indice['confianca'])
+    nomes = motor.config['coberturas']
+    resumo_indices = sorted(
+        [{'codigo': chave, 'nome': nomes[chave]['nome'],
+          'prioridadeMediana': round(median(valores), 2),
+          'confiancaMediana': round(median(confiancas[chave]) * 100, 1)}
+         for chave, valores in pontuacoes.items()],
+        key=lambda item: item['prioridadeMediana'], reverse=True)
+    planos = [{'plano': nome, 'quantidade': contagem[nome],
+               'percentual': round(contagem[nome] * 100 / len(linhas), 1)}
+              for nome in ('ESSENCIAL', 'PRATICO', 'TOTAL')]
+    return clean({
+        'tipo': 'setorial', 'cnae': code, 'descricao': perfil['descricao'],
+        'amostra': perfil['amostra'], 'unidadesAnalisadas': len(linhas),
+        'planos': planos,
+        'planoMaisFrequente': max(planos, key=lambda item: item['quantidade'])['plano'],
+        'indices': resumo_indices, 'medianasFinanceiras': perfil['valores'],
+        'triagensBloqueadas': bloqueadas,
+        'preliminar': True, 'origem': perfil['origem'],
+        'metodo': 'O motor real foi executado separadamente para cada estabelecimento do CNAE; resultados consolidados por contagem e mediana.',
+        'avisos': [
+            'Este é um relatório setorial, não a análise de uma empresa específica.',
+            'O CNAE é compartilhado por diversas empresas: não selecionamos uma empresa aleatoriamente.',
+            'Os dados são do cadastro anonimizado do Datathon. Coberturas, elegibilidade e dados do imóvel devem ser confirmados por estabelecimento.',
+            'Índices são prioridades relativas, não probabilidades de sinistro. Não há cotação oficial, preço ou aceitação contratual.'
+        ]
+    })
+
+
+
 def clean(value):
     if isinstance(value, dict):
         return {str(k): clean(v) for k, v in value.items()}

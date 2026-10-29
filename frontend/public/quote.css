@@ -90,3 +90,22 @@ body.report-mode .recommendation{background:#f7f8ff;padding:clamp(16px,2.5vw,36p
 .protection-card summary>span:first-child{flex:1;min-width:0;overflow-wrap:anywhere}.protection-card summary{flex-wrap:wrap}.cnae-lookup{display:grid;gap:14px;border:1px solid #dce2ff;padding:20px;border-radius:12px;background:#f7f8ff}
 
 .protection-card-grid{align-items:start}
+
+/* Relatório instantâneo por CNAE: a amostra permanece distinta do cadastro individual. */
+.cnae-direct-report{display:grid;gap:24px;max-width:1450px;margin:18px auto 45px}
+.cnae-direct-report>h2{color:var(--deep);font-size:clamp(22px,2.5vw,34px);margin:0}
+.cnae-direct-report>p{margin:0;line-height:1.7;color:#455477}
+.cnae-direct-report h3{font-size:21px;color:var(--deep);margin:0 0 12px}
+.cnae-summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.cnae-summary-grid>div{background:#fff;border:1px solid #d5dcfa;border-radius:14px;padding:19px;display:grid;gap:6px}
+.cnae-summary-grid strong{font-size:30px;color:#20368a}
+.cnae-summary-grid span,.cnae-stat span{font-size:13px;color:#506184;line-height:1.5}
+.cnae-plan-list{display:grid;gap:18px;margin:18px 0}
+.cnae-plan-header{display:flex;justify-content:space-between;gap:16px;font-size:14px;margin-bottom:8px}
+.cnae-bar-track{height:12px;border-radius:20px;background:#dbe1f5;overflow:hidden}
+.cnae-bar-fill{background:#4b60dd;height:100%;border-radius:20px}
+.cnae-stat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.cnae-stat{display:grid;gap:8px;background:#fff;border:1px solid #dde2f4;border-radius:12px;padding:16px}
+.cnae-stat strong{font-size:15px;color:#202f63}
+.cnae-report-actions{display:flex;flex-wrap:wrap;gap:12px}
+@media(max-width:720px){.cnae-summary-grid,.cnae-stat-grid{grid-template-columns:1fr}.cnae-direct-report{gap:16px}}

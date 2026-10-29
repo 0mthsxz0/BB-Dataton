@@ -124,6 +124,7 @@ export const server = http.createServer(async (req, res) => {
         json(res,200,{...found,engine:'local-rules-tfidf-v2',catalogCount:catalog.activities.length}); return;
       }
       if (pathname === '/api/cnae/perfil') { json(res,200,await runMotor({action:'perfil_cnae',payload:data})); return; }
+      if (pathname === '/api/interno/relatorio-cnae') { json(res,200,await runMotor({action:'relatorio_cnae',payload:data})); return; }
       if (pathname === '/api/recomendacao/cadastro') { if(!authorized(req,'internal')){json(res,401,{error:'Acesso interno necessário.'});return;} json(res,200,await runMotor({action:'cadastro',payload:data})); return; }
       if (pathname === '/api/recomendacao') {
         const session=getSession(req);
