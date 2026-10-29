@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node server.mjs",
     "start": "node server.mjs",
-    "check": "node --check public/app.js && node --check public/quote.js && node --check public/report-evidence.js && node --check public/product-ui.js && node --check public/quote-engine.js && node --check public/activity-search.js && node --check public/language.js && node --check public/journeys.js && node --check server.mjs",
+    "check": "node --check public/app.js && node --check public/quote.js && node --check public/report-evidence.js && node --check public/product-ui.js && node --check public/quote-engine.js && node --check public/activity-search.js && node --check public/language.js && node --check public/journeys.js && node --check public/voice-ui.js && node --check auth.mjs && node --check voice-service.mjs && node --check server.mjs",
     "test": "node --test tests/*.test.js"
   },
   "engines": {
