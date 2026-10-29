@@ -67,8 +67,8 @@ def consultar_atividade_cnae(payload, base=None):
     """Retorna somente a descrição pública da atividade, nunca dados ou contagens de clientes."""
     if not isinstance(payload, dict) or not isinstance(payload.get('cnae'), str):
         raise ValueError('Informe o CNAE com sete dígitos.')
-    code = re.sub(r'[-./\\s]', '', payload['cnae'])
-    if not re.fullmatch(r'\\d{7}', code):
+    code = re.sub(r'[-./\s]', '', payload['cnae'])
+    if not re.fullmatch(r'\d{7}', code):
         raise ValueError('Informe o CNAE com sete dígitos.')
     # Fallback público e explícito para o exemplo validado; sem inferir um cliente da base.
     conhecidas = {'4771701': 'Comércio varejista de produtos farmacêuticos sem manipulação'}
@@ -79,7 +79,7 @@ def consultar_atividade_cnae(payload, base=None):
         descricoes = {
             str(r.get('descricao_cnae', '')).strip()
             for r in base.estabelecimentos.to_dict('records')
-            if re.sub(r'\\D', '', str(r.get('cnae_principal', ''))) == code
+            if re.sub(r'\D', '', str(r.get('cnae_principal', ''))) == code
             and str(r.get('descricao_cnae', '')).strip()
         }
         # Descrições discordantes não devem ser arbitrariamente atribuídas a um CNAE.
