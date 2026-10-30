@@ -65,7 +65,7 @@ Crie a pasta de saída se necessário e preencha o manifesto com arquivos efetiv
 
 Node executa o adaptador Python por stdin, sem shell e sem criar arquivos de proposta. O processo é limitado a 30 segundos e a quatro análises simultâneas. POST exige JSON, origem local e corpo limitado. Falha no Python gera erro visível e permite tentar novamente; nunca produz plano fictício de contingência.
 
-Contatos, nascimento, CNPJ, endereço completo, CEP e dados de pagamento não entram no payload de recomendação. Não há envio à seguradora ou a uma IA externa. O servidor escuta somente em `127.0.0.1`. Autenticação e integração com sistemas reais do BB exigiriam um backend de produção autorizado; não são representadas pela seleção da base local.
+Contatos, nascimento, CNPJ, endereço completo, CEP e dados de pagamento não entram no payload de recomendação. Essa API não usa IA externa. Separadamente, a integração de voz documentada em [INTEGRACAO_CADASTRO_E_LIGACOES.md](../../docs/INTEGRACAO_CADASTRO_E_LIGACOES.md) pode enviar à OpenAI um resumo de atividade, município, plano preliminar, prioridades e pendências e um roteiro genérico, sem nomes da empresa, contato, colaborador ou organização. Nada é enviado à seguradora. O servidor escuta somente em `127.0.0.1`. Autenticação e integração com sistemas reais do BB exigiriam um backend de produção autorizado; não são representadas pela seleção da base local.
 
 ## Busca inteligente sem API generativa
 

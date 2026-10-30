@@ -8,7 +8,7 @@ O site público `/cotacao` permite identificar uma pessoa jurídica com CNPJ e c
 
 O painel `/interno` tem autenticação local de demonstração, exibe o relatório da unidade e inclui geração de roteiro, edição, aprovação e chamada individual. Os componentes de Twilio/TTS foram portados da branch `codigo-ligacao`. A análise é calculada no servidor com o vínculo selecionado; um relatório arbitrário enviado pelo navegador não é aceito como fonte do roteiro.
 
-A geração de texto utiliza `OPENAI_API_KEY` quando configurada, com conjunto restrito de fatos. Sem a chave, usa roteiro determinístico, sem inventar dados. Nos dois casos, exige revisão e aprovação humana. **É telefonia com roteiro por voz sintética (TTS), não conversa bidirecional de IA.**
+A geração de texto utiliza `OPENAI_API_KEY` quando configurada. A API recebe apenas atividade, município, plano preliminar, prioridades, pendências e um roteiro genérico com marcadores; nomes da empresa, contato, colaborador e organização são aplicados localmente depois da resposta. Sem a chave, usa roteiro determinístico, sem inventar dados. Nos dois casos, exige revisão e aprovação humana. **É telefonia com roteiro por voz sintética (TTS), não conversa bidirecional de IA.**
 
 ## Executar no Windows
 
@@ -75,7 +75,7 @@ O modo completo fornece TwiML diretamente à Twilio. Para o modo `trial`, config
 
 - A aplicação continua ouvindo apenas `127.0.0.1`. O login interno e o arquivo de vínculo são recursos **exclusivamente de demonstração**, não autenticação bancária de produção.
 - Sessões locais usam cookie HTTP-only, SameSite Strict e expiração; sem autenticação o visitante público não pode consultar o cadastro, a lista de empresas ou disparar chamadas.
-- O roteiro inclui apenas resumo de atividade, município, plano preliminar e prioridades justificadas, não o inventário integral ou dados pessoais. O contato é informado pelo operador e não enviado ao serviço de IA.
+- O pedido à API de IA inclui apenas atividade, município, plano preliminar, prioridades, pendências e texto genérico; não inclui nomes da empresa, contato, colaborador ou organização, telefone, CNPJ, inventário integral ou dados de pagamento. Os nomes são inseridos localmente no rascunho devolvido.
 - Roteiros exigem aprovação específica e expiram; chamadas já solicitadas não são repetidas automaticamente, mesmo com status incerto.
 - Para produção são indispensáveis SSO, perfis por colaborador, autorização por empresa, rate limiting, registro persistente e auditável de consentimento, relatórios e telefonia, políticas LGPD, autenticação de webhooks, tratamento de chamadas e prevenção de abuso.
 - Não existe cotação oficial nem cálculo de preço, aceitação contratual ou agente de voz bidirecional.

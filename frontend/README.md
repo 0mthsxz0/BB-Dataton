@@ -35,7 +35,7 @@ O servidor detecta `.venv` automaticamente. Para outro interpretador, configure 
 - Vínculo opcional com um estabelecimento da base; os valores declarados substituem os respectivos agregados do cadastro.
 - Selecionar o estabelecimento já exibe o plano sugerido e uma explicação detalhada na mesma etapa, usando o motor original e sem presumir respostas. A explicação inclui dados cadastrais, memória dos índices, pesos e comparação dos três planos.
 - Oito perguntas obrigatórias, duas para cada índice. Resultados, origem dos dados, fontes, confiança e comparação dos planos são calculados pelo motor Python.
-- Contatos e pagamento ficam no navegador. Somente dados de proteção são enviados ao servidor local; a descrição vai à API local de busca. Nada é enviado à seguradora ou a uma API de IA.
+- No formulário público, contatos e pagamento demonstrativo ficam no navegador. Dados de proteção são enviados ao servidor local e a descrição à API local de busca. O painel interno pode enviar à API da OpenAI um resumo de atividade, cidade, plano preliminar, prioridades e pendências e um roteiro genérico para redigir mensagens; nomes da empresa, contato, colaborador e organização não integram esse pedido. Os nomes são inseridos localmente. Nada é enviado à seguradora.
 - Consulta da cidade/UF à API do IBGE e uso de referências públicas municipais versionadas. Importação SSP disponível pelo fluxo documentado.
 
 Fórmulas, perguntas, contratos das APIs, limitações e integração SSP: [INTEGRACAO_MVP.md](docs/INTEGRACAO_MVP.md).
